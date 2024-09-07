@@ -3,3 +3,4 @@
 - zsh
 - tmux
 - neovim
+- alacritty
