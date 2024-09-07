@@ -1,2 +1,5 @@
 # dotfiles
-dotfiles
+
+- zsh
+- tmux
+- neovim

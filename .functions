@@ -1,6 +1,0 @@
-#!/bin/bash
-function update {
-    cd /export/
-    rm export.img
-    wget $1
-}
