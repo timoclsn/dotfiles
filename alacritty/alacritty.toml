@@ -11,7 +11,7 @@ blur = true
 [font]
 normal.family = "FiraCode Nerd Font"
 size = 12
-offset.y = 1 # line height
+offset.y = 2 # line height
 
 [colors.bright]
 black = "#444b6a"
