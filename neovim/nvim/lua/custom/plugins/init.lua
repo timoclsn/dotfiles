@@ -3,13 +3,7 @@
 --
 -- See the kickstart.nvim README for more information
 return {
-	--  'github/copilot.vim',
-	{
-		"supermaven-inc/supermaven-nvim",
-		config = function()
-			require("supermaven-nvim").setup({})
-		end,
-	},
+	"github/copilot.vim",
 	{
 		"ThePrimeagen/harpoon",
 		branch = "harpoon2",
