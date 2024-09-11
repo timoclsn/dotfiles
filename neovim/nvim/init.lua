@@ -195,8 +195,6 @@ vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 -- Personal keymaps
 vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Jump half page down and center cursor' })
 vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Jump half page up and center cursor' })
-vim.keymap.set('n', '<Tab>', ':bnext<CR>', { noremap = true, silent = true })
-vim.keymap.set('n', '<S-Tab>', ':bprevious<CR>', { noremap = true, silent = true })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -468,6 +466,19 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sn', function()
         builtin.find_files { cwd = vim.fn.stdpath 'config' }
       end, { desc = '[S]earch [N]eovim files' })
+
+      -- Shortcut for switching between recent files
+      vim.keymap.set('n', '<Tab>', function()
+        builtin.oldfiles(require('telescope.themes').get_dropdown {
+          winblend = 10,
+          previewer = false,
+          initial_mode = 'normal',
+          layout_config = {
+            width = 100,
+          },
+          prompt_title = 'Recent Files',
+        })
+      end, { desc = '[Tab] Recent Files' })
     end,
   },
 
