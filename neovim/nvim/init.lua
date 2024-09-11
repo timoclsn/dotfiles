@@ -196,6 +196,18 @@ vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Jump half page down and center cursor' })
 vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Jump half page up and center cursor' })
 
+-- Define the function to organize imports
+local function organize_imports()
+  vim.lsp.buf.execute_command {
+    command = '_typescript.organizeImports',
+    arguments = { vim.fn.expand '%:p' },
+  }
+end
+
+-- Create a keymap to call the organize_imports function
+-- Here, <leader>oi is used as an example keybinding
+vim.api.nvim_set_keymap('n', '<leader>oi', ':lua organize_imports()<CR>', { noremap = true, silent = true })
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -659,8 +671,8 @@ require('lazy').setup({
         -- Some languages (like typescript) have entire language plugins that can be useful:
         --    https://github.com/pmizio/typescript-tools.nvim
         --
-        -- But for many setups, the LSP (`tsserver`) will work just fine
-        tsserver = {},
+        -- But for many setups, the LSP (`ts_ls`) will work just fine
+        ts_ls = {},
         --
         tailwindcss = {
           settings = {
