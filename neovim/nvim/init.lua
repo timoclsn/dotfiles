@@ -206,8 +206,7 @@ end
 
 -- Create a keymap to call the organize_imports function
 -- Here, <leader>oi is used as an example keybinding
-vim.api.nvim_set_keymap('n', '<leader>oi', ':lua organize_imports()<CR>', { noremap = true, silent = true })
-
+vim.keymap.set('n', '<leader>oi', organize_imports, { desc = 'Organize imports' })
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
