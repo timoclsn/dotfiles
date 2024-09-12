@@ -108,6 +108,14 @@ vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 -- Personal keymaps
 vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Jump half page down and center cursor' })
 vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Jump half page up and center cursor' })
+vim.keymap.set('n', 'n', 'nzzzv', { desc = 'Next Search Result Centered' })
+vim.keymap.set('n', 'N', 'Nzzzv', { desc = 'Previous Search Result Centered' })
+vim.keymap.set('n', '<leader>ls', vim.cmd.Ex, { desc = 'List Files' })
+vim.keymap.set('v', '<leader>p', [["_dP]], { desc = 'Paste without copying' })
+vim.keymap.set({ 'n', 'v' }, '<leader>d', [["_d]], { desc = 'Delete without copying' })
+vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv", { desc = 'Move line down' })
+vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv", { desc = 'Move line up' })
+
 vim.keymap.set('n', '<leader>oi', function()
   vim.lsp.buf.execute_command {
     command = '_typescript.organizeImports',
