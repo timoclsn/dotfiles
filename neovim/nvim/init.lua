@@ -195,18 +195,14 @@ vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 -- Personal keymaps
 vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Jump half page down and center cursor' })
 vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Jump half page up and center cursor' })
-
--- Define the function to organize imports
-local function organize_imports()
+vim.keymap.set('n', '<leader>oi', function()
   vim.lsp.buf.execute_command {
     command = '_typescript.organizeImports',
-    arguments = { vim.fn.expand '%:p' },
+    arguments = { vim.api.nvim_buf_get_name(0) },
+    title = '',
   }
-end
+end, { desc = 'Organize Imports' })
 
--- Create a keymap to call the organize_imports function
--- Here, <leader>oi is used as an example keybinding
-vim.keymap.set('n', '<leader>oi', organize_imports, { desc = 'Organize imports' })
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
