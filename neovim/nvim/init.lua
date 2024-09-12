@@ -324,7 +324,6 @@ require('lazy').setup({
               ['d'] = require('telescope.actions').delete_buffer,
             },
             i = {
-              ['<C-d>'] = require('telescope.actions').delete_buffer,
               ['<C-j>'] = require('telescope.actions').move_selection_next,
               ['<C-k>'] = require('telescope.actions').move_selection_previous,
             },
