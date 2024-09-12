@@ -416,13 +416,15 @@ require('lazy').setup({
               ['<C-k>'] = require('telescope.actions').move_selection_previous,
             },
           },
-          hidden = true,
           file_ignore_patterns = {
             '!.env',
             '.git/',
           },
         },
         pickers = {
+          find_files = {
+            hidden = true,
+          },
           oldfiles = {
             cwd_only = true,
           },
