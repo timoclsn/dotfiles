@@ -339,6 +339,7 @@ require('lazy').setup({
           file_ignore_patterns = {
             '!.env',
             '.git/',
+            'node_modules/',
           },
         },
         pickers = {
