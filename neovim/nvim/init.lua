@@ -116,13 +116,13 @@ vim.keymap.set({ 'n', 'v' }, '<leader>d', [["_d]], { desc = 'Delete without copy
 vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv", { desc = 'Move line down' })
 vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv", { desc = 'Move line up' })
 
-vim.keymap.set('n', '<leader>oi', function()
+vim.keymap.set('n', '<leader>o', function()
   vim.lsp.buf.execute_command {
     command = '_typescript.organizeImports',
     arguments = { vim.api.nvim_buf_get_name(0) },
     title = '',
   }
-end, { desc = 'Organize Imports' })
+end, { desc = '[O]rganize Imports' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -774,8 +774,8 @@ require('lazy').setup({
           -- If you prefer more traditional completion keymaps,
           -- you can uncomment the following lines
           ['<CR>'] = cmp.mapping.confirm { select = true },
-          ['<Tab>'] = cmp.mapping.select_next_item(),
-          ['<S-Tab>'] = cmp.mapping.select_prev_item(),
+          -- ['<Tab>'] = cmp.mapping.select_next_item(),
+          -- ['<S-Tab>'] = cmp.mapping.select_prev_item(),
 
           -- Manually trigger a completion from nvim-cmp.
           --  Generally you don't need this, because nvim-cmp will display
