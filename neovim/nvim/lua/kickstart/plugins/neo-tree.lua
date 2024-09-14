@@ -11,15 +11,23 @@ return {
   },
   cmd = 'Neotree',
   keys = {
-    { '\\', ':Neotree reveal<CR>', desc = 'NeoTree reveal', silent = true },
+    { '<C-f>', ':Neotree toggle<CR>', desc = 'Toggle File Tree', silent = true },
+    { 'F', ':Neotree reveal<CR>', desc = 'Reveal File', silent = true },
   },
   opts = {
+    close_if_last_window = true,
     filesystem = {
       window = {
         position = 'right',
         width = 60,
+        mapping_options = {
+          nowait = true,
+        },
         mappings = {
-          ['\\'] = 'close_window',
+          ['<space>'] = 'toggle_node',
+          ['<C-f>'] = 'close_window',
+          ['F'] = 'close_window',
+          ['h'] = 'focus_preview',
         },
       },
       filtered_items = {

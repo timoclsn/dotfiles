@@ -31,6 +31,11 @@ config.keys = {
   { key = '7', mods = 'CTRL', action = wezterm.action.SendString '\u{1b}[55;5u' },
   { key = '8', mods = 'CTRL', action = wezterm.action.SendString '\u{1b}[56;5u' },
   { key = '9', mods = 'CTRL', action = wezterm.action.SendString '\u{1b}[57;5u' },
+  {
+    key = 'f',
+    mods = 'SHIFT|CTRL',
+    action = wezterm.action.DisableDefaultAssignment,
+  },
 }
 
 return config
