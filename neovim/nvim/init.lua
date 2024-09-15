@@ -115,6 +115,7 @@ vim.keymap.set('v', '<leader>p', [["_dP]], { desc = 'Paste without copying' })
 vim.keymap.set({ 'n', 'v' }, '<leader>d', [["_d]], { desc = 'Delete without copying' })
 vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv", { desc = 'Move line down' })
 vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv", { desc = 'Move line up' })
+vim.keymap.set('n', '<C-p>', '<C-i>', { desc = 'Go forward in jumplist' })
 
 vim.keymap.set('n', '<leader>o', function()
   vim.lsp.buf.execute_command {
