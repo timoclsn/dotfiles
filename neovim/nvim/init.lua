@@ -856,7 +856,13 @@ require('lazy').setup({
       require('mini.surround').setup()
 
       -- Startscreen
-      require('mini.starter').setup()
+      require('mini.starter').setup {
+        items = {
+          require('mini.starter').sections.recent_files(10, true, true),
+          require('mini.starter').sections.builtin_actions(),
+        },
+        footer = 'Happy coding!',
+      }
 
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
