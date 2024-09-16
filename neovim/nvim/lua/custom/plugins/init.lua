@@ -55,4 +55,5 @@ return {
       { '<c-\\>', '<cmd><C-U>TmuxNavigatePrevious<cr>' },
     },
   },
+  'mg979/vim-visual-multi',
 }
