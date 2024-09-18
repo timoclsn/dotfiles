@@ -390,18 +390,22 @@ require('lazy').setup({
         builtin.find_files { cwd = vim.fn.stdpath 'config' }
       end, { desc = '[S]earch [N]eovim files' })
 
-      -- Shortcut for switching between recent files
+      -- Shortcut for switching between open buffers
       vim.keymap.set('n', '<Tab>', function()
-        builtin.oldfiles(require('telescope.themes').get_dropdown {
-          winblend = 10,
+        builtin.buffers(require('telescope.themes').get_dropdown {
+          sort_mru = true,
+          sort_lastused = true,
+          ignore_current_buffer = true,
+          only_cwd = true,
           previewer = false,
+          winblend = 10,
           initial_mode = 'normal',
           layout_config = {
             width = 100,
           },
-          prompt_title = 'Recent Files',
+          prompt_title = 'Open Buffers',
         })
-      end, { desc = '[Tab] Recent Files' })
+      end, { desc = 'Open Buffers' })
     end,
   },
 
