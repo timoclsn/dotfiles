@@ -19,6 +19,7 @@ config.window_padding = {
   bottom = 8,
 }
 
+config.use_dead_keys = false
 config.send_composed_key_when_left_alt_is_pressed = true
 config.keys = {
   { key = '0', mods = 'CTRL', action = wezterm.action.SendString '\u{1b}[48;5u' },
