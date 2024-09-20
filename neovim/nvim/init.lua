@@ -116,6 +116,7 @@ vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv", { desc = 'Move line down' })
 vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv", { desc = 'Move line up' })
 vim.keymap.set('n', '<C-p>', '<C-i>', { desc = 'Go forward in jumplist' }) -- Use C-p in tmux nvim because broken C-i mapping
 vim.keymap.set('n', '<C-i>', '<C-i>', { desc = 'Go forward in jumplist' }) -- Fix C-i in non tmux nvim
+vim.keymap.set('i', 'jj', '<Esc>', { desc = 'Exit Insert Mode' })
 
 vim.keymap.set('n', '<leader>o', function()
   vim.lsp.buf.execute_command {
