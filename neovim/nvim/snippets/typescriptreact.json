@@ -1,0 +1,74 @@
+{
+  "Console Log": {
+    "prefix": "cl",
+    "body": ["console.log($1);"]
+  },
+  "Console Log as Object": {
+    "prefix": "clo",
+    "body": ["console.log({$1});"]
+  },
+  "Debugger": {
+    "prefix": "db",
+    "body": ["debugger;"]
+  },
+  "Arrow Function": {
+    "prefix": "af",
+    "body": ["const $1 = ($2) => {", "  $3", "};"]
+  },
+  "Throw new Error": {
+    "prefix": "tne",
+    "body": ["throw new Error ('$1');"]
+  },
+  "use client": {
+    "prefix": "uc",
+    "body": ["'use client';"]
+  },
+  "use server": {
+    "prefix": "us",
+    "body": ["'use server';"]
+  },
+  "useState": {
+    "prefix": "us",
+    "body": ["const [$1, set$1] = useState($2);"]
+  },
+  "useEffect": {
+    "prefix": "ue",
+    "body": ["useEffect(() => {", "  $1", "}, [$2]);"]
+  },
+  "useRef": {
+    "prefix": "ur",
+    "body": ["const $1 = useRef$3($2);"]
+  },
+  "useCallback": {
+    "prefix": "uc",
+    "body": ["useCallback(() => {", "  $1", "}, [$2]);"]
+  },
+  "useMemo": {
+    "prefix": "um",
+    "body": ["useMemo(() => {", "  $1", "}, [$2]);"]
+  },
+  "Function Component": {
+    "prefix": "fc",
+    "body": ["export const $1 = () => {", "  return $2;", "};"]
+  },
+  "Function Component with Props": {
+    "prefix": "fcp",
+    "body": [
+      "interface Props {",
+      "  $2",
+      "}",
+      "",
+      "export const $1 = ({$3}: Props) => {",
+      "  return $4;",
+      "};"
+    ]
+  },
+  "React Native Style": {
+    "prefix": "rns",
+    "body": ["style={styles.$1}"]
+  },
+  "Pretty Print JSON": {
+    "prefix": "pps",
+    "body": ["JSON.stringify($1, null, 2)"]
+  }
+}

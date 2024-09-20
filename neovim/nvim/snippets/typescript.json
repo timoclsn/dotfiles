@@ -1,0 +1,62 @@
+{
+  "Console Log": {
+    "prefix": "cl",
+    "body": ["console.log($1);"]
+  },
+  "Debugger": {
+    "prefix": "db",
+    "body": ["debugger;"]
+  },
+  "Console Log as Object": {
+    "prefix": "clo",
+    "body": ["console.log({$1});"]
+  },
+  "Arrow Function": {
+    "prefix": "af",
+    "body": ["const $1 = ($2) => {", "  $3", "};"]
+  },
+  "Throw new Error": {
+    "prefix": "tne",
+    "body": ["throw new Error ('$1');"]
+  },
+  "use server": {
+    "prefix": "us",
+    "body": ["'use server';"]
+  },
+  "useEffect": {
+    "prefix": "ue",
+    "body": ["useEffect (() => {", "  $1", "}, [$2]);"]
+  },
+  "useRef": {
+    "prefix": "ur",
+    "body": ["const $1 = useRef$3($2);"]
+  },
+  "useCallback": {
+    "prefix": "uc",
+    "body": ["useCallback(() => {", "  $1", "}, [$2]);"]
+  },
+  "useMemo": {
+    "prefix": "um",
+    "body": ["useMemo(() => {", "  $1", "}, [$2]);"]
+  },
+  "React Native Style": {
+    "prefix": "rns",
+    "body": [
+      "import { dynamicCascadingStyle } from '@steuerbot/mobile-util-theming';",
+      "",
+      "export default dynamicCascadingStyle(() => ({$1}));"
+    ]
+  },
+  "Pretty Print JSON": {
+    "prefix": "pps",
+    "body": ["JSON.stringify($1, null, 2)"]
+  },
+  "Generator Function": {
+    "prefix": "gf",
+    "body": ["function* () {", "  $1", "}"]
+  },
+  "Yield*": {
+    "prefix": "ys",
+    "body": ["yield* $1"]
+  }
+}

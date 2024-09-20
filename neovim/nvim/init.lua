@@ -723,7 +723,7 @@ require('lazy').setup({
           {
             'rafamadriz/friendly-snippets',
             config = function()
-              require('luasnip.loaders.from_vscode').lazy_load { paths = { '/Users/timo/.config/nvim/snippets/' } }
+              require('luasnip.loaders.from_vscode').lazy_load { paths = { './snippets' } }
             end,
           },
         },

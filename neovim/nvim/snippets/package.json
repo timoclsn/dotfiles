@@ -7,11 +7,11 @@
     "snippets": [
       {
         "language": "typescriptreact",
-        "path": "/Users/timo/Library/Application Support/Code/User/snippets/typescriptreact.json"
+        "path": "./typescriptreact.json"
       },
       {
         "language": "typescript",
-        "path": "/Users/timo/Library/Application Support/Code/User/snippets/typescript.json"
+        "path": "./typescript.json"
       }
     ]
   }
