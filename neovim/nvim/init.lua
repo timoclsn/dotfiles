@@ -71,11 +71,12 @@ vim.opt.scrolloff = 10
 
 vim.g.netrw_banner = 0
 
-vim.opt.autoread = true
--- Check for file changes when Neovim gains focus
-vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter' }, {
-  pattern = '*',
-  command = 'checktime',
+-- auto-reload files when modified externally
+-- https://unix.stackexchange.com/a/383044
+vim.o.autoread = true
+vim.api.nvim_create_autocmd({ 'BufEnter', 'CursorHold', 'CursorHoldI', 'FocusGained' }, {
+  command = "if mode() != 'c' | checktime | endif",
+  pattern = { '*' },
 })
 
 -- [[ Basic Keymaps ]]
