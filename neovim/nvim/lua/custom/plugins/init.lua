@@ -75,4 +75,10 @@ return {
       vim.g.undotree_SplitWidth = 50
     end,
   },
+  {
+    'sindrets/diffview.nvim',
+    config = function()
+      vim.keymap.set('n', '<leader>hd', vim.cmd.DiffviewOpen, { desc = 'git [d]iff against index' })
+    end,
+  },
 }
