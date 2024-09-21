@@ -70,6 +70,7 @@ vim.opt.cursorline = true
 vim.opt.scrolloff = 10
 
 vim.g.netrw_banner = 0
+
 vim.opt.autoread = true
 -- Check for file changes when Neovim gains focus
 vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter' }, {
