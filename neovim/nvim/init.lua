@@ -80,6 +80,8 @@ vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter', 'CursorHold', 'CursorHo
   command = "if mode() !~ '\v(c|r.?|!|t)' && getcmdwintype() == '' | checktime | endif",
 })
 
+vim.o.foldcolumn = '1'
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
