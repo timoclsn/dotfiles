@@ -123,8 +123,6 @@ vim.keymap.set('n', 'N', 'Nzzzv', { desc = 'Previous Search Result Centered' })
 vim.keymap.set('n', '<leader>ls', vim.cmd.Ex, { desc = 'List Files' })
 vim.keymap.set('v', '<leader>p', [["_dP]], { desc = 'Paste without copying' })
 vim.keymap.set({ 'n', 'v' }, '<leader>d', [["_d]], { desc = 'Delete without copying' })
-vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv", { desc = 'Move line down' })
-vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv", { desc = 'Move line up' })
 vim.keymap.set('n', '<C-p>', '<C-i>', { desc = 'Go forward in jumplist' }) -- Use C-p in tmux nvim because broken C-i mapping
 vim.keymap.set('n', '<C-i>', '<C-i>', { desc = 'Go forward in jumplist' }) -- Fix C-i in non tmux nvim
 vim.keymap.set('i', 'jj', '<Esc>', { desc = 'Exit Insert Mode' })
@@ -871,6 +869,22 @@ require('lazy').setup({
       -- - sd'   - [S]urround [D]elete [']quotes
       -- - sr)'  - [S]urround [R]eplace [)] [']
       require('mini.surround').setup()
+
+      require('mini.move').setup {
+        mappings = {
+          -- Move visual selection in Visual mode.
+          right = '@', -- Alt + l
+          left = 'ª', -- Alt + h
+          down = 'º', -- Alt + j
+          up = '∆', -- Alt + k
+
+          -- Move current line in Normal mode
+          line_left = 'ª', -- Alt + h
+          line_right = '@', -- Alt + l
+          line_down = 'º', -- Alt + j
+          line_up = '∆', -- Alt + k
+        },
+      }
 
       -- Startscreen
       require('mini.starter').setup {
