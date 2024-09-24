@@ -600,7 +600,10 @@ require('lazy').setup({
         ts_ls = {},
         cssls = {},
         gopls = {},
+        rust_analyzer = {},
         jsonls = {},
+        yamlls = {},
+        bashls = {},
         --
         tailwindcss = {
           settings = {
