@@ -600,6 +600,7 @@ require('lazy').setup({
         ts_ls = {},
         cssls = {},
         gopls = {},
+        jsonls = {},
         --
         tailwindcss = {
           settings = {
