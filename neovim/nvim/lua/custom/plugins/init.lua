@@ -72,12 +72,20 @@ return {
     'mbbill/undotree',
     config = function()
       vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle)
-      vim.g.undotree_SplitWidth = 50
+      vim.g.undotree_SplitWidth = 60
     end,
   },
   {
     'sindrets/diffview.nvim',
     config = function()
+      require('diffview').setup {
+        file_panel = {
+          win_config = {
+            width = 60,
+          },
+        },
+      }
+
       vim.keymap.set('n', '<leader>hd', function()
         if next(require('diffview.lib').views) == nil then
           vim.cmd 'DiffviewOpen'
