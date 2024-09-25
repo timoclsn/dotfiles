@@ -126,6 +126,8 @@ vim.keymap.set({ 'n', 'v' }, '<leader>d', [["_d]], { desc = 'Delete without copy
 vim.keymap.set('n', '<C-p>', '<C-i>', { desc = 'Go forward in jumplist' }) -- Use C-p in tmux nvim because broken C-i mapping
 vim.keymap.set('n', '<C-i>', '<C-i>', { desc = 'Go forward in jumplist' }) -- Fix C-i in non tmux nvim
 vim.keymap.set('i', 'jj', '<Esc>', { desc = 'Exit Insert Mode' })
+vim.keymap.set('n', '<C-s>', ':w<CR>', { desc = 'Write File' })
+vim.keymap.set('n', '<CS--s>', ':wa<CR>', { desc = 'Write All Files' })
 
 vim.keymap.set('n', '<leader>o', function()
   vim.lsp.buf.execute_command {
