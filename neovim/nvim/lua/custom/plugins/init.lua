@@ -6,7 +6,8 @@ return {
   'github/copilot.vim',
   {
     'ThePrimeagen/harpoon',
-    branch = 'harpoon2',
+    -- branch = 'harpoon2',
+    commit = 'e76cb03',
     dependencies = { 'nvim-lua/plenary.nvim' },
     config = function()
       local harpoon = require 'harpoon'
@@ -16,6 +17,40 @@ return {
         settings = {
           save_on_toggle = true,
           sync_on_ui_close = true,
+          key = function()
+            local Job = require 'plenary.job'
+
+            local function get_os_command_output(cmd, cwd)
+              if type(cmd) ~= 'table' then
+                return {}
+              end
+              local command = table.remove(cmd, 1)
+              local stderr = {}
+              local stdout, ret = Job:new({
+                command = command,
+                args = cmd,
+                cwd = cwd,
+                on_stderr = function(_, data)
+                  table.insert(stderr, data)
+                end,
+              }):sync()
+              return stdout, ret, stderr
+            end
+
+            -- Use git branch name if available
+            local branch = get_os_command_output({
+              'git',
+              'rev-parse',
+              '--abbrev-ref',
+              'HEAD',
+            })[1]
+
+            if branch then
+              return vim.fn.getcwd() .. '-' .. branch
+            else
+              return vim.fn.getcwd()
+            end
+          end,
         },
       }
       -- REQUIRED
@@ -71,7 +106,7 @@ return {
   {
     'mbbill/undotree',
     config = function()
-      vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle)
+      vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle, { desc = 'Toggle [u]ndotree' })
       vim.g.undotree_SplitWidth = 60
     end,
   },
@@ -115,4 +150,5 @@ return {
       vim.keymap.set('n', '-', '<CMD>Oil<CR>', { desc = 'Open parent directory' })
     end,
   },
+  { 'tpope/vim-fugitive' },
 }
