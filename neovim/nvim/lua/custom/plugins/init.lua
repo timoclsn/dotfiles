@@ -18,38 +18,13 @@ return {
           save_on_toggle = true,
           sync_on_ui_close = true,
           key = function()
-            local Job = require 'plenary.job'
-
-            local function get_os_command_output(cmd, cwd)
-              if type(cmd) ~= 'table' then
-                return {}
-              end
-              local command = table.remove(cmd, 1)
-              local stderr = {}
-              local stdout, ret = Job:new({
-                command = command,
-                args = cmd,
-                cwd = cwd,
-                on_stderr = function(_, data)
-                  table.insert(stderr, data)
-                end,
-              }):sync()
-              return stdout, ret, stderr
+            local pipe = io.popen 'git branch --show-current'
+            if pipe then
+              local c = pipe:read('*l'):match '^%s*(.-)%s*$'
+              pipe:close()
+              return vim.fn.getcwd() .. '-' .. c
             end
-
-            -- Use git branch name if available
-            local branch = get_os_command_output({
-              'git',
-              'rev-parse',
-              '--abbrev-ref',
-              'HEAD',
-            })[1]
-
-            if branch then
-              return vim.fn.getcwd() .. '-' .. branch
-            else
-              return vim.fn.getcwd()
-            end
+            return vim.fn.getcwd()
           end,
         },
       }
