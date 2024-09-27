@@ -346,6 +346,9 @@ require('lazy').setup({
             '.git/',
             'node_modules/',
           },
+          path_display = {
+            truncate = 1,
+          },
         },
         pickers = {
           find_files = {
