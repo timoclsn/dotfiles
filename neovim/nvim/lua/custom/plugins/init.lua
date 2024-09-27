@@ -7,7 +7,7 @@ return {
   {
     'ThePrimeagen/harpoon',
     -- branch = 'harpoon2',
-    commit = 'e76cb03',
+    commit = 'e76cb03', -- Custom key breaks for commits after this one
     dependencies = { 'nvim-lua/plenary.nvim' },
     config = function()
       local harpoon = require 'harpoon'
@@ -18,11 +18,11 @@ return {
           save_on_toggle = true,
           sync_on_ui_close = true,
           key = function()
-            local pipe = io.popen 'git branch --show-current'
-            if pipe then
-              local c = pipe:read('*l'):match '^%s*(.-)%s*$'
-              pipe:close()
-              return vim.fn.getcwd() .. '-' .. c
+            local git_branch_reader = io.popen 'git branch --show-current'
+            if git_branch_reader then
+              local branch = git_branch_reader:read('*l'):match '^%s*(.-)%s*$'
+              git_branch_reader:close()
+              return vim.fn.getcwd() .. '-' .. branch
             end
             return vim.fn.getcwd()
           end,
