@@ -128,9 +128,6 @@ esac
 export PATH="/Users/timo/Library/Application Support/fnm:$PATH"
 eval "`fnm env`"
 
-
-[[ -f "$HOME/fig-export/dotfiles/dotfile.zsh" ]] && builtin source "$HOME/fig-export/dotfiles/dotfile.zsh"
-
 # Turso
 export PATH="/Users/timo/.turso:$PATH"
 
