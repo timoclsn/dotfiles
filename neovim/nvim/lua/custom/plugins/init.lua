@@ -33,9 +33,9 @@ return {
       vim.keymap.set('n', '<leader>a', function()
         harpoon:list():add()
       end, { desc = 'Add file to Harpoon' })
-      vim.keymap.set('n', '<C-e>', function()
+      vim.keymap.set('n', '<leader>th', function()
         harpoon.ui:toggle_quick_menu(harpoon:list())
-      end, { desc = 'Toggle Harpoon quick menu' })
+      end, { desc = '[T]oggle [H]arpoon quick menu' })
 
       -- Navigate to Harpoon marks 1-9
       for i = 1, 9 do

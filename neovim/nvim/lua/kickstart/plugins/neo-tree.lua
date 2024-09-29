@@ -11,8 +11,8 @@ return {
   },
   cmd = 'Neotree',
   keys = {
-    { '<C-f>', ':Neotree toggle<CR>', desc = 'Toggle File Tree', silent = true },
-    { 'F', ':Neotree reveal<CR>', desc = 'Reveal File', silent = true },
+    { '<C-e>', ':Neotree toggle<CR>', desc = 'Toggle File [E]xplorer', silent = true },
+    { '<leader>rf', ':Neotree reveal<CR>', desc = '[R]eveal [F]ile', silent = true },
   },
   opts = {
     close_if_last_window = true,
@@ -25,8 +25,7 @@ return {
         },
         mappings = {
           ['<space>'] = 'toggle_node',
-          ['<C-f>'] = 'close_window',
-          ['F'] = 'close_window',
+          ['<C-e>'] = 'close_window',
           ['h'] = 'focus_preview',
         },
       },
