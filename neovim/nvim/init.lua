@@ -361,7 +361,6 @@ require('lazy').setup({
           mappings = {
             n = {
               ['<CR>'] = custom_actions.smart_open,
-              ['d'] = require('telescope.actions').delete_buffer,
               ['<Tab>'] = actions.move_selection_next,
               ['<S-Tab>'] = actions.move_selection_previous,
               ['<C-s>'] = actions.toggle_selection,
@@ -388,6 +387,13 @@ require('lazy').setup({
           },
           oldfiles = {
             cwd_only = true,
+          },
+          buffers = {
+            mappings = {
+              n = {
+                ['d'] = require('telescope.actions').delete_buffer,
+              },
+            },
           },
         },
         extensions = {
