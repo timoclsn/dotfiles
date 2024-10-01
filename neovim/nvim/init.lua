@@ -326,6 +326,32 @@ require('lazy').setup({
 
       -- [[ Configure Telescope ]]
       -- See `:help telescope` and `:help telescope.setup()`
+
+      local action_state = require 'telescope.actions.state'
+      local actions = require 'telescope.actions'
+
+      local custom_actions = {}
+
+      custom_actions.smart_open = function(prompt_bufnr)
+        local picker = action_state.get_current_picker(prompt_bufnr)
+        local multi_selections = picker:get_multi_selection()
+
+        if #multi_selections > 1 then
+          -- Multiple files selected, open them in vertical splits
+          actions.close(prompt_bufnr)
+          for i, selection in ipairs(multi_selections) do
+            if i == 1 then
+              vim.cmd('edit ' .. selection.value)
+            else
+              vim.cmd('vsplit ' .. selection.value)
+            end
+          end
+        else
+          -- Single file selected (or no selection), use default behavior
+          actions.select_default(prompt_bufnr)
+        end
+      end
+
       require('telescope').setup {
         -- You can put your default mappings / updates / etc. in here
         --  All the info you're looking for is in `:help telescope.setup()`
@@ -334,11 +360,17 @@ require('lazy').setup({
         defaults = {
           mappings = {
             n = {
+              ['<CR>'] = custom_actions.smart_open,
               ['d'] = require('telescope.actions').delete_buffer,
+              ['<Tab>'] = actions.move_selection_next,
+              ['<S-Tab>'] = actions.move_selection_previous,
+              ['<C-s>'] = actions.toggle_selection,
             },
             i = {
+              ['<CR>'] = custom_actions.smart_open,
               ['<C-j>'] = require('telescope.actions').move_selection_next,
               ['<C-k>'] = require('telescope.actions').move_selection_previous,
+              ['<C-s>'] = actions.toggle_selection,
             },
           },
           file_ignore_patterns = {
