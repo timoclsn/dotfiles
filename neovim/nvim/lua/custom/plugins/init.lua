@@ -30,27 +30,27 @@ return {
       }
       -- REQUIRED
 
-      vim.keymap.set('n', '<leader>a', function()
+      vim.keymap.set('n', '<leader>ha', function()
         harpoon:list():add()
-      end, { desc = 'Add file to Harpoon' })
-      vim.keymap.set('n', '<leader>A', function()
+      end, { desc = '[H]arpoon [A]dd File' })
+      vim.keymap.set('n', '<leader>hl', function()
         harpoon.ui:toggle_quick_menu(harpoon:list())
-      end, { desc = 'Toggle H[A]rpoon quick menu' })
+      end, { desc = '[H]arpoon [L]ist Files' })
 
       -- Navigate to Harpoon marks 1-9
       for i = 1, 9 do
-        vim.keymap.set('n', '<C-' .. i .. '>', function()
+        vim.keymap.set('n', '<leader>h' .. i .. '>', function()
           harpoon:list():select(i)
-        end, { desc = 'Navigate to Harpoon mark ' .. i })
+        end, { desc = 'Navigate to [H]arpoon Mark ' .. i })
       end
 
       -- Toggle previous & next buffers stored within Harpoon list
-      vim.keymap.set('n', '<C-S-P>', function()
+      vim.keymap.set('n', '<leader>hp', function()
         harpoon:list():prev()
-      end, { desc = 'Navigate to previous Harpoon buffer' })
-      vim.keymap.set('n', '<C-S-N>', function()
+      end, { desc = '[H]arpoon [P]revious Buffer' })
+      vim.keymap.set('n', '<leader>hn', function()
         harpoon:list():next()
-      end, { desc = 'Navigate to next Harpoon buffer' })
+      end, { desc = '[H]arpoon [N]ext Buffer' })
     end,
   },
   {
@@ -81,7 +81,7 @@ return {
   {
     'mbbill/undotree',
     config = function()
-      vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle, { desc = 'Toggle [u]ndotree' })
+      vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle, { desc = 'Toggle [U]ndotree' })
       vim.g.undotree_SplitWidth = 60
     end,
   },
@@ -96,13 +96,13 @@ return {
         },
       }
 
-      vim.keymap.set('n', '<leader>hd', function()
+      vim.keymap.set('n', '<leader>gd', function()
         if next(require('diffview.lib').views) == nil then
           vim.cmd 'DiffviewOpen'
         else
           vim.cmd 'DiffviewClose'
         end
-      end, { desc = 'git [d]iff against index' })
+      end, { desc = '[G]it [D]iff against index' })
     end,
   },
   {
