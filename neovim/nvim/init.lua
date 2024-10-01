@@ -120,7 +120,6 @@ vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Jump half page down and center
 vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Jump half page up and center cursor' })
 vim.keymap.set('n', 'n', 'nzzzv', { desc = 'Next Search Result Centered' })
 vim.keymap.set('n', 'N', 'Nzzzv', { desc = 'Previous Search Result Centered' })
-vim.keymap.set('n', '<leader>ls', vim.cmd.Ex, { desc = 'List Files' })
 vim.keymap.set('v', '<leader>p', [["_dP]], { desc = 'Paste without copying' })
 vim.keymap.set({ 'n', 'v' }, '<leader>d', [["_d]], { desc = 'Delete without copying' })
 vim.keymap.set('n', '<C-p>', '<C-i>', { desc = 'Go forward in jumplist' }) -- Use C-p in tmux nvim because broken C-i mapping
@@ -269,7 +268,7 @@ require('lazy').setup({
         { '<leader>w', group = '[W]orkspace' },
         { '<leader>t', group = '[T]oggle' },
         { '<leader>h', group = '[H]arpoon' },
-        { '<leader>h', group = '[G]it' },
+        { '<leader>g', group = '[G]it' },
       },
     },
   },
@@ -607,9 +606,9 @@ require('lazy').setup({
           --
           -- This may be unwanted, since they displace some of your code
           if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
-            map('<leader>tih', function()
+            map('<leader>ti', function()
               vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
-            end, '[T]oggle [I]nlay [H]ints')
+            end, '[T]oggle [I]nlay Hints')
           end
         end,
       })
