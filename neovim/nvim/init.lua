@@ -126,7 +126,9 @@ vim.keymap.set('n', '<C-p>', '<C-i>', { desc = 'Go forward in jumplist' }) -- Us
 vim.keymap.set('n', '<C-i>', '<C-i>', { desc = 'Go forward in jumplist' }) -- Fix C-i in non tmux nvim
 vim.keymap.set('i', 'jj', '<Esc>', { desc = 'Exit Insert Mode' })
 vim.keymap.set('n', '<C-s>', ':w<CR>', { desc = 'Write File' })
-vim.keymap.set('n', '<CS--s>', ':wa<CR>', { desc = 'Write All Files' })
+vim.keymap.set('n', '<C-S-s>', ':wa<CR>', { desc = 'Write All Files' })
+vim.keymap.set('n', 'H', '^', { desc = 'Goto first character of line' })
+vim.keymap.set('n', 'L', '$', { desc = 'Goto last character of line' })
 
 vim.keymap.set('n', '<leader>o', function()
   vim.lsp.buf.execute_command {
@@ -830,8 +832,8 @@ require('lazy').setup({
           -- If you prefer more traditional completion keymaps,
           -- you can uncomment the following lines
           ['<CR>'] = cmp.mapping.confirm { select = true },
-          ['<Tab>'] = cmp.mapping.select_next_item(),
-          ['<S-Tab>'] = cmp.mapping.select_prev_item(),
+          -- ['<Tab>'] = cmp.mapping.select_next_item(),
+          -- ['<S-Tab>'] = cmp.mapping.select_prev_item(),
 
           -- Manually trigger a completion from nvim-cmp.
           --  Generally you don't need this, because nvim-cmp will display
