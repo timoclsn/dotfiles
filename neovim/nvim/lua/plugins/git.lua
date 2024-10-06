@@ -11,6 +11,10 @@ return {
         changedelete = { text = '~' },
       },
       current_line_blame = true,
+
+      on_attach = function()
+        vim.keymap.set('n', '<leader>gp', require('gitsigns').preview_hunk, { desc = '[G]it [P]review hunk' })
+      end,
     },
   },
   {
