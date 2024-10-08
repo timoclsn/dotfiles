@@ -53,6 +53,7 @@ return {
         { '<leader>t', group = '[T]oggle' },
         { '<leader>h', group = '[H]arpoon' },
         { '<leader>g', group = '[G]it' },
+        { '<leader>a', group = '[A]I' },
       },
     },
   },
