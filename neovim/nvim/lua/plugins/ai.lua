@@ -27,10 +27,10 @@ return {
     opts = {
       window = {
         layout = 'float',
-        width = 100,
+        width = 80,
         height = vim.o.lines - 6,
         row = 1,
-        col = vim.o.columns - 124,
+        col = vim.o.columns - 84,
       },
     },
     keys = {
