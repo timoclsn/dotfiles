@@ -119,7 +119,53 @@ return {
       -- cursor location to LINE:COLUMN
       ---@diagnostic disable-next-line: duplicate-set-field
       statusline.section_location = function()
-        return '%2l:%-2v'
+        return '%l(%L):%v'
+      end
+
+      ---@diagnostic disable-next-line: duplicate-set-field
+      statusline.section_filename = function()
+        local path = vim.fn.expand '%:p' -- Get full path of current file
+        local filename = vim.fn.expand '%:t'
+        local relative_path = vim.fn.fnamemodify(path, ':~:.:h') -- Get directory path relative to current directory
+
+        -- Check if we're in the "frontend" project
+        local is_frontend = vim.fn.getcwd():match 'frontend$' ~= nil
+
+        if is_frontend then
+          -- Find "apps" or "libs" in the path
+          for component in relative_path:gmatch '[^/]+' do
+            if component == 'apps' or component == 'libs' then
+              -- Check if there's a next component
+              local next_component = relative_path:match(component .. '/([^/]+)')
+              if next_component then
+                filename = filename .. string.format(' (%s)', next_component)
+                break -- Stop after finding the first occurrence
+              end
+            end
+          end
+        end
+
+        -- Get file flags (modified, readonly, etc.)
+        local flags = ''
+        if vim.bo.modified then
+          flags = flags .. ' [+]'
+        end
+        if vim.bo.modifiable == false or vim.bo.readonly == true then
+          flags = flags .. ' [-]'
+        end
+        if vim.bo.filetype == 'help' then
+          flags = flags .. ' [help]'
+        end
+
+        -- Construct the display string
+        local display = filename .. flags
+
+        -- Add the path if it's not just '.'
+        if relative_path ~= '.' then
+          display = display .. ' | ' .. relative_path
+        end
+
+        return display
       end
 
       -- ... and there is more!

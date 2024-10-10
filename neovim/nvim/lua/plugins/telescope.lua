@@ -34,12 +34,33 @@ return {
         local multi_selections = picker:get_multi_selection()
 
         if #multi_selections > 1 then
-          -- Multiple files selected, open them in vertical splits
+          -- Multiple files selected, open the highlighted one and add others to buffer list
           actions.close(prompt_bufnr)
-          for i, selection in ipairs(multi_selections) do
-            if i == 1 then
+          local current_selection = action_state.get_selected_entry()
+          for _, selection in ipairs(multi_selections) do
+            if selection == current_selection then
               vim.cmd('edit ' .. selection.value)
             else
+              vim.cmd('badd ' .. selection.value)
+            end
+          end
+        else
+          -- Single file selected (or no selection), use default behavior
+          actions.select_default(prompt_bufnr)
+        end
+      end
+
+      custom_actions.smart_open_split = function(prompt_bufnr)
+        local picker = action_state.get_current_picker(prompt_bufnr)
+        local multi_selections = picker:get_multi_selection()
+
+        if #multi_selections > 1 then
+          -- Multiple files selected, open the highlighted one on the left and others in vertical splits to the right
+          actions.close(prompt_bufnr)
+          local current_selection = action_state.get_selected_entry()
+          vim.cmd('edit ' .. current_selection.value)
+          for _, selection in ipairs(multi_selections) do
+            if selection ~= current_selection then
               vim.cmd('vsplit ' .. selection.value)
             end
           end
@@ -49,17 +70,67 @@ return {
         end
       end
 
+      local cwd = vim.fn.getcwd()
+      local cwd_is_frontend = cwd:match 'frontend$' ~= nil
+
+      local function custom_path_display(_, path)
+        local filename = vim.fs.basename(path)
+
+        -- Ensure the path is relative to the project directory
+        local relative_path = vim.fn.fnamemodify(path, ':.')
+        if vim.fn.isdirectory(path) ~= 1 then
+          relative_path = vim.fn.fnamemodify(path, ':~:.:h') -- :h removes the filename
+        end
+
+        -- Remove leading './' if present
+        relative_path = relative_path:gsub('^%./', '')
+
+        -- Check if we're in the "frontend" project
+        local is_frontend = cwd_is_frontend or relative_path:match '^steuerbot/frontend' ~= nil
+
+        if is_frontend then
+          -- Find "apps" or "libs" in the path
+          for component in relative_path:gmatch '[^/]+' do
+            if component == 'apps' or component == 'libs' then
+              -- Check if there's a next component
+              local next_component = relative_path:match(component .. '/([^/]+)')
+              if next_component then
+                filename = filename .. string.format(' (%s)', next_component)
+                break -- Stop after finding the first occurrence
+              end
+            end
+          end
+        end
+
+        if relative_path == '.' or relative_path == '' then
+          return filename
+        end
+        return string.format('%s\t\t%s', filename, relative_path)
+      end
+
+      vim.api.nvim_create_autocmd('FileType', {
+        pattern = 'TelescopeResults',
+        callback = function(ctx)
+          vim.api.nvim_buf_call(ctx.buf, function()
+            vim.fn.matchadd('TelescopeParent', '\t\t.*$')
+            vim.api.nvim_set_hl(0, 'TelescopeParent', { link = 'Comment' })
+          end)
+        end,
+      })
+
       require('telescope').setup {
         defaults = {
           mappings = {
             n = {
               ['<CR>'] = custom_actions.smart_open,
+              ['<C-v>'] = custom_actions.smart_open_split,
               ['<Tab>'] = actions.move_selection_next,
               ['<S-Tab>'] = actions.move_selection_previous,
               ['<C-s>'] = actions.toggle_selection,
             },
             i = {
               ['<CR>'] = custom_actions.smart_open,
+              ['<C-v>'] = custom_actions.smart_open_split,
               ['<C-j>'] = require('telescope.actions').move_selection_next,
               ['<C-k>'] = require('telescope.actions').move_selection_previous,
               ['<C-s>'] = actions.toggle_selection,
@@ -70,9 +141,10 @@ return {
             '.git/',
             'node_modules/',
           },
-          path_display = {
-            truncate = 1,
-          },
+          path_display = custom_path_display,
+          -- path_display = {
+          --   truncate = 1,
+          -- },
         },
         pickers = {
           find_files = {
