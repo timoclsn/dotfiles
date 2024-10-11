@@ -84,4 +84,64 @@ return {
       { '<leader>al', '<cmd>CopilotChatReset<cr>', desc = 'CopilotChat - Clear buffer and chat history' },
     },
   },
+  -- {
+  --   'yetone/avante.nvim',
+  --   event = 'VeryLazy',
+  --   lazy = false,
+  --   version = false, -- set this if you want to always pull the latest change
+  --   build = 'make',
+  --   dependencies = {
+  --     'nvim-treesitter/nvim-treesitter',
+  --     'stevearc/dressing.nvim',
+  --     'nvim-lua/plenary.nvim',
+  --     'MunifTanjim/nui.nvim',
+  --     --- The below dependencies are optional,
+  --     'nvim-tree/nvim-web-devicons', -- or echasnovski/mini.icons
+  --     'zbirenbaum/copilot.lua', -- for providers='copilot'
+  --     {
+  --       -- Make sure to set this up properly if you have lazy=true
+  --       'MeanderingProgrammer/render-markdown.nvim',
+  --       opts = {
+  --         file_types = { 'markdown', 'Avante' },
+  --       },
+  --       ft = { 'markdown', 'Avante' },
+  --     },
+  --   },
+  --   config = function()
+  --     require('avante_lib').load()
+  --     require('avante').setup {
+  --       provider = 'copilot',
+  --       mappings = {
+  --         ask = '<leader>aa', -- ask
+  --         edit = '<leader>ae', -- edit
+  --         refresh = '<leader>ar', -- refresh
+  --       },
+  --     }
+  --   end,
+  -- },
+  -- {
+  --   'olimorris/codecompanion.nvim',
+  --   dependencies = {
+  --     'nvim-lua/plenary.nvim',
+  --     'nvim-treesitter/nvim-treesitter',
+  --     'hrsh7th/nvim-cmp', -- Optional: For using slash commands and variables in the chat buffer
+  --     'nvim-telescope/telescope.nvim', -- Optional: For using slash commands
+  --     { 'stevearc/dressing.nvim', opts = {} }, -- Optional: Improves `vim.ui.select`
+  --   },
+  --   config = function()
+  --     require('codecompanion').setup {
+  --       strategies = {
+  --         chat = {
+  --           adapter = 'copilot',
+  --         },
+  --         inline = {
+  --           adapter = 'copilot',
+  --         },
+  --         agent = {
+  --           adapter = 'copilot',
+  --         },
+  --       },
+  --     }
+  --   end,
+  -- },
 }
