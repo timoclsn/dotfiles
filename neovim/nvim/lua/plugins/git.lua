@@ -1,5 +1,10 @@
 return {
-  { 'tpope/vim-fugitive' },
+  {
+    'tpope/vim-fugitive',
+    config = function()
+      vim.keymap.set('n', '<leader>gg', '<cmd>Git<cr>', { desc = 'Open [G]it' })
+    end,
+  },
   {
     'lewis6991/gitsigns.nvim',
     opts = {
