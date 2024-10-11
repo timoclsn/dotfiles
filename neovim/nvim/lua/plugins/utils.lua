@@ -119,7 +119,34 @@ return {
       -- cursor location to LINE:COLUMN
       ---@diagnostic disable-next-line: duplicate-set-field
       statusline.section_location = function()
-        return '%l(%L):%v'
+        return '%2l(%L):%-2v'
+      end
+
+      ---@diagnostic disable-next-line: duplicate-set-field
+      statusline.section_lsp = function()
+        return ''
+      end
+
+      ---@diagnostic disable-next-line: duplicate-set-field
+      statusline.section_diagnostics = function()
+        return ''
+      end
+
+      ---@diagnostic disable-next-line: duplicate-set-field
+      statusline.section_diff = function()
+        return ''
+      end
+
+      ---@diagnostic disable-next-line: duplicate-set-field
+      statusline.section_fileinfo = function()
+        local filetype = vim.bo.filetype
+        local icon = require('mini.icons').get('filetype', filetype)
+        return icon .. ' ' .. filetype
+      end
+
+      ---@diagnostic disable-next-line: duplicate-set-field
+      statusline.section_searchcount = function()
+        return ''
       end
 
       ---@diagnostic disable-next-line: duplicate-set-field
