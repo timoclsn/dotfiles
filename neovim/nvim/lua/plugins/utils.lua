@@ -54,6 +54,7 @@ return {
         { '<leader>h', group = '[H]arpoon' },
         { '<leader>g', group = '[G]it' },
         { '<leader>a', group = '[A]I' },
+        { '<leader>q', group = '[Q]uickfix list' },
       },
     },
   },

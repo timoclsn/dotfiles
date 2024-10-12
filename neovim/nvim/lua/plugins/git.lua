@@ -18,7 +18,13 @@ return {
       current_line_blame = true,
 
       on_attach = function()
-        vim.keymap.set('n', '<leader>gp', require('gitsigns').preview_hunk, { desc = '[G]it [P]review hunk' })
+        local gitsigns = require 'gitsigns'
+        vim.keymap.set('n', '<leader>gp', gitsigns.preview_hunk, { desc = '[G]it [P]review hunk' })
+        vim.keymap.set('n', '<leader>gs', gitsigns.stage_hunk, { desc = 'git [s]tage hunk' })
+        vim.keymap.set('n', '<leader>gr', gitsigns.reset_hunk, { desc = 'git [r]eset hunk' })
+        vim.keymap.set('n', '<leader>gS', gitsigns.stage_buffer, { desc = 'git [S]tage buffer' })
+        vim.keymap.set('n', '<leader>gu', gitsigns.undo_stage_hunk, { desc = 'git [u]ndo stage hunk' })
+        vim.keymap.set('n', '<leader>gR', gitsigns.reset_buffer, { desc = 'git [R]eset buffer' })
       end,
     },
   },
