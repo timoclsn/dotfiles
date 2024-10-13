@@ -171,6 +171,28 @@ return {
               end
             end
           end
+        else
+          -- Check if the filename is "page.tsx" or "route.ts"
+          if filename == 'page.tsx' or filename == 'route.ts' then
+            -- Extract the directory name
+            local directory_name = relative_path:match '([^/]+)$'
+            if directory_name then
+              -- Strip parentheses if they exist
+              if directory_name:match '^%b()$' then
+                directory_name = directory_name:sub(2, -2)
+              end
+
+              -- Check for square brackets and add the next directory name one level up
+              if directory_name:match '^%b[]$' then
+                local parent_directory = relative_path:match '([^/]+)/[^/]+$'
+                if parent_directory then
+                  directory_name = parent_directory .. '/' .. directory_name
+                end
+              end
+
+              filename = filename .. string.format(' (%s)', directory_name)
+            end
+          end
         end
 
         -- Get file flags (modified, readonly, etc.)
