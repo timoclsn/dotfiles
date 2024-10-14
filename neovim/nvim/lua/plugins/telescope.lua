@@ -65,8 +65,10 @@ return {
             end
           end
         else
-          -- Single file selected (or no selection), use default behavior
-          actions.select_default(prompt_bufnr)
+          -- Single file selected (or no selection), open in a vertical split
+          actions.close(prompt_bufnr)
+          local current_selection = action_state.get_selected_entry()
+          vim.cmd('vsplit ' .. current_selection.value)
         end
       end
 
