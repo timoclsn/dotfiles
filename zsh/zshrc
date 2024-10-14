@@ -113,6 +113,24 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh
 
+# Easier navigation: .., ..., ...., .....
+alias .="cd .."
+alias ..="cd ../.."
+alias ...="cd ../../.."
+alias ....="cd ../../../.."
+
+# List all files colorized in long format
+alias l="ls -lF ${colorflag}"
+
+# List all files colorized in long format, excluding . and ..
+alias la="ls -lAF ${colorflag}"
+
+# List only directories
+alias lsd="ls -lF ${colorflag} | grep --color=never '^d'"
+
+alias c="clear"
+alias e="exit"
+
 # pnpm
 export PNPM_HOME="/Users/timo/Library/pnpm"
 case ":$PATH:" in
@@ -132,4 +150,6 @@ export PATH="/Users/timo/.turso:$PATH"
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 source <(fzf --zsh)
+bindkey '^G' fzf-cd-widget
+
 eval "$(zoxide init zsh)"
