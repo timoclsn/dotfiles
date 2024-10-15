@@ -45,7 +45,23 @@ return {
         else
           vim.cmd 'DiffviewClose'
         end
-      end, { desc = '[G]it [D]iff against index' })
+      end, { desc = '[G]it [d]iff against index' })
+
+      vim.keymap.set('n', '<leader>gD', function()
+        if next(require('diffview.lib').views) == nil then
+          vim.cmd 'DiffviewOpen develop'
+        else
+          vim.cmd 'DiffviewClose'
+        end
+      end, { desc = '[G]it diff against [D]evelop' })
+
+      vim.keymap.set('n', '<leader>gM', function()
+        if next(require('diffview.lib').views) == nil then
+          vim.cmd 'DiffviewOpen main'
+        else
+          vim.cmd 'DiffviewClose'
+        end
+      end, { desc = '[G]it diff against [M]ain' })
     end,
   },
 }
