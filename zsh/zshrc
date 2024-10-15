@@ -17,6 +17,8 @@ export ANDROID_SDK_ROOT=$HOME/Library/Android/sdk
 export PATH=$PATH:$ANDROID_SDK_ROOT/emulator
 export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
 
+export PATH="$HOME/.local/bin:$PATH"
+
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -130,6 +132,9 @@ alias lsd="ls -lF ${colorflag} | grep --color=never '^d'"
 
 alias c="clear"
 alias e="exit"
+
+
+bindkey -s ^f "tmux-sessionizer\n"
 
 # pnpm
 export PNPM_HOME="/Users/timo/Library/pnpm"
