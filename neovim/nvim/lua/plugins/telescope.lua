@@ -27,6 +27,10 @@ return {
         'nvim-telescope/telescope-live-grep-args.nvim',
         version = '^1.0.0',
       },
+
+      {
+        'nvim-telescope/telescope-node-modules.nvim',
+      },
     },
     config = function()
       local action_state = require 'telescope.actions.state'
@@ -213,6 +217,7 @@ return {
       pcall(require('telescope').load_extension, 'fzf')
       pcall(require('telescope').load_extension, 'ui-select')
       pcall(require('telescope').load_extension, 'live_grep_args')
+      pcall(require('telescope').load_extension, 'node_modules')
 
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
@@ -228,6 +233,7 @@ return {
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
       vim.keymap.set('n', '<leader>sq', builtin.quickfixhistory, { desc = '[S]earch [Q]uickfix History' })
+      vim.keymap.set('n', '<leader>sp', '<cmd>:Telescope node_modules list<CR>', { desc = '[S]earch Node [P]ackages' })
 
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()
