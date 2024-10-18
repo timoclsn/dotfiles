@@ -124,6 +124,8 @@ alias ....="cd ../../../.."
 alias c="clear"
 alias e="exit"
 alias cat="bat"
+alias vim="nvim"
+alias lg="lazygit"
 
 alias h="cd ~"
 alias src="source ~/.zshrc"
