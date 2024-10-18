@@ -16,7 +16,7 @@ vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
 vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 
 vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Jump half page down and center cursor' })
-vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Jump half page up and center cursor' })
+vim.keymap.set('n', '<C-u>', '<C-d>zz', { desc = 'Jump half page up and center cursor' })
 vim.keymap.set('n', 'n', 'nzzzv', { desc = 'Next Search Result Centered' })
 vim.keymap.set('n', 'N', 'Nzzzv', { desc = 'Previous Search Result Centered' })
 vim.keymap.set('v', '<leader>p', [["_dP]], { desc = 'Paste without copying' })
