@@ -127,6 +127,7 @@ alias cat="bat"
 alias vim="nvim"
 alias lg="lazygit"
 
+alias cd="z"
 alias h="cd ~"
 alias src="source ~/.zshrc"
 alias d="cd ~/Developer"
