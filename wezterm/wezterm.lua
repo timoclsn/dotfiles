@@ -38,6 +38,7 @@ config.keys = {
     mods = 'SHIFT|CTRL',
     action = wezterm.action.DisableDefaultAssignment,
   },
+  { key = '0', mods = 'CTRL', action = wezterm.action.ResetFontSize },
 }
 
 return config
