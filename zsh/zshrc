@@ -121,17 +121,21 @@ alias ..="cd ../.."
 alias ...="cd ../../.."
 alias ....="cd ../../../.."
 
-# List all files colorized in long format
-alias l="ls -lF ${colorflag}"
-
-# List all files colorized in long format, excluding . and ..
-alias la="ls -lAF ${colorflag}"
-
-# List only directories
-alias lsd="ls -lF ${colorflag} | grep --color=never '^d'"
-
 alias c="clear"
 alias e="exit"
+alias cat="bat"
+
+alias h="cd ~"
+alias src="source ~/.zshrc"
+alias d="cd ~/Developer"
+alias sbf="cd ~/Developer/steuerbot/frontend"
+alias sbw="cd ~/Developer/steuerbot/website"
+
+alias ls="lsd"
+alias l='ls -l'
+alias la='ls -a'
+alias lla='ls -la'
+alias lt='ls --tree'
 
 
 bindkey -s ^f "tmux-sessionizer\n"
