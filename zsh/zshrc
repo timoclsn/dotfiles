@@ -115,30 +115,30 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh
 
-# Easier navigation: .., ..., ...., .....
-alias .="cd .."
-alias ..="cd ../.."
-alias ...="cd ../../.."
-alias ....="cd ../../../.."
+alias src="source ~/.zshrc"
 
 alias c="clear"
 alias e="exit"
+alias cd="z"
+alias ls="lsd"
 alias cat="bat"
 alias vim="nvim"
 alias lg="lazygit"
 
-alias cd="z"
+# cd
+alias .="cd .."
+alias ..="cd ../.."
+alias ...="cd ../../.."
+alias ....="cd ../../../.."
 alias h="cd ~"
-alias src="source ~/.zshrc"
 alias d="cd ~/Developer"
 alias sbf="cd ~/Developer/steuerbot/frontend"
 alias sbw="cd ~/Developer/steuerbot/website"
 
-alias ls="lsd"
+# ls
 alias l='ls -l'
 alias la='ls -la'
 alias lt='ls --tree'
-
 
 bindkey -s ^f "tmux-sessionizer\n"
 
