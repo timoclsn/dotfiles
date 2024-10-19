@@ -13,10 +13,10 @@ config.use_fancy_tab_bar = false
 config.window_background_opacity = 0.9
 config.macos_window_background_blur = 20
 config.window_padding = {
-  left = '1cell',
-  right = '1cell',
-  top = '1.2cell',
-  bottom = '0',
+  left = '16',
+  right = '16',
+  top = '56', -- 16 + 24 (dots) + 16
+  bottom = '16',
 }
 config.underline_position = -4
 
