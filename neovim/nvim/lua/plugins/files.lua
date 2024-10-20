@@ -87,15 +87,15 @@ return {
       vim.keymap.set('n', '<leader>ha', function()
         harpoon:list():add()
       end, { desc = '[H]arpoon [A]dd File' })
-      vim.keymap.set('n', '<leader>hl', function()
+      vim.keymap.set('n', '<leader>hh', function()
         harpoon.ui:toggle_quick_menu(harpoon:list())
-      end, { desc = '[H]arpoon [L]ist Files' })
+      end, { desc = '[H]arpoon list files' })
 
       -- Navigate to Harpoon marks 1-9
       for i = 1, 9 do
-        vim.keymap.set('n', '<leader>h' .. i, function()
+        vim.keymap.set('n', '<C-' .. i .. '>', function()
           harpoon:list():select(i)
-        end, { desc = 'Navigate to [H]arpoon Mark ' .. i })
+        end, { desc = 'Navigate to harpoon Mark ' .. i })
       end
 
       -- Toggle previous & next buffers stored within Harpoon list

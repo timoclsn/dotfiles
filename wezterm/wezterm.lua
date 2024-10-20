@@ -24,22 +24,12 @@ config.use_dead_keys = false
 config.send_composed_key_when_left_alt_is_pressed = true
 config.keys = {
   { key = 'n', mods = 'OPT', action = wezterm.action { SendString = '~' } },
-  { key = '0', mods = 'CTRL', action = wezterm.action.SendString '\u{1b}[48;5u' },
-  { key = '1', mods = 'CTRL', action = wezterm.action.SendString '\u{1b}[49;5u' },
-  { key = '2', mods = 'CTRL', action = wezterm.action.SendString '\u{1b}[50;5u' },
-  { key = '3', mods = 'CTRL', action = wezterm.action.SendString '\u{1b}[51;5u' },
-  { key = '4', mods = 'CTRL', action = wezterm.action.SendString '\u{1b}[52;5u' },
-  { key = '5', mods = 'CTRL', action = wezterm.action.SendString '\u{1b}[53;5u' },
-  { key = '6', mods = 'CTRL', action = wezterm.action.SendString '\u{1b}[54;5u' },
-  { key = '7', mods = 'CTRL', action = wezterm.action.SendString '\u{1b}[55;5u' },
-  { key = '8', mods = 'CTRL', action = wezterm.action.SendString '\u{1b}[56;5u' },
-  { key = '9', mods = 'CTRL', action = wezterm.action.SendString '\u{1b}[57;5u' },
+  { key = '0', mods = 'CTRL', action = wezterm.action.ResetFontSize },
   {
     key = 'f',
     mods = 'SHIFT|CTRL',
     action = wezterm.action.DisableDefaultAssignment,
   },
-  { key = '0', mods = 'CTRL', action = wezterm.action.ResetFontSize },
 }
 
 return config
