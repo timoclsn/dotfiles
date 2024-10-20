@@ -10,7 +10,7 @@ return {
     cmd = 'Neotree',
     keys = {
       { '<C-e>', ':Neotree toggle<CR>', desc = 'Toggle File [E]xplorer', silent = true },
-      { '<leader>rf', ':Neotree reveal<CR>', desc = '[R]eveal [F]ile', silent = true },
+      { '<leader>e', ':Neotree reveal<CR>', desc = 'Reveal file in [E]xplorer', silent = true },
     },
     opts = {
       close_if_last_window = true,
