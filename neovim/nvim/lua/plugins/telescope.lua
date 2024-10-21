@@ -207,7 +207,7 @@ return {
                 ['<C-i>'] = require('telescope-live-grep-args.actions').quote_prompt { postfix = ' --iglob ' },
                 ['<C-t>'] = require('telescope-live-grep-args.actions').quote_prompt { postfix = ' -t ' },
                 ['<C-f>'] = require('telescope-live-grep-args.actions').quote_prompt { postfix = ' -F ' },
-                ['<C-m>'] = require('telescope-live-grep-args.actions').quote_prompt { postfix = ' -g **/{mobile,mobile-app}/** ' },
+                ['<C-n>'] = require('telescope-live-grep-args.actions').quote_prompt { postfix = ' -g **/{mobile,mobile-app}/** ' },
                 ['<C-w>'] = require('telescope-live-grep-args.actions').quote_prompt { postfix = ' -g **/{web,web-app}/** ' },
                 ['<C-s>'] = require('telescope-live-grep-args.actions').quote_prompt { postfix = ' -g **/shared/** ' },
                 ['<C-space>'] = actions.to_fuzzy_refine,
