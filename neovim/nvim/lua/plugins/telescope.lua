@@ -206,6 +206,10 @@ return {
                 ['<C-g>'] = require('telescope-live-grep-args.actions').quote_prompt { postfix = ' -g ' },
                 ['<C-i>'] = require('telescope-live-grep-args.actions').quote_prompt { postfix = ' --iglob ' },
                 ['<C-t>'] = require('telescope-live-grep-args.actions').quote_prompt { postfix = ' -t ' },
+                ['<C-f>'] = require('telescope-live-grep-args.actions').quote_prompt { postfix = ' -F ' },
+                ['<C-m>'] = require('telescope-live-grep-args.actions').quote_prompt { postfix = ' -g **/{mobile,mobile-app}/** ' },
+                ['<C-w>'] = require('telescope-live-grep-args.actions').quote_prompt { postfix = ' -g **/{web,web-app}/** ' },
+                ['<C-s>'] = require('telescope-live-grep-args.actions').quote_prompt { postfix = ' -g **/shared/** ' },
                 ['<C-space>'] = actions.to_fuzzy_refine,
               },
             },
@@ -226,8 +230,12 @@ return {
       vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
       vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
       vim.keymap.set('n', '<leader>sg', require('telescope').extensions.live_grep_args.live_grep_args, { desc = '[S]earch by [G]rep with args' })
-      vim.keymap.set('n', '<leader>sw', require('telescope-live-grep-args.shortcuts').grep_word_under_cursor, { desc = '[S]earch current [W]ord' })
-      vim.keymap.set('x', '<leader>sv', require('telescope-live-grep-args.shortcuts').grep_visual_selection, { desc = '[S]earch [V]isual selection' })
+      vim.keymap.set('n', '<leader>sw', function()
+        require('telescope-live-grep-args.shortcuts').grep_word_under_cursor { postfix = '', quote = false, trim = false }
+      end, { desc = '[S]earch current [W]ord' })
+      vim.keymap.set('x', '<leader>sv', function()
+        require('telescope-live-grep-args.shortcuts').grep_visual_selection { postfix = '', quote = false, trim = false }
+      end, { desc = '[S]earch [V]isual selection' })
       vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
