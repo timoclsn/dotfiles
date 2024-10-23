@@ -82,7 +82,7 @@ return {
       end
 
       local cwd = vim.fn.getcwd()
-      local cwd_is_frontend = cwd:match 'frontend$' ~= nil
+      local cwd_is_frontend = cwd:match 'frontend$' ~= nil or cwd:match 'frontend%-.*$' ~= nil
 
       local function custom_path_display(_, path)
         local filename = vim.fs.basename(path)
@@ -97,7 +97,7 @@ return {
         relative_path = relative_path:gsub('^%./', '')
 
         -- Check if we're in the "frontend" project
-        local is_frontend = cwd_is_frontend or relative_path:match '^steuerbot/frontend' ~= nil
+        local is_frontend = cwd_is_frontend or relative_path:match '^steuerbot/frontend$' ~= nil or relative_path:match '^steuerbot/frontend%-.*' ~= nil
 
         if is_frontend then
           -- Find "apps" or "libs" in the path
@@ -160,6 +160,7 @@ return {
               ['<Tab>'] = actions.move_selection_next,
               ['<S-Tab>'] = actions.move_selection_previous,
               ['<C-s>'] = actions.toggle_selection,
+              ['<C-space>'] = actions.to_fuzzy_refine,
             },
             i = {
               ['<CR>'] = custom_actions.smart_open,
@@ -167,6 +168,7 @@ return {
               ['<C-j>'] = require('telescope.actions').move_selection_next,
               ['<C-k>'] = require('telescope.actions').move_selection_previous,
               ['<C-s>'] = actions.toggle_selection,
+              ['<C-space>'] = actions.to_fuzzy_refine,
             },
           },
           file_ignore_patterns = {
@@ -210,7 +212,6 @@ return {
                 ['<C-n>'] = require('telescope-live-grep-args.actions').quote_prompt { postfix = ' -g **/{mobile,mobile-app}/** ' },
                 ['<C-w>'] = require('telescope-live-grep-args.actions').quote_prompt { postfix = ' -g **/{web,web-app}/** ' },
                 ['<C-s>'] = require('telescope-live-grep-args.actions').quote_prompt { postfix = ' -g **/shared/** ' },
-                ['<C-space>'] = actions.to_fuzzy_refine,
               },
             },
           },

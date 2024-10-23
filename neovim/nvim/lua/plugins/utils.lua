@@ -156,7 +156,7 @@ return {
         local relative_path = vim.fn.fnamemodify(path, ':~:.:h') -- Get directory path relative to current directory
 
         -- Check if we're in the "frontend" project
-        local is_frontend = vim.fn.getcwd():match 'frontend$' ~= nil
+        local is_frontend = vim.fn.getcwd():match 'frontend$' ~= nil or vim.fn.getcwd():match 'frontend%-.*$' ~= nil
 
         if is_frontend then
           -- Find "apps" or "libs" in the path
