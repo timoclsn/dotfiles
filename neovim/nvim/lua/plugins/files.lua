@@ -25,6 +25,13 @@ return {
             ['<space>'] = 'toggle_node',
             ['<C-e>'] = 'close_window',
             ['h'] = 'focus_preview',
+            ['<C-r>'] = {
+              command = function(state)
+                local node = state.tree:get_node()
+                vim.fn.system('open -R ' .. vim.fn.shellescape(node.path))
+              end,
+              desc = 'Reveal in Finder',
+            },
           },
         },
         filtered_items = {
