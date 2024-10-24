@@ -156,6 +156,7 @@ return {
           mappings = {
             n = {
               ['<CR>'] = custom_actions.smart_open,
+              ['<C-c>'] = actions.close,
               ['<C-v>'] = custom_actions.smart_open_split,
               ['<Tab>'] = actions.move_selection_next,
               ['<S-Tab>'] = actions.move_selection_previous,
@@ -164,6 +165,7 @@ return {
             },
             i = {
               ['<CR>'] = custom_actions.smart_open,
+              ['<C-c>'] = actions.close,
               ['<C-v>'] = custom_actions.smart_open_split,
               ['<C-j>'] = require('telescope.actions').move_selection_next,
               ['<C-k>'] = require('telescope.actions').move_selection_previous,
@@ -172,9 +174,7 @@ return {
             },
           },
           file_ignore_patterns = {
-            '!.env',
             '.git/',
-            'node_modules/',
           },
           path_display = custom_path_display,
           -- path_display = {
