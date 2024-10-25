@@ -173,9 +173,6 @@ return {
               ['<C-space>'] = actions.to_fuzzy_refine,
             },
           },
-          file_ignore_patterns = {
-            '.git/',
-          },
           path_display = custom_path_display,
           -- path_display = {
           --   truncate = 1,
