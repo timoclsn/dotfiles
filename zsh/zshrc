@@ -145,6 +145,13 @@ alias lt='ls --tree'
 
 bindkey -s ^f "tmux-sessionizer\n"
 
+
+# run npm script requires jq fzf and nr
+run() {
+  local script
+  script=$(cat package.json | jq -r '.scripts | keys[] ' | sort | fzf) && nr $(echo "$script")
+}
+
 # pnpm
 export PNPM_HOME="/Users/timo/Library/pnpm"
 case ":$PATH:" in
