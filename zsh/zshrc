@@ -127,6 +127,7 @@ alias v="vim"
 alias lg="lazygit"
 alias grep="rg"
 alias g="git"
+alias r="run-script"
 
 # cd
 alias .="cd .."
@@ -147,7 +148,7 @@ bindkey -s ^f "tmux-sessionizer\n"
 
 
 # run npm script requires jq fzf and nr
-run() {
+run-script() {
   local script
   script=$(cat package.json | jq -r '.scripts | keys[] ' | sort | fzf) && nr $(echo "$script")
 }
