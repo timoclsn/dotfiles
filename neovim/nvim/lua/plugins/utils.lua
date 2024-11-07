@@ -274,4 +274,60 @@ return {
       { '<c-\\>', '<cmd><C-U>TmuxNavigatePrevious<cr>' },
     },
   },
+  {
+    'folke/snacks.nvim',
+    priority = 1000,
+    lazy = false,
+    opts = {
+      bufdelete = { enabled = true },
+      gitbrowse = { enabled = true },
+      rename = { enabled = true },
+      words = { enabled = true },
+
+      bigfile = { enabled = false },
+      debug = { enabled = false },
+      git = { enabled = false },
+      lazygit = { enabled = false },
+      notify = { enabled = false },
+      notifier = { enabled = false },
+      quickfile = { enabled = false },
+      statuscolumn = { enabled = false },
+      terminal = { enabled = false },
+      toggle = { enabled = false },
+      win = { enabled = false },
+    },
+    keys = {
+      {
+        '<leader>dd',
+        function()
+          require('snacks').bufdelete()
+        end,
+        desc = '[D]ocument [D]elete buffer',
+      },
+      {
+        '<leader>go',
+        function()
+          require('snacks').gitbrowse()
+        end,
+        desc = '[G]it [O]pen',
+      },
+      {
+        'ä',
+        function()
+          require('snacks').words.jump(vim.v.count1)
+        end,
+        desc = 'Next Reference',
+      },
+      {
+        'ö',
+        function()
+          require('snacks').words.jump(-vim.v.count1)
+        end,
+        desc = 'Previous Reference',
+      },
+    },
+    config = function(_, opts)
+      require('snacks').setup(opts)
+    end,
+  },
 }
