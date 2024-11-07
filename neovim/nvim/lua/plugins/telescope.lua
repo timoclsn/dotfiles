@@ -207,7 +207,9 @@ return {
                 ['<C-t>'] = require('telescope-live-grep-args.actions').quote_prompt { postfix = ' -t ' },
                 ['<C-f>'] = require('telescope-live-grep-args.actions').quote_prompt { postfix = ' -F ' },
                 ['<C-n>'] = require('telescope-live-grep-args.actions').quote_prompt { postfix = ' -g **/{mobile,mobile-app}/** ' },
-                ['<C-w>'] = require('telescope-live-grep-args.actions').quote_prompt { postfix = ' -g **/{web,web-app}/** ' },
+                ['<C-w>'] = require('telescope-live-grep-args.actions').quote_prompt {
+                  postfix = ' -g **/{web,web-app}/** -g "!**/.next/**" -g "!**/node_modules/**"',
+                },
                 ['<C-s>'] = require('telescope-live-grep-args.actions').quote_prompt { postfix = ' -g **/shared/** ' },
               },
             },
