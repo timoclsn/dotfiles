@@ -279,24 +279,33 @@ return {
     priority = 1000,
     lazy = false,
     opts = {
+      -- Enabled
       bufdelete = { enabled = true },
       gitbrowse = { enabled = true },
       rename = { enabled = true },
       words = { enabled = true },
+      bigfile = { enabled = true },
+      notifier = { enabled = true, style = 'minimal' },
+      quickfile = { enabled = true },
+      statuscolumn = { enabled = true },
 
-      bigfile = { enabled = false },
-      debug = { enabled = false },
+      -- Disabled
       git = { enabled = false },
       lazygit = { enabled = false },
       notify = { enabled = false },
-      notifier = { enabled = false },
-      quickfile = { enabled = false },
-      statuscolumn = { enabled = false },
       terminal = { enabled = false },
       toggle = { enabled = false },
       win = { enabled = false },
+      debug = { enabled = false },
     },
     keys = {
+      {
+        '<leader>wn',
+        function()
+          require('snacks').notifier.show_history()
+        end,
+        desc = '[W]orkspace [N]otifications',
+      },
       {
         '<leader>dd',
         function()
