@@ -116,4 +116,19 @@ return {
       { '<c-\\>', '<cmd><C-U>TmuxNavigatePrevious<cr>' },
     },
   },
+  {
+    'NvChad/nvim-colorizer.lua',
+    config = function()
+      require('colorizer').setup {
+        user_default_options = {
+          css = true,
+          tailwind = true,
+          sass = {
+            enable = true,
+            parsers = { 'css' },
+          },
+        },
+      }
+    end,
+  },
 }
