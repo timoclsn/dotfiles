@@ -46,16 +46,18 @@ return {
         desc = '[G]it [O]pen',
       },
       {
-        'ä',
+        '<C-n>',
         function()
           require('snacks').words.jump(vim.v.count1)
+          vim.cmd 'normal! zz'
         end,
         desc = 'Next Reference',
       },
       {
-        'ö',
+        '<C-S-n>',
         function()
           require('snacks').words.jump(-vim.v.count1)
+          vim.cmd 'normal! zz'
         end,
         desc = 'Previous Reference',
       },

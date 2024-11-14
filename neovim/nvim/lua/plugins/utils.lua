@@ -85,6 +85,12 @@ return {
   },
   {
     'mg979/vim-visual-multi',
+    init = function()
+      vim.g.VM_maps = {
+        ['Find Under'] = '∂', -- Alr + d
+        ['Find Subword Under'] = '∂', -- Alt + d
+      }
+    end,
   },
   {
     'windwp/nvim-ts-autotag',

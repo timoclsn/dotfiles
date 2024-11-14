@@ -30,6 +30,11 @@ config.keys = {
     mods = 'SHIFT|CTRL',
     action = wezterm.action.DisableDefaultAssignment,
   },
+  {
+    key = 'n',
+    mods = 'SHIFT|CTRL',
+    action = wezterm.action.DisableDefaultAssignment,
+  },
 }
 
 return config
