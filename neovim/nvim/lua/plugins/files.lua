@@ -24,15 +24,44 @@ return {
             nowait = true,
           },
           mappings = {
-            ['<space>'] = 'toggle_node',
+            ['l'] = 'open',
+            ['h'] = 'close_node',
+            ['<space>'] = { 'toggle_preview', config = { use_float = true } },
+            ['P'] = 'focus_preview',
             ['<C-e>'] = 'close_window',
-            ['h'] = 'focus_preview',
             ['<C-r>'] = {
               command = function(state)
                 local node = state.tree:get_node()
                 vim.fn.system('open -R ' .. vim.fn.shellescape(node.path))
               end,
               desc = 'Reveal in Finder',
+            },
+            ['Y'] = {
+              function(state)
+                local node = state.tree:get_node()
+                local full_path = node:get_id()
+
+                -- Get the project root directory
+                local root_dir = vim.fn.systemlist('git rev-parse --show-toplevel')[1]
+
+                -- If not in a git repo, try to use the current working directory
+                if vim.v.shell_error ~= 0 then
+                  root_dir = vim.fn.getcwd()
+                end
+
+                -- Ensure root_dir ends with a separator
+                if root_dir:sub(-1) ~= '/' then
+                  root_dir = root_dir .. '/'
+                end
+
+                -- Remove the root directory from the full path to get the relative path
+                local relative_path = full_path:sub(#root_dir + 1)
+
+                -- Copy to clipboard
+                vim.fn.setreg('+', relative_path)
+                print('Copied path to clipboard: ' .. relative_path)
+              end,
+              desc = 'Copy Path to Clipboard',
             },
           },
         },
