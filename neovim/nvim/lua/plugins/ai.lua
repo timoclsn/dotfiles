@@ -25,6 +25,7 @@ return {
     },
     event = 'VeryLazy',
     opts = {
+      model = 'claude-3.5-sonnet',
       window = {
         layout = 'float',
         width = 80,
@@ -111,7 +112,13 @@ return {
       require('avante_lib').load()
       require('avante').setup {
         provider = 'copilot',
+        copilot = {
+          model = 'claude-3.5-sonnet',
+        },
         hints = { enabled = false },
+        ask = {
+          start_insert = false,
+        },
       }
     end,
   },
