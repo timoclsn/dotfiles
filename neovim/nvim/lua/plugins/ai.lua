@@ -5,13 +5,18 @@ return {
     event = 'InsertEnter',
     config = function()
       require('copilot').setup {
+        panel = {
+          enabled = false,
+        },
         suggestion = {
+          enabled = true,
           auto_trigger = true,
+          hide_during_completion = true,
           keymap = {
             accept = '<Tab>',
             next = '<C-n>',
             prev = '<C-p>',
-            dismiss = '<Esc>',
+            dismiss = '<C-e>',
           },
         },
       }
@@ -116,8 +121,10 @@ return {
           model = 'claude-3.5-sonnet',
         },
         hints = { enabled = false },
-        ask = {
-          start_insert = false,
+        windows = {
+          ask = {
+            start_insert = false,
+          },
         },
       }
     end,
