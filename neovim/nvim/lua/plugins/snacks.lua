@@ -13,15 +13,6 @@ return {
       notifier = { enabled = true, style = 'minimal' },
       quickfile = { enabled = true },
       statuscolumn = { enabled = true },
-
-      -- Disabled
-      git = { enabled = false },
-      lazygit = { enabled = false },
-      notify = { enabled = false },
-      terminal = { enabled = false },
-      toggle = { enabled = false },
-      win = { enabled = false },
-      debug = { enabled = false },
     },
     keys = {
       {
