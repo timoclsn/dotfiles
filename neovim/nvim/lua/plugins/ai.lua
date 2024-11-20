@@ -24,13 +24,16 @@ return {
   },
   {
     'CopilotC-Nvim/CopilotChat.nvim',
+    branch = 'canary',
     dependencies = {
       { 'zbirenbaum/copilot.lua' },
       { 'nvim-lua/plenary.nvim' },
     },
+    build = 'make tiktoken',
     event = 'VeryLazy',
     opts = {
       model = 'claude-3.5-sonnet',
+      agent = 'copilot',
       window = {
         layout = 'float',
         width = 80,
@@ -75,12 +78,7 @@ return {
       {
         '<leader>am',
         '<cmd>CopilotChatCommit<cr>',
-        desc = 'CopilotChat - Generate commit message for all changes',
-      },
-      {
-        '<leader>aM',
-        '<cmd>CopilotChatCommitStaged<cr>',
-        desc = 'CopilotChat - Generate commit message for staged changes',
+        desc = 'CopilotChat - Generate commit message',
       },
       -- Debug
       -- { '<leader>ad', '<cmd>CopilotChatDebugInfo<cr>', desc = 'CopilotChat - Debug Info' },
