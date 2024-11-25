@@ -120,4 +120,31 @@ return {
       }
     end,
   },
+  {
+    'axelvc/template-string.nvim',
+    config = function()
+      require('template-string').setup {
+        remove_template_string = true,
+      }
+    end,
+  },
+  {
+    'nat-418/boole.nvim',
+    opts = {
+      mappings = {
+        increment = '<C-a>',
+        decrement = '<C-x>',
+      },
+      additions = {
+        { 'production', 'development', 'test' },
+        { 'prod', 'staging', 'develop', 'test', 'test2', 'test3', 'test4' },
+        { 'let', 'const' },
+        { 'start', 'end' },
+        { 'import', 'export' },
+        { 'before', 'after' },
+        { 'plus', 'minus' },
+        { 'left', 'right' },
+      },
+    },
+  },
 }
