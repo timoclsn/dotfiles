@@ -94,6 +94,14 @@ return {
               vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
             end, '[T]oggle [I]nlay Hints')
           end
+
+          -- Configure the hover handler for LSP (Language Server Protocol)
+          -- This affects what happens when you press 'K' over a symbol
+          vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
+            -- Disable the "no information available" message
+            -- This prevents the notification popup when hover information isn't found
+            silent = true,
+          })
         end,
       })
 
