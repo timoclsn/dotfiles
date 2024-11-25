@@ -61,8 +61,8 @@ vim.opt.autoread = true
 
 vim.opt.foldmethod = 'expr'
 vim.opt.foldexpr = 'nvim_treesitter#foldexpr()' -- Use treesitter for folding
-vim.opt.foldenable = false -- Disable folding at startup
 vim.opt.foldlevel = 99 -- High foldlevel to start unfolded
+vim.opt.foldtext = '' -- Don't show foldtext
 
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
