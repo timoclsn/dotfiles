@@ -35,10 +35,6 @@ vim.keymap.set('n', '<leader>qo', '<cmd>colder<CR>', { desc = '[Q]uickfix list [
 vim.keymap.set('n', '<leader>qe', '<cmd>cnewer<CR>', { desc = '[Q]uickfix list n[E]wer list' })
 vim.keymap.set('n', '<leader>qd', vim.diagnostic.setloclist, { desc = '[Q]uickfix list [D]iagnostics' })
 -- vim.keymap.set('n', '<leader>dd', '<cmd>bd<CR>', { desc = '[D]ocument [D]elete buffer' })
-vim.keymap.set('n', 'zm0', ':set foldlevel=0<CR>', { desc = 'Fold all levels' })
-vim.keymap.set('n', 'zm1', ':set foldlevel=1<CR>', { desc = 'Fold to level 1' })
-vim.keymap.set('n', 'zm2', ':set foldlevel=2<CR>', { desc = 'Fold to level 2' })
-vim.keymap.set('n', 'zm3', ':set foldlevel=3<CR>', { desc = 'Fold to level 3' })
 
 vim.keymap.set('n', '<leader>o', function()
   vim.lsp.buf.execute_command {
