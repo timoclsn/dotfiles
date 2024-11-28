@@ -137,6 +137,7 @@ return {
                 results = file_paths,
               },
               previewer = false,
+              sorter = conf.generic_sorter {},
               winblend = 10,
               layout_config = {
                 width = 100,
