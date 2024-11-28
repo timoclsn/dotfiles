@@ -114,9 +114,37 @@ return {
     'ThePrimeagen/harpoon',
     -- branch = 'harpoon2',
     commit = 'e76cb03', -- Custom key breaks for commits after this one
-    dependencies = { 'nvim-lua/plenary.nvim' },
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-telescope/telescope.nvim',
+    },
     config = function()
       local harpoon = require 'harpoon'
+      local conf = require('telescope.config').values
+
+      local function toggle_telescope(harpoon_files)
+        local file_paths = {}
+        for _, item in ipairs(harpoon_files.items) do
+          table.insert(file_paths, item.value)
+        end
+
+        require('telescope.pickers')
+          .new(
+            {},
+            require('telescope.themes').get_dropdown {
+              prompt_title = 'Harpoon',
+              finder = require('telescope.finders').new_table {
+                results = file_paths,
+              },
+              previewer = false,
+              winblend = 10,
+              layout_config = {
+                width = 100,
+              },
+            }
+          )
+          :find()
+      end
 
       -- REQUIRED
       harpoon:setup {
@@ -157,6 +185,9 @@ return {
       vim.keymap.set('n', '<leader>hn', function()
         harpoon:list():next()
       end, { desc = '[H]arpoon [N]ext Buffer' })
+      vim.keymap.set('n', '<leader>ht', function()
+        toggle_telescope(harpoon:list())
+      end, { desc = '[H]arpoon [T]elescope' })
     end,
   },
   {
