@@ -5,7 +5,6 @@ return {
     lazy = false,
     opts = {
       -- Enabled
-      bufdelete = { enabled = true },
       gitbrowse = { enabled = true },
       rename = { enabled = true },
       words = { enabled = true },
@@ -21,13 +20,6 @@ return {
           require('snacks').notifier.show_history()
         end,
         desc = '[W]orkspace [N]otifications',
-      },
-      {
-        '<leader>dd',
-        function()
-          require('snacks').bufdelete()
-        end,
-        desc = '[D]ocument [D]elete buffer',
       },
       {
         '<leader>go',
