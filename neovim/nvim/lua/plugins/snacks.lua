@@ -12,6 +12,7 @@ return {
       notifier = { enabled = true, style = 'minimal' },
       quickfile = { enabled = true },
       statuscolumn = { enabled = true },
+      scratch = { enabled = true },
     },
     keys = {
       {
@@ -43,6 +44,20 @@ return {
           vim.cmd 'normal! zz'
         end,
         desc = 'Previous Reference',
+      },
+      {
+        '<leader>.',
+        function()
+          require('snacks').scratch { ft = vim.bo.filetype }
+        end,
+        desc = 'Toggle Scratch Buffer',
+      },
+      {
+        '<leader>S',
+        function()
+          require('snacks').scratch.select()
+        end,
+        desc = 'Select Scratch Buffer',
       },
     },
     config = function(_, opts)
