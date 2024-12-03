@@ -21,6 +21,7 @@ vim.keymap.set('i', '<left>', '<cmd>echo "Move in normal mode!!"<CR>')
 vim.keymap.set('i', '<right>', '<cmd>echo "Move in normal mode!!"<CR>')
 vim.keymap.set('i', '<up>', '<cmd>echo "Move in normal mode!!"<CR>')
 vim.keymap.set('i', '<down>', '<cmd>echo "Move in normal mode!!"<CR>')
+
 vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Jump half page down and center cursor' })
 vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Jump half page up and center cursor' })
 vim.keymap.set('n', 'n', 'nzzzv', { desc = 'Next Search Result Centered' })
@@ -43,6 +44,9 @@ vim.keymap.set('n', '<leader>qd', vim.diagnostic.setloclist, { desc = '[Q]uickfi
 vim.keymap.set('n', '<leader>db', '<cmd>bd<CR>', { desc = '[D]ocument delete [B]uffer' })
 vim.keymap.set('n', '<leader>dw', '<cmd>close<CR>', { desc = '[D]ocument close [W]indow' })
 vim.keymap.set('n', '<leader>dx', '<cmd>tabclose<CR>', { desc = '[D]ocument close [T]ab' })
+vim.keymap.set('n', '<space><space>x', '<cmd>source %<CR>')
+vim.keymap.set('n', '<space>x', ':.lua<CR>')
+vim.keymap.set('v', '<space>x', ':lua<CR>')
 
 vim.keymap.set('n', '<leader>o', function()
   vim.lsp.buf.execute_command {
