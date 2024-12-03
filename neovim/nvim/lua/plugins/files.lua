@@ -121,6 +121,7 @@ return {
     config = function()
       local harpoon = require 'harpoon'
       local conf = require('telescope.config').values
+      local utils = require 'telescope.utils'
 
       local function toggle_telescope(harpoon_files)
         local file_paths = {}
@@ -135,10 +136,19 @@ return {
               prompt_title = 'Harpoon',
               finder = require('telescope.finders').new_table {
                 results = file_paths,
+                entry_maker = function(entry)
+                  return {
+                    value = entry,
+                    display = utils.transform_path({ path_display = conf.path_display }, entry),
+                    ordinal = entry,
+                    path = entry,
+                  }
+                end,
               },
               previewer = false,
               sorter = conf.generic_sorter {},
               winblend = 10,
+              initial_mode = 'normal',
               layout_config = {
                 width = 100,
               },
@@ -168,9 +178,9 @@ return {
       vim.keymap.set('n', '<leader>ha', function()
         harpoon:list():add()
       end, { desc = '[H]arpoon [A]dd File' })
-      vim.keymap.set('n', '<leader>hh', function()
+      vim.keymap.set('n', '<leader>hl', function()
         harpoon.ui:toggle_quick_menu(harpoon:list())
-      end, { desc = '[H]arpoon list files' })
+      end, { desc = '[H]arpoon [L]ist files' })
 
       -- Navigate to Harpoon marks 1-9
       for i = 1, 9 do
@@ -186,9 +196,9 @@ return {
       vim.keymap.set('n', '<leader>hn', function()
         harpoon:list():next()
       end, { desc = '[H]arpoon [N]ext Buffer' })
-      vim.keymap.set('n', '<leader>ht', function()
+      vim.keymap.set('n', '<leader>hh', function()
         toggle_telescope(harpoon:list())
-      end, { desc = '[H]arpoon [T]elescope' })
+      end, { desc = '[H]arpoon telescope' })
     end,
   },
   {
