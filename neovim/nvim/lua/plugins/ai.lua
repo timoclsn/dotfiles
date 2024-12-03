@@ -24,13 +24,11 @@ return {
   },
   {
     'CopilotC-Nvim/CopilotChat.nvim',
-    branch = 'canary',
     dependencies = {
       { 'zbirenbaum/copilot.lua' },
       { 'nvim-lua/plenary.nvim' },
     },
     build = 'make tiktoken',
-    event = 'VeryLazy',
     opts = {
       model = 'claude-3.5-sonnet',
       agent = 'copilot',
