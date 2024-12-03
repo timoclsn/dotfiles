@@ -10,11 +10,17 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 -- or just use <C-\><C-n> to exit terminal mode
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
+-- Disable arrow keys in normal mode with message
 vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
 vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
 vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
 vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 
+-- Disable arrow keys in insert mode
+vim.keymap.set('i', '<left>', '<cmd>echo "Move in normal mode!!"<CR>')
+vim.keymap.set('i', '<right>', '<cmd>echo "Move in normal mode!!"<CR>')
+vim.keymap.set('i', '<up>', '<cmd>echo "Move in normal mode!!"<CR>')
+vim.keymap.set('i', '<down>', '<cmd>echo "Move in normal mode!!"<CR>')
 vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Jump half page down and center cursor' })
 vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Jump half page up and center cursor' })
 vim.keymap.set('n', 'n', 'nzzzv', { desc = 'Next Search Result Centered' })
