@@ -43,10 +43,11 @@ vim.keymap.set('n', '<leader>qe', '<cmd>cnewer<CR>', { desc = '[Q]uickfix list n
 vim.keymap.set('n', '<leader>qd', vim.diagnostic.setloclist, { desc = '[Q]uickfix list [D]iagnostics' })
 vim.keymap.set('n', '<leader>db', '<cmd>bd<CR>', { desc = '[D]ocument delete [B]uffer' })
 vim.keymap.set('n', '<leader>dw', '<cmd>close<CR>', { desc = '[D]ocument close [W]indow' })
-vim.keymap.set('n', '<leader>dx', '<cmd>tabclose<CR>', { desc = '[D]ocument close [T]ab' })
+vim.keymap.set('n', '<leader>dt', '<cmd>tabclose<CR>', { desc = '[D]ocument close [T]ab' })
 vim.keymap.set('n', '<space><space>x', '<cmd>source %<CR>')
 vim.keymap.set('n', '<space>x', ':.lua<CR>')
 vim.keymap.set('v', '<space>x', ':lua<CR>')
+vim.keymap.set('n', '<leader>dw', '<cmd>wincmd =<CR>', { desc = '[D]ocument space [W]indows' })
 
 vim.keymap.set('n', '<leader>o', function()
   vim.lsp.buf.execute_command {
