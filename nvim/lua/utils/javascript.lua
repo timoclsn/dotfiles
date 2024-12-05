@@ -15,11 +15,9 @@ local function find_node_ancestor(types, node)
   return find_node_ancestor(types, parent)
 end
 
-local M = {}
-
 ---When typing "await" add "async" to the function declaration if the function
 ---isn't async already.
-function M.add_async()
+local function add_async()
   -- This function should be executed when the user types "t" in insert mode,
   -- but "t" is not inserted because it's the trigger.
   vim.api.nvim_feedkeys('t', 'n', true)
@@ -48,4 +46,12 @@ function M.add_async()
   vim.api.nvim_buf_set_text(buffer, start_row, start_col, start_row, start_col, { 'async ' })
 end
 
-return M
+vim.keymap.set('i', 't', add_async, { buffer = true })
+
+vim.keymap.set('n', '<leader>o', function()
+  vim.lsp.buf.execute_command {
+    command = '_typescript.organizeImports',
+    arguments = { vim.api.nvim_buf_get_name(0) },
+    title = '',
+  }
+end, { desc = '[O]rganize Imports' })
