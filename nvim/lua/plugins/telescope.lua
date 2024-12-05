@@ -233,7 +233,7 @@ return {
       vim.keymap.set('n', '<leader>sw', function()
         require('telescope-live-grep-args.shortcuts').grep_word_under_cursor { postfix = '', quote = false, trim = false }
       end, { desc = '[S]earch current [W]ord' })
-      vim.keymap.set('x', '<leader>sv', function()
+      vim.keymap.set('v', '<leader>sv', function()
         require('telescope-live-grep-args.shortcuts').grep_visual_selection { postfix = '', quote = false, trim = false }
       end, { desc = '[S]earch [V]isual selection' })
       vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
