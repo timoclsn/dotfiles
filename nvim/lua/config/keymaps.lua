@@ -48,6 +48,8 @@ vim.keymap.set('n', '<space><space>x', '<cmd>source %<CR>')
 vim.keymap.set('n', '<space>x', ':.lua<CR>')
 vim.keymap.set('v', '<space>x', ':lua<CR>')
 vim.keymap.set('n', '<leader>dw', '<cmd>wincmd =<CR>', { desc = '[D]ocument space [W]indows' })
+vim.keymap.set('n', '<leader>y', 'ggVGy', { desc = '[Y]ank buffer content' })
+vim.keymap.set('n', '<C-f>', '<cmd>silent !tmux neww tmux-sessionizer<CR>')
 
 vim.keymap.set('n', '<leader>o', function()
   vim.lsp.buf.execute_command {
