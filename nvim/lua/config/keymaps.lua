@@ -47,7 +47,6 @@ vim.keymap.set('n', '<leader>dt', '<cmd>tabclose<CR>', { desc = '[D]ocument clos
 vim.keymap.set('n', '<leader>dw', '<cmd>wincmd =<CR>', { desc = '[D]ocument space [W]indows' })
 vim.keymap.set('n', '<leader>y', 'ggVGy', { desc = '[Y]ank buffer content' })
 vim.keymap.set('n', '<C-f>', '<cmd>silent !tmux neww tmux-sessionizer<CR>')
-vim.keymap.set('n', '<C-c>', 'ciw')
 vim.keymap.set('n', 'yc', function()
   vim.cmd 'normal! yy'
   vim.cmd 'normal gcc'
