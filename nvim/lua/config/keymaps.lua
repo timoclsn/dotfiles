@@ -44,7 +44,7 @@ vim.keymap.set('n', '<leader>qd', vim.diagnostic.setloclist, { desc = '[Q]uickfi
 vim.keymap.set('n', '<leader>db', '<cmd>bd<CR>', { desc = '[D]ocument delete [B]uffer' })
 vim.keymap.set('n', '<leader>dw', '<cmd>close<CR>', { desc = '[D]ocument close [W]indow' })
 vim.keymap.set('n', '<leader>dt', '<cmd>tabclose<CR>', { desc = '[D]ocument close [T]ab' })
-vim.keymap.set('n', '<leader>dw', '<cmd>wincmd =<CR>', { desc = '[D]ocument space [W]indows' })
+vim.keymap.set('n', '<leader>ds', '<cmd>wincmd =<CR>', { desc = '[D]ocument [S]pace windows' })
 vim.keymap.set('n', '<leader>y', 'ggVGy', { desc = '[Y]ank buffer content' })
 vim.keymap.set('n', '<C-f>', '<cmd>silent !tmux neww tmux-sessionizer<CR>')
 vim.keymap.set('n', 'yc', function()
