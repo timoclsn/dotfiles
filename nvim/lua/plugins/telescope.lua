@@ -201,16 +201,16 @@ return {
             auto_quoting = true,
             mappings = {
               i = {
-                ['<C-k>'] = require('telescope-live-grep-args.actions').quote_prompt(),
+                ['<C-q>'] = require('telescope-live-grep-args.actions').quote_prompt(),
                 ['<C-g>'] = require('telescope-live-grep-args.actions').quote_prompt { postfix = ' -g ' },
                 ['<C-i>'] = require('telescope-live-grep-args.actions').quote_prompt { postfix = ' --iglob ' },
                 ['<C-t>'] = require('telescope-live-grep-args.actions').quote_prompt { postfix = ' -t ' },
                 ['<C-f>'] = require('telescope-live-grep-args.actions').quote_prompt { postfix = ' -F ' },
-                ['<C-n>'] = require('telescope-live-grep-args.actions').quote_prompt { postfix = ' -g **/{mobile,mobile-app}/** ' },
-                ['<C-w>'] = require('telescope-live-grep-args.actions').quote_prompt {
+                ['<C-v>'] = require('telescope-live-grep-args.actions').quote_prompt { postfix = ' -g **/{mobile,mobile-app}/** ' },
+                ['<C-b>'] = require('telescope-live-grep-args.actions').quote_prompt {
                   postfix = ' -g **/{web,web-app}/** -g "!**/.next/**" -g "!**/node_modules/**"',
                 },
-                ['<C-s>'] = require('telescope-live-grep-args.actions').quote_prompt { postfix = ' -g **/shared/** ' },
+                ['<C-n>'] = require('telescope-live-grep-args.actions').quote_prompt { postfix = ' -g **/shared/** ' },
               },
             },
           },
@@ -233,7 +233,7 @@ return {
       vim.keymap.set('n', '<leader>sw', function()
         require('telescope-live-grep-args.shortcuts').grep_word_under_cursor { postfix = '', quote = false, trim = false }
       end, { desc = '[S]earch current [W]ord' })
-      vim.keymap.set('v', '<leader>sv', function()
+      vim.keymap.set('v', '<leader>sg', function()
         require('telescope-live-grep-args.shortcuts').grep_visual_selection { postfix = '', quote = false, trim = false }
       end, { desc = '[S]earch [V]isual selection' })
       vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
