@@ -39,11 +39,21 @@ return {
   },
   {
     'nvim-treesitter/nvim-treesitter-context',
-    opts = {
-      max_lines = 1, -- How many lines the window should span. Values <= 0 mean no limit.
-      multiline_threshold = 1, -- Maximum number of lines to show for a single context
-      trim_scope = 'inner', -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
-      mode = 'cursor', -- Line used to calculate context. Choices: 'cursor', 'topline'
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
     },
+    config = function()
+      require('treesitter-context').setup {
+        max_lines = 3, -- How many lines the window should span. Values <= 0 mean no limit.
+        multiline_threshold = 1, -- Maximum number of lines to show for a single context
+        trim_scope = 'outer', -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
+        mode = 'cursor', -- Line used to calculate context. Choices: 'cursor', 'topline'
+        min_window_height = 30, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
+      }
+
+      vim.keymap.set('n', 'gC', function()
+        require('treesitter-context').go_to_context(vim.v.count1)
+      end, { silent = true, desc = '[G]o to [C]ontext' })
+    end,
   },
 }
