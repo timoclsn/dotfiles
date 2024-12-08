@@ -118,6 +118,7 @@ return {
         },
         hints = { enabled = false },
         windows = {
+          position = 'left',
           ask = {
             start_insert = false,
           },
