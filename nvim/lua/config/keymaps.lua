@@ -63,6 +63,14 @@ vim.keymap.set('n', '<leader>yc', function()
   vim.cmd 'normal! p^' -- paste the commented TODO at the end
 end, { desc = '[Y]ank, [C]omment out past line for debugging' })
 
+-- Keymap to revert the above keymap
+vim.keymap.set('n', '<leader>yb', function()
+  vim.cmd 'normal! dd'
+  vim.cmd 'normal! k'
+  vim.cmd 'normal gcc'
+  vim.cmd 'normal! ^'
+end, { desc = '[Y]ank, [B]ack commenting out' })
+
 vim.keymap.set('n', '<leader>dc', function()
   -- Get the current buffer's full path
   local full_path = vim.fn.expand '%:p'
