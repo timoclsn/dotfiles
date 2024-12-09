@@ -44,14 +44,24 @@ vim.keymap.set('n', '<leader>qd', vim.diagnostic.setloclist, { desc = '[Q]uickfi
 vim.keymap.set('n', '<leader>db', '<cmd>bd<CR>', { desc = '[D]ocument delete [B]uffer' })
 vim.keymap.set('n', '<leader>dw', '<cmd>close<CR>', { desc = '[D]ocument close [W]indow' })
 vim.keymap.set('n', '<leader>dt', '<cmd>tabclose<CR>', { desc = '[D]ocument close [T]ab' })
-vim.keymap.set('n', '<leader>ds', '<cmd>wincmd =<CR>', { desc = '[D]ocument [S]pace windows' })
-vim.keymap.set('n', '<leader>y', 'ggVGy', { desc = '[Y]ank buffer content' })
+vim.keymap.set('n', '<leader>dc', '<cmd>wincmd =<CR>', { desc = '[D]ocument space windows [C]ommand' })
 vim.keymap.set('n', '<C-f>', '<cmd>silent !tmux neww tmux-sessionizer<CR>')
+vim.keymap.set('n', '<leader>y', 'ggVGy', { desc = '[Y]ank buffer content' })
+
+-- This keymap is useful for testing and debugging condiions
 vim.keymap.set('n', 'yc', function()
-  vim.cmd 'normal! yy'
-  vim.cmd 'normal gcc'
-  vim.cmd 'normal! p'
-end)
+  vim.cmd 'normal! yy' -- copy the current line
+  vim.cmd 'normal gcc' -- comment the current line
+  vim.cmd 'normal! p' -- paste the copy below
+  vim.cmd 'normal! o' -- create new line below
+  vim.cmd 'normal! iFIXME: Delete this line and uncomment the one above' -- insert the text
+  vim.cmd 'normal gcc' -- comment the TODO text with proper filetype comment
+  vim.cmd 'normal! 0D' -- cut the commented TODO (without newline)
+  vim.cmd 'normal! "_dd' -- delete the empty line into black hole register
+  vim.cmd 'normal! k$' -- go up and to end of line
+  vim.cmd 'normal! a ' -- add a space
+  vim.cmd 'normal! p^' -- paste the commented TODO at the end
+end, { desc = 'Create a copy of the line with a fixme comment and comment out the original one' })
 
 vim.keymap.set('n', '<leader>dc', function()
   -- Get the current buffer's full path
