@@ -50,17 +50,26 @@ vim.keymap.set('n', '<leader>yb', 'ggVGy', { desc = '[Y]ank [B]uffer content' })
 
 -- This keymap is useful for testing and debugging condiions
 vim.keymap.set('n', '<leader>yc', function()
-  vim.cmd 'normal! yy' -- copy the current line
-  vim.cmd 'normal gcc' -- comment the current line
-  vim.cmd 'normal! p' -- paste the copy below
-  vim.cmd 'normal! o' -- create new line below
-  vim.cmd 'normal! iTODO: Delete this line and uncomment the one above' -- insert the text
-  vim.cmd 'normal gcc' -- comment the TODO text with proper filetype comment
-  vim.cmd 'normal! 0D' -- cut the commented TODO (without newline)
-  vim.cmd 'normal! "_dd' -- delete the empty line into black hole register
-  vim.cmd 'normal! k$' -- go up and to end of line
-  vim.cmd 'normal! a ' -- add a space
-  vim.cmd 'normal! p^' -- paste the commented TODO at the end
+  local line = vim.api.nvim_get_current_line()
+  local row = vim.api.nvim_win_get_cursor(0)[1]
+  local todo = 'TODO: Delete this line and uncomment the one above'
+  local cms = vim.bo.commentstring
+  local comment_start = cms:match '^(.*)%%s' or '//'
+  local comment_end = cms:match '%%s(.*)$' or ''
+
+  -- Insert the uncommented copy first
+  vim.api.nvim_buf_set_lines(0, row - 1, row, false, {
+    line,
+    line .. ' ' .. comment_start .. todo .. comment_end,
+  })
+
+  -- Move cursor to first line and comment it with gcc
+  vim.api.nvim_win_set_cursor(0, { row, 0 })
+  vim.cmd 'normal gcc'
+
+  -- Move cursor to first non-empty character of the second line
+  vim.api.nvim_win_set_cursor(0, { row + 1, 0 })
+  vim.cmd 'normal! ^'
 end, { desc = '[Y]ank, [C]omment out past line for debugging' })
 
 -- Keymap to revert the above keymap
