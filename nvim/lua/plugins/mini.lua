@@ -4,7 +4,11 @@ return {
     config = function()
       require('mini.pairs').setup()
 
-      require('mini.ai').setup { n_lines = 500 }
+      require('mini.ai').setup {
+        custom_textobjects = {
+          F = require('mini.ai').gen_spec.treesitter { a = '@function.outer', i = '@function.inner' },
+        },
+      }
 
       require('mini.surround').setup()
 
