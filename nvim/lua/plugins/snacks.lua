@@ -17,7 +17,7 @@ return {
       input = {},
       indent = {
         scope = {
-          underline = true,
+          underline = false,
           animate = {
             enabled = false,
           },
