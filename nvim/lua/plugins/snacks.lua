@@ -4,15 +4,25 @@ return {
     priority = 1000,
     lazy = false,
     opts = {
-      -- Enabled
-      gitbrowse = { enabled = true },
-      rename = { enabled = true },
-      words = { enabled = true },
-      bigfile = { enabled = true },
-      notifier = { enabled = true, style = 'minimal' },
-      quickfile = { enabled = true },
-      statuscolumn = { enabled = true },
-      scratch = { enabled = true },
+      gitbrowse = {},
+      rename = {},
+      words = {},
+      bigfile = {},
+      notifier = {
+        style = 'minimal',
+      },
+      quickfile = {},
+      statuscolumn = {},
+      scratch = {},
+      input = {},
+      indent = {
+        scope = {
+          underline = true,
+          animate = {
+            enabled = false,
+          },
+        },
+      },
     },
     keys = {
       {
