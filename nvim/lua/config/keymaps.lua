@@ -41,15 +41,15 @@ vim.keymap.set('n', '<leader>qc', '<cmd>cclose<CR>', { desc = '[Q]uickfix list [
 vim.keymap.set('n', '<leader>qo', '<cmd>colder<CR>', { desc = '[Q]uickfix list [O]lder list' })
 vim.keymap.set('n', '<leader>qe', '<cmd>cnewer<CR>', { desc = '[Q]uickfix list n[E]wer list' })
 vim.keymap.set('n', '<leader>qd', vim.diagnostic.setloclist, { desc = '[Q]uickfix list [D]iagnostics' })
-vim.keymap.set('n', '<leader>db', '<cmd>bd<CR>', { desc = '[D]ocument delete [B]uffer' })
-vim.keymap.set('n', '<leader>dw', '<cmd>close<CR>', { desc = '[D]ocument close [W]indow' })
-vim.keymap.set('n', '<leader>dt', '<cmd>tabclose<CR>', { desc = '[D]ocument close [T]ab' })
-vim.keymap.set('n', '<leader>dc', '<cmd>wincmd =<CR>', { desc = '[D]ocument space windows [C]ommand' })
+vim.keymap.set('n', '<leader>bb', '<cmd>bd<CR>', { desc = '[B]uffer [D]elete' })
+vim.keymap.set('n', '<leader>bw', '<cmd>close<CR>', { desc = '[B]uffer [C]lose' })
+vim.keymap.set('n', '<leader>tt', '<cmd>tabclose<CR>', { desc = '[B]uffer close [T]ab' })
+vim.keymap.set('n', '<leader>rs', '<cmd>wincmd =<CR>', { desc = '[B]uffer [S]pace windows' })
 vim.keymap.set('n', '<C-f>', '<cmd>silent !tmux neww tmux-sessionizer<CR>')
 vim.keymap.set('n', '<leader>yb', 'ggVGy', { desc = '[Y]ank [B]uffer content' })
 
 -- This keymap is useful for testing and debugging condiions
-vim.keymap.set('n', '<leader>yc', function()
+vim.keymap.set('n', '<leader>yx', function()
   local line = vim.api.nvim_get_current_line()
   local row = vim.api.nvim_win_get_cursor(0)[1]
   local todo = 'TODO: Delete this line and uncomment the one above'
@@ -70,17 +70,17 @@ vim.keymap.set('n', '<leader>yc', function()
   -- Move cursor to first non-empty character of the second line
   vim.api.nvim_win_set_cursor(0, { row + 1, 0 })
   vim.cmd 'normal! ^'
-end, { desc = '[Y]ank, [C]omment out past line for debugging' })
+end, { desc = '[Y]ank [X] - duplicate and comment line' })
 
 -- Keymap to revert the above keymap
-vim.keymap.set('n', '<leader>yb', function()
+vim.keymap.set('n', '<leader>yc', function()
   vim.cmd 'normal! dd'
   vim.cmd 'normal! k'
   vim.cmd 'normal gcc'
   vim.cmd 'normal! ^'
-end, { desc = '[Y]ank, [B]ack commenting out' })
+end, { desc = '[Y]ank [C] - revert duplicate and comment line' })
 
-vim.keymap.set('n', '<leader>dc', function()
+vim.keymap.set('n', '<leader>yp', function()
   -- Get the current buffer's full path
   local full_path = vim.fn.expand '%:p'
 
@@ -103,4 +103,4 @@ vim.keymap.set('n', '<leader>dc', function()
   -- Copy to clipboard
   vim.fn.setreg('+', relative_path)
   print('Copied path to clipboard: ' .. relative_path)
-end, { noremap = true, silent = true, desc = '[D]ocument [C]opy full path' })
+end, { noremap = true, silent = true, desc = '[Y]ank full file [P]ath' })
