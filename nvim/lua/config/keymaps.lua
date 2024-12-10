@@ -43,8 +43,8 @@ vim.keymap.set('n', '<leader>qe', '<cmd>cnewer<CR>', { desc = '[Q]uickfix list n
 vim.keymap.set('n', '<leader>qd', vim.diagnostic.setloclist, { desc = '[Q]uickfix list [D]iagnostics' })
 vim.keymap.set('n', '<leader>bb', '<cmd>bd<CR>', { desc = '[B]uffer [D]elete' })
 vim.keymap.set('n', '<leader>bw', '<cmd>close<CR>', { desc = '[B]uffer [C]lose' })
-vim.keymap.set('n', '<leader>tt', '<cmd>tabclose<CR>', { desc = '[B]uffer close [T]ab' })
-vim.keymap.set('n', '<leader>rs', '<cmd>wincmd =<CR>', { desc = '[B]uffer [S]pace windows' })
+vim.keymap.set('n', '<leader>bt', '<cmd>tabclose<CR>', { desc = '[B]uffer close [T]ab' })
+vim.keymap.set('n', '<leader>bs', '<cmd>wincmd =<CR>', { desc = '[B]uffer [S]pace windows' })
 vim.keymap.set('n', '<C-f>', '<cmd>silent !tmux neww tmux-sessionizer<CR>')
 vim.keymap.set('n', '<leader>yb', 'ggVGy', { desc = '[Y]ank [B]uffer content' })
 
