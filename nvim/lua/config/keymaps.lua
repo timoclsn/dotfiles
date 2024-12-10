@@ -1,39 +1,31 @@
--- Clear highlights on search when pressing <Esc> in normal mode
---  See `:help hlsearch`
-vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
-
--- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
--- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
--- is not what someone will guess without a bit more experience.
---
--- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
--- or just use <C-\><C-n> to exit terminal mode
-vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
-
--- Disable arrow keys in normal mode with message
+-- Disable arrow keys
 vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
 vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
 vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
 vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
-
--- Disable arrow keys in insert mode
 vim.keymap.set('i', '<left>', '<cmd>echo "Move in normal mode!!"<CR>')
 vim.keymap.set('i', '<right>', '<cmd>echo "Move in normal mode!!"<CR>')
 vim.keymap.set('i', '<up>', '<cmd>echo "Move in normal mode!!"<CR>')
 vim.keymap.set('i', '<down>', '<cmd>echo "Move in normal mode!!"<CR>')
 
+-- General
+vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
+vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Jump half page down and center cursor' })
 vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Jump half page up and center cursor' })
 vim.keymap.set('n', 'n', 'nzzzv', { desc = 'Next Search Result Centered' })
 vim.keymap.set('n', 'N', 'Nzzzv', { desc = 'Previous Search Result Centered' })
-vim.keymap.set({ 'n', 'v' }, '<leader>p', [["0p]], { desc = 'Paste last yanked' })
-vim.keymap.set({ 'n', 'v' }, '<leader>d', [["_d]], { desc = 'Delete without copying' })
+vim.keymap.set({ 'n', 'v' }, '<leader>p', '"0p', { desc = 'Paste last yanked' })
+vim.keymap.set({ 'n', 'v' }, '<leader>d', '"_d', { desc = 'Delete without copying' })
 vim.keymap.set('n', '<C-i>', '<C-i>', { desc = 'Go forward in jumplist' })
 vim.keymap.set('i', 'jj', '<Esc>', { desc = 'Exit Insert Mode' })
 vim.keymap.set('n', '<C-s>', ':w<CR>', { desc = 'Write File' })
 vim.keymap.set('n', '<C-S-s>', ':wa<CR>', { desc = 'Write All Files' })
 vim.keymap.set('n', 'H', '^', { desc = 'Goto first character of line' })
 vim.keymap.set('n', 'L', '$', { desc = 'Goto last character of line' })
+vim.keymap.set('n', '<C-f>', '<cmd>silent !tmux neww tmux-sessionizer<CR>')
+
+-- Quickfix list
 vim.keymap.set('n', '<leader>qn', '<cmd>cnext<CR>', { desc = '[Q]uickfix list [N]ext item' })
 vim.keymap.set('n', '<leader>qp', '<cmd>cprev<CR>', { desc = '[Q]uickfix list [P]revious item' })
 vim.keymap.set('n', '<leader>qq', '<cmd>copen<CR>', { desc = '[Q]uickfix list [O]pen' })
@@ -41,11 +33,14 @@ vim.keymap.set('n', '<leader>qc', '<cmd>cclose<CR>', { desc = '[Q]uickfix list [
 vim.keymap.set('n', '<leader>qo', '<cmd>colder<CR>', { desc = '[Q]uickfix list [O]lder list' })
 vim.keymap.set('n', '<leader>qe', '<cmd>cnewer<CR>', { desc = '[Q]uickfix list n[E]wer list' })
 vim.keymap.set('n', '<leader>qd', vim.diagnostic.setloclist, { desc = '[Q]uickfix list [D]iagnostics' })
+
+-- Buffer
 vim.keymap.set('n', '<leader>bb', '<cmd>bd<CR>', { desc = '[B]uffer [D]elete' })
 vim.keymap.set('n', '<leader>bw', '<cmd>close<CR>', { desc = '[B]uffer [C]lose' })
 vim.keymap.set('n', '<leader>bt', '<cmd>tabclose<CR>', { desc = '[B]uffer close [T]ab' })
 vim.keymap.set('n', '<leader>bs', '<cmd>wincmd =<CR>', { desc = '[B]uffer [S]pace windows' })
-vim.keymap.set('n', '<C-f>', '<cmd>silent !tmux neww tmux-sessionizer<CR>')
+
+-- Yank
 vim.keymap.set('n', '<leader>yb', 'ggVGy', { desc = '[Y]ank [B]uffer content' })
 
 -- This keymap is useful for testing and debugging condiions
