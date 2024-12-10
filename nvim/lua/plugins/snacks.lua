@@ -4,16 +4,14 @@ return {
     priority = 1000,
     lazy = false,
     opts = {
-      gitbrowse = {},
+      quickfile = {},
+      bigfile = {},
       rename = {},
       words = {},
-      bigfile = {},
       notifier = {
         style = 'minimal',
       },
-      quickfile = {},
       statuscolumn = {},
-      scratch = {},
       input = {},
       indent = {
         scope = {
@@ -33,13 +31,6 @@ return {
         desc = '[W]orkspace [N]otifications',
       },
       {
-        '<leader>go',
-        function()
-          require('snacks').gitbrowse()
-        end,
-        desc = '[G]it [O]pen',
-      },
-      {
         '<C-n>',
         function()
           require('snacks').words.jump(vim.v.count1)
@@ -55,23 +46,6 @@ return {
         end,
         desc = 'Previous Reference',
       },
-      {
-        '<leader>.',
-        function()
-          require('snacks').scratch { ft = vim.bo.filetype }
-        end,
-        desc = 'Toggle Scratch Buffer',
-      },
-      {
-        '<leader>S',
-        function()
-          require('snacks').scratch.select()
-        end,
-        desc = 'Select Scratch Buffer',
-      },
     },
-    config = function(_, opts)
-      require('snacks').setup(opts)
-    end,
   },
 }
