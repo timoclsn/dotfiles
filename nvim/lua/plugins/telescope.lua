@@ -27,131 +27,17 @@ return {
       },
     },
     config = function()
-      local action_state = require 'telescope.actions.state'
       local actions = require 'telescope.actions'
-
-      local custom_actions = {}
-
-      custom_actions.smart_open = function(prompt_bufnr)
-        local picker = action_state.get_current_picker(prompt_bufnr)
-        local multi_selections = picker:get_multi_selection()
-
-        if #multi_selections > 1 then
-          -- Multiple files selected, open the highlighted one and add others to buffer list
-          actions.close(prompt_bufnr)
-          local current_selection = action_state.get_selected_entry()
-          for _, selection in ipairs(multi_selections) do
-            if selection == current_selection then
-              vim.cmd('edit ' .. selection.value)
-            else
-              vim.cmd('badd ' .. selection.value)
-            end
-          end
-        else
-          -- Single file selected (or no selection), use default behavior
-          actions.select_default(prompt_bufnr)
-        end
-      end
-
-      custom_actions.smart_open_split = function(prompt_bufnr)
-        local picker = action_state.get_current_picker(prompt_bufnr)
-        local multi_selections = picker:get_multi_selection()
-
-        if #multi_selections > 1 then
-          -- Multiple files selected, open the highlighted one on the left and others in vertical splits to the right
-          actions.close(prompt_bufnr)
-          local current_selection = action_state.get_selected_entry()
-          vim.cmd('edit ' .. current_selection.value)
-          for _, selection in ipairs(multi_selections) do
-            if selection ~= current_selection then
-              vim.cmd('vsplit ' .. selection.value)
-            end
-          end
-        else
-          -- Single file selected (or no selection), open in a vertical split
-          actions.close(prompt_bufnr)
-          local current_selection = action_state.get_selected_entry()
-          vim.cmd('vsplit ' .. current_selection.value)
-        end
-      end
-
-      local cwd = vim.fn.getcwd()
-      local cwd_is_frontend = cwd:match 'frontend$' ~= nil or cwd:match 'frontend%-.*$' ~= nil
-
-      local function custom_path_display(_, path)
-        local filename = vim.fs.basename(path)
-
-        -- Ensure the path is relative to the project directory
-        local relative_path = vim.fn.fnamemodify(path, ':.')
-        if vim.fn.isdirectory(path) ~= 1 then
-          relative_path = vim.fn.fnamemodify(path, ':~:.:h') -- :h removes the filename
-        end
-
-        -- Remove leading './' if present
-        relative_path = relative_path:gsub('^%./', '')
-
-        -- Check if we're in the "frontend" project
-        local is_frontend = cwd_is_frontend or relative_path:match '^steuerbot/frontend$' ~= nil or relative_path:match '^steuerbot/frontend%-.*' ~= nil
-
-        if is_frontend then
-          -- Find "apps" or "libs" in the path
-          for component in relative_path:gmatch '[^/]+' do
-            if component == 'apps' or component == 'libs' then
-              -- Check if there's a next component
-              local next_component = relative_path:match(component .. '/([^/]+)')
-              if next_component then
-                filename = filename .. string.format(' (%s)', next_component)
-                break -- Stop after finding the first occurrence
-              end
-            end
-          end
-        else
-          -- Check if the filename is "page.tsx" or "route.ts"
-          if filename == 'page.tsx' or filename == 'route.ts' then
-            -- Extract the directory name
-            local directory_name = relative_path:match '([^/]+)$'
-            if directory_name then
-              -- Strip parentheses if they exist
-              if directory_name:match '^%b()$' then
-                directory_name = directory_name:sub(2, -2)
-              end
-
-              -- Check for square brackets and add the next directory name one level up
-              if directory_name:match '^%b[]$' then
-                local parent_directory = relative_path:match '([^/]+)/[^/]+$'
-                if parent_directory then
-                  directory_name = parent_directory .. '/' .. directory_name
-                end
-              end
-
-              filename = filename .. string.format(' (%s)', directory_name)
-            end
-          end
-        end
-
-        if relative_path == '.' or relative_path == '' then
-          return filename
-        end
-        return string.format('%s\t\t%s', filename, relative_path)
-      end
-
-      vim.api.nvim_create_autocmd('FileType', {
-        pattern = 'TelescopeResults',
-        callback = function(ctx)
-          vim.api.nvim_buf_call(ctx.buf, function()
-            vim.fn.matchadd('TelescopeParent', '\t\t.*$')
-            vim.api.nvim_set_hl(0, 'TelescopeParent', { link = 'Comment' })
-          end)
-        end,
-      })
+      local custom_opener = require 'telescope.smart-open'
+      local custom_path_display = require 'telescope.path-display'
 
       require('telescope').setup {
         defaults = {
           mappings = {
             n = {
-              ['<CR>'] = custom_actions.smart_open,
+              ['<CR>'] = custom_opener.smart_open,
               ['<C-c>'] = actions.close,
-              ['<C-v>'] = custom_actions.smart_open_split,
+              ['<C-v>'] = custom_opener.smart_open_split,
               ['<Tab>'] = actions.move_selection_next,
               ['<S-Tab>'] = actions.move_selection_previous,
               ['<C-s>'] = actions.toggle_selection,
@@ -159,11 +45,11 @@ return {
               ['<space>'] = require('telescope.actions.layout').toggle_preview,
             },
             i = {
-              ['<CR>'] = custom_actions.smart_open,
+              ['<CR>'] = custom_opener.smart_open,
               ['<C-c>'] = actions.close,
-              ['<C-v>'] = custom_actions.smart_open_split,
-              ['<C-j>'] = require('telescope.actions').move_selection_next,
-              ['<C-k>'] = require('telescope.actions').move_selection_previous,
+              ['<C-v>'] = custom_opener.smart_open_split,
+              ['<C-j>'] = actions.move_selection_next,
+              ['<C-k>'] = actions.move_selection_previous,
               ['<C-s>'] = actions.toggle_selection,
               ['<C-space>'] = actions.to_fuzzy_refine,
               ['<C-p>'] = require('telescope.actions.layout').toggle_preview,
@@ -184,7 +70,7 @@ return {
           buffers = {
             mappings = {
               n = {
-                ['d'] = require('telescope.actions').delete_buffer,
+                ['d'] = actions.delete_buffer,
               },
             },
           },
@@ -206,6 +92,7 @@ return {
 
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
+
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
       vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
@@ -226,7 +113,7 @@ return {
           return selection:gsub('\n', ' '):gsub('^%s*(.-)%s*$', '%1')
         end
         local selected_text = visual_selection()
-        builtin.live_grep { default_text = selected_text }
+        require 'telescope.live-grep' { default_text = selected_text }
       end, { desc = '[S]earch by [G]rep with shortcuts' })
 
       vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
