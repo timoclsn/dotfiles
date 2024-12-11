@@ -28,16 +28,16 @@ return {
     },
     config = function()
       local actions = require 'telescope.actions'
-      local custom_opener = require 'telescope.smart-open'
+      local smart_opener = require 'telescope.smart-opener'
       local custom_path_display = require 'telescope.path-display'
 
       require('telescope').setup {
         defaults = {
           mappings = {
             n = {
-              ['<CR>'] = custom_opener.smart_open,
+              ['<CR>'] = smart_opener.smart_open,
               ['<C-c>'] = actions.close,
-              ['<C-v>'] = custom_opener.smart_open_split,
+              ['<C-v>'] = smart_opener.smart_open_split,
               ['<Tab>'] = actions.move_selection_next,
               ['<S-Tab>'] = actions.move_selection_previous,
               ['<C-s>'] = actions.toggle_selection,
@@ -45,9 +45,9 @@ return {
               ['<space>'] = require('telescope.actions.layout').toggle_preview,
             },
             i = {
-              ['<CR>'] = custom_opener.smart_open,
+              ['<CR>'] = smart_opener.smart_open,
               ['<C-c>'] = actions.close,
-              ['<C-v>'] = custom_opener.smart_open_split,
+              ['<C-v>'] = smart_opener.smart_open_split,
               ['<C-j>'] = actions.move_selection_next,
               ['<C-k>'] = actions.move_selection_previous,
               ['<C-s>'] = actions.toggle_selection,

@@ -1,9 +1,7 @@
-local M = {}
-
 local cwd = vim.fn.getcwd()
 local cwd_is_frontend = cwd:match 'frontend$' ~= nil or cwd:match 'frontend%-.*$' ~= nil
 
-M.custom_path_display = function(_, path)
+local custom_path_display = function(_, path)
   local filename = vim.fs.basename(path)
 
   -- Ensure the path is relative to the project directory
@@ -70,4 +68,4 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 
-return M
+return custom_path_display
