@@ -5,12 +5,6 @@ return {
     branch = '0.1.x',
     dependencies = {
       'nvim-lua/plenary.nvim',
-      {
-        'natecraddock/telescope-zf-native.nvim',
-        config = function()
-          require('telescope').load_extension 'zf-native'
-        end,
-      },
       -- { -- If encountering errors, see telescope-fzf-native README for installation instructions
       --   'nvim-telescope/telescope-fzf-native.nvim',
       --
@@ -24,16 +18,14 @@ return {
       --     return vim.fn.executable 'make' == 1
       --   end,
       -- },
+      { 'natecraddock/telescope-zf-native.nvim' },
       { 'nvim-telescope/telescope-ui-select.nvim' },
-
       -- Useful for getting pretty icons, but requires a Nerd Font.
       { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
-
       {
         'nvim-telescope/telescope-live-grep-args.nvim',
         version = '^1.0.0',
       },
-
       {
         'nvim-telescope/telescope-node-modules.nvim',
       },
@@ -202,6 +194,7 @@ return {
           },
         },
         extensions = {
+          ['zf-native'] = {},
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
           },
@@ -222,11 +215,13 @@ return {
               },
             },
           },
+          ['node_modules'] = {},
         },
       }
 
       -- Enable Telescope extensions if they are installed
-      pcall(require('telescope').load_extension, 'fzf')
+      -- pcall(require('telescope').load_extension, 'fzf')
+      pcall(require('telescope').load_extension 'zf-native')
       pcall(require('telescope').load_extension, 'ui-select')
       pcall(require('telescope').load_extension, 'live_grep_args')
       pcall(require('telescope').load_extension, 'node_modules')
