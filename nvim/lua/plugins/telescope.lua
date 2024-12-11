@@ -23,10 +23,6 @@ return {
       -- Useful for getting pretty icons, but requires a Nerd Font.
       { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
       {
-        'nvim-telescope/telescope-live-grep-args.nvim',
-        version = '^1.0.0',
-      },
-      {
         'nvim-telescope/telescope-node-modules.nvim',
       },
     },
@@ -198,23 +194,6 @@ return {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
           },
-          live_grep_args = {
-            auto_quoting = true,
-            mappings = {
-              i = {
-                ['<C-q>'] = require('telescope-live-grep-args.actions').quote_prompt(),
-                ['<C-g>'] = require('telescope-live-grep-args.actions').quote_prompt { postfix = ' -g ' },
-                ['<C-i>'] = require('telescope-live-grep-args.actions').quote_prompt { postfix = ' --iglob ' },
-                ['<C-t>'] = require('telescope-live-grep-args.actions').quote_prompt { postfix = ' -t ' },
-                ['<C-f>'] = require('telescope-live-grep-args.actions').quote_prompt { postfix = ' -F ' },
-                ['<C-n>'] = require('telescope-live-grep-args.actions').quote_prompt { postfix = ' -g **/{mobile,mobile-app}/** ' },
-                ['<C-w>'] = require('telescope-live-grep-args.actions').quote_prompt {
-                  postfix = ' -g **/{web,web-app}/** -g "!**/.next/**" -g "!**/node_modules/**"',
-                },
-                ['<C-x>'] = require('telescope-live-grep-args.actions').quote_prompt { postfix = ' -g **/shared/** ' },
-              },
-            },
-          },
           ['node_modules'] = {},
         },
       }
@@ -223,7 +202,6 @@ return {
       -- pcall(require('telescope').load_extension, 'fzf')
       pcall(require('telescope').load_extension 'zf-native')
       pcall(require('telescope').load_extension, 'ui-select')
-      pcall(require('telescope').load_extension, 'live_grep_args')
       pcall(require('telescope').load_extension, 'node_modules')
 
       -- See `:help telescope.builtin`
@@ -232,13 +210,25 @@ return {
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
       vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
       vim.keymap.set('n', '<leader>st', builtin.builtin, { desc = '[S]earch [T]elescope Pickers' })
-      vim.keymap.set('n', '<leader>sg', require('telescope').extensions.live_grep_args.live_grep_args, { desc = '[S]earch by [G]rep with args' })
+      vim.keymap.set('n', '<leader>sg', require 'telescope.live-grep', { desc = '[S]earch by [G]rep with shortcuts' })
+
       vim.keymap.set('n', '<leader>sw', function()
-        require('telescope-live-grep-args.shortcuts').grep_word_under_cursor { postfix = '', quote = false, trim = false }
+        local word = vim.fn.expand '<cword>'
+        require 'telescope.live-grep' { default_text = word }
       end, { desc = '[S]earch current [W]ord' })
-      vim.keymap.set('v', '<leader>sg', function()
-        require('telescope-live-grep-args.shortcuts').grep_visual_selection { postfix = '', quote = false, trim = false }
-      end, { desc = '[S]earch [V]isual selection' })
+
+      vim.keymap.set('x', '<leader>sg', function()
+        local visual_selection = function()
+          local save_previous = vim.fn.getreg 'a'
+          vim.cmd 'noau normal! "ay'
+          local selection = vim.fn.getreg 'a'
+          vim.fn.setreg('a', save_previous)
+          return selection:gsub('\n', ' '):gsub('^%s*(.-)%s*$', '%1')
+        end
+        local selected_text = visual_selection()
+        builtin.live_grep { default_text = selected_text }
+      end, { desc = '[S]earch by [G]rep with shortcuts' })
+
       vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
