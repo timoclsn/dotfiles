@@ -162,6 +162,7 @@ return {
               ['<S-Tab>'] = actions.move_selection_previous,
               ['<C-s>'] = actions.toggle_selection,
               ['<C-space>'] = actions.to_fuzzy_refine,
+              ['<space>'] = require('telescope.actions.layout').toggle_preview,
             },
             i = {
               ['<CR>'] = custom_actions.smart_open,
@@ -171,6 +172,7 @@ return {
               ['<C-k>'] = require('telescope.actions').move_selection_previous,
               ['<C-s>'] = actions.toggle_selection,
               ['<C-space>'] = actions.to_fuzzy_refine,
+              ['<C-p>'] = require('telescope.actions.layout').toggle_preview,
             },
           },
           path_display = custom_path_display,
