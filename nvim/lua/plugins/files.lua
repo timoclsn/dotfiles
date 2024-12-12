@@ -120,8 +120,11 @@ return {
     },
     config = function()
       local harpoon = require 'harpoon'
-      local conf = require('telescope.config').values
-      local utils = require 'telescope.utils'
+      local pickers = require 'telescope.pickers'
+      local themes = require 'telescope.themes'
+      local finders = require 'telescope.finders'
+      local make_entry = require 'telescope.make_entry'
+      local config = require 'telescope.config'
 
       local function toggle_telescope(harpoon_files)
         local file_paths = {}
@@ -129,24 +132,17 @@ return {
           table.insert(file_paths, item.value)
         end
 
-        require('telescope.pickers')
+        pickers
           .new(
             {},
-            require('telescope.themes').get_dropdown {
+            themes.get_dropdown {
               prompt_title = 'Harpoon',
-              finder = require('telescope.finders').new_table {
+              finder = finders.new_table {
                 results = file_paths,
-                entry_maker = function(entry)
-                  return {
-                    value = entry,
-                    display = utils.transform_path({ path_display = conf.path_display }, entry),
-                    ordinal = entry,
-                    path = entry,
-                  }
-                end,
+                entry_maker = make_entry.gen_from_file {},
               },
               previewer = false,
-              sorter = conf.generic_sorter {},
+              sorter = config.values.generic_sorter {},
               winblend = 10,
               initial_mode = 'normal',
               layout_config = {
