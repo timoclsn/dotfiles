@@ -14,11 +14,8 @@ return {
       statuscolumn = {},
       input = {},
       indent = {
-        scope = {
-          underline = false,
-          animate = {
-            enabled = false,
-          },
+        animate = {
+          enabled = false,
         },
       },
     },
