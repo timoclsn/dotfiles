@@ -17,6 +17,7 @@ return {
 
       require('telescope').setup {
         defaults = {
+          scroll_strategy = 'limit',
           mappings = {
             n = {
               ['<CR>'] = smart_opener.smart_open,
@@ -44,6 +45,7 @@ return {
         pickers = {
           find_files = {
             hidden = true,
+            find_command = { 'rg', '--files', '--color', 'never', '--sortr', 'modified' },
           },
           oldfiles = {
             cwd_only = true,
@@ -71,11 +73,16 @@ return {
 
       local builtin = require 'telescope.builtin'
 
+      vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
+      vim.keymap.set('n', '<leader>sg', require 'telescope.live-grep', { desc = '[S]earch by [G]rep' })
+
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
-      vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
+      vim.keymap.set('n', '<leader>sc', builtin.git_commits, { desc = '[S]earch [C]ommits' })
+      vim.keymap.set('n', '<leader>sb', builtin.git_bcommits, { desc = '[S]earch [B]lame' })
+      vim.keymap.set('n', '<leader>sr', builtin.registers, { desc = '[S]earch [R]egisters' })
+      vim.keymap.set('n', '<leader>sm', builtin.marks, { desc = '[S]earch [M]arks' })
       vim.keymap.set('n', '<leader>st', builtin.builtin, { desc = '[S]earch [T]elescope Pickers' })
-      vim.keymap.set('n', '<leader>sg', require 'telescope.live-grep', { desc = '[S]earch by [G]rep' })
 
       vim.keymap.set('n', '<leader>sw', function()
         local word = vim.fn.expand '<cword>'
@@ -95,7 +102,7 @@ return {
       end, { desc = '[S]earch by [G]rep' })
 
       vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
-      vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
+      vim.keymap.set('n', '<leader>ss', builtin.resume, { desc = '[S]earch [R]esume' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader>sq', builtin.quickfixhistory, { desc = '[S]earch [Q]uickfix History' })
       vim.keymap.set('n', '<leader>sp', '<cmd>:Telescope node_modules list<CR>', { desc = '[S]earch Node [P]ackages' })
@@ -107,14 +114,9 @@ return {
         })
       end, { desc = '[/] Fuzzily search in current buffer' })
 
-      vim.keymap.set('n', '<leader>sn', function()
-        builtin.find_files { cwd = vim.fn.stdpath 'config' }
-      end, { desc = '[S]earch [N]eovim files' })
-
       vim.keymap.set('n', '<Tab>', function()
         builtin.buffers(require('telescope.themes').get_dropdown {
           sort_mru = true,
-          sort_lastused = true,
           ignore_current_buffer = true,
           only_cwd = true,
           previewer = false,
