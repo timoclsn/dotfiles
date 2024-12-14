@@ -74,7 +74,7 @@ return {
       ---@diagnostic disable-next-line: duplicate-set-field
       statusline.section_filename = function()
         local path = vim.fn.expand '%:p'
-        local formatted = path_formatter.format_path(path)
+        local formatted = path_formatter(path)
 
         -- Get file flags (modified, readonly, etc.)
         local flags = ''
