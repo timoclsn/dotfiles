@@ -69,7 +69,7 @@ return {
         return ''
       end
 
-      local path_formatter = require 'utils.path-formatter'
+      local path_formatter = require 'utils.path_formatter'
 
       ---@diagnostic disable-next-line: duplicate-set-field
       statusline.section_filename = function()

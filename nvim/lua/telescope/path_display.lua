@@ -1,4 +1,4 @@
-local path_formatter = require 'utils.path-formatter'
+local path_formatter = require 'nvim.lua.utils.path_formatter'
 
 local custom_path_display = function(_, path)
   local formatted = path_formatter.format_path(path)

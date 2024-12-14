@@ -56,7 +56,6 @@ function M.format_path(path, options)
   local relative_path = vim.fn.fnamemodify(path, ':~:.:h')
   -- Remove leading './' if present
   relative_path = relative_path:gsub('^%./', '')
-  print(relative_path)
 
   local is_frontend = is_frontend_project(cwd, relative_path)
   local is_nextjs = is_nextjs_project(filename)
