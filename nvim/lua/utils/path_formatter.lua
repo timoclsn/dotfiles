@@ -35,7 +35,7 @@ local function format_frontend_path(full_path, filename)
 end
 
 -- Format path for Next.js routes by extracting the route information
-local function format_route_path(full_path, filename)
+local function format_nextjs_path(full_path, filename)
   -- Extract the immediate parent directory name
   local directory_name = full_path:match '([^/]+)/[^/]+$'
   if not directory_name then
@@ -88,7 +88,7 @@ local function format_path(path)
   if match_patterns(full_path, frontend_patterns) then
     formatted_filename = format_frontend_path(full_path, filename)
   elseif match_patterns(full_path, nextjs_patterns) then
-    formatted_filename = format_route_path(full_path, filename)
+    formatted_filename = format_nextjs_path(full_path, filename)
   else
     formatted_filename = filename
   end
