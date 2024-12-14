@@ -136,6 +136,7 @@ return {
           .new(
             {},
             themes.get_dropdown {
+              scroll_strategy = 'cycle',
               prompt_title = 'Harpoon',
               finder = finders.new_table {
                 results = file_paths,

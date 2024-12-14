@@ -116,6 +116,7 @@ return {
 
       vim.keymap.set('n', '<Tab>', function()
         builtin.buffers(require('telescope.themes').get_dropdown {
+          scroll_strategy = 'cycle',
           sort_mru = true,
           ignore_current_buffer = true,
           only_cwd = true,
