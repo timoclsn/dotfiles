@@ -12,7 +12,13 @@ return {
         style = 'minimal',
       },
       statuscolumn = {},
-      input = {},
+      input = {
+        win = {
+          relative = 'cursor',
+          row = -3,
+          col = 0,
+        },
+      },
       indent = {
         animate = {
           enabled = false,
