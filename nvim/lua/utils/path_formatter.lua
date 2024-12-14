@@ -1,93 +1,110 @@
 local M = {}
 
--- Path patterns for frontend projects
+-- Cache commonly used Vim and Lua functions
+local basename = vim.fs.basename
+local match = string.match
+local sub = string.sub
+
+-- Define patterns to identify frontend project paths
 local frontend_patterns = {
-  '.*/steuerbot/frontend/.*',
-  '.*/steuerbot/frontend%-[^/]+/.*',
+  'steuerbot/frontend/',
+  'steuerbot/frontend%-[^/]+/',
 }
 
--- Filenames that indicate Next.js pages/routes
-local nextjs_files = {
-  'page.tsx',
-  'route.ts',
+-- Define patterns to identify Next.js route files
+local nextjs_patterns = {
+  'page.tsx$',
+  'route.ts$',
 }
 
--- Helper function to check if we're in a frontend project
-local function is_frontend_project(full_path)
-  for _, pattern in ipairs(frontend_patterns) do
-    local match = full_path:match(pattern)
-    if match then
+-- Patterns for extracting directory information
+local apps_pattern = '/apps/([^/]+)'
+local libs_pattern = '/libs/([^/]+)'
+local directory_pattern = '([^/]+)/[^/]+$'
+local parent_directory_pattern = '([^/]+)/[^/]+/[^/]+$'
+
+-- Check if a path matches any of the given patterns
+local function match_patterns(path, patterns)
+  for pattern_index = 1, #patterns do
+    if string.find(path, patterns[pattern_index]) then
       return true
     end
   end
   return false
 end
 
-local function is_nextjs_project(filename)
-  for _, file in ipairs(nextjs_files) do
-    if filename == file then
-      return true
-    end
-  end
-  return false
-end
-
--- Helper function to format frontend path
+-- Format path for frontend projects by extracting the app or lib name
 local function format_frontend_path(full_path, filename)
-  for component in full_path:gmatch '[^/]+' do
-    if component == 'apps' or component == 'libs' then
-      local next_component = full_path:match(component .. '/([^/]+)')
-      if next_component then
-        return filename .. string.format(' (%s)', next_component)
-      end
-    end
+  -- Check if path is under /apps/ directory
+  local component_name = match(full_path, apps_pattern)
+  if component_name then
+    return filename .. ' (' .. component_name .. ')'
   end
+
+  -- Check if path is under /libs/ directory
+  component_name = match(full_path, libs_pattern)
+  if component_name then
+    return filename .. ' (' .. component_name .. ')'
+  end
+
   return filename
 end
 
--- Helper function to format route/page path
+-- Format path for Next.js routes by extracting the route information
 local function format_route_path(full_path, filename)
-  local directory_name = full_path:match '([^/]+)/[^/]+$'
-  if directory_name then
-    -- Strip parentheses if they exist
-    if directory_name:match '^%b()$' then
-      directory_name = directory_name:sub(2, -2)
-    end
-
-    -- Check for square brackets and add the next directory name one level up
-    if directory_name:match '^%b[]$' then
-      local parent_directory = full_path:match '([^/]+)/[^/]+/[^/]+$'
-      if parent_directory then
-        directory_name = parent_directory .. '/' .. directory_name
-      end
-    end
-
-    return filename .. string.format(' (%s)', directory_name)
+  -- Extract the immediate parent directory name
+  local directory_name = match(full_path, directory_pattern)
+  if not directory_name then
+    return filename
   end
-  return filename
+
+  -- Handle special directory naming patterns
+  local first_character = sub(directory_name, 1, 1)
+  local last_character = sub(directory_name, -1)
+
+  -- Remove parentheses if present
+  if first_character == '(' and last_character == ')' then
+    directory_name = sub(directory_name, 2, -2)
+  -- For dynamic routes (in square brackets), include the parent directory name
+  elseif first_character == '[' and last_character == ']' then
+    local parent_directory = match(full_path, parent_directory_pattern)
+    if parent_directory then
+      directory_name = parent_directory .. '/' .. directory_name
+    end
+  end
+
+  return filename .. ' (' .. directory_name .. ')'
 end
 
--- Main formatting function
-function M.format_path(path, options)
-  options = options or {}
-
-  local filename = vim.fs.basename(path)
+-- Main function to format file paths based on their location and type
+function M.format_path(path)
   local full_path = vim.fn.fnamemodify(path, ':p')
+  local filename = basename(full_path)
+
+  -- Handle empty paths
+  if full_path == '' then
+    return { filename = '', relative_path = '' }
+  end
+
   local relative_path = vim.fn.fnamemodify(path, ':~:.:h')
 
-  -- Remove trailing slash if present
-  full_path = full_path:gsub('/$', '')
-  -- Remove leading './' if present
-  relative_path = relative_path:gsub('^%./', '')
+  -- Clean up path formatting
+  if sub(full_path, -1) == '/' then
+    full_path = sub(full_path, 1, -2)
+  end
 
-  local is_frontend = is_frontend_project(full_path)
-  local is_nextjs = is_nextjs_project(filename)
+  if sub(relative_path, 1, 2) == './' then
+    relative_path = sub(relative_path, 3)
+  end
 
-  local formatted_filename = filename
-  if is_frontend then
+  -- Determine the appropriate formatting based on path type
+  local formatted_filename
+  if match_patterns(full_path, frontend_patterns) then
     formatted_filename = format_frontend_path(full_path, filename)
-  elseif is_nextjs then
+  elseif match_patterns(full_path, nextjs_patterns) then
     formatted_filename = format_route_path(full_path, filename)
+  else
+    formatted_filename = filename
   end
 
   return {
