@@ -98,7 +98,7 @@ return {
           return selection:gsub('\n', ' '):gsub('^%s*(.-)%s*$', '%1')
         end
         local selected_text = visual_selection()
-        require 'nvim.lua.telescope.live_grep' { default_text = selected_text }
+        require 'telescope.live_grep' { default_text = selected_text }
       end, { desc = '[S]earch by [G]rep' })
 
       vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
