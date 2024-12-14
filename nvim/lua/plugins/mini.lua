@@ -69,50 +69,12 @@ return {
         return ''
       end
 
+      local path_formatter = require 'utils.path-formatter'
+
       ---@diagnostic disable-next-line: duplicate-set-field
       statusline.section_filename = function()
-        local path = vim.fn.expand '%:p' -- Get full path of current file
-        local filename = vim.fn.expand '%:t'
-        local relative_path = vim.fn.fnamemodify(path, ':~:.:h') -- Get directory path relative to current directory
-
-        -- Check if we're in the "frontend" project
-        local is_frontend = vim.fn.getcwd():match 'frontend$' ~= nil or vim.fn.getcwd():match 'frontend%-.*$' ~= nil
-
-        if is_frontend then
-          -- Find "apps" or "libs" in the path
-          for component in relative_path:gmatch '[^/]+' do
-            if component == 'apps' or component == 'libs' then
-              -- Check if there's a next component
-              local next_component = relative_path:match(component .. '/([^/]+)')
-              if next_component then
-                filename = filename .. string.format(' (%s)', next_component)
-                break -- Stop after finding the first occurrence
-              end
-            end
-          end
-        else
-          -- Check if the filename is "page.tsx" or "route.ts"
-          if filename == 'page.tsx' or filename == 'route.ts' then
-            -- Extract the directory name
-            local directory_name = relative_path:match '([^/]+)$'
-            if directory_name then
-              -- Strip parentheses if they exist
-              if directory_name:match '^%b()$' then
-                directory_name = directory_name:sub(2, -2)
-              end
-
-              -- Check for square brackets and add the next directory name one level up
-              if directory_name:match '^%b[]$' then
-                local parent_directory = relative_path:match '([^/]+)/[^/]+$'
-                if parent_directory then
-                  directory_name = parent_directory .. '/' .. directory_name
-                end
-              end
-
-              filename = filename .. string.format(' (%s)', directory_name)
-            end
-          end
-        end
+        local path = vim.fn.expand '%:p'
+        local formatted = path_formatter.format_path(path)
 
         -- Get file flags (modified, readonly, etc.)
         local flags = ''
@@ -127,11 +89,11 @@ return {
         end
 
         -- Construct the display string
-        local display = filename .. flags
+        local display = formatted.filename .. flags
 
         -- Add the path if it's not just '.'
-        if relative_path ~= '.' then
-          display = display .. ' | ' .. relative_path
+        if formatted.relative_path ~= '.' then
+          display = display .. ' | ' .. formatted.relative_path
         end
 
         return display
