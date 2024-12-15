@@ -25,6 +25,7 @@ vim.keymap.set('n', 'L', '$', { desc = 'Goto last character of line' })
 vim.keymap.set('n', '<C-f>', '<cmd>silent !tmux neww tmux-sessionizer<CR>')
 vim.keymap.set('n', '<leader>o', 'o<ESC>k', { desc = 'Insert line above' })
 vim.keymap.set('n', '<leader>O', 'O<ESC>j', { desc = 'Insert line below' })
+vim.keymap.set('n', '<leader>k', vim.diagnostic.open_float, { desc = 'Show diagnostic under cursor' })
 
 -- Quickfix list
 vim.keymap.set('n', '<leader>qn', '<cmd>cnext<CR>', { desc = '[Q]uickfix list [N]ext item' })
@@ -34,12 +35,6 @@ vim.keymap.set('n', '<leader>qc', '<cmd>cclose<CR>', { desc = '[Q]uickfix list [
 vim.keymap.set('n', '<leader>qo', '<cmd>colder<CR>', { desc = '[Q]uickfix list [O]lder list' })
 vim.keymap.set('n', '<leader>qe', '<cmd>cnewer<CR>', { desc = '[Q]uickfix list n[E]wer list' })
 vim.keymap.set('n', '<leader>qd', vim.diagnostic.setloclist, { desc = '[Q]uickfix list [D]iagnostics' })
-
--- Buffer
-vim.keymap.set('n', '<leader>bb', '<cmd>bd<CR>', { desc = '[B]uffer [D]elete' })
-vim.keymap.set('n', '<leader>bw', '<cmd>close<CR>', { desc = '[B]uffer [C]lose' })
-vim.keymap.set('n', '<leader>bt', '<cmd>tabclose<CR>', { desc = '[B]uffer close [T]ab' })
-vim.keymap.set('n', '<leader>bs', '<cmd>wincmd =<CR>', { desc = '[B]uffer [S]pace windows' })
 
 -- Yank
 vim.keymap.set('n', '<leader>yb', 'ggVGy', { desc = '[Y]ank [B]uffer content' })
