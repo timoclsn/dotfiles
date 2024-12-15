@@ -26,8 +26,12 @@ vim.keymap.set('n', '<C-f>', '<cmd>silent !tmux neww tmux-sessionizer<CR>')
 vim.keymap.set('n', '<leader>o', 'o<ESC>k', { desc = 'Insert line above' })
 vim.keymap.set('n', '<leader>O', 'O<ESC>j', { desc = 'Insert line below' })
 vim.keymap.set('n', '<leader>k', vim.diagnostic.open_float, { desc = 'Show diagnostic under cursor' })
+
+-- Remap brackets for easier access to brakets keymaps
 vim.keymap.set('n', 'ö', '[', { remap = true })
 vim.keymap.set('n', 'ä', ']', { remap = true })
+vim.keymap.set('n', 'Ö', '{', { remap = true })
+vim.keymap.set('n', 'Ä', '}', { remap = true })
 
 -- Quickfix list
 vim.keymap.set('n', '<leader>qq', '<cmd>copen<CR>', { desc = '[Q]uickfix list [O]pen' })
