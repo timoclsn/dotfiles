@@ -22,13 +22,13 @@ local function format_frontend_path(full_path, filename)
   -- Check if path is under /apps/ directory
   local component_name = full_path:match '/apps/([^/]+)'
   if component_name then
-    return filename .. ' (' .. component_name .. ')'
+    return filename .. ' [' .. component_name .. ']'
   end
 
   -- Check if path is under /libs/ directory
   component_name = full_path:match '/libs/([^/]+)'
   if component_name then
-    return filename .. ' (' .. component_name .. ')'
+    return filename .. ' [' .. component_name .. ']'
   end
 
   return filename
@@ -57,7 +57,7 @@ local function format_nextjs_path(full_path, filename)
     end
   end
 
-  return filename .. ' (' .. directory_name .. ')'
+  return filename .. ' [' .. directory_name .. ']'
 end
 
 -- Main function to format file paths based on their location and type
