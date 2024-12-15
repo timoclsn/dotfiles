@@ -130,27 +130,24 @@ return {
         })
       end, { desc = 'Open Buffers' })
 
-      --   vim.api.nvim_create_autocmd('FileType', {
-      --     pattern = 'TelescopeResults',
-      --     callback = function(ctx)
-      --       vim.api.nvim_buf_call(ctx.buf, function()
-      --         vim.fn.clearmatches()
-      --         local group = 'TelescopeResultsOperator'
+      -- vim.api.nvim_create_autocmd('FileType', {
+      --   pattern = 'TelescopeResults',
+      --   callback = function(ctx)
+      --     vim.api.nvim_buf_call(ctx.buf, function()
+      --       vim.fn.clearmatches()
+      --       local group = 'TelescopeResultsNormal'
       --
-      --         -- Match directory before [dynamic]/page.tsx or [dynamic]/route.ts
-      --         vim.fn.matchadd(group, '/\\zs[^/]*\\ze/\\[.*\\]/\\%(page\\.tsx\\|route\\.ts\\)$')
+      --       -- Match everything first (priority 10)
+      --       vim.fn.matchadd('TelescopeResultsComment', '.\\+', 10)
       --
-      --         -- Match directory before page.tsx or route.ts, excluding dynamic directories
-      --         vim.fn.matchadd(group, '/\\zs[^\\[][^/]*\\ze/\\%(page\\.tsx\\|route\\.ts\\)$')
-      --
-      --         -- Match direcoty after libs/ or apps/
-      --         vim.fn.matchadd(group, '\\%(libs\\|apps\\)/\\zs[^/]*')
-      --
-      --         -- Match filename
-      --         vim.fn.matchadd(group, '/\\zs[^/]*$')
-      --       end)
-      --     end,
-      --   })
+      --       -- Original patterns with higher priority (20)
+      --       vim.fn.matchadd(group, '/\\zs[^/]*\\ze/\\[.*\\]/\\%(page\\.tsx\\|route\\.ts\\)$', 20)
+      --       vim.fn.matchadd(group, '/\\zs[^\\[][^/]*\\ze/\\%(page\\.tsx\\|route\\.ts\\)$', 20)
+      --       vim.fn.matchadd(group, '\\%(libs\\|apps\\)/\\zs[^/]*', 20)
+      --       vim.fn.matchadd(group, '/\\zs[^/]*$', 20)
+      --     end)
+      --   end,
+      -- })
     end,
   },
 }
