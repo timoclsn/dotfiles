@@ -93,7 +93,7 @@ return {
 
         -- Add the path if it's not just '.'
         if formatted.relative_path ~= '.' then
-          display = display .. ' | ' .. formatted.relative_path
+          display = display .. ' -> ' .. formatted.relative_path
         end
 
         return display
