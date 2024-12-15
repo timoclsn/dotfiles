@@ -26,14 +26,14 @@ vim.keymap.set('n', '<C-f>', '<cmd>silent !tmux neww tmux-sessionizer<CR>')
 vim.keymap.set('n', '<leader>o', 'o<ESC>k', { desc = 'Insert line above' })
 vim.keymap.set('n', '<leader>O', 'O<ESC>j', { desc = 'Insert line below' })
 vim.keymap.set('n', '<leader>k', vim.diagnostic.open_float, { desc = 'Show diagnostic under cursor' })
+vim.keymap.set('n', 'ö', '[', { remap = true })
+vim.keymap.set('n', 'ä', ']', { remap = true })
 
 -- Quickfix list
-vim.keymap.set('n', '<leader>qn', '<cmd>cnext<CR>', { desc = '[Q]uickfix list [N]ext item' })
-vim.keymap.set('n', '<leader>qp', '<cmd>cprev<CR>', { desc = '[Q]uickfix list [P]revious item' })
 vim.keymap.set('n', '<leader>qq', '<cmd>copen<CR>', { desc = '[Q]uickfix list [O]pen' })
 vim.keymap.set('n', '<leader>qc', '<cmd>cclose<CR>', { desc = '[Q]uickfix list [C]lose' })
 vim.keymap.set('n', '<leader>qo', '<cmd>colder<CR>', { desc = '[Q]uickfix list [O]lder list' })
-vim.keymap.set('n', '<leader>qe', '<cmd>cnewer<CR>', { desc = '[Q]uickfix list n[E]wer list' })
+vim.keymap.set('n', '<leader>qn', '<cmd>cnewer<CR>', { desc = '[Q]uickfix list [N]ewer list' })
 vim.keymap.set('n', '<leader>qd', vim.diagnostic.setloclist, { desc = '[Q]uickfix list [D]iagnostics' })
 
 -- Yank

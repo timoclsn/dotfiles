@@ -4,6 +4,12 @@ return {
     config = function()
       require('mini.pairs').setup()
 
+      require('mini.bracketed').setup()
+
+      require('mini.tabline').setup {
+        set_vim_settings = false, -- Keep own setting of only showing tabline when there are multiple tabs
+      }
+
       require('mini.ai').setup {
         custom_textobjects = {
           F = require('mini.ai').gen_spec.treesitter { a = '@function.outer', i = '@function.inner' },

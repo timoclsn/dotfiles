@@ -26,6 +26,9 @@ vim.opt.expandtab = true
 vim.opt.autoindent = true
 vim.opt.smartindent = true
 
+vim.opt.showtabline = 1
+vim.opt.hidden = true
+
 -- Save undo history
 vim.opt.undofile = true
 
