@@ -9,6 +9,7 @@ return {
       { 'nvim-telescope/telescope-ui-select.nvim' },
       { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
       { 'nvim-telescope/telescope-node-modules.nvim' },
+      { 'benfowler/telescope-luasnip.nvim' },
     },
     config = function()
       local actions = require 'telescope.actions'
@@ -64,12 +65,14 @@ return {
             require('telescope.themes').get_dropdown(),
           },
           ['node_modules'] = {},
+          ['luasnip'] = {},
         },
       }
 
       pcall(require('telescope').load_extension 'zf-native')
       pcall(require('telescope').load_extension, 'ui-select')
       pcall(require('telescope').load_extension, 'node_modules')
+      pcall(require('telescope').load_extension 'luasnip')
 
       local builtin = require 'telescope.builtin'
 
@@ -106,6 +109,7 @@ return {
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader>sq', builtin.quickfixhistory, { desc = '[S]earch [Q]uickfix History' })
       vim.keymap.set('n', '<leader>sp', '<cmd>:Telescope node_modules list<CR>', { desc = '[S]earch Node [P]ackages' })
+      vim.keymap.set('n', '<leader>sl', '<cmd>:Telescope luasnip<CR>', { desc = '[S]earch Node [L]uasip' })
 
       vim.keymap.set('n', '<leader>/', function()
         builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
