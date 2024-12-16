@@ -58,7 +58,11 @@ return {
         ---@diagnostic disable-next-line: missing-fields
         formatting = {
           format = lspkind.cmp_format {
-            mode = 'symbol',
+            mode = 'symbol_text',
+            max_width = 50,
+            ellipsis_char = '...',
+            show_labelDetails = false,
+            symbol_map = { Copilot = '' },
           },
         },
 
@@ -68,13 +72,13 @@ return {
         -- No, but seriously. Please read `:help ins-completion`, it is really good!
         mapping = cmp.mapping.preset.insert {
           -- Select the [n]ext item
-          ['<C-n>'] = cmp.mapping.select_next_item(),
+          ['<C-j>'] = cmp.mapping.select_next_item(),
           -- Select the [p]revious item
-          ['<C-p>'] = cmp.mapping.select_prev_item(),
+          ['<C-k>'] = cmp.mapping.select_prev_item(),
 
           -- Scroll the documentation window [b]ack / [f]orward
-          ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-          ['<C-f>'] = cmp.mapping.scroll_docs(4),
+          ['<C-u>'] = cmp.mapping.scroll_docs(-4),
+          ['<C-d>'] = cmp.mapping.scroll_docs(4),
 
           -- Accept ([y]es) the completion.
           --  This will auto-import if your LSP supports it.

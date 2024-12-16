@@ -14,8 +14,8 @@ return {
           hide_during_completion = true,
           keymap = {
             accept = '<Tab>',
-            next = '<C-n>',
-            prev = '<C-p>',
+            next = '<C-j>',
+            prev = '<C-k>',
             dismiss = '<C-e>',
           },
         },
