@@ -31,6 +31,7 @@ return {
           },
         },
       },
+      'onsails/lspkind.nvim',
       'saadparwaiz1/cmp_luasnip',
 
       -- Adds other completion capabilities.
@@ -44,6 +45,7 @@ return {
       local cmp = require 'cmp'
       local luasnip = require 'luasnip'
       luasnip.config.setup {}
+      local lspkind = require 'lspkind'
 
       cmp.setup {
         snippet = {
@@ -52,6 +54,13 @@ return {
           end,
         },
         completion = { completeopt = 'menu,menuone,noinsert' },
+
+        ---@diagnostic disable-next-line: missing-fields
+        formatting = {
+          format = lspkind.cmp_format {
+            mode = 'symbol',
+          },
+        },
 
         -- For an understanding of why these mappings were
         -- chosen, you will need to read `:help ins-completion`
