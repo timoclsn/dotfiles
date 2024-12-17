@@ -33,6 +33,7 @@ return {
         },
       },
       'onsails/lspkind.nvim',
+      'brenoprata10/nvim-highlight-colors',
       'saadparwaiz1/cmp_luasnip',
 
       -- Adds other completion capabilities.
@@ -58,13 +59,24 @@ return {
 
         ---@diagnostic disable-next-line: missing-fields
         formatting = {
-          format = lspkind.cmp_format {
-            mode = 'symbol_text',
-            max_width = 50,
-            ellipsis_char = '...',
-            show_labelDetails = false,
-            symbol_map = { Copilot = '' },
-          },
+          format = function(entry, item)
+            local color_item = require('nvim-highlight-colors').format(entry, { kind = item.kind })
+
+            item = lspkind.cmp_format {
+              mode = 'symbol_text',
+              max_width = 50,
+              ellipsis_char = '...',
+              show_labelDetails = false,
+              symbol_map = { Copilot = '' },
+            }(entry, item)
+
+            if color_item.abbr_hl_group then
+              item.kind_hl_group = color_item.abbr_hl_group
+              item.kind = color_item.abbr
+            end
+
+            return item
+          end,
         },
 
         -- For an understanding of why these mappings were

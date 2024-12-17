@@ -105,15 +105,11 @@ return {
     },
   },
   {
-    'NvChad/nvim-colorizer.lua',
-    config = function()
-      require('colorizer').setup {
-        user_default_options = {
-          css = true,
-          tailwind = true,
-        },
-      }
-    end,
+    'brenoprata10/nvim-highlight-colors',
+    opts = {
+      render = 'virtual',
+      enable_tailwind = true,
+    },
   },
   {
     'axelvc/template-string.nvim',
