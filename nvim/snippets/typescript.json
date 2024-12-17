@@ -3,16 +3,24 @@
     "prefix": "cl",
     "body": ["console.log($1);"]
   },
-  "Debugger": {
-    "prefix": "db",
-    "body": ["debugger;"]
-  },
   "Console Log as Object": {
     "prefix": "clo",
     "body": ["console.log({$1});"]
   },
+  "Debugger": {
+    "prefix": "db",
+    "body": ["debugger;"]
+  },
+  "Pretty Print JSON": {
+    "prefix": "pps",
+    "body": ["JSON.stringify($1, null, 2)"]
+  },
   "Arrow Function": {
     "prefix": "af",
+    "body": ["($1) => {", "  $2", "}"]
+  },
+  "Arrow Function Const": {
+    "prefix": "afc",
     "body": ["const $1 = ($2) => {", "  $3", "};"]
   },
   "Throw new Error": {
@@ -22,6 +30,10 @@
   "use server": {
     "prefix": "us",
     "body": ["'use server';"]
+  },
+  "useState": {
+    "prefix": "us",
+    "body": "const [${1:state}, set${1/(.*)/${1:/capitalize}/}] = useState(${2:initValue})$0"
   },
   "useEffect": {
     "prefix": "ue",
@@ -47,10 +59,6 @@
       "export default dynamicCascadingStyle(() => ({$1}));"
     ]
   },
-  "Pretty Print JSON": {
-    "prefix": "pps",
-    "body": ["JSON.stringify($1, null, 2)"]
-  },
   "Generator Function": {
     "prefix": "gf",
     "body": ["function* () {", "  $1", "}"]
@@ -58,5 +66,66 @@
   "Yield*": {
     "prefix": "ys",
     "body": ["yield* $1"]
+  },
+  "If Statement": {
+    "prefix": "if",
+    "body": ["if (${1:condition}) {", "  $0", "}"]
+  },
+  "Switch Statement": {
+    "prefix": "switch",
+    "body": [
+      "switch (${1:key}) {",
+      "\tcase ${2:value}:",
+      "\t\t$0",
+      "\t\tbreak;",
+      "",
+      "\tdefault:",
+      "\t\tbreak;",
+      "}"
+    ]
+  },
+  "Try-Catch Statement": {
+    "prefix": "trycatch",
+    "body": ["try {", "\t$0", "} catch (${1:error}) {", "\t", "}"]
+  },
+  "Set Interval Function": {
+    "prefix": "setinterval",
+    "body": ["setInterval(() => {", "\t$0", "}, ${1:interval});"]
+  },
+  "Import external module.": {
+    "prefix": "import statement",
+    "body": ["import { $0 } from \"${1:module}\";"]
+  },
+  "For Loop": {
+    "prefix": "for",
+    "body": [
+      "for (let ${1:index} = 0; ${1:index} < ${2:array}.length; ${1:index}++) {",
+      "\tconst ${3:element} = ${2:array}[${1:index}];",
+      "\t$0",
+      "}"
+    ],
+    "description": "For Loop"
+  },
+  "For-Each Loop": {
+    "prefix": "foreach",
+    "body": ["${1:array}.forEach(${2:element} => {", "\t$0", "});"],
+    "description": "For-Each Loop"
+  },
+  "For-In Loop": {
+    "prefix": "forin",
+    "body": [
+      "for (const ${1:key} in ${2:object}) {",
+      "\tif (${2:object}.hasOwnProperty(${1:key})) {",
+      "\t\tconst ${3:element} = ${2:object}[${1:key}];",
+      "\t\t$0",
+      "\t}",
+      "}"
+    ],
+    "description": "For-In Loop"
+  },
+  "For-Of Loop": {
+    "prefix": "forof",
+    "body": ["for (const ${1:iterator} of ${2:object}) {", "\t$0", "}"],
+    "description": "For-Of Loop"
   }
 }
