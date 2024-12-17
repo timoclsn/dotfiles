@@ -89,7 +89,7 @@
     "description": "Create if statement"
   },
   "Switch Statement": {
-    "prefix": "switch",
+    "prefix": "sw",
     "body": [
       "switch ($1) {",
       "  case $2:",
@@ -103,22 +103,22 @@
     "description": "Create switch statement"
   },
   "Try-Catch Statement": {
-    "prefix": "trycatch",
+    "prefix": "tc",
     "body": ["try {", "  $1$0", "} catch (${2:error}) {", "  ", "}"],
     "description": "Create try-catch block"
   },
   "Set Interval Function": {
-    "prefix": "setinterval",
+    "prefix": "si",
     "body": ["setInterval(() => {", "  $1$0", "}, ${2:1000});"],
     "description": "Create interval (ms)"
   },
   "Import external module": {
-    "prefix": "import statement",
-    "body": ["import { $1 } from '$2';$0"],
+    "prefix": "imp",
+    "body": ["import { $2 } from '$1';$0"],
     "description": "Import from module"
   },
   "For Loop": {
-    "prefix": "for",
+    "prefix": "fl",
     "body": [
       "for (let ${1:i} = 0; $1 < $2.length; $1++) {",
       "  const $3 = $2[$1];",
@@ -128,7 +128,7 @@
     "description": "Create for loop"
   },
   "For-In Loop": {
-    "prefix": "forin",
+    "prefix": "fil",
     "body": [
       "for (const $1 in $2) {",
       "  if ($2.hasOwnProperty($1)) {",
@@ -140,7 +140,7 @@
     "description": "Create for-in loop"
   },
   "For-Of Loop": {
-    "prefix": "forof",
+    "prefix": "fol",
     "body": ["for (const $1 of $2) {", "  $3$0", "}"],
     "description": "Create for-of loop"
   }
