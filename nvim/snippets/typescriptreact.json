@@ -26,6 +26,11 @@
     ],
     "description": "Create React function component with Props interface"
   },
+  "Interface": {
+    "prefix": "inf",
+    "body": ["interface ${1:Props} {", "  $2", "}$0"],
+    "description": "Create interface"
+  },
   "React Native Style": {
     "prefix": "rns",
     "body": ["style={styles.$1}$0"],
