@@ -1,11 +1,17 @@
 {
   "use client": {
     "prefix": "uc",
-    "body": ["'use client';"]
+    "body": ["'use client';"],
+    "description": "Add React.js client directive"
   },
   "Function Component": {
     "prefix": "fc",
-    "body": ["export const ${TM_FILENAME_BASE} = () => {", "  return $1;", "};"]
+    "body": [
+      "export const ${TM_FILENAME_BASE} = () => {",
+      "  return $1;$0",
+      "};"
+    ],
+    "description": "Create React function component"
   },
   "Function Component with Props": {
     "prefix": "fcp",
@@ -15,12 +21,14 @@
       "}",
       "",
       "export const ${TM_FILENAME_BASE} = ({$2}: Props) => {",
-      "  return $3;",
+      "  return $3;$0",
       "};"
-    ]
+    ],
+    "description": "Create React function component with Props interface"
   },
   "React Native Style": {
     "prefix": "rns",
-    "body": ["style={styles.$1}"]
+    "body": ["style={styles.$1}$0"],
+    "description": "Add StyleSheet reference"
   }
 }

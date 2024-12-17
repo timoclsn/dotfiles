@@ -1,131 +1,147 @@
 {
   "Console Log": {
     "prefix": "cl",
-    "body": ["console.log($1);"]
+    "body": ["console.log($1);$0"],
+    "description": "Log value to console"
   },
   "Console Log as Object": {
     "prefix": "clo",
-    "body": ["console.log({$1});"]
+    "body": ["console.log({$1});$0"],
+    "description": "Log value as object with its name as key"
   },
   "Debugger": {
     "prefix": "db",
-    "body": ["debugger;"]
+    "body": ["debugger;"],
+    "description": "Add debugger breakpoint"
   },
   "Pretty Print JSON": {
     "prefix": "pps",
-    "body": ["JSON.stringify($1, null, 2)"]
+    "body": ["JSON.stringify($1, null, 2)$0"],
+    "description": "Format object as JSON string"
   },
   "Arrow Function": {
     "prefix": "af",
-    "body": ["($1) => {", "  $2", "}"]
+    "body": ["($1) => {", "  $2$0", "}"],
+    "description": "Create arrow function"
   },
   "Arrow Function Const": {
     "prefix": "afc",
-    "body": ["const $1 = ($2) => {", "  $3", "};"]
+    "body": ["const $1 = ($2) => {", "  $3$0", "};"],
+    "description": "Create named arrow function"
   },
   "Throw new Error": {
     "prefix": "tne",
-    "body": ["throw new Error ('$1');"]
+    "body": ["throw new Error('${1:error description}');$0"],
+    "description": "Throw error with message"
   },
   "use server": {
     "prefix": "us",
-    "body": ["'use server';"]
+    "body": ["'use server';"],
+    "description": "Add React.js server directive"
   },
   "useState": {
     "prefix": "us",
-    "body": "const [${1:state}, set${1/(.*)/${1:/capitalize}/}] = useState(${2:initValue});$0"
+    "body": "const [$1, set${1/(.*)/${1:/capitalize}/}] = useState($2);$0",
+    "description": "Create useState hook"
   },
   "useEffect": {
     "prefix": "ue",
-    "body": ["useEffect (() => {", "  $1", "}, [$2]);"]
+    "body": ["useEffect(() => {", "  $1$0", "}, [$2]);"],
+    "description": "Create useEffect hook"
   },
   "useRef": {
     "prefix": "ur",
-    "body": ["const $1 = useRef$3($2);"]
+    "body": ["const $1 = useRef($2);$0"],
+    "description": "Create useRef hook"
   },
   "useCallback": {
     "prefix": "uc",
-    "body": ["useCallback(() => {", "  $1", "}, [$2]);"]
+    "body": ["useCallback(() => {", "  $1$0", "}, [$2]);"],
+    "description": "Create memoized callback"
   },
   "useMemo": {
     "prefix": "um",
-    "body": ["useMemo(() => {", "  $1", "}, [$2]);"]
+    "body": ["useMemo(() => {", "  $1$0", "}, [$2]);"],
+    "description": "Create memoized value"
   },
   "React Native Style": {
     "prefix": "rns",
     "body": [
       "import { dynamicCascadingStyle } from '@steuerbot/mobile-util-theming';",
       "",
-      "export default dynamicCascadingStyle(() => ({$1}));"
-    ]
+      "export default dynamicCascadingStyle(() => ({$1}));$0"
+    ],
+    "description": "Create React Native dynamic styles"
   },
   "Generator Function": {
     "prefix": "gf",
-    "body": ["function* () {", "  $1", "}"]
+    "body": ["function* () {", "  $1$0", "}"],
+    "description": "Create generator function"
   },
   "Yield*": {
     "prefix": "ys",
-    "body": ["yield* $1"]
+    "body": ["yield* $1$0"],
+    "description": "Delegate to generator/iterable"
   },
   "If Statement": {
     "prefix": "if",
-    "body": ["if (${1:condition}) {", "  $0", "}"]
+    "body": ["if ($1) {", "  $2$0", "}"],
+    "description": "Create if statement"
   },
   "Switch Statement": {
     "prefix": "switch",
     "body": [
-      "switch (${1:key}) {",
-      "\tcase ${2:value}:",
-      "\t\t$0",
-      "\t\tbreak;",
+      "switch ($1) {",
+      "  case $2:",
+      "    $3$0",
+      "    break;",
       "",
-      "\tdefault:",
-      "\t\tbreak;",
+      "  default:",
+      "    break;",
       "}"
-    ]
+    ],
+    "description": "Create switch statement"
   },
   "Try-Catch Statement": {
     "prefix": "trycatch",
-    "body": ["try {", "\t$0", "} catch (${1:error}) {", "\t", "}"]
+    "body": ["try {", "  $1$0", "} catch (${2:error}) {", "  ", "}"],
+    "description": "Create try-catch block"
   },
   "Set Interval Function": {
     "prefix": "setinterval",
-    "body": ["setInterval(() => {", "\t$0", "}, ${1:interval});"]
+    "body": ["setInterval(() => {", "  $1$0", "}, ${2:1000});"],
+    "description": "Create interval (ms)"
   },
-  "Import external module.": {
+  "Import external module": {
     "prefix": "import statement",
-    "body": ["import { $0 } from \"${1:module}\";"]
+    "body": ["import { $1 } from '$2';$0"],
+    "description": "Import from module"
   },
   "For Loop": {
     "prefix": "for",
     "body": [
-      "for (let ${1:index} = 0; ${1:index} < ${2:array}.length; ${1:index}++) {",
-      "\tconst ${3:element} = ${2:array}[${1:index}];",
-      "\t$0",
+      "for (let ${1:i} = 0; $1 < $2.length; $1++) {",
+      "  const $3 = $2[$1];",
+      "  $4$0",
       "}"
     ],
-    "description": "For Loop"
-  },
-  "For-Each Loop": {
-    "prefix": "foreach",
-    "body": ["${1:array}.forEach(${2:element} => {", "\t$0", "});"],
-    "description": "For-Each Loop"
+    "description": "Create for loop"
   },
   "For-In Loop": {
     "prefix": "forin",
     "body": [
-      "for (const ${1:key} in ${2:object}) {",
-      "\tif (${2:object}.hasOwnProperty(${1:key})) {",
-      "\t\tconst ${3:element} = ${2:object}[${1:key}];",
-      "\t\t$0",
-      "\t}",
+      "for (const $1 in $2) {",
+      "  if ($2.hasOwnProperty($1)) {",
+      "    const $3 = $2[$1];",
+      "    $4$0",
+      "  }",
       "}"
     ],
-    "description": "For-In Loop"
+    "description": "Create for-in loop"
   },
   "For-Of Loop": {
     "prefix": "forof",
-    "body": ["for (const ${1:iterator} of ${2:object}) {", "\t$0", "}"],
-    "description": "For-Of Loop"
+    "body": ["for (const $1 of $2) {", "  $3$0", "}"],
+    "description": "Create for-of loop"
   }
 }
