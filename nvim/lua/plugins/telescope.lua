@@ -29,6 +29,7 @@ return {
               ['<C-s>'] = actions.toggle_selection,
               ['<C-space>'] = actions.to_fuzzy_refine,
               ['<space>'] = require('telescope.actions.layout').toggle_preview,
+              ['<C-l>'] = require('telescope.actions.layout').cycle_layout_next,
             },
             i = {
               ['<CR>'] = smart_opener.smart_open,
@@ -39,6 +40,7 @@ return {
               ['<C-s>'] = actions.toggle_selection,
               ['<C-space>'] = actions.to_fuzzy_refine,
               ['<C-p>'] = require('telescope.actions.layout').toggle_preview,
+              ['<C-l>'] = require('telescope.actions.layout').cycle_layout_next,
             },
           },
           path_display = custom_path_display,
