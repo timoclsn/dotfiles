@@ -6,6 +6,16 @@ return {
 
       require('mini.bracketed').setup()
 
+      require('mini.files').setup()
+
+      local open_mini_files = function()
+        if not MiniFiles.close() then
+          MiniFiles.open(vim.api.nvim_buf_get_name(0))
+          MiniFiles.reveal_cwd()
+        end
+      end
+      vim.keymap.set('n', '-', open_mini_files, { desc = 'Open mini file browser' })
+
       require('mini.ai').setup {
         custom_textobjects = {
           F = require('mini.ai').gen_spec.treesitter { a = '@function.outer', i = '@function.inner' },

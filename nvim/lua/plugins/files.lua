@@ -91,26 +91,6 @@ return {
     end,
   },
   {
-    'stevearc/oil.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
-    config = function()
-      require('oil').setup {
-        keymaps = {
-          ['<C-h>'] = false,
-          ['<C-l>'] = false,
-          ['<C-k>'] = false,
-          ['<C-j>'] = false,
-        },
-        view_options = {
-          show_hidden = true,
-        },
-      }
-
-      -- Open parent directory in current window
-      vim.keymap.set('n', '-', '<CMD>Oil<CR>', { desc = 'Open parent directory' })
-    end,
-  },
-  {
     'ThePrimeagen/harpoon',
     -- branch = 'harpoon2',
     commit = 'e76cb03', -- Custom key breaks for commits after this one
