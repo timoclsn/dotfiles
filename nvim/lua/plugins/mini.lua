@@ -51,40 +51,14 @@ return {
         footer = 'Happy coding!',
       }
 
-      local statusline = require 'mini.statusline'
-      statusline.setup { use_icons = vim.g.have_nerd_font }
-
-      ---@diagnostic disable-next-line: duplicate-set-field
-      statusline.section_location = function()
-        return '%2l(%L):%-2v'
-      end
-
-      ---@diagnostic disable-next-line: duplicate-set-field
-      statusline.section_lsp = function()
-        return ''
-      end
-
-      ---@diagnostic disable-next-line: duplicate-set-field
-      statusline.section_diff = function()
-        return ''
-      end
-
-      ---@diagnostic disable-next-line: duplicate-set-field
-      statusline.section_fileinfo = function()
-        local filetype = vim.bo.filetype
-        local icon = require('mini.icons').get('filetype', filetype)
-        return icon .. ' ' .. filetype
-      end
-
-      ---@diagnostic disable-next-line: duplicate-set-field
-      statusline.section_searchcount = function()
-        return ''
+      -- Statusline
+      local function cusom_location()
+        return '%2l[%L]:%-2v'
       end
 
       local path_formatter = require 'utils.path_formatter'
 
-      ---@diagnostic disable-next-line: duplicate-set-field
-      statusline.section_filename = function()
+      local function custom_filename()
         local path = vim.fn.expand '%:p'
         local formatted = path_formatter(path)
 
@@ -110,6 +84,49 @@ return {
 
         return display
       end
+
+      local force_truncate = 1000
+
+      require('mini.statusline').setup {
+        content = {
+          use_icons = vim.g.have_nerd_font,
+          active = function()
+            local mode, mode_hl = MiniStatusline.section_mode { trunc_width = 120 }
+            local git = MiniStatusline.section_git { trunc_width = 40 }
+            -- local diff = MiniStatusline.section_diff { trunc_width = 75 }
+            local diagnostics = MiniStatusline.section_diagnostics { trunc_width = 75 }
+            -- local lsp = MiniStatusline.section_lsp { trunc_width = 75 }
+            local filename = custom_filename()
+            local fileinfo = MiniStatusline.section_fileinfo { trunc_width = force_truncate }
+            local location = cusom_location()
+            -- local search = MiniStatusline.section_searchcount { trunc_width = 75 }
+
+            return MiniStatusline.combine_groups {
+              { hl = mode_hl, strings = { mode } },
+              {
+                hl = 'MiniStatuslineDevinfo',
+                strings = {
+                  git,
+                  -- diff,
+                  diagnostics,
+                  -- lsp,
+                },
+              },
+              '%<', -- Mark general truncate point
+              { hl = 'MiniStatuslineFilename', strings = { filename } },
+              '%=', -- End left alignment
+              { hl = 'MiniStatuslineFileinfo', strings = { fileinfo } },
+              {
+                hl = mode_hl,
+                strings = {
+                  -- search,
+                  location,
+                },
+              },
+            }
+          end,
+        },
+      }
     end,
   },
 }
