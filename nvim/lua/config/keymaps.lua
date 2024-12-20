@@ -26,6 +26,9 @@ vim.keymap.set('n', '<C-f>', '<cmd>silent !tmux neww tmux-sessionizer<CR>')
 vim.keymap.set('n', '<leader>o', 'o<ESC>k', { desc = 'Insert line above' })
 vim.keymap.set('n', '<leader>O', 'O<ESC>j', { desc = 'Insert line below' })
 vim.keymap.set('n', '<leader>k', vim.diagnostic.open_float, { desc = 'Show diagnostic under cursor' })
+vim.keymap.set('n', 'gX', function()
+  vim.ui.open(vim.fn.expand '<cfile>')
+end, { desc = 'Open file/url under cursor' })
 
 -- Remap brackets for easier access to brakets keymaps
 vim.keymap.set('n', 'ö', '[', { remap = true })
