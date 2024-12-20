@@ -59,6 +59,10 @@ return {
       local path_formatter = require 'utils.path_formatter'
 
       local function custom_filename()
+        if vim.bo.buftype == 'terminal' then
+          return '%t'
+        end
+
         local path = vim.fn.expand '%:p'
         local formatted = path_formatter(path)
 
