@@ -130,6 +130,7 @@ alias g="git"
 alias r="run-script"
 alias t="tmux"
 alias ta="tmux attach"
+alias ai="aider --sonnet --vim"
 
 # cd
 alias .="cd .."
