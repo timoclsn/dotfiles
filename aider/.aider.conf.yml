@@ -144,7 +144,7 @@ sonnet: true
 # Cache settings:
 
 ## Enable caching of prompts (default: False)
-#cache-prompts: false
+cache-prompts: true
 
 ## Number of times to ping at 5min intervals to keep prompt cache warm (default: 0)
 #cache-keepalive-pings: false
@@ -171,7 +171,7 @@ sonnet: true
 #chat-history-file: .aider.chat.history.md
 
 ## Restore the previous chat history messages (default: False)
-#restore-chat-history: false
+restore-chat-history: true
 
 ## Log the conversation with the LLM to this file (for example, .aider.llm.history)
 #llm-history-file: xxx
@@ -221,7 +221,7 @@ dark-mode: true
 #code-theme: default
 
 ## Show diffs when committing changes (default: False)
-#show-diffs: false
+show-diffs: true
 
 ###############
 # Git settings:
@@ -251,7 +251,7 @@ dark-mode: true
 #attribute-committer: true
 
 ## Prefix commit messages with 'aider: ' if aider authored the changes (default: False)
-#attribute-commit-message-author: false
+attribute-commit-message-author: true
 
 ## Prefix all commit messages with 'aider: ' (default: False)
 #attribute-commit-message-committer: false
@@ -292,7 +292,7 @@ dark-mode: true
 #test-cmd: xxx
 
 ## Enable/disable automatic testing after changes (default: False)
-#auto-test: false
+auto-test: true
 
 ## Run tests, fix problems found and then exit
 #test: false
@@ -421,8 +421,7 @@ vim: true
 #fancy-input: true
 
 ## Enable/disable multi-line input mode with Meta-Enter to submit (default: False)
-#multiline: false
-
+multiline: true
 ## Enable/disable detection and offering to add URLs to chat (default: True)
 #detect-urls: true
 
