@@ -144,7 +144,7 @@ sonnet: true
 # Cache settings:
 
 ## Enable caching of prompts (default: False)
-cache-prompts: true
+#cache-prompts: false
 
 ## Number of times to ping at 5min intervals to keep prompt cache warm (default: 0)
 #cache-keepalive-pings: false
@@ -171,7 +171,7 @@ cache-prompts: true
 #chat-history-file: .aider.chat.history.md
 
 ## Restore the previous chat history messages (default: False)
-restore-chat-history: true
+#restore-chat-history: false
 
 ## Log the conversation with the LLM to this file (for example, .aider.llm.history)
 #llm-history-file: xxx
@@ -218,7 +218,7 @@ dark-mode: true
 #completion-menu-current-bg-color: xxx
 
 ## Set the markdown code theme (default: default, other options include monokai, solarized-dark, solarized-light, or a Pygments builtin style, see https://pygments.org/styles for available themes)
-#code-theme: default
+code-theme: github-dark
 
 ## Show diffs when committing changes (default: False)
 show-diffs: true
@@ -292,7 +292,7 @@ attribute-commit-message-author: true
 #test-cmd: xxx
 
 ## Enable/disable automatic testing after changes (default: False)
-auto-test: true
+#auto-test: false
 
 ## Run tests, fix problems found and then exit
 #test: false
@@ -307,7 +307,7 @@ auto-test: true
 #analytics-log: xxx
 
 ## Permanently disable analytics
-#analytics-disable: false
+analytics-disable: true
 
 ############
 # Upgrading:

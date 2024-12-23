@@ -36,6 +36,11 @@ config.keys = {
     mods = 'SHIFT|CTRL',
     action = wezterm.action.DisableDefaultAssignment,
   },
+  {
+    key = 'Enter',
+    mods = 'ALT',
+    action = 'DisableDefaultAssignment',
+  },
 }
 
 return config
