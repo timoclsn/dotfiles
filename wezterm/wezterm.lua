@@ -3,8 +3,11 @@ local wezterm = require 'wezterm'
 local config = wezterm.config_builder()
 
 config.max_fps = 120
+config.dpi_by_screen = {
+  ['DELL U3821DW'] = 82, -- ca. (72 * 111 ppi) / 96 see https://github.com/wez/wezterm/issues/4096#issuecomment-1667003402
+}
 config.color_scheme = 'Tokyo Night'
-config.font = wezterm.font 'Berkeley Mono'
+config.font = wezterm.font('TX-02-Normal', { weight = 'DemiLight' }) -- Berkeley Mono v2
 config.font_size = 12
 config.line_height = 1.4
 config.window_decorations = 'TITLE | RESIZE'
