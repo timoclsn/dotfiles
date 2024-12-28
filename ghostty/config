@@ -1,6 +1,6 @@
 theme = tokyonight
 font-size = 13
-font-family = Berkeley Mono
+font-family = TX-02
 adjust-cell-height = 40%
 adjust-cursor-height = 40%
 adjust-underline-position = 4
@@ -11,3 +11,6 @@ window-padding-y = 8
 window-padding-balance = true
 macos-titlebar-proxy-icon = hidden
 mouse-hide-while-typing = true
+
+# Slightly changed background color so that neovim background doesn't get transparent
+background = 1A1B25 
