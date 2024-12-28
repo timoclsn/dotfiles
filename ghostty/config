@@ -12,6 +12,9 @@ window-padding-y = 8
 window-padding-balance = true
 macos-titlebar-proxy-icon = hidden
 mouse-hide-while-typing = true
+shell-integration-features = no-cursor
+cursor-style = block
+cursor-click-to-move = true
 
 # Slightly changed background color so that neovim background doesn't get transparent
 background = 1A1B25 
