@@ -172,6 +172,7 @@ return {
         jsonls = {},
         yamlls = {},
         bashls = {},
+        astro = {},
         --
         tailwindcss = {
           settings = {
