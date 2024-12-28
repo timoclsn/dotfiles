@@ -1,6 +1,7 @@
 theme = tokyonight
 font-size = 13
 font-family = TX-02
+# font-style = Retina SemiCondensed
 adjust-cell-height = 40%
 adjust-cursor-height = 40%
 adjust-underline-position = 4
