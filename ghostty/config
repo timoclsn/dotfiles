@@ -15,6 +15,7 @@ mouse-hide-while-typing = true
 shell-integration-features = no-cursor
 cursor-style = block
 cursor-click-to-move = true
+macos-titlebar-style = tabs
 
 # Slightly changed background color so that neovim background doesn't get transparent
 background = 1A1B25 
