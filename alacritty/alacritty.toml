@@ -2,14 +2,14 @@
 TERM = "xterm-256color"
 
 [window]
-padding.x = 10
-padding.y = 10
+padding.x = 8
+padding.y = 8
 
-opacity = 0.7
+opacity = 0.9
 blur = true
 
 [font]
-normal.family = "FiraCode Nerd Font"
+normal.family = "TX-02"
 size = 12
 offset.y = 4 # size + offset.y = line height
 
