@@ -21,6 +21,12 @@ window-padding-color = extend
 macos-titlebar-proxy-icon = hidden
 macos-titlebar-style = tabs
 
+# Icon
+macos-icon = custom-style
+macos-icon-frame = aluminum
+macos-icon-ghost-color = c0caf5
+macos-icon-screen-color = 1a1b26
+
 # Cursor and mouse
 shell-integration-features = no-cursor
 cursor-style = block
