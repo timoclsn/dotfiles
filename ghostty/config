@@ -18,6 +18,7 @@ window-padding-x = 8
 window-padding-y = 8
 window-padding-balance = true
 window-padding-color = extend
+window-colorspace = display-p3
 macos-titlebar-proxy-icon = hidden
 macos-titlebar-style = tabs
 
@@ -32,4 +33,3 @@ shell-integration-features = no-cursor
 cursor-style = block
 cursor-click-to-move = true
 mouse-hide-while-typing = true
-
