@@ -4,11 +4,11 @@ theme = tokyonight
 background = 1A1B25 
 
 # Font
-font-size = 12.5
+font-size = 14
 font-family = TX-02
 font-style = Retina SemiCondensed
-adjust-cell-height = 40%
-adjust-cursor-height = 40%
+adjust-cell-height = 20%
+adjust-cursor-height = 20%
 adjust-underline-position = 4
 
 # Window
