@@ -195,7 +195,6 @@ run_npm_script() {
   script=$(jq -r '.scripts | keys[]' package.json | sort | \
         fzf --height 15 \
             --cycle \
-            --border \
             --prompt="Select script to run: " \
             --border-label=" Run npm script ") && \
     if [ -n "$script" ]; then
@@ -241,7 +240,6 @@ manage_node_version() {
             --cycle \
             --no-clear \
             --prompt="Select fnm action: " \
-            --border \
             --border-label " Manage Node.js $current_version_string")
 
     case "$action" in
@@ -251,7 +249,6 @@ manage_node_version() {
                     --cycle \
                     --tac \
                     --prompt="Select version to use: " \
-                    --border \
                     --border-label " Manage Node.js $current_version_string" | \
                 extract_version)
             if [ ! -z "$version" ]; then
@@ -264,7 +261,6 @@ manage_node_version() {
                 fzf --height 15 \
                     --tac \
                     --prompt="Select version to install: " \
-                    --border \
                     --border-label " Install Node.js $current_version_string")
             if [ ! -z "$version" ]; then
                 fnm install "$version"
@@ -282,7 +278,6 @@ manage_node_version() {
                     --cycle \
                     --tac \
                     --prompt="Select version to uninstall: " \
-                    --border \
                     --border-label " Uninstall Node.js Version $current_version_string" | \
                 extract_version)
             if [ ! -z "$version" ]; then
@@ -304,7 +299,6 @@ bip() {
         fzf -m \
             --height 15 \
             --cycle \
-            --border \
             --prompt="Select packages to install: " \
             --border-label=" Brew Install ")
 
@@ -321,7 +315,6 @@ bup() {
         fzf -m \
             --height 15 \
             --cycle \
-            --border \
             --prompt="Select packages to update: " \
             --border-label=" Brew Update ")
 
@@ -338,7 +331,6 @@ bcp() {
         fzf -m \
             --height 15 \
             --cycle \
-            --border \
             --prompt="Select packages to remove: " \
             --border-label=" Brew Uninstall ")
 
@@ -376,6 +368,30 @@ export PATH="/Users/timo/.turso:$PATH"
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+# fzf tokyonight theme and default options
+export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS \
+  --highlight-line \
+  --info=inline-right \
+  --ansi \
+  --border
+  --color=bg+:#283457 \
+  --color=bg:#16161e \
+  --color=border:#27a1b9 \
+  --color=fg:#c0caf5 \
+  --color=gutter:#16161e \
+  --color=header:#ff9e64 \
+  --color=hl+:#2ac3de \
+  --color=hl:#2ac3de \
+  --color=info:#545c7e \
+  --color=marker:#ff007c \
+  --color=pointer:#ff007c \
+  --color=prompt:#2ac3de \
+  --color=query:#c0caf5:regular \
+  --color=scrollbar:#27a1b9 \
+  --color=separator:#ff9e64 \
+  --color=spinner:#ff007c \
+"
+# Enable fzf keybindings
 source <(fzf --zsh)
 bindkey '^G' fzf-cd-widget
 
