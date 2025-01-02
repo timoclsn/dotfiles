@@ -127,13 +127,13 @@ alias v="vim"
 alias lg="lazygit"
 alias grep="rg"
 alias g="git"
-alias r="run-script"
+alias r="run_npm_script"
 alias t="tmux"
 alias ta="tmux attach"
 alias ai="aider"
 alias y="yazy-shell"
 alias i="fastfetch"
-alias n='fnm-fzf'
+alias n='manage_node_version'
 
 # cd
 alias .="cd .."
@@ -153,12 +153,57 @@ alias lt='ls --tree'
 bindkey -s ^f "tmux-sessionizer\n"
 
 # run npm script requires jq fzf and nr
-run-script() {
+run_npm_script() {
+  # Check for required dependencies
+  local missing_deps=()
+  
+  if ! command -v jq >/dev/null 2>&1; then
+    missing_deps+=("jq")
+  fi
+  
+  if ! command -v fzf >/dev/null 2>&1; then
+    missing_deps+=("fzf")
+  fi
+  
+  if ! command -v nr >/dev/null 2>&1; then
+    missing_deps+=("nr")
+  fi
+  
+  if [ ${#missing_deps[@]} -ne 0 ]; then
+    echo "Error: Missing required dependencies: ${missing_deps[*]}"
+    echo "Please install them before running this script."
+    return 1
+  fi
+  
+  # Check if package.json exists
+  if [ ! -f "package.json" ]; then
+    echo "Error: package.json not found in current directory"
+    return 1
+  fi
+  
+  # Check if scripts exist in package.json
+  local scripts_count
+  scripts_count=$(jq -r '.scripts | length' package.json)
+  
+  if [ "$scripts_count" -eq 0 ]; then
+    echo "Error: No scripts found in package.json"
+    return 1
+  fi
+  
+  # Run the script selector
   local script
-  script=$(cat package.json | jq -r '.scripts | keys[] ' | sort | fzf) && nr $(echo "$script")
+  script=$(jq -r '.scripts | keys[]' package.json | sort | \
+        fzf --height 15 \
+            --cycle \
+            --border \
+            --prompt="Select script to run: " \
+            --border-label=" Run npm script ") && \
+    if [ -n "$script" ]; then
+      nr "$script"
+    fi
 }
 
-fnm-fzf() {
+manage_node_version() {
     # Check if fnm is installed
     if ! command -v fnm >/dev/null 2>&1; then
         echo "fnm is not installed. Please install it first."
@@ -194,9 +239,9 @@ fnm-fzf() {
     action=$(echo -e "1. Use installed version\n2. Install new version\n3. Uninstall version" | \
         fzf --height 15 \
             --cycle \
-            --border \
             --no-clear \
             --prompt="Select fnm action: " \
+            --border \
             --border-label " Manage Node.js $current_version_string")
 
     case "$action" in
@@ -204,33 +249,29 @@ fnm-fzf() {
             version=$(list_installed | \
                 fzf --height 15 \
                     --cycle \
-                    --border \
-                    --no-clear \
                     --tac \
                     --prompt="Select version to use: " \
+                    --border \
                     --border-label " Manage Node.js $current_version_string" | \
                 extract_version)
             if [ ! -z "$version" ]; then
                 fnm use "$version"
-                echo "Switched to Node.js version: $version"
             fi
             ;;
             
         "2. Install new version")
             version=$(list_remote | \
                 fzf --height 15 \
-                    --border \
-                    --no-clear \
                     --tac \
                     --prompt="Select version to install: " \
-                    --border-label " Manage Node.js $current_version_string")
+                    --border \
+                    --border-label " Install Node.js $current_version_string")
             if [ ! -z "$version" ]; then
                 fnm install "$version"
                 echo -n "Do you want to use this version now? (y/N) "
                 read answer
                 if [[ $answer =~ ^[Yy]$ ]]; then
                     fnm use "$version"
-                    echo "Switched to Node.js version: $version"
                 fi
             fi
             ;;
@@ -239,18 +280,16 @@ fnm-fzf() {
             version=$(list_installed | \
                 fzf --height 15 \
                     --cycle \
-                    --border \
-                    --no-clear \
                     --tac \
                     --prompt="Select version to uninstall: " \
-                    --border-label " Manage Node.js Version $current_version_string" | \
+                    --border \
+                    --border-label " Uninstall Node.js Version $current_version_string" | \
                 extract_version)
             if [ ! -z "$version" ]; then
                 echo -n "Are you sure you want to uninstall Node.js $version? (y/N) "
                 read answer
                 if [[ $answer =~ ^[Yy]$ ]]; then
                     fnm uninstall "$version"
-                    echo "Uninstalled Node.js version: $version"
                 fi
             fi
             ;;
