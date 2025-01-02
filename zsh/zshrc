@@ -397,3 +397,10 @@ source <(fzf --zsh)
 bindkey '^G' fzf-cd-widget
 
 eval "$(zoxide init zsh)"
+
+# bun completions
+[ -s "/Users/timo/.bun/_bun" ] && source "/Users/timo/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
