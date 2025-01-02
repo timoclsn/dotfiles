@@ -149,6 +149,7 @@ alias sbw="cd ~/Developer/steuerbot/website"
 alias l='ls -l'
 alias la='ls -la'
 alias lt='ls --tree'
+alias lf='la | fzf'
 
 bindkey -s ^f "tmux-sessionizer\n"
 
