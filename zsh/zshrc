@@ -131,8 +131,9 @@ alias r="run-script"
 alias t="tmux"
 alias ta="tmux attach"
 alias ai="aider"
-alias y="yazi"
+alias y="yazy-shell"
 alias i="fastfetch"
+alias n='fnm-fzf'
 
 # cd
 alias .="cd .."
@@ -151,15 +152,82 @@ alias lt='ls --tree'
 
 bindkey -s ^f "tmux-sessionizer\n"
 
-
 # run npm script requires jq fzf and nr
 run-script() {
   local script
   script=$(cat package.json | jq -r '.scripts | keys[] ' | sort | fzf) && nr $(echo "$script")
 }
 
+fnm-fzf() {
+    # Check if fnm is installed
+    if ! command -v fnm >/dev/null 2>&1; then
+        echo "fnm is not installed. Please install it first."
+        return 1
+    fi
 
-function y() {
+    # Check if fzf is installed
+    if ! command -v fzf >/dev/null 2>&1; then
+        echo "fzf is not installed. Please install it first."
+        return 1
+    fi
+
+    # Function to list installed versions
+    list_installed() {
+        fnm list
+    }
+
+    # Function to list remote versions
+    list_remote() {
+        fnm list-remote
+    }
+
+    # Helper function to extract clean version number from fnm list output
+    extract_version() {
+        sed 's/^\* //'
+    }
+
+    # Main menu options
+    action=$(echo -e "1. Use installed version\n2. Install new version\n3. Uninstall version" | \
+        fzf --prompt="Select fnm action: " --height=10)
+
+    case "$action" in
+        "1. Use installed version")
+            version=$(list_installed | fzf --prompt="Select version to use: " --height=10 --tac | extract_version)
+            if [ ! -z "$version" ]; then
+                fnm use "$version"
+                echo "Switched to Node.js version: $version"
+            fi
+            ;;
+            
+        "2. Install new version")
+            version=$(list_remote | fzf --prompt="Select version to install: " --height=15 --tac)
+            if [ ! -z "$version" ]; then
+                fnm install "$version"
+                echo -n "Do you want to use this version now? (y/N) "
+                read answer
+                if [[ $answer =~ ^[Yy]$ ]]; then
+                    fnm use "$version"
+                    echo "Switched to Node.js version: $version"
+                fi
+            fi
+            ;;
+            
+        "3. Uninstall version")
+            version=$(list_installed | fzf --prompt="Select version to uninstall: " --height=10 --tac | extract_version)
+            if [ ! -z "$version" ]; then
+                echo -n "Are you sure you want to uninstall Node.js $version? (y/N) "
+                read answer
+                if [[ $answer =~ ^[Yy]$ ]]; then
+                    fnm uninstall "$version"
+                    echo "Uninstalled Node.js version: $version"
+                fi
+            fi
+            ;;
+    esac
+}
+
+# We suggest using this y shell wrapper that provides the ability to change the current working directory when exiting Yazi.
+function yazy-shell() {
   local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
   yazi "$@" --cwd-file="$tmp"
   if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
