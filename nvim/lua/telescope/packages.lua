@@ -41,9 +41,6 @@ local function get_repo_info(pkg_name)
   end
 
   local pkg_description = pkg_data and pkg_data.description or ''
-  if #pkg_description > 60 then
-    pkg_description = pkg_description:sub(1, 57) .. '...'
-  end
 
   if pkg_data.homepage then
     local homepage = pkg_data.homepage
@@ -79,7 +76,7 @@ local function get_dependencies(package_json)
       local repo_url, repo_despription = get_repo_info(name)
       table.insert(deps, {
         name = name,
-        version = version:gsub('^[~^]', ''),
+        version = version,
         type = 'dependency',
         repo_url = repo_url,
         description = repo_despription,
@@ -93,7 +90,7 @@ local function get_dependencies(package_json)
       local repo_url, repo_despription = get_repo_info(name)
       table.insert(devDeps, {
         name = name,
-        version = version:gsub('^[~^]', ''),
+        version = version,
         type = 'devDependency',
         repo_url = repo_url,
         description = repo_despription,
@@ -137,23 +134,42 @@ return function(opts)
   -- Get dependencies
   local deps = get_dependencies(package_json)
 
-  -- Create entry maker
+  -- Calculate max lengths for columns
+  local max_lengths = {
+    picker = 200,
+    name = 0,
+    version = 0,
+    type = 0,
+  }
+
+  for _, dep in ipairs(deps) do
+    max_lengths.name = math.max(max_lengths.name, #dep.name)
+    max_lengths.version = math.max(max_lengths.version, #dep.version)
+    max_lengths.type = math.max(max_lengths.type, #dep.type)
+  end
+
+  -- Create entry maker with dynamic widths
   local displayer = entry_display.create {
-    separator = ' ',
+    separator = '  ',
     items = {
-      { width = 30 }, -- name
-      { width = 15 }, -- version
-      { width = 15 }, -- type
+      { width = max_lengths.name }, -- name
+      { width = max_lengths.version }, -- version
+      { width = max_lengths.type }, -- type
       { remaining = true }, -- description
     },
   }
 
   local make_display = function(entry)
+    local desciption = entry.description
+    local desciptionMaxLen = max_lengths.picker - max_lengths.name - max_lengths.version - max_lengths.type - 10 -- 3 * 2 spaces + border?
+    if #desciption > desciptionMaxLen then
+      desciption = desciption:sub(1, desciptionMaxLen - 3) .. '...'
+    end
     return displayer {
       entry.name,
       entry.version,
       entry.type,
-      entry.description,
+      desciption,
     }
   end
 
@@ -165,7 +181,7 @@ return function(opts)
         return {
           value = entry,
           display = make_display,
-          ordinal = entry.name,
+          ordinal = entry.name .. ' ' .. entry.version,
           name = entry.name,
           version = entry.version,
           type = entry.type,
@@ -176,7 +192,7 @@ return function(opts)
     },
     previewer = false,
     layout_config = {
-      width = 120,
+      width = max_lengths.picker,
     },
     sorter = require('telescope.sorters').get_generic_fuzzy_sorter(),
     attach_mappings = function(prompt_bufnr, map)
