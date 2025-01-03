@@ -105,20 +105,20 @@ local function get_dependencies(package_json)
     end
   end
 
-  -- Sort both arrays alphabetically by name
+  -- Sort both arrays alphabetically  reversed by name
   table.sort(deps, function(a, b)
-    return a.name < b.name
+    return a.name > b.name
   end)
   table.sort(devDeps, function(a, b)
-    return a.name < b.name
+    return a.name > b.name
   end)
 
   -- Combine the sorted arrays
-  for _, dep in ipairs(devDeps) do
-    table.insert(deps, dep)
+  for _, dep in ipairs(deps) do
+    table.insert(devDeps, dep)
   end
 
-  return deps
+  return devDeps
 end
 
 -- Function to open URL in browser
