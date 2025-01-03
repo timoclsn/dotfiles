@@ -133,19 +133,43 @@ local function jump_to_package_in_package_json(package_name)
   -- Get the content of the file
   local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
 
+  -- Initialize variables for section tracking
+  local in_dependencies = false
+  local in_devDependencies = false
+  local found = false
+
   -- Look for the package in dependencies and devDependencies
   for i, line in ipairs(lines) do
+    -- Track which section we're in
+    if line:match '"dependencies"' then
+      in_dependencies = true
+      in_devDependencies = false
+    elseif line:match '"devDependencies"' then
+      in_dependencies = false
+      in_devDependencies = true
+    elseif line:match '^%s*}' then
+      in_dependencies = false
+      in_devDependencies = false
+    end
+
     -- Check if line contains the package name as a key
-    if line:match('"' .. package_name .. '"') then
+    if (in_dependencies or in_devDependencies) and line:match('"' .. package_name .. '"') then
       -- Schedule the cursor movement and centering to happen after the buffer is loaded
       vim.schedule(function()
         -- Move cursor to that line
         vim.api.nvim_win_set_cursor(0, { i, 0 })
+
         -- Center the line in the window
         vim.cmd 'normal! zz'
       end)
+
+      found = true
       break
     end
+  end
+
+  if not found then
+    vim.notify('Package ' .. package_name .. ' not found in package.json', vim.log.levels.WARN)
   end
 end
 
