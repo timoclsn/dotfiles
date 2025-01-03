@@ -24,7 +24,14 @@ end
 
 -- Helper function to validate URL
 local function is_valid_url(url)
-  return url and url:match '^https?://[%w-%.%+%?%/%~%=@&%%]+$' ~= nil
+  if not url then
+    return false
+  end
+
+  local pattern = '^https?://' -- Protocol (http or https)
+    .. '([%w%.%-]+)' -- Domain name
+
+  return url:match(pattern) ~= nil
 end
 
 local node_modules_path = vim.uv.cwd() .. '/node_modules/'
@@ -119,6 +126,29 @@ local function open_url(url)
   vim.fn.system('open ' .. url)
 end
 
+local function jump_to_package_in_package_json(package_name)
+  -- Open package.json
+  vim.cmd 'edit package.json'
+
+  -- Get the content of the file
+  local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+
+  -- Look for the package in dependencies and devDependencies
+  for i, line in ipairs(lines) do
+    -- Check if line contains the package name as a key
+    if line:match('"' .. package_name .. '"') then
+      -- Schedule the cursor movement and centering to happen after the buffer is loaded
+      vim.schedule(function()
+        -- Move cursor to that line
+        vim.api.nvim_win_set_cursor(0, { i, 0 })
+        -- Center the line in the window
+        vim.cmd 'normal! zz'
+      end)
+      break
+    end
+  end
+end
+
 -- Main function to list node modules
 return function(opts)
   opts = opts or {}
@@ -196,8 +226,15 @@ return function(opts)
     },
     sorter = require('telescope.sorters').get_generic_fuzzy_sorter(),
     attach_mappings = function(prompt_bufnr, map)
-      -- Open GitHub page on Enter
+      -- Jump to package in package.json on Enter
       actions.select_default:replace(function()
+        local selection = action_state.get_selected_entry()
+        actions.close(prompt_bufnr)
+        jump_to_package_in_package_json(selection.value.name)
+      end)
+
+      -- Open URL on Ctrl-o
+      map('i', '<C-o>', function()
         local selection = action_state.get_selected_entry()
         open_url(selection.repo_url)
         vim.notify('Opened: ' .. selection.repo_url, vim.log.levels.INFO)
