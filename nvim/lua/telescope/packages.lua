@@ -59,10 +59,15 @@ local function get_repo_info(pkg_name)
   if pkg_data.repository then
     local repo_url = type(pkg_data.repository) == 'string' and pkg_data.repository or pkg_data.repository.url
     if repo_url then
-      -- Clean up repository URL
-      repo_url = repo_url:gsub('git%+', '')
-      repo_url = repo_url:gsub('git://', 'https://')
-      repo_url = repo_url:gsub('%.git$', '')
+      -- Check if it's a shortened GitHub reference (e.g., "vercel/next.js")
+      if repo_url:match '^[%w%-%.]+/[%w%-%.]+$' then
+        repo_url = 'https://github.com/' .. repo_url
+      else
+        -- Clean up repository URL
+        repo_url = repo_url:gsub('git%+', '')
+        repo_url = repo_url:gsub('git://', 'https://')
+        repo_url = repo_url:gsub('%.git$', '')
+      end
       if is_valid_url(repo_url) then
         return repo_url, pkg_description
       end
