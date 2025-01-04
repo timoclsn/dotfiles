@@ -195,7 +195,7 @@ return function(opts)
 
   -- Calculate max lengths for columns
   local max_lengths = {
-    picker = 200,
+    picker = 150,
     name = 0,
     version = 0,
     type = 0,
