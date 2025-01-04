@@ -3,6 +3,7 @@ local finders = require 'telescope.finders'
 local actions = require 'telescope.actions'
 local action_state = require 'telescope.actions.state'
 local entry_display = require 'telescope.pickers.entry_display'
+local previewers = require 'telescope.previewers'
 
 -- Function to read and parse JSON file
 local function read_json_file(filepath)
@@ -37,22 +38,20 @@ end
 local node_modules_path = vim.uv.cwd() .. '/node_modules/'
 
 -- Helper function to get repo URL from package.json
-local function get_repo_info(pkg_name)
+local function get_repo_url(pkg_name)
   local pkg_json_path = node_modules_path .. pkg_name .. '/package.json'
   local pkg_data = read_json_file(pkg_json_path)
 
   local npm_url = string.format('https://www.npmjs.com/package/%s', pkg_name)
 
   if not pkg_data then
-    return npm_url, ''
+    return npm_url
   end
-
-  local pkg_description = pkg_data and pkg_data.description or ''
 
   if pkg_data.homepage then
     local homepage = pkg_data.homepage
     if is_valid_url(homepage) then
-      return homepage, pkg_description
+      return homepage
     end
   end
 
@@ -69,12 +68,12 @@ local function get_repo_info(pkg_name)
         repo_url = repo_url:gsub('%.git$', '')
       end
       if is_valid_url(repo_url) then
-        return repo_url, pkg_description
+        return repo_url
       end
     end
   end
 
-  return npm_url, pkg_description
+  return npm_url
 end
 
 -- Function to extract dependencies and their repository URLs
@@ -85,13 +84,11 @@ local function get_dependencies(package_json)
   -- Regular dependencies
   if package_json.dependencies then
     for name, version in pairs(package_json.dependencies) do
-      local repo_url, repo_despription = get_repo_info(name)
       table.insert(deps, {
         name = name,
         version = version,
-        type = 'dependency',
-        repo_url = repo_url,
-        description = repo_despription,
+        type = 'dep',
+        repo_url = get_repo_url(name),
       })
     end
   end
@@ -99,13 +96,11 @@ local function get_dependencies(package_json)
   -- Dev dependencies
   if package_json.devDependencies then
     for name, version in pairs(package_json.devDependencies) do
-      local repo_url, repo_despription = get_repo_info(name)
       table.insert(devDeps, {
         name = name,
         version = version,
-        type = 'devDependency',
-        repo_url = repo_url,
-        description = repo_despription,
+        type = 'devDep',
+        repo_url = get_repo_url(name),
       })
     end
   end
@@ -211,29 +206,22 @@ return function(opts)
   local displayer = entry_display.create {
     separator = '  ',
     items = {
-      { width = max_lengths.name }, -- name
-      { width = max_lengths.version }, -- version
-      { width = max_lengths.type }, -- type
-      { remaining = true }, -- description
+      { width = 50 }, -- name
+      { width = 20 }, -- version
+      { width = 10 }, -- type
     },
   }
 
   local make_display = function(entry)
-    local desciption = entry.description
-    local desciptionMaxLen = max_lengths.picker - max_lengths.name - max_lengths.version - max_lengths.type - 10 -- 3 * 2 spaces + border?
-    if #desciption > desciptionMaxLen then
-      desciption = desciption:sub(1, desciptionMaxLen - 3) .. '...'
-    end
     return displayer {
       entry.name,
       entry.version,
       entry.type,
-      desciption,
     }
   end
 
   local picker = pickers.new(opts, {
-    prompt_title = 'Installed Packages',
+    prompt_title = 'Search Packages',
     finder = finders.new_table {
       results = deps,
       entry_maker = function(entry)
@@ -245,13 +233,31 @@ return function(opts)
           version = entry.version,
           type = entry.type,
           repo_url = entry.repo_url,
-          description = entry.description,
         }
       end,
     },
-    previewer = false,
-    layout_config = {
-      width = max_lengths.picker,
+    previewer = previewers.new_buffer_previewer {
+      title = 'Package.json',
+      define_preview = function(self, entry)
+        local pkg_json_path = node_modules_path .. entry.name .. '/package.json'
+        local pkg_data = read_json_file(pkg_json_path)
+
+        if not pkg_data then
+          vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, false, { 'No package.json found' })
+          return
+        end
+
+        -- Convert the package.json data to a formatted string with 2-space indentation
+        local json_str = vim.json.encode(pkg_data)
+        local result = vim.system({ 'jq', '-S', '.' }, { stdin = json_str }):wait()
+        local formatted_json = vim.split(result.stdout, '\n')
+
+        -- Set the buffer's content
+        vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, false, formatted_json)
+
+        -- Set buffer's filetype to json for syntax highlighting
+        vim.bo[self.state.bufnr].filetype = 'json'
+      end,
     },
     sorter = require('telescope.sorters').get_generic_fuzzy_sorter(),
     attach_mappings = function(prompt_bufnr, map)
