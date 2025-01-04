@@ -80,6 +80,7 @@ end
 local function get_dependencies(package_json)
   local deps = {}
   local devDeps = {}
+  local peerDeps = {}
 
   -- Regular dependencies
   if package_json.dependencies then
@@ -105,6 +106,18 @@ local function get_dependencies(package_json)
     end
   end
 
+  -- Peer dependencies
+  if package_json.peerDependencies then
+    for name, version in pairs(package_json.peerDependencies) do
+      table.insert(peerDeps, {
+        name = name,
+        version = version,
+        type = 'peerDep',
+        repo_url = get_repo_url(name),
+      })
+    end
+  end
+
   -- Sort both arrays alphabetically  reversed by name
   table.sort(deps, function(a, b)
     return a.name > b.name
@@ -112,13 +125,19 @@ local function get_dependencies(package_json)
   table.sort(devDeps, function(a, b)
     return a.name > b.name
   end)
+  table.sort(peerDeps, function(a, b)
+    return a.name > b.name
+  end)
 
   -- Combine the sorted arrays
+  for _, dep in ipairs(devDeps) do
+    table.insert(peerDeps, dep)
+  end
   for _, dep in ipairs(deps) do
-    table.insert(devDeps, dep)
+    table.insert(peerDeps, dep)
   end
 
-  return devDeps
+  return peerDeps
 end
 
 -- Function to open URL in browser
@@ -136,24 +155,32 @@ local function jump_to_package_in_package_json(package_name)
   -- Initialize variables for section tracking
   local in_dependencies = false
   local in_devDependencies = false
+  local in_peerDependencies = false
   local found = false
 
-  -- Look for the package in dependencies and devDependencies
+  -- Look for the package in dependencies, devDependencies, and peerDependencies
   for i, line in ipairs(lines) do
     -- Track which section we're in
     if line:match '"dependencies"' then
       in_dependencies = true
       in_devDependencies = false
+      in_peerDependencies = false
     elseif line:match '"devDependencies"' then
       in_dependencies = false
       in_devDependencies = true
+      in_peerDependencies = false
+    elseif line:match '"peerDependencies"' then
+      in_dependencies = false
+      in_devDependencies = false
+      in_peerDependencies = true
     elseif line:match '^%s*}' then
       in_dependencies = false
       in_devDependencies = false
+      in_peerDependencies = false
     end
 
     -- Check if line contains the package name as a key
-    if (in_dependencies or in_devDependencies) and line:match('"' .. package_name .. '"') then
+    if (in_dependencies or in_devDependencies or in_peerDependencies) and line:match('"' .. package_name .. '"') then
       -- Schedule the cursor movement and centering to happen after the buffer is loaded
       vim.schedule(function()
         -- Move cursor to that line
