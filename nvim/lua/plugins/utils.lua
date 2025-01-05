@@ -174,4 +174,10 @@ return {
     dir = '/Applications/Ghostty.app/Contents/Resources/vim/vimfiles/',
     lazy = false,
   },
+  {
+    'jinh0/eyeliner.nvim',
+    opts = {
+      highlight_on_key = true,
+    },
+  },
 }
