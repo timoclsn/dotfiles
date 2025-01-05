@@ -264,7 +264,7 @@ return function(opts)
       end,
     },
     previewer = previewers.new_buffer_previewer {
-      title = 'Package.json',
+      title = 'Package Preview',
       define_preview = function(self, entry)
         local pkg_json_path = node_modules_path .. entry.name .. '/package.json'
         local pkg_data = read_json_file(pkg_json_path)
