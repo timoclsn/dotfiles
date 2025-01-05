@@ -9,7 +9,7 @@ opacity = 0.9
 blur = true
 
 [font]
-normal.family = "TX-02"
+normal.family = "Berkeley Mono"
 size = 12
 offset.y = 4 # size + offset.y = line height
 
