@@ -116,6 +116,7 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh
 
 alias src="source ~/.zshrc"
+alias s="src"
 
 alias c="clear"
 alias e="exit"
