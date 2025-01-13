@@ -235,6 +235,13 @@ manage_node_version() {
     extract_version() {
         sed 's/^\* //'
     }
+    
+    install_global_packages() {
+        local packages=("pnpm" "yarn@1.22.22", "@antfu/ni", "npm-check-updates")
+        echo "Installing global packages..."
+        npm -g install pnpm yarn@1.22.22 @antfu/ni npm-check-updates
+        echo "Global packages installation complete!"
+    }
 
     # Main menu options
     action=$(echo -e "1. Use installed version\n2. Install new version\n3. Uninstall version" | \
@@ -255,6 +262,7 @@ manage_node_version() {
                 extract_version)
             if [ ! -z "$version" ]; then
                 fnm use "$version"
+                install_global_packages
             fi
             ;;
             
@@ -270,6 +278,7 @@ manage_node_version() {
                 read answer
                 if [[ $answer =~ ^[Yy]$ ]]; then
                     fnm use "$version"
+                    install_global_packages
                 fi
             fi
             ;;
