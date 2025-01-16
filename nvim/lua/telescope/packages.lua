@@ -180,7 +180,9 @@ local function jump_to_package_in_package_json(package_name)
     end
 
     -- Check if line contains the package name as a key
-    if (in_dependencies or in_devDependencies or in_peerDependencies) and line:match('"' .. package_name .. '"') then
+    -- Escape special pattern characters in package name
+    local escaped_name = package_name:gsub('[%-%.%+%[%]%(%)%$%^%%%?%*]', '%%%1')
+    if (in_dependencies or in_devDependencies or in_peerDependencies) and line:match('"' .. escaped_name .. '"') then
       -- Schedule the cursor movement and centering to happen after the buffer is loaded
       vim.schedule(function()
         -- Move cursor to that line
