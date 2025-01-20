@@ -32,17 +32,17 @@ M.smart_open_split = function(prompt_bufnr)
     -- Multiple files selected, open the highlighted one on the left and others in vertical splits to the right
     actions.close(prompt_bufnr)
     local current_selection = action_state.get_selected_entry()
-    vim.cmd('edit ' .. current_selection.value)
+    vim.cmd('edit ' .. (current_selection.filename or current_selection.value))
     for _, selection in ipairs(multi_selections) do
       if selection ~= current_selection then
-        vim.cmd('vsplit ' .. selection.value)
+        vim.cmd('vsplit ' .. (selection.filename or selection.value))
       end
     end
   else
     -- Single file selected (or no selection), open in a vertical split
     actions.close(prompt_bufnr)
     local current_selection = action_state.get_selected_entry()
-    vim.cmd('vsplit ' .. current_selection.value)
+    vim.cmd('vsplit ' .. (current_selection.filename or current_selection.value))
   end
 end
 
