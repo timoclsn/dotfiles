@@ -1,7 +1,5 @@
 # Theme
 theme = tokyonight
-# Slightly changed background color so that neovim background doesn't get transparent
-background = 1A1B25 
 
 # Font
 font-size = 14
@@ -13,7 +11,7 @@ adjust-underline-position = 4
 
 # Window
 background-opacity = 0.9
-background-blur-radius = 20
+background-blur = 20
 window-padding-x = 8
 window-padding-y = 8
 window-padding-balance = true
