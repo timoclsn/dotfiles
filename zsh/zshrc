@@ -137,11 +137,12 @@ alias i="fastfetch"
 alias n='manage_node_version'
 
 # cd
-alias .="cd .."
-alias ..="cd ../.."
-alias ...="cd ../../.."
-alias ....="cd ../../../.."
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
 alias h="cd ~"
+alias b="cd -"
 alias d="cd ~/Developer"
 alias sbf="cd ~/Developer/steuerbot/frontend"
 alias sbw="cd ~/Developer/steuerbot/website"
