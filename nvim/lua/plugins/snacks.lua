@@ -8,6 +8,7 @@ return {
       bigfile = {},
       rename = {},
       words = {},
+      image = {},
       notifier = {
         style = 'minimal',
       },
