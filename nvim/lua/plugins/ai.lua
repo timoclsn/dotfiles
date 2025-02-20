@@ -66,6 +66,9 @@ return {
       copilot = {
         model = 'claude-3.5-sonnet',
       },
+      behaviour = {
+        enable_cursor_planning_mode = false,
+      },
       hints = {
         enabled = false,
       },
