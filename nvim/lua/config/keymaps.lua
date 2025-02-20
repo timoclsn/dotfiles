@@ -102,3 +102,11 @@ vim.keymap.set('n', '<leader>yp', function()
   vim.fn.setreg('+', relative_path)
   print('Copied path to clipboard: ' .. relative_path)
 end, { noremap = true, silent = true, desc = '[Y]ank full file [P]ath' })
+
+vim.keymap.set('n', '<leader>yf', function()
+  local full_path = vim.fn.expand '%:p'
+  -- Copy the actual file to clipboard using osascript
+  local cmd = string.format([[osascript -e 'set the clipboard to (POSIX file "%s")']], full_path)
+  vim.fn.system(cmd)
+  print('Copied file to clipboard: ' .. full_path)
+end, { noremap = true, silent = true, desc = '[Y]ank [F]ile to clipboard' })
