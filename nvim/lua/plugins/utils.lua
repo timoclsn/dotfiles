@@ -179,5 +179,10 @@ return {
     opts = {
       highlight_on_key = true,
     },
+    {
+      'stevearc/quicker.nvim',
+      event = 'FileType qf',
+      opts = {},
+    },
   },
 }
