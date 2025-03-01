@@ -54,7 +54,7 @@ return {
 
       vim.keymap.set('n', 'gC', function()
         require('treesitter-context').go_to_context(vim.v.count1)
-      end, { silent = true, desc = '[G]o to [C]ontext' })
+      end, { silent = true, desc = '[g]o to [C]ontext' })
     end,
   },
 }

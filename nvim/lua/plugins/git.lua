@@ -2,7 +2,7 @@ return {
   {
     'tpope/vim-fugitive',
     config = function()
-      vim.keymap.set('n', '<leader>gg', '<cmd>Git<cr>', { desc = 'Open [G]it' })
+      vim.keymap.set('n', '<leader>gg', '<cmd>Git<cr>', { desc = 'Open [g]it' })
     end,
   },
   {
@@ -19,11 +19,11 @@ return {
 
       on_attach = function()
         local gitsigns = require 'gitsigns'
-        vim.keymap.set('n', '<leader>gp', gitsigns.preview_hunk, { desc = '[G]it [P]review hunk' })
-        vim.keymap.set('n', '<leader>gs', gitsigns.stage_hunk, { desc = '[G]it toggle [s]tage hunk' })
-        vim.keymap.set('n', '<leader>gr', gitsigns.reset_hunk, { desc = '[G]it [r]eset hunk' })
-        vim.keymap.set('n', '<leader>gS', gitsigns.stage_buffer, { desc = '[G]it [S]tage buffer' })
-        vim.keymap.set('n', '<leader>gR', gitsigns.reset_buffer, { desc = '[G]it [R]eset buffer' })
+        vim.keymap.set('n', '<leader>gp', gitsigns.preview_hunk, { desc = '[g]it [p]review hunk' })
+        vim.keymap.set('n', '<leader>gs', gitsigns.stage_hunk, { desc = '[g]it toggle [s]tage hunk' })
+        vim.keymap.set('n', '<leader>gr', gitsigns.reset_hunk, { desc = '[g]it [r]eset hunk' })
+        vim.keymap.set('n', '<leader>gS', gitsigns.stage_buffer, { desc = '[g]it [S]tage buffer' })
+        vim.keymap.set('n', '<leader>gR', gitsigns.reset_buffer, { desc = '[g]it [R]eset buffer' })
       end,
     },
   },
@@ -44,7 +44,7 @@ return {
         else
           vim.cmd 'DiffviewClose'
         end
-      end, { desc = '[G]it [d]iff against index' })
+      end, { desc = '[g]it [d]iff against index' })
 
       vim.keymap.set('n', '<leader>gD', function()
         if next(require('diffview.lib').views) == nil then
@@ -52,7 +52,7 @@ return {
         else
           vim.cmd 'DiffviewClose'
         end
-      end, { desc = '[G]it diff against [D]evelop' })
+      end, { desc = '[g]it diff against [D]evelop' })
 
       vim.keymap.set('n', '<leader>gM', function()
         if next(require('diffview.lib').views) == nil then
@@ -60,7 +60,7 @@ return {
         else
           vim.cmd 'DiffviewClose'
         end
-      end, { desc = '[G]it diff against [M]ain' })
+      end, { desc = '[g]it diff against [M]ain' })
     end,
   },
 }

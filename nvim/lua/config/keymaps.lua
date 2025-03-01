@@ -35,14 +35,14 @@ vim.keymap.set('n', 'Ö', '{', { remap = true })
 vim.keymap.set('n', 'Ä', '}', { remap = true })
 
 -- Quickfix list
-vim.keymap.set('n', '<leader>qq', '<cmd>copen<CR>', { desc = '[Q]uickfix list [O]pen' })
-vim.keymap.set('n', '<leader>qc', '<cmd>cclose<CR>', { desc = '[Q]uickfix list [C]lose' })
-vim.keymap.set('n', '<leader>qo', '<cmd>colder<CR>', { desc = '[Q]uickfix list [O]lder list' })
-vim.keymap.set('n', '<leader>qn', '<cmd>cnewer<CR>', { desc = '[Q]uickfix list [N]ewer list' })
-vim.keymap.set('n', '<leader>qd', vim.diagnostic.setloclist, { desc = '[Q]uickfix list [D]iagnostics' })
+vim.keymap.set('n', '<leader>qq', '<cmd>copen<CR>', { desc = '[q]uickfix list [o]pen' })
+vim.keymap.set('n', '<leader>qc', '<cmd>cclose<CR>', { desc = '[q]uickfix list [c]lose' })
+vim.keymap.set('n', '<leader>qo', '<cmd>colder<CR>', { desc = '[q]uickfix list [o]lder list' })
+vim.keymap.set('n', '<leader>qn', '<cmd>cnewer<CR>', { desc = '[q]uickfix list [n]ewer list' })
+vim.keymap.set('n', '<leader>qd', vim.diagnostic.setloclist, { desc = '[q]uickfix list [d]iagnostics' })
 
 -- Yank
-vim.keymap.set('n', '<leader>yb', 'ggVGy', { desc = '[Y]ank [B]uffer content' })
+vim.keymap.set('n', '<leader>yb', 'ggVGy', { desc = '[y]ank [b]uffer content' })
 
 -- This keymap is useful for testing and debugging condiions
 vim.keymap.set('n', '<leader>yx', function()
@@ -66,7 +66,7 @@ vim.keymap.set('n', '<leader>yx', function()
   -- Move cursor to first non-empty character of the second line
   vim.api.nvim_win_set_cursor(0, { row + 1, 0 })
   vim.cmd 'normal! ^'
-end, { desc = '[Y]ank [X] - duplicate and comment line' })
+end, { desc = '[y]ank [x] - duplicate and comment line' })
 
 -- Keymap to revert the above keymap
 vim.keymap.set('n', '<leader>yc', function()
@@ -74,7 +74,7 @@ vim.keymap.set('n', '<leader>yc', function()
   vim.cmd 'normal! k'
   vim.cmd 'normal gcc'
   vim.cmd 'normal! ^'
-end, { desc = '[Y]ank [C] - revert duplicate and comment line' })
+end, { desc = '[y]ank [c] - revert duplicate and comment line' })
 
 vim.keymap.set('n', '<leader>yp', function()
   -- Get the current buffer's full path
@@ -99,7 +99,7 @@ vim.keymap.set('n', '<leader>yp', function()
   -- Copy to clipboard
   vim.fn.setreg('+', relative_path)
   print('Copied path to clipboard: ' .. relative_path)
-end, { noremap = true, silent = true, desc = '[Y]ank full file [P]ath' })
+end, { noremap = true, silent = true, desc = '[y]ank full file [p]ath' })
 
 vim.keymap.set('n', '<leader>yf', function()
   local full_path = vim.fn.expand '%:p'
@@ -107,4 +107,4 @@ vim.keymap.set('n', '<leader>yf', function()
   local cmd = string.format([[osascript -e 'set the clipboard to (POSIX file "%s")']], full_path)
   vim.fn.system(cmd)
   print('Copied file to clipboard: ' .. full_path)
-end, { noremap = true, silent = true, desc = '[Y]ank [F]ile to clipboard' })
+end, { noremap = true, silent = true, desc = '[y]ank [f]ile to clipboard' })

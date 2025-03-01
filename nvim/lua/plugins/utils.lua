@@ -45,17 +45,17 @@ return {
 
       -- Document existing key chains
       spec = {
-        { '<leader>c', group = '[C]ode', mode = { 'n', 'x' } },
-        { '<leader>d', group = '[D]ocument' },
-        { '<leader>s', group = '[S]earch' },
-        { '<leader>w', group = '[W]orkspace' },
-        { '<leader>t', group = '[T]oggle' },
-        { '<leader>h', group = '[H]arpoon' },
-        { '<leader>g', group = '[G]it' },
-        { '<leader>a', group = '[A]I' },
-        { '<leader>y', group = '[Y]ank' },
-        { '<leader>q', group = '[Q]uickfix list' },
-        { '<leader>b', group = '[B]uffer' },
+        { '<leader>c', group = '[c]ode', mode = { 'n', 'x' } },
+        { '<leader>d', group = '[d]ocument' },
+        { '<leader>s', group = '[s]earch' },
+        { '<leader>w', group = '[w]orkspace' },
+        { '<leader>t', group = '[t]oggle' },
+        { '<leader>h', group = '[h]arpoon' },
+        { '<leader>g', group = '[g]it' },
+        { '<leader>a', group = '[a]i' },
+        { '<leader>y', group = '[y]ank' },
+        { '<leader>q', group = '[q]uickfix list' },
+        { '<leader>b', group = '[b]uffer' },
       },
     },
   },
@@ -137,27 +137,6 @@ return {
         { 'left', 'right' },
       },
     },
-  },
-  {
-    'OlegGulevskyy/better-ts-errors.nvim',
-    dependencies = { 'MunifTanjim/nui.nvim' },
-    config = function()
-      require('better-ts-errors').setup {
-        keymaps = {
-          toggle = '<leader>K',
-        },
-      }
-
-      vim.api.nvim_create_autocmd('FileType', {
-        pattern = {
-          'typescript-errors',
-        },
-        callback = function(event)
-          vim.bo[event.buf].buflisted = false
-          vim.keymap.set('n', 'q', '<cmd>close<cr>', { buffer = event.buf, silent = true })
-        end,
-      })
-    end,
   },
   {
     'MeanderingProgrammer/render-markdown.nvim',

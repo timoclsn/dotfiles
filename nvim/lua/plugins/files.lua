@@ -9,8 +9,8 @@ return {
     },
     cmd = 'Neotree',
     keys = {
-      { '<C-e>', ':Neotree toggle<CR>', desc = 'Toggle File [E]xplorer', silent = true },
-      { '<leader>e', ':Neotree reveal<CR>', desc = 'Reveal file in [E]xplorer', silent = true },
+      { '<C-e>', ':Neotree toggle<CR>', desc = 'Toggle File [e]xplorer', silent = true },
+      { '<leader>e', ':Neotree reveal<CR>', desc = 'Reveal file in [e]xplorer', silent = true },
     },
 
     opts = {
@@ -153,10 +153,10 @@ return {
 
       vim.keymap.set('n', '<leader>ha', function()
         harpoon:list():add()
-      end, { desc = '[H]arpoon [A]dd File' })
+      end, { desc = '[h]arpoon [a]dd File' })
       vim.keymap.set('n', '<leader>hl', function()
         harpoon.ui:toggle_quick_menu(harpoon:list())
-      end, { desc = '[H]arpoon [L]ist files' })
+      end, { desc = '[h]arpoon [l]ist files' })
 
       -- Navigate to Harpoon marks 1-9
       for i = 1, 9 do
@@ -168,19 +168,19 @@ return {
       -- Toggle previous & next buffers stored within Harpoon list
       vim.keymap.set('n', '<leader>hp', function()
         harpoon:list():prev()
-      end, { desc = '[H]arpoon [P]revious Buffer' })
+      end, { desc = '[h]arpoon [p]revious Buffer' })
       vim.keymap.set('n', '<leader>hn', function()
         harpoon:list():next()
-      end, { desc = '[H]arpoon [N]ext Buffer' })
+      end, { desc = '[h]arpoon [n]ext Buffer' })
       vim.keymap.set('n', '<leader>hh', function()
         toggle_telescope(harpoon:list())
-      end, { desc = '[H]arpoon telescope' })
+      end, { desc = '[h]arpoon [h]arpoon telescope' })
     end,
   },
   {
     'mbbill/undotree',
     config = function()
-      vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle, { desc = 'Toggle [U]ndotree' })
+      vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle, { desc = 'Toggle [u]ndotree' })
       vim.g.undotree_SplitWidth = 60
     end,
   },

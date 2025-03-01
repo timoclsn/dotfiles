@@ -74,22 +74,22 @@ return {
 
       local builtin = require 'telescope.builtin'
 
-      vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
-      vim.keymap.set('n', '<leader>sg', require 'telescope.live_grep', { desc = '[S]earch by [G]rep' })
+      vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[s]earch [f]iles' })
+      vim.keymap.set('n', '<leader>sg', require 'telescope.live_grep', { desc = '[s]earch by [g]rep' })
 
-      vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
-      vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
-      vim.keymap.set('n', '<leader>sc', builtin.git_commits, { desc = '[S]earch [C]ommits' })
-      vim.keymap.set('n', '<leader>sC', builtin.git_bcommits, { desc = '[S]earch Branch [C]ommits' })
-      vim.keymap.set('n', '<leader>sb', builtin.git_branches, { desc = '[S]earch [B]ranches' })
-      vim.keymap.set('n', '<leader>sr', builtin.registers, { desc = '[S]earch [R]egisters' })
-      vim.keymap.set('n', '<leader>sm', builtin.marks, { desc = '[S]earch [M]arks' })
-      vim.keymap.set('n', '<leader>st', builtin.builtin, { desc = '[S]earch [T]elescope Pickers' })
+      vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[s]earch [h]elp' })
+      vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[s]earch [k]eymaps' })
+      vim.keymap.set('n', '<leader>sc', builtin.git_commits, { desc = '[s]earch [c]ommits' })
+      vim.keymap.set('n', '<leader>sC', builtin.git_bcommits, { desc = '[s]earch [C]ommits' })
+      vim.keymap.set('n', '<leader>sb', builtin.git_branches, { desc = '[s]earch [b]ranches' })
+      vim.keymap.set('n', '<leader>sr', builtin.registers, { desc = '[s]earch [r]egisters' })
+      vim.keymap.set('n', '<leader>sm', builtin.marks, { desc = '[s]earch [m]arks' })
+      vim.keymap.set('n', '<leader>st', builtin.builtin, { desc = '[s]earch [t]elescope pickers' })
 
       vim.keymap.set('n', '<leader>sw', function()
         local word = vim.fn.expand '<cword>'
         require 'telescope.live_grep' { default_text = word }
-      end, { desc = '[S]earch current [W]ord' })
+      end, { desc = '[s]earch current [w]ord' })
 
       vim.keymap.set('x', '<leader>sg', function()
         local visual_selection = function()
@@ -101,14 +101,14 @@ return {
         end
         local selected_text = visual_selection()
         require 'telescope.live_grep' { default_text = selected_text }
-      end, { desc = '[S]earch by [G]rep' })
+      end, { desc = '[s]earch by [g]rep' })
 
-      vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
-      vim.keymap.set('n', '<leader>s.', builtin.resume, { desc = '[S]earch Resume ("." for repeat)' })
-      vim.keymap.set('n', '<leader>so', builtin.oldfiles, { desc = '[S]earch [O]ld files' })
-      vim.keymap.set('n', '<leader>sq', builtin.quickfixhistory, { desc = '[S]earch [Q]uickfix History' })
-      vim.keymap.set('n', '<leader>sp', require 'telescope.packages', { desc = '[S]earch Node [P]ackages' })
-      vim.keymap.set('n', '<leader>sl', '<cmd>:Telescope luasnip<CR>', { desc = '[S]earch Node [L]uasip' })
+      vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[s]earch [d]iagnostics' })
+      vim.keymap.set('n', '<leader>s.', builtin.resume, { desc = '[s]earch resume ("." for repeat)' })
+      vim.keymap.set('n', '<leader>so', builtin.oldfiles, { desc = '[s]earch [o]ld files' })
+      vim.keymap.set('n', '<leader>sq', builtin.quickfixhistory, { desc = '[s]earch [q]uickfix history' })
+      vim.keymap.set('n', '<leader>sp', require 'telescope.packages', { desc = '[s]earch node [p]ackages' })
+      vim.keymap.set('n', '<leader>sl', '<cmd>:Telescope luasnip<CR>', { desc = '[s]earch [l]uasnip' })
 
       vim.keymap.set('n', '<leader>/', function()
         builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {

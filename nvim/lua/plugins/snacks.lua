@@ -32,7 +32,7 @@ return {
         function()
           require('snacks').notifier.show_history()
         end,
-        desc = '[W]orkspace [N]otifications',
+        desc = '[w]orkspace [n]otifications',
       },
       {
         '<C-n>',
