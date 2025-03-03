@@ -19,6 +19,9 @@ export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
 
 export PATH="$HOME/.local/bin:$PATH"
 
+# Load env vars from .env file
+[ -f "$HOME/.env" ] && source "$HOME/.env"
+
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
