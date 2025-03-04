@@ -43,6 +43,7 @@ vim.keymap.set('n', '<leader>qd', vim.diagnostic.setloclist, { desc = '[q]uickfi
 
 -- Yank
 vim.keymap.set('n', '<leader>yb', 'ggVGy', { desc = '[y]ank [b]uffer content' })
+vim.keymap.set('n', '<leader>pb', 'ggVG"+p', { desc = '[p]aste clipboard content and replace [b]uffer content' })
 
 -- This keymap is useful for testing and debugging condiions
 vim.keymap.set('n', '<leader>yx', function()

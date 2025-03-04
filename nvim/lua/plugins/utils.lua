@@ -54,6 +54,7 @@ return {
         { '<leader>g', group = '[g]it' },
         { '<leader>a', group = '[a]i' },
         { '<leader>y', group = '[y]ank' },
+        { '<leader>p', group = '[p]aste' },
         { '<leader>q', group = '[q]uickfix list' },
         { '<leader>b', group = '[b]uffer' },
       },
