@@ -48,10 +48,32 @@ end
 
 vim.keymap.set('i', 't', add_async, { buffer = true })
 
-vim.keymap.set('n', '<leader>o', function()
-  vim.lsp.buf.execute_command {
-    command = '_typescript.organizeImports',
-    arguments = { vim.api.nvim_buf_get_name(0) },
-    title = '',
+vim.keymap.set('n', '<leader>io', function()
+  vim.lsp.buf.code_action {
+    apply = true,
+    context = {
+      only = { 'source.organizeImports' },
+      diagnostics = {},
+    },
   }
-end, { desc = '[O]rganize Imports' })
+end, { desc = '[i]mports [o]rganize' })
+
+vim.keymap.set('n', '<leader>ia', function()
+  vim.lsp.buf.code_action {
+    apply = true,
+    context = {
+      only = { 'source.addMissingImports' }, --[[@diagnostic disable-line assign-type-mismatch]]
+      diagnostics = {},
+    },
+  }
+end, { desc = '[i]mports [a]dd missing' })
+
+vim.keymap.set('n', '<leader>ir', function()
+  vim.lsp.buf.code_action {
+    apply = true,
+    context = {
+      only = { 'source.removeUnused' }, --[[@diagnostic disable-line assign-type-mismatch]]
+      diagnostics = {},
+    },
+  }
+end, { desc = '[i]mports [r]emove unused' })
