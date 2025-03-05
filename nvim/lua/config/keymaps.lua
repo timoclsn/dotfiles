@@ -27,6 +27,7 @@ vim.keymap.set('n', '<leader>k', vim.diagnostic.open_float, { desc = 'Show diagn
 vim.keymap.set('n', 'gX', function()
   vim.ui.open(vim.fn.expand '<cfile>')
 end, { desc = 'Open file/url under cursor' })
+vim.keymap.set('n', 'X', '$x', { desc = 'Delete last character in line' })
 
 -- Remap brackets for easier access to brakets keymaps
 vim.keymap.set('n', 'ö', '[', { remap = true })
