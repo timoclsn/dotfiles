@@ -72,6 +72,9 @@ return {
       hints = {
         enabled = false,
       },
+      behaviour = {
+        use_cwd_as_project_root = true,
+      },
       windows = {
         position = 'left',
         ask = {
