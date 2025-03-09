@@ -28,15 +28,7 @@ return {
 
       require('mini.move').setup {
         mappings = {
-          -- Move visual selection in Visual mode.
-          right = '@', -- Alt + l
-          left = 'ª', -- Alt + h
-          down = 'º', -- Alt + j
-          up = '∆', -- Alt + k
-
           -- Move current line in Normal mode
-          line_left = 'ª', -- Alt + h
-          line_right = '@', -- Alt + l
           line_down = 'º', -- Alt + j
           line_up = '∆', -- Alt + k
         },
