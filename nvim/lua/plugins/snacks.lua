@@ -8,7 +8,11 @@ return {
       bigfile = {},
       rename = {},
       words = {},
-      image = {},
+      image = {
+        doc = {
+          enabled = false,
+        },
+      },
       notifier = {
         style = 'minimal',
       },
@@ -49,6 +53,13 @@ return {
           vim.cmd 'normal! zz'
         end,
         desc = 'Previous Reference',
+      },
+      {
+        '<leader>k',
+        function()
+          Snacks.image.hover()
+        end,
+        desc = 'Preview image under cursor',
       },
     },
   },
