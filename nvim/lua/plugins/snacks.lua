@@ -55,11 +55,11 @@ return {
         desc = 'Previous Reference',
       },
       {
-        '<leader>k',
+        '<leader>di',
         function()
           Snacks.image.hover()
         end,
-        desc = 'Preview image under cursor',
+        desc = 'Preview [d]ocument [i]mage under cursor',
       },
     },
   },
