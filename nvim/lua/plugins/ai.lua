@@ -96,14 +96,13 @@ return {
   {
     'ravitemer/mcphub.nvim',
     dependencies = {
-      'nvim-lua/plenary.nvim', -- Required for Job and HTTP requests
+      'nvim-lua/plenary.nvim',
     },
-    build = 'npm install -g mcp-hub@latest', -- Installs required mcp-hub npm module
+    build = 'npm install -g mcp-hub@latest',
     config = function()
       require('mcphub').setup {
-        -- Required options
-        port = 3000, -- Port for MCP Hub server
-        config = vim.fn.expand '~/.mcpservers.json', -- Absolute path to config file
+        port = 3300,
+        config = vim.fn.expand '~/.mcpservers.json',
       }
     end,
   },
