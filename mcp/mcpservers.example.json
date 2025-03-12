@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "nx": {
+      "disabled": true,
+      "command": "npx",
+      "args": ["-y", "nx-mcp", "Path to your nx workspace"]
+    },
+    "github": {
+      "disabled": true,
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "<your github personal access token>"
+      }
+    }
+  }
+}
