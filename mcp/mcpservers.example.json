@@ -12,6 +12,11 @@
       "env": {
         "GITHUB_PERSONAL_ACCESS_TOKEN": "<your github personal access token>"
       }
+    },
+    "package-version": {
+      "disabled": true,
+      "command": "npx",
+      "args": ["-y", "mcp-package-version"]
     }
   }
 }
