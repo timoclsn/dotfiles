@@ -397,8 +397,7 @@ vim: true
 #chat-language: xxx
 
 ## Always say yes to every confirmation
-#yes-always: false
-
+yes-always: true
 ## Enable verbose output
 #verbose: false
 
@@ -421,7 +420,7 @@ vim: true
 #fancy-input: true
 
 ## Enable/disable multi-line input mode with Meta-Enter to submit (default: False)
-multiline: false
+#multiline: false
 ## Enable/disable detection and offering to add URLs to chat (default: True)
 #detect-urls: true
 
