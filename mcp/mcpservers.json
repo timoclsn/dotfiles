@@ -1,0 +1,50 @@
+{
+  "mcpServers": {
+    "nx-frontend-w3": {
+      "disabled": true,
+      "command": "npx",
+      "args": [
+        "-y",
+        "nx-mcp",
+        "/Users/timo/Developer/steuerbot/frontend-w3"
+      ]
+    },
+    "nx-frontend": {
+      "disabled": true,
+      "command": "npx",
+      "args": [
+        "-y",
+        "nx-mcp",
+        "/Users/timo/Developer/steuerbot/frontend"
+      ]
+    },
+    "nx-frontend-w2": {
+      "disabled": true,
+      "command": "npx",
+      "args": [
+        "-y",
+        "nx-mcp",
+        "/Users/timo/Developer/steuerbot/frontend-w2"
+      ]
+    },
+    "github": {
+      "disabled": false,
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": null
+      },
+      "command": "npx"
+    },
+    "package-version": {
+      "disabled": true,
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-package-version"
+      ]
+    }
+  }
+}
