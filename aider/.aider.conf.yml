@@ -18,41 +18,7 @@
 # Main model:
 
 ## Specify the model to use for the main chat
-#model: xxx
-
-## Use claude-3-opus-20240229 model for the main chat
-#opus: false
-
-## Use claude-3-5-sonnet-20241022 model for the main chat
-sonnet: true
-
-## Use claude-3-5-haiku-20241022 model for the main chat
-#haiku: false
-
-## Use gpt-4-0613 model for the main chat
-#4: false
-
-## Use gpt-4o model for the main chat
-#4o: false
-
-## Use gpt-4o-mini model for the main chat
-#mini: false
-
-## Use gpt-4-1106-preview model for the main chat
-#4-turbo: false
-
-## Use gpt-3.5-turbo model for the main chat
-#35turbo: false
-
-## Use deepseek/deepseek-coder model for the main chat
-#deepseek: false
-
-## Use o1-mini model for the main chat
-#o1-mini: false
-
-## Use o1-preview model for the main chat
-#o1-preview: false
-
+model: sonnet
 ########################
 # API Keys and settings:
 
@@ -113,6 +79,12 @@ sonnet: true
 #  - yyy
 #  - zzz
 
+## Set the reasoning_effort API parameter (default: not set)
+#reasoning-effort: xxx
+
+## Set the thinking token budget for models that support it (default: not set)
+#thinking-tokens: xxx
+
 ## Verify the SSL cert when connecting to models (default: True)
 #verify-ssl: true
 
@@ -124,6 +96,9 @@ sonnet: true
 
 ## Use architect edit format for the main chat
 #architect: false
+
+## Enable/disable automatic acceptance of architect changes (default: True)
+#auto-accept-architect: true
 
 ## Specify the model to use for commit messages and chat history summarization (default depends on --model)
 #weak-model: xxx
@@ -152,7 +127,7 @@ sonnet: true
 ###################
 # Repomap settings:
 
-## Suggested number of tokens to use for repo map, use 0 to disable (default: 1024)
+## Suggested number of tokens to use for repo map, use 0 to disable
 #map-tokens: xxx
 
 ## Control how often the repo map is refreshed. Options: auto, always, files, manual (default: auto)
@@ -194,7 +169,7 @@ dark-mode: true
 #user-input-color: #00cc00
 
 ## Set the color for tool output (default: None)
-#tool-output-color: xxx
+#tool-output-color: "xxx"
 
 ## Set the color for tool error messages (default: #FF2222)
 #tool-error-color: #FF2222
@@ -206,20 +181,19 @@ dark-mode: true
 #assistant-output-color: #0088ff
 
 ## Set the color for the completion menu (default: terminal's default text color)
-#completion-menu-color: xxx
+#completion-menu-color: "xxx"
 
 ## Set the background color for the completion menu (default: terminal's default background color)
-#completion-menu-bg-color: xxx
+#completion-menu-bg-color: "xxx"
 
 ## Set the color for the current item in the completion menu (default: terminal's default background color)
-#completion-menu-current-color: xxx
+#completion-menu-current-color: "xxx"
 
 ## Set the background color for the current item in the completion menu (default: terminal's default text color)
-#completion-menu-current-bg-color: xxx
+#completion-menu-current-bg-color: "xxx"
 
 ## Set the markdown code theme (default: default, other options include monokai, solarized-dark, solarized-light, or a Pygments builtin style, see https://pygments.org/styles for available themes)
 code-theme: github-dark
-
 ## Show diffs when committing changes (default: False)
 #show-diffs: false
 
@@ -251,7 +225,7 @@ code-theme: github-dark
 #attribute-committer: true
 
 ## Prefix commit messages with 'aider: ' if aider authored the changes (default: False)
-attribute-commit-message-author: true
+#attribute-commit-message-author: false
 
 ## Prefix all commit messages with 'aider: ' (default: False)
 #attribute-commit-message-committer: false
@@ -307,7 +281,7 @@ attribute-commit-message-author: true
 #analytics-log: xxx
 
 ## Permanently disable analytics
-analytics-disable: true
+#analytics-disable: true
 
 ############
 # Upgrading:
@@ -407,6 +381,9 @@ yes-always: true
 ## Specify the encoding for input and output (default: utf-8)
 #encoding: utf-8
 
+## Line endings to use when writing files (default: platform)
+#line-endings: platform
+
 ## Specify the config file (default: search for .aider.conf.yml in git root, cwd or home directory)
 #config: xxx
 
@@ -421,8 +398,51 @@ yes-always: true
 
 ## Enable/disable multi-line input mode with Meta-Enter to submit (default: False)
 #multiline: false
+
+## Enable/disable terminal bell notifications when LLM responses are ready (default: False)
+#notifications: false
+
+## Specify a command to run for notifications instead of the terminal bell. If not specified, a default command for your OS may be used.
+#notifications-command: xxx
+
 ## Enable/disable detection and offering to add URLs to chat (default: True)
 #detect-urls: true
 
 ## Specify which editor to use for the /editor command
 #editor: xxx
+
+############################
+# Deprecated model settings:
+
+## Use claude-3-opus-20240229 model for the main chat (deprecated, use --model)
+#opus: false
+
+## Use anthropic/claude-3-7-sonnet-20250219 model for the main chat (deprecated, use --model)
+#sonnet: false
+
+## Use claude-3-5-haiku-20241022 model for the main chat (deprecated, use --model)
+#haiku: false
+
+## Use gpt-4-0613 model for the main chat (deprecated, use --model)
+#4: false
+
+## Use gpt-4o model for the main chat (deprecated, use --model)
+#4o: false
+
+## Use gpt-4o-mini model for the main chat (deprecated, use --model)
+#mini: false
+
+## Use gpt-4-1106-preview model for the main chat (deprecated, use --model)
+#4-turbo: false
+
+## Use gpt-3.5-turbo model for the main chat (deprecated, use --model)
+#35turbo: false
+
+## Use deepseek/deepseek-chat model for the main chat (deprecated, use --model)
+#deepseek: false
+
+## Use o1-mini model for the main chat (deprecated, use --model)
+#o1-mini: false
+
+## Use o1-preview model for the main chat (deprecated, use --model)
+#o1-preview: false
