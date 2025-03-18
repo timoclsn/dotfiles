@@ -138,6 +138,7 @@ alias ai="aider"
 alias y="yazy-shell"
 alias i="fastfetch"
 alias n='manage_node_version'
+alias o='manage_ollama'
 
 # cd
 alias ..="cd .."
@@ -318,6 +319,79 @@ manage_node_version() {
                     fnm uninstall "$version"
                 fi
             fi
+            ;;
+    esac
+}
+
+manage_ollama() {
+    # Check if ollama is installed
+    if ! command -v ollama >/dev/null 2>&1; then
+        echo "ollama is not installed. Please install it first."
+        return 1
+    fi
+
+    # Check if fzf is installed
+    if ! command -v fzf >/dev/null 2>&1; then
+        echo "fzf is not installed. Please install it first."
+        return 1
+    fi
+
+    # Function to list installed models
+    list_installed() {
+        ollama list
+    }
+
+    # Helper function to extract model name from ollama list output
+    extract_model() {
+        awk '{print $1}'
+    }
+
+    # Main menu options
+    action=$(echo -e "1. Run installed model\n2. Remove model\n3. List all models" | \
+        fzf --height 15 \
+            --cycle \
+            --no-clear \
+            --prompt="Select ollama action: " \
+            --border-label " Manage Ollama $current_model_string")
+
+    case "$action" in
+        "1. Run installed model")
+            model=$(list_installed | \
+                fzf --height 15 \
+                    --cycle \
+                    --tac \
+                    --prompt="Select model to run: " \
+                    --border-label " Run Ollama Model $current_model_string" | \
+                extract_model)
+            if [ ! -z "$model" ]; then
+                ollama run "$model"
+            fi
+            ;;
+    
+        "2. Remove model")
+            model=$(list_installed | \
+                fzf --height 15 \
+                    --cycle \
+                    --tac \
+                    --prompt="Select model to remove: " \
+                    --border-label " Remove Ollama Model $current_model_string" | \
+                extract_model)
+            if [ ! -z "$model" ]; then
+                echo -n "Are you sure you want to remove $model? (y/N) "
+                read answer
+                if [[ $answer =~ ^[Yy]$ ]]; then
+                    ollama rm "$model"
+                fi
+            fi
+            ;;
+
+        "3. List all models")
+            list_installed | \
+                fzf --height 15 \
+                    --cycle \
+                    --tac \
+                    --prompt="Press Enter to exit: " \
+                    --border-label " Installed Models $current_model_string"
             ;;
     esac
 }
