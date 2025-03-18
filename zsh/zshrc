@@ -1,146 +1,69 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
+# =============================================================================
+# Powerlevel10k Instant Prompt
+# =============================================================================
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
-
-# Path to your oh-my-zsh installation.
+# =============================================================================
+# Environment Variables
+# =============================================================================
 export ZSH="$HOME/.oh-my-zsh"
-
 export XDG_CONFIG_HOME="$HOME/.config"
 
+# Android SDK
 export ANDROID_SDK_ROOT=$HOME/Library/Android/sdk
 export PATH=$PATH:$ANDROID_SDK_ROOT/emulator
 export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
 
+# Local bin
 export PATH="$HOME/.local/bin:$PATH"
 
 # Load env vars from .env file
 [ -f "$HOME/.env" ] && source "$HOME/.env"
 
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+# =============================================================================
+# Oh My Zsh Configuration
+# =============================================================================
 ZSH_THEME="powerlevel10k/powerlevel10k"
-
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in $ZSH/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
-
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment one of the following lines to change the auto-update behavior
-# zstyle ':omz:update' mode disabled  # disable automatic updates
-# zstyle ':omz:update' mode auto      # update automatically without asking
-# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
-
-# Uncomment the following line to change how often to auto-update (in days).
-# zstyle ':omz:update' frequency 13
-
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS="true"
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# You can also set it to another string to have that shown instead of the default red dots.
-# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
-# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
 plugins=(git vi-mode)
-
 source $ZSH/oh-my-zsh.sh
 
-# User configuration
+# =============================================================================
+# Package Manager Paths
+# =============================================================================
+# pnpm
+export PNPM_HOME="/Users/timo/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
 
-# export MANPATH="/usr/local/man:$MANPATH"
+# fnm
+export PATH="/Users/timo/Library/Application Support/fnm:$PATH"
+eval "`fnm env`"
 
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
 
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+# =============================================================================
+# CLI Tools
+# =============================================================================
+# Turso CLI
+export PATH="/Users/timo/.turso:$PATH"
 
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh
-
+# =============================================================================
+# Aliases
+# =============================================================================
+# Shell
 alias src="source ~/.zshrc"
 alias s="src"
-
 alias c="clear"
 alias e="exit"
-alias cd="z"
-alias ls="eza"
-alias cat="bat"
-alias vim="nvim"
-alias v="vim"
-alias lg="lazygit"
-alias grep="rg"
-alias g="git"
-alias r="run_npm_script"
-alias t="tmux"
-alias ta="tmux attach"
-alias ai="aider"
-alias y="yazy-shell"
-alias i="fastfetch"
-alias n='manage_node_version'
-alias o='manage_ollama'
 
-# cd
+# Navigation
+alias cd="z"
 alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
@@ -151,14 +74,38 @@ alias d="cd ~/Developer"
 alias sbf="cd ~/Developer/steuerbot/frontend"
 alias sbw="cd ~/Developer/steuerbot/website"
 
-# ls
+# File Operations
+alias ls="eza"
 alias l='ls -l'
 alias la='ls -la'
 alias lt='ls --tree'
 alias lf='la | fzf'
+alias cat="bat"
+alias grep="rg"
 
+# Applications
+alias vim="nvim"
+alias v="vim"
+alias lg="lazygit"
+alias g="git"
+alias r="run_npm_script"
+alias t="tmux"
+alias ta="tmux attach"
+alias ai="aider"
+alias y="yazy-shell"
+alias i="fastfetch"
+alias n='manage_node_version'
+alias o='manage_ollama'
+
+# =============================================================================
+# Key Bindings
+# =============================================================================
 bindkey -s ^f "tmux-sessionizer\n"
+bindkey '^G' fzf-cd-widget
 
+# =============================================================================
+# Functions
+# =============================================================================
 # run npm script requires jq fzf and nr
 run_npm_script() {
   # Check for required dependencies
@@ -404,6 +351,9 @@ manage_ollama() {
     esac
 }
 
+# =============================================================================
+# Brew Package Management Functions
+# =============================================================================
 # Install (one or multiple) selected application(s)
 # using "brew search" as source input
 # mnemonic [B]rew [I]nstall [P]ackage
@@ -453,6 +403,9 @@ bcp() {
   fi
 }
 
+# =============================================================================
+# Shell Wrappers
+# =============================================================================
 # We suggest using this y shell wrapper that provides the ability to change the current working directory when exiting Yazi.
 function yazy-shell() {
   local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
@@ -463,24 +416,9 @@ function yazy-shell() {
   rm -f -- "$tmp"
 }
 
-# pnpm
-export PNPM_HOME="/Users/timo/Library/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
-
-# fnm
-export PATH="/Users/timo/Library/Application Support/fnm:$PATH"
-eval "`fnm env`"
-
-# Turso
-export PATH="/Users/timo/.turso:$PATH"
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
+# =============================================================================
+# FZF Configuration
+# =============================================================================
 # fzf tokyonight theme and default options
 export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS \
   --highlight-line \
@@ -506,13 +444,14 @@ export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS \
 "
 # Enable fzf keybindings
 source <(fzf --zsh)
-bindkey '^G' fzf-cd-widget
 
+# =============================================================================
+# Additional Tools
+# =============================================================================
 eval "$(zoxide init zsh)"
 
 # bun completions
 [ -s "/Users/timo/.bun/_bun" ] && source "/Users/timo/.bun/_bun"
 
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
