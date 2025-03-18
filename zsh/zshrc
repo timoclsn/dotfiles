@@ -336,6 +336,14 @@ manage_ollama() {
         return 1
     fi
 
+    # Check if ollama service is running
+    if ! pgrep -f "ollama serve" >/dev/null; then
+        echo "Ollama service is not running. Starting it now..."
+        ollama serve >/dev/null 2>&1 &
+        # Wait a moment for the service to start
+        sleep 2
+    fi
+
     # Function to list installed models
     list_installed() {
         ollama list
@@ -347,7 +355,7 @@ manage_ollama() {
     }
 
     # Main menu options
-    action=$(echo -e "1. Run installed model\n2. Remove model" | \
+    action=$(echo -e "1. Run installed model\n2. Remove model\n3. Stop Ollama service" | \
         fzf --height 15 \
             --cycle \
             --no-clear \
@@ -382,6 +390,15 @@ manage_ollama() {
                 if [[ $answer =~ ^[Yy]$ ]]; then
                     ollama rm "$model"
                 fi
+            fi
+            ;;
+
+        "3. Stop Ollama service")
+            echo -n "Are you sure you want to stop the Ollama service? (y/N) "
+            read answer
+            if [[ $answer =~ ^[Yy]$ ]]; then
+                pkill -f "ollama serve"
+                echo "Ollama service stopped."
             fi
             ;;
     esac
