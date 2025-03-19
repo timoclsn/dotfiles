@@ -98,3 +98,14 @@ vim.diagnostic.config {
     },
   } or {},
 }
+
+vim.opt.diffopt = {
+  'vertical',
+  'internal',
+  'filler',
+  'closeoff',
+  'context:12',
+  'algorithm:histogram',
+  'linematch:60',
+  'indent-heuristic',
+}
