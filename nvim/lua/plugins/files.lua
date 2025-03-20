@@ -46,6 +46,8 @@ return {
             nowait = true,
           },
           mappings = {
+            ['z'] = 'none',
+            ['zR'] = 'close_all_nodes',
             ['l'] = 'open',
             ['h'] = 'close_node',
             ['<space>'] = { 'toggle_preview', config = { use_float = true } },
