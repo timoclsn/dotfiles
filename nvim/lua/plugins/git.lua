@@ -30,7 +30,13 @@ return {
   {
     'sindrets/diffview.nvim',
     config = function()
-      require('diffview').setup()
+      require('diffview').setup {
+        file_panel = {
+          win_config = {
+            width = 60,
+          },
+        },
+      }
 
       vim.keymap.set('n', '<leader>gd', function()
         if next(require('diffview.lib').views) == nil then
