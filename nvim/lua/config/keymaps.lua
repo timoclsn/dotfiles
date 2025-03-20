@@ -45,6 +45,18 @@ vim.keymap.set('n', '<leader>qd', vim.diagnostic.setloclist, { desc = '[q]uickfi
 -- Yank
 vim.keymap.set('n', '<leader>yb', 'ggVGy', { desc = '[y]ank [b]uffer content' })
 vim.keymap.set('n', '<leader>pb', 'ggVG"+p', { desc = '[p]aste clipboard content and replace [b]uffer content' })
+vim.keymap.set('n', '<leader>ye', function()
+  local diagnostics = vim.diagnostic.get(0, { line = vim.api.nvim_win_get_cursor(0)[1] - 1 })
+  if #diagnostics == 0 then
+    vim.notify('No diagnostics found at cursor position', vim.log.levels.INFO)
+    return
+  end
+  local messages = vim.tbl_map(function(d)
+    return string.format('[%s] %s', d.source or 'unknown', d.message)
+  end, diagnostics)
+  vim.fn.setreg('+', table.concat(messages, '\n'))
+  vim.notify('Yanked ' .. #diagnostics .. ' diagnostic messages', vim.log.levels.INFO)
+end, { desc = '[y]ank [e]rror messages under cursor' })
 
 -- This keymap is useful for testing and debugging condiions
 vim.keymap.set('n', '<leader>yx', function()
