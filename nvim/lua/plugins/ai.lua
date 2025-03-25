@@ -74,7 +74,7 @@ return {
       },
       behaviour = {
         use_cwd_as_project_root = true,
-        -- enable_claude_text_editor_tool_mode = true,
+        enable_claude_text_editor_tool_mode = true,
       },
       windows = {
         position = 'left',
