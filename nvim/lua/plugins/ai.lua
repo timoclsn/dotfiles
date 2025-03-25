@@ -4,6 +4,7 @@ return {
     cmd = 'Copilot',
     event = 'InsertEnter',
     opts = {
+      copilot_model = 'gpt-4o-copilot',
       panel = {
         enabled = false,
       },
@@ -64,10 +65,10 @@ return {
       provider = 'copilot',
       copilot = {
         -- model = 'claude-3.5-sonnet',
-        model = 'claude-3.7-sonnet',
-        -- model = 'claude-3.7-sonnet-thought',
-        -- tmperature = 1,
-        -- max_tokens = 20000,
+        -- model = 'claude-3.7-sonnet',
+        model = 'claude-3.7-sonnet-thought',
+        tmperature = 1,
+        max_tokens = 20000,
       },
       hints = {
         enabled = false,
