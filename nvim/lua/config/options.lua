@@ -88,6 +88,8 @@ vim.diagnostic.config {
   severity_sort = true,
   update_in_insert = true,
   float = { source = true },
+  virtual_text = true,
+  virtual_lines = false,
   underline = { severity = vim.diagnostic.severity.ERROR },
   signs = vim.g.have_nerd_font and {
     text = {
@@ -109,3 +111,10 @@ vim.opt.diffopt = {
   'linematch:60',
   'indent-heuristic',
 }
+
+vim.o.foldlevel = 99
+vim.o.foldlevelstart = 99
+vim.o.foldenable = true
+vim.o.foldtext = ''
+vim.o.foldmethod = 'expr'
+vim.o.foldexpr = 'v:lua.vim.lsp.foldexpr()'
