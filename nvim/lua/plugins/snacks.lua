@@ -41,7 +41,7 @@ return {
       {
         '<C-n>',
         function()
-          require('snacks').words.jump(vim.v.count1)
+          require('snacks').words.jump(vim.v.count1, true)
           vim.cmd 'normal! zz'
         end,
         desc = 'Next Reference',
@@ -49,7 +49,7 @@ return {
       {
         '<C-S-n>',
         function()
-          require('snacks').words.jump(-vim.v.count1)
+          require('snacks').words.jump(-vim.v.count1, true)
           vim.cmd 'normal! zz'
         end,
         desc = 'Previous Reference',
