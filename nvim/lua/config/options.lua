@@ -118,3 +118,31 @@ vim.o.foldenable = true
 vim.o.foldtext = ''
 vim.o.foldmethod = 'expr'
 vim.o.foldexpr = 'v:lua.vim.lsp.foldexpr()'
+
+-- Disable tmux leader in insert mode
+local tmux_leader = vim.system({ 'tmux', 'show-options', '-g', 'prefix' }, {}):wait().stdout:match 'prefix%s+(%S+)'
+
+local function unset_tmux_leader()
+  if tmux_leader then
+    vim.system({ 'tmux', 'set-option', '-g', 'prefix', 'None' }, {})
+  end
+end
+
+local function reset_tmux_leader()
+  if tmux_leader then
+    vim.system({ 'tmux', 'set-option', '-g', 'prefix', tmux_leader }, {})
+  end
+end
+
+vim.api.nvim_create_autocmd({ 'ModeChanged' }, {
+  group = vim.api.nvim_create_augroup('Tmux_unset_leader', {}),
+  desc = 'Disable tmux leader in insert mode',
+  callback = function(args)
+    local new_mode = args.match:sub(-1)
+    if new_mode == 'n' or new_mode == 't' then
+      reset_tmux_leader()
+    else
+      unset_tmux_leader()
+    end
+  end,
+})
