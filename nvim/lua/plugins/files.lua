@@ -49,7 +49,7 @@ return {
             ['z'] = 'none',
             ['zR'] = 'close_all_nodes',
             ['C'] = 'close_all_subnodes',
-            ['zO'] = 'expand_all_nodes',
+            ['zM'] = 'expand_all_nodes',
             ['l'] = 'open',
             ['h'] = 'close_node',
             ['<space>'] = { 'toggle_preview', config = { use_float = true } },
