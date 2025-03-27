@@ -2,7 +2,9 @@ return {
   {
     'saghen/blink.cmp',
     dependencies = {
-      'nvim-highlight-colors',
+      'onsails/lspkind.nvim',
+      'nvim-tree/nvim-web-devicons',
+      'brenoprata10/nvim-highlight-colors',
       'Kaiser-Yang/blink-cmp-avante',
     },
     version = '1.*',
@@ -14,12 +16,12 @@ return {
         ['<CR>'] = { 'select_and_accept', 'fallback' },
         ['<C-y>'] = { 'select_and_accept', 'fallback' },
 
-        ['<C-k>'] = { 'select_prev', 'fallback_to_mappings' },
-        ['<C-j>'] = { 'select_next', 'fallback_to_mappings' },
+        ['<C-k>'] = { 'select_prev', 'fallback' },
+        ['<C-j>'] = { 'select_next', 'fallback' },
         ['<Up>'] = { 'select_prev', 'fallback' },
         ['<Down>'] = { 'select_next', 'fallback' },
-        ['<C-p>'] = { 'select_prev', 'fallback_to_mappings' },
-        ['<C-n>'] = { 'select_next', 'fallback_to_mappings' },
+        ['<C-p>'] = { 'select_prev', 'fallback' },
+        ['<C-n>'] = { 'select_next', 'fallback' },
 
         ['<C-u>'] = { 'scroll_documentation_up', 'fallback' },
         ['<C-d>'] = { 'scroll_documentation_down', 'fallback' },
@@ -34,31 +36,35 @@ return {
         menu = {
           draw = {
             components = {
-              -- customize the drawing of kind icons
               kind_icon = {
                 text = function(ctx)
-                  -- default kind icon
                   local icon = ctx.kind_icon
-                  -- if LSP source, check for color derived from documentation
+
+                  -- First handle LSP kind icons
+                  if not vim.tbl_contains({ 'Path' }, ctx.source_name) then
+                    local lspkind = require 'lspkind'
+                    icon = lspkind.symbolic(ctx.kind, {
+                      mode = 'symbol',
+                    })
+                  else
+                    -- Handle Path source with devicons
+                    local dev_icon, _ = require('nvim-web-devicons').get_icon(ctx.label)
+                    if dev_icon then
+                      icon = dev_icon
+                    end
+                  end
+
+                  print(icon)
+
+                  -- Then check for color highlighting
                   if ctx.item.source_name == 'LSP' then
                     local color_item = require('nvim-highlight-colors').format(ctx.item.documentation, { kind = ctx.kind })
-                    if color_item and color_item.abbr then
+                    if color_item and color_item.abbr and color_item.abbr ~= '' then
                       icon = color_item.abbr
                     end
                   end
+
                   return icon .. ctx.icon_gap
-                end,
-                highlight = function(ctx)
-                  -- default highlight group
-                  local highlight = 'BlinkCmpKind' .. ctx.kind
-                  -- if LSP source, check for color derived from documentation
-                  if ctx.item.source_name == 'LSP' then
-                    local color_item = require('nvim-highlight-colors').format(ctx.item.documentation, { kind = ctx.kind })
-                    if color_item and color_item.abbr_hl_group then
-                      highlight = color_item.abbr_hl_group
-                    end
-                  end
-                  return highlight
                 end,
               },
             },
