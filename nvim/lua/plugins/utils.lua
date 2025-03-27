@@ -84,12 +84,6 @@ return {
     end,
   },
   {
-    'folke/ts-comments.nvim',
-    opts = {},
-    event = 'VeryLazy',
-    enabled = vim.fn.has 'nvim-0.10.0' == 1,
-  },
-  {
     'christoomey/vim-tmux-navigator',
     cmd = {
       'TmuxNavigateLeft',
@@ -180,15 +174,6 @@ return {
         desc = 'Collapse quickfix context',
       },
     },
-    opts = {},
-  },
-  {
-    'mawkler/jsx-element.nvim',
-    dependencies = {
-      'nvim-treesitter/nvim-treesitter',
-      'nvim-treesitter/nvim-treesitter-textobjects',
-    },
-    ft = { 'typescriptreact', 'javascriptreact', 'javascript' },
     opts = {},
   },
 }
