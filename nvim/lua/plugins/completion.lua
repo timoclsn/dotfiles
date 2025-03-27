@@ -74,6 +74,10 @@ return {
           'buffer',
         },
         providers = {
+          snippets = {
+            min_keyword_length = 2,
+            score_offset = 4,
+          },
           avante = {
             module = 'blink-cmp-avante',
             name = 'Avante',
