@@ -35,5 +35,150 @@
     "prefix": "rns",
     "body": ["style={styles.$1}$0"],
     "description": "Add StyleSheet reference"
+  },
+  "Console Log": {
+    "prefix": "cl",
+    "body": ["console.log($1);$0"],
+    "description": "Log value to console"
+  },
+  "Console Log as Object": {
+    "prefix": "clo",
+    "body": ["console.log({$1});$0"],
+    "description": "Log value as object with its name as key"
+  },
+  "Debugger": {
+    "prefix": "db",
+    "body": ["debugger;"],
+    "description": "Add debugger breakpoint"
+  },
+  "Pretty Print JSON": {
+    "prefix": "pps",
+    "body": ["JSON.stringify($1, null, 2)$0"],
+    "description": "Format object as JSON string"
+  },
+  "Arrow Function": {
+    "prefix": "af",
+    "body": ["($1) => {", "  $2$0", "}"],
+    "description": "Create arrow function"
+  },
+  "Arrow Function Const": {
+    "prefix": "afc",
+    "body": ["const $1 = ($2) => {", "  $3$0", "};"],
+    "description": "Create named arrow function"
+  },
+  "Throw new Error": {
+    "prefix": "tne",
+    "body": ["throw new Error('${1:error description}');$0"],
+    "description": "Throw error with message"
+  },
+  "use server": {
+    "prefix": "us",
+    "body": ["'use server';"],
+    "description": "Add React.js server directive"
+  },
+  "useState": {
+    "prefix": "us",
+    "body": "const [$1, set${1/(.*)/${1:/capitalize}/}] = useState($2);$0",
+    "description": "Create useState hook"
+  },
+  "useEffect": {
+    "prefix": "ue",
+    "body": ["useEffect(() => {", "  $1$0", "}, [$2]);"],
+    "description": "Create useEffect hook"
+  },
+  "useRef": {
+    "prefix": "ur",
+    "body": ["const $1 = useRef($2);$0"],
+    "description": "Create useRef hook"
+  },
+  "useCallback": {
+    "prefix": "uc",
+    "body": ["useCallback(() => {", "  $1$0", "}, [$2]);"],
+    "description": "Create memoized callback"
+  },
+  "useMemo": {
+    "prefix": "um",
+    "body": ["useMemo(() => {", "  $1$0", "}, [$2]);"],
+    "description": "Create memoized value"
+  },
+  "React Native Dynamic Style": {
+    "prefix": "rnds",
+    "body": [
+      "import { dynamicCascadingStyle } from '@steuerbot/mobile-util-theming';",
+      "",
+      "export default dynamicCascadingStyle(() => ({$1}));$0"
+    ],
+    "description": "Create React Native dynamic styles"
+  },
+  "Generator Function": {
+    "prefix": "gf",
+    "body": ["function* () {", "  $1$0", "}"],
+    "description": "Create generator function"
+  },
+  "Yield*": {
+    "prefix": "ys",
+    "body": ["yield* $1$0"],
+    "description": "Delegate to generator/iterable"
+  },
+  "If Statement": {
+    "prefix": "if",
+    "body": ["if ($1) {", "  $2$0", "}"],
+    "description": "Create if statement"
+  },
+  "Switch Statement": {
+    "prefix": "sw",
+    "body": [
+      "switch ($1) {",
+      "  case $2:",
+      "    $3$0",
+      "    break;",
+      "",
+      "  default:",
+      "    break;",
+      "}"
+    ],
+    "description": "Create switch statement"
+  },
+  "Try-Catch Statement": {
+    "prefix": "tc",
+    "body": ["try {", "  $1$0", "} catch (${2:error}) {", "  ", "}"],
+    "description": "Create try-catch block"
+  },
+  "Set Interval Function": {
+    "prefix": "si",
+    "body": ["setInterval(() => {", "  $1$0", "}, ${2:1000});"],
+    "description": "Create interval (ms)"
+  },
+  "Import external module": {
+    "prefix": "imp",
+    "body": ["import { $2 } from '$1';$0"],
+    "description": "Import from module"
+  },
+  "For Loop": {
+    "prefix": "fl",
+    "body": [
+      "for (let ${1:i} = 0; $1 < $2.length; $1++) {",
+      "  const $3 = $2[$1];",
+      "  $4$0",
+      "}"
+    ],
+    "description": "Create for loop"
+  },
+  "For-In Loop": {
+    "prefix": "fil",
+    "body": [
+      "for (const $1 in $2) {",
+      "  if ($2.hasOwnProperty($1)) {",
+      "    const $3 = $2[$1];",
+      "    $4$0",
+      "  }",
+      "}"
+    ],
+    "description": "Create for-in loop"
+  },
+  "For-Of Loop": {
+    "prefix": "fol",
+    "body": ["for (const $1 of $2) {", "  $3$0", "}"],
+    "description": "Create for-of loop"
   }
 }
