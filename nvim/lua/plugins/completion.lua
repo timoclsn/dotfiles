@@ -73,16 +73,25 @@ return {
       },
       sources = {
         default = {
-          'avante',
           'snippets',
           'lsp',
           'path',
           'buffer',
+          'avante',
         },
         providers = {
           snippets = {
             min_keyword_length = 2,
             score_offset = 4,
+          },
+          lsp = {
+            score_offset = 3,
+          },
+          path = {
+            score_offset = 2,
+          },
+          buffer = {
+            score_offset = 1,
           },
           avante = {
             module = 'blink-cmp-avante',
