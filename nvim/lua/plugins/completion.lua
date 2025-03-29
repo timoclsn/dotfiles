@@ -28,6 +28,8 @@ return {
 
         ['<C-l>'] = { 'snippet_forward', 'fallback' },
         ['<C-h>'] = { 'snippet_backward', 'fallback' },
+
+        ['<C-s>'] = { 'show_signature', 'hide_signature', 'fallback' },
       },
       completion = {
         documentation = {
