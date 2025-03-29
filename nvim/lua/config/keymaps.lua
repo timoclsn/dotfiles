@@ -25,15 +25,30 @@ vim.keymap.set('n', 'L', '$', { desc = 'Goto last character of line' })
 vim.keymap.set('n', '<C-f>', '<cmd>silent !tmux neww tmux-sessionizer<CR>')
 vim.keymap.set('n', '<leader>k', vim.diagnostic.open_float, { desc = 'Show diagnostic under cursor' })
 vim.keymap.set('n', '<leader>K', function()
-  vim.diagnostic.config { virtual_lines = { current_line = true }, virtual_text = false }
+  vim.diagnostic.config {
+    virtual_lines = {
+      current_line = true,
+    },
+    virtual_text = false,
+  }
   vim.api.nvim_create_autocmd('CursorMoved', {
     group = vim.api.nvim_create_augroup('line-diagnostics', { clear = true }),
     callback = function()
-      vim.diagnostic.config { virtual_lines = false, virtual_text = true }
+      vim.diagnostic.config {
+        virtual_lines = false,
+        virtual_text = true,
+      }
       return true
     end,
   })
-end)
+end, { desc = '[K] show virtual line diagnostics under the cursor' })
+vim.keymap.set('n', '<leader>td', function()
+  vim.diagnostic.config {
+    virtual_lines = not vim.diagnostic.config().virtual_lines,
+    virtual_text = not vim.diagnostic.config().virtual_text,
+  }
+end, { desc = '[t]oggle [d]iagnostic style' })
+
 vim.keymap.set('n', 'gX', function()
   vim.ui.open(vim.fn.expand '<cfile>')
 end, { desc = 'Open file/url under cursor' })
@@ -55,7 +70,7 @@ vim.keymap.set('n', '<leader>qd', vim.diagnostic.setloclist, { desc = '[q]uickfi
 -- Yank
 vim.keymap.set('n', '<leader>yb', 'ggVGy', { desc = '[y]ank [b]uffer content' })
 vim.keymap.set('n', '<leader>pb', 'ggVG"+p', { desc = '[p]aste clipboard content and replace [b]uffer content' })
-vim.keymap.set('n', '<leader>ye', function()
+vim.keymap.set('n', '<leader>yd', function()
   local diagnostics = vim.diagnostic.get(0, { line = vim.api.nvim_win_get_cursor(0)[1] - 1 })
   if #diagnostics == 0 then
     vim.notify('No diagnostics found at cursor position', vim.log.levels.INFO)
@@ -66,7 +81,7 @@ vim.keymap.set('n', '<leader>ye', function()
   end, diagnostics)
   vim.fn.setreg('+', table.concat(messages, '\n'))
   vim.notify('Yanked ' .. #diagnostics .. ' diagnostic messages', vim.log.levels.INFO)
-end, { desc = '[y]ank [e]rror messages under cursor' })
+end, { desc = '[y]ank [d]iagnostics messages under cursor' })
 
 -- This keymap is useful for testing and debugging condiions
 vim.keymap.set('n', '<leader>yx', function()
