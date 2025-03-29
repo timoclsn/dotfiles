@@ -24,6 +24,16 @@ vim.keymap.set('n', 'H', '^', { desc = 'Goto first character of line' })
 vim.keymap.set('n', 'L', '$', { desc = 'Goto last character of line' })
 vim.keymap.set('n', '<C-f>', '<cmd>silent !tmux neww tmux-sessionizer<CR>')
 vim.keymap.set('n', '<leader>k', vim.diagnostic.open_float, { desc = 'Show diagnostic under cursor' })
+vim.keymap.set('n', '<leader>K', function()
+  vim.diagnostic.config { virtual_lines = { current_line = true }, virtual_text = false }
+  vim.api.nvim_create_autocmd('CursorMoved', {
+    group = vim.api.nvim_create_augroup('line-diagnostics', { clear = true }),
+    callback = function()
+      vim.diagnostic.config { virtual_lines = false, virtual_text = true }
+      return true
+    end,
+  })
+end)
 vim.keymap.set('n', 'gX', function()
   vim.ui.open(vim.fn.expand '<cfile>')
 end, { desc = 'Open file/url under cursor' })
