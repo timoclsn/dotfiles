@@ -33,6 +33,11 @@ return {
         documentation = {
           auto_show = true,
         },
+        accept = {
+          auto_brackets = {
+            enabled = false,
+          },
+        },
         menu = {
           draw = {
             components = {
