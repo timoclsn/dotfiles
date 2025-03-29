@@ -87,10 +87,14 @@ vim.opt.laststatus = 3 -- Always show status line
 vim.diagnostic.config {
   severity_sort = true,
   update_in_insert = true,
-  float = { source = true },
-  virtual_text = true,
-  virtual_lines = false,
   underline = { severity = vim.diagnostic.severity.ERROR },
+  virtual_text = {
+    source = false,
+  },
+  virtual_lines = false,
+  float = {
+    source = true,
+  },
   signs = vim.g.have_nerd_font and {
     text = {
       [vim.diagnostic.severity.ERROR] = '󰅚 ',
