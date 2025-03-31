@@ -12,17 +12,12 @@ return {
     opts = {
       keymap = {
         preset = 'none',
-        ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
-        ['<C-e>'] = { 'cancel' },
+        ['<C-space>'] = { 'show', 'hide' },
+        ['<C-c>'] = { 'cancel', 'fallback' },
         ['<CR>'] = { 'select_and_accept', 'fallback' },
-        ['<C-y>'] = { 'select_and_accept', 'fallback' },
 
         ['<C-k>'] = { 'select_prev', 'fallback' },
         ['<C-j>'] = { 'select_next', 'fallback' },
-        ['<Up>'] = { 'select_prev', 'fallback' },
-        ['<Down>'] = { 'select_next', 'fallback' },
-        ['<C-p>'] = { 'select_prev', 'fallback' },
-        ['<C-n>'] = { 'select_next', 'fallback' },
 
         ['<C-u>'] = { 'scroll_documentation_up', 'fallback' },
         ['<C-d>'] = { 'scroll_documentation_down', 'fallback' },
@@ -31,6 +26,7 @@ return {
         ['<C-h>'] = { 'snippet_backward', 'fallback' },
 
         ['<C-s>'] = { 'show_signature', 'hide_signature', 'fallback' },
+        ['<C-f>'] = { 'show_documentation', 'hide_documentation', 'fallback' },
       },
       completion = {
         documentation = {
