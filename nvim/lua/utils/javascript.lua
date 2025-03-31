@@ -77,3 +77,5 @@ vim.keymap.set('n', '<leader>ir', function()
     },
   }
 end, { desc = '[i]mports [r]emove unused' })
+
+vim.api.nvim_set_keymap('v', '<leader>l', [[y<Esc>oconsole.log("<C-r>":", <C-r>");<Esc>]], { noremap = true, silent = true, desc = 'Console [l]og' })
