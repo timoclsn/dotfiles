@@ -6,6 +6,7 @@ return {
       'nvim-tree/nvim-web-devicons',
       'brenoprata10/nvim-highlight-colors',
       'Kaiser-Yang/blink-cmp-avante',
+      'Kaiser-Yang/blink-cmp-git',
     },
     version = '1.*',
     opts = {
@@ -85,6 +86,7 @@ return {
           'path',
           'buffer',
           'avante',
+          'git',
         },
         providers = {
           snippets = {
@@ -103,6 +105,14 @@ return {
           avante = {
             module = 'blink-cmp-avante',
             name = 'Avante',
+            opts = {},
+          },
+          git = {
+            module = 'blink-cmp-git',
+            name = 'Git',
+            enabled = function()
+              return vim.tbl_contains({ 'gitcommit' }, vim.bo.filetype)
+            end,
             opts = {},
           },
         },
