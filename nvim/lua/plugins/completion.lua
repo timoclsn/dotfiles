@@ -90,8 +90,7 @@ return {
         },
         providers = {
           snippets = {
-            min_keyword_length = 2,
-            score_offset = 4,
+            score_offset = 10,
           },
           lsp = {
             score_offset = 3,
