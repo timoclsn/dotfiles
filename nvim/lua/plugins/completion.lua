@@ -7,6 +7,7 @@ return {
       'brenoprata10/nvim-highlight-colors',
       'Kaiser-Yang/blink-cmp-avante',
       'Kaiser-Yang/blink-cmp-git',
+      'folke/lazydev.nvim',
     },
     version = '1.*',
     opts = {
@@ -62,8 +63,6 @@ return {
                     end
                   end
 
-                  print(icon)
-
                   -- Then check for color highlighting
                   if ctx.item.source_name == 'LSP' then
                     local color_item = require('nvim-highlight-colors').format(ctx.item.documentation, { kind = ctx.kind })
@@ -87,6 +86,7 @@ return {
           'buffer',
           'avante',
           'git',
+          'lazydev',
         },
         providers = {
           snippets = {
@@ -114,6 +114,11 @@ return {
               return vim.tbl_contains({ 'gitcommit' }, vim.bo.filetype)
             end,
             opts = {},
+          },
+          lazydev = {
+            name = 'LazyDev',
+            module = 'lazydev.integrations.blink',
+            score_offset = 100,
           },
         },
       },
