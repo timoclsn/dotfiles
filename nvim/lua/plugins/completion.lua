@@ -6,7 +6,6 @@ return {
       'nvim-tree/nvim-web-devicons',
       'brenoprata10/nvim-highlight-colors',
       'Kaiser-Yang/blink-cmp-avante',
-      'Kaiser-Yang/blink-cmp-git',
       'folke/lazydev.nvim',
     },
     version = '1.*',
@@ -85,33 +84,12 @@ return {
           'path',
           'buffer',
           'avante',
-          'git',
           'lazydev',
         },
         providers = {
-          snippets = {
-            score_offset = 10,
-          },
-          lsp = {
-            score_offset = 3,
-          },
-          path = {
-            score_offset = 2,
-          },
-          buffer = {
-            score_offset = 1,
-          },
           avante = {
             module = 'blink-cmp-avante',
             name = 'Avante',
-            opts = {},
-          },
-          git = {
-            module = 'blink-cmp-git',
-            name = 'Git',
-            enabled = function()
-              return vim.tbl_contains({ 'gitcommit' }, vim.bo.filetype)
-            end,
             opts = {},
           },
           lazydev = {
