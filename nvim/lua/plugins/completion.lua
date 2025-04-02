@@ -25,7 +25,7 @@ return {
         ['<C-l>'] = { 'snippet_forward', 'fallback' },
         ['<C-h>'] = { 'snippet_backward', 'fallback' },
 
-        ['<C-s>'] = { 'show_signature', 'hide_signature', 'fallback' },
+        ['<C-b>'] = { 'show_signature', 'hide_signature', 'fallback' },
         ['<C-f>'] = { 'show_documentation', 'hide_documentation', 'fallback' },
       },
       completion = {
