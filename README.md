@@ -3,4 +3,4 @@
 - zsh
 - tmux
 - neovim
-- alacritty
+- ghostty
