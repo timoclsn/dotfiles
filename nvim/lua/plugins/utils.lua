@@ -137,7 +137,7 @@ return {
   },
   {
     'MeanderingProgrammer/render-markdown.nvim',
-    dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.icons' },
+    dependencies = { 'nvim-treesitter/nvim-treesitter' },
     opts = {},
   },
   -- Provides syntax highlighting for the ghostty config file

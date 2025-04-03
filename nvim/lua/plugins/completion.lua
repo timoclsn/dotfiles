@@ -3,7 +3,6 @@ return {
     'saghen/blink.cmp',
     dependencies = {
       'onsails/lspkind.nvim',
-      'echasnovski/mini.icons',
       'brenoprata10/nvim-highlight-colors',
       'Kaiser-Yang/blink-cmp-avante',
       'folke/lazydev.nvim',
@@ -51,8 +50,8 @@ return {
                       mode = 'symbol',
                     })
                   else
-                    -- Handle Path source with mini.icons
-                    local dev_icon = require('mini.icons').get_icon(ctx.label)
+                    -- Handle Path source with devicons
+                    local dev_icon, _ = require('nvim-web-devicons').get_icon(ctx.label)
                     if dev_icon then
                       icon = dev_icon
                     end

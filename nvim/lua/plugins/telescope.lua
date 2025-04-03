@@ -6,7 +6,6 @@ return {
       'nvim-lua/plenary.nvim',
       { 'natecraddock/telescope-zf-native.nvim' },
       { 'nvim-telescope/telescope-ui-select.nvim' },
-      { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
       { 'benfowler/telescope-luasnip.nvim' },
     },
     config = function()

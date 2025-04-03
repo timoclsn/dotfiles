@@ -32,7 +32,6 @@ return {
       'MunifTanjim/nui.nvim',
       --- The below dependencies are optional,
       'nvim-telescope/telescope.nvim', -- for file_selector provider telescope
-      'echasnovski/mini.icons',
       'zbirenbaum/copilot.lua', -- for providers='copilot'
       {
         -- support for image pasting
