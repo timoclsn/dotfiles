@@ -2,6 +2,9 @@ return {
   { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
     config = function()
+      require('mini.icons').setup()
+      require('mini.icons').mock_nvim_web_devicons()
+
       require('mini.pairs').setup()
 
       require('mini.bracketed').setup()
