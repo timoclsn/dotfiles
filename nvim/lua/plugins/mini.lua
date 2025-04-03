@@ -9,6 +9,8 @@ return {
 
       require('mini.bracketed').setup()
 
+      require('mini.splitjoin').setup()
+
       require('mini.files').setup()
 
       local open_mini_files = function()
