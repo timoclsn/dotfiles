@@ -2,34 +2,15 @@ return {
   { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
     config = function()
-      require('mini.icons').setup()
-      require('mini.icons').mock_nvim_web_devicons()
-
-      require('mini.pairs').setup()
-
-      require('mini.bracketed').setup()
-
-      require('mini.splitjoin').setup()
-
-      require('mini.files').setup()
-
-      local open_mini_files = function()
-        if not MiniFiles.close() then
-          MiniFiles.open(vim.api.nvim_buf_get_name(0))
-          MiniFiles.reveal_cwd()
-        end
-      end
-      vim.keymap.set('n', '-', open_mini_files, { desc = 'Open mini file browser' })
+      -- ============================================
+      -- Text editing modules
+      -- ============================================
 
       require('mini.ai').setup {
         custom_textobjects = {
           F = require('mini.ai').gen_spec.treesitter { a = '@function.outer', i = '@function.inner' },
         },
       }
-
-      require('mini.surround').setup()
-
-      require('mini.operators').setup()
 
       require('mini.move').setup {
         mappings = {
@@ -39,7 +20,36 @@ return {
         },
       }
 
-      -- Startscreen
+      require('mini.operators').setup()
+
+      require('mini.pairs').setup()
+
+      require('mini.splitjoin').setup()
+
+      require('mini.surround').setup()
+
+      -- ============================================
+      -- General workflow modules
+      -- ============================================
+
+      require('mini.bracketed').setup()
+
+      require('mini.files').setup()
+      local open_mini_files = function()
+        if not MiniFiles.close() then
+          MiniFiles.open(vim.api.nvim_buf_get_name(0))
+          MiniFiles.reveal_cwd()
+        end
+      end
+      vim.keymap.set('n', '-', open_mini_files, { desc = 'Open mini file browser' })
+
+      -- ============================================
+      -- Appearance modules
+      -- ============================================
+
+      require('mini.icons').setup()
+      require('mini.icons').mock_nvim_web_devicons()
+
       require('mini.starter').setup {
         items = {
           require('mini.starter').sections.recent_files(10, true, true),
