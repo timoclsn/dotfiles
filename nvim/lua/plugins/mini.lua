@@ -12,6 +12,8 @@ return {
         },
       }
 
+      require('mini.comment').setup()
+
       require('mini.move').setup {
         mappings = {
           -- Move current line in Normal mode
