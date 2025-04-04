@@ -4,24 +4,10 @@ return {
     priority = 1000,
     lazy = false,
     opts = {
-      quickfile = {},
       bigfile = {},
-      rename = {},
-      words = {},
       image = {
         doc = {
           enabled = false,
-        },
-      },
-      notifier = {
-        style = 'minimal',
-      },
-      statuscolumn = {},
-      input = {
-        win = {
-          relative = 'cursor',
-          row = -3,
-          col = 0,
         },
       },
       indent = {
@@ -29,6 +15,20 @@ return {
           enabled = false,
         },
       },
+      input = {
+        win = {
+          relative = 'cursor',
+          row = -3,
+          col = 0,
+        },
+      },
+      notifier = {
+        style = 'minimal',
+      },
+      quickfile = {},
+      rename = {},
+      statuscolumn = {},
+      words = {},
     },
     keys = {
       {
