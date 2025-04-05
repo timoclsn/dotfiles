@@ -50,6 +50,7 @@ return {
             ['C'] = 'close_all_subnodes',
             ['zM'] = 'expand_all_nodes',
             ['l'] = 'open',
+            ['<C-v>'] = 'open_vsplit',
             ['h'] = 'close_node',
             ['<space>'] = { 'toggle_preview', config = { use_float = true } },
             ['P'] = 'focus_preview',
