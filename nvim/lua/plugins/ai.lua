@@ -34,7 +34,6 @@ return {
       'nvim-telescope/telescope.nvim', -- for file_selector provider telescope
       'zbirenbaum/copilot.lua', -- for providers='copilot'
       {
-        -- Make sure to set this up properly if you have lazy=true
         'MeanderingProgrammer/render-markdown.nvim',
         opts = {
           file_types = { 'markdown', 'Avante' },
@@ -64,29 +63,6 @@ return {
           start_insert = false,
         },
       },
-      system_prompt = function()
-        local hub = require('mcphub').get_hub_instance()
-        return hub:get_active_servers_prompt()
-      end,
-      -- The custom_tools type supports both a list and a function that returns a list. Using a function here prevents requiring mcphub before it's loaded
-      custom_tools = function()
-        return {
-          require('mcphub.extensions.avante').mcp_tool(),
-        }
-      end,
     },
-  },
-  {
-    'ravitemer/mcphub.nvim',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-    },
-    build = 'npm install -g mcp-hub@latest',
-    config = function()
-      require('mcphub').setup {
-        port = 3300,
-        config = vim.fn.expand '~/.mcpservers.json',
-      }
-    end,
   },
 }
