@@ -60,7 +60,7 @@ return {
                   -- Then check for color highlighting
                   if ctx.item.source_name == 'LSP' then
                     local color_item = require('nvim-highlight-colors').format(ctx.item.documentation, { kind = ctx.kind })
-                    if color_item and color_item.abbr and color_item.abbr ~= '' then
+                    if color_item and color_item.abbr ~= '' then
                       icon = color_item.abbr
                     end
                   end
