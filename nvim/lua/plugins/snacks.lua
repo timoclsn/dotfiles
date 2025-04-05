@@ -5,11 +5,6 @@ return {
     lazy = false,
     opts = {
       bigfile = {},
-      image = {
-        doc = {
-          enabled = false,
-        },
-      },
       indent = {
         animate = {
           enabled = false,
@@ -53,13 +48,6 @@ return {
           vim.cmd 'normal! zz'
         end,
         desc = 'Previous Reference',
-      },
-      {
-        '<leader>di',
-        function()
-          Snacks.image.hover()
-        end,
-        desc = 'Preview [d]ocument [i]mage under cursor',
       },
     },
   },
