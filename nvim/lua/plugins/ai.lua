@@ -11,12 +11,11 @@ return {
       suggestion = {
         enabled = true,
         auto_trigger = true,
-        hide_during_completion = true,
         keymap = {
           accept = '<Tab>',
-          next = '<C-j>',
           prev = '<C-k>',
-          dismiss = '<C-e>',
+          next = '<C-j>',
+          dismiss = '<C-c>',
         },
       },
     },
