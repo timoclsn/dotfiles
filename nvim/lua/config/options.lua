@@ -26,7 +26,7 @@ vim.opt.expandtab = true
 vim.opt.autoindent = true
 vim.opt.smartindent = true
 
-vim.opt.colorcolumn = '80'
+vim.opt.colorcolumn = '120'
 
 vim.opt.termguicolors = true
 
