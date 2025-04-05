@@ -90,8 +90,6 @@ return {
           --  For example, in C this would take you to the header.
           map('<leader>D', vim.lsp.buf.declaration, 'Goto [D]eclaration')
 
-          local client = vim.lsp.get_client_by_id(event.data.client_id)
-
           -- The following code creates a keymap to toggle inlay hints in your
           -- code, if the language server you are using supports them
           --
