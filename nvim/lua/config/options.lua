@@ -88,7 +88,7 @@ vim.opt.laststatus = 3 -- Always show status line
 -- See :help vim.diagnostic.Opts
 vim.diagnostic.config {
   severity_sort = true,
-  update_in_insert = true,
+  update_in_insert = false,
   underline = { severity = vim.diagnostic.severity.ERROR },
   virtual_text = {
     source = false,
