@@ -151,12 +151,12 @@ end, { noremap = true, silent = true, desc = '[y]ank [f]ile to clipboard' })
 -- Switch between React component and its style file
 vim.keymap.set('n', '<leader>ss', function()
   local current_file = vim.fn.expand '%:p'
-  local is_style_file = current_file:match '%.style%.ts$' or current_file:match '%.css%.ts$'
+  local is_style_file = current_file:match '%.style%.ts$' or current_file:match '%.css%.ts$' or current_file:match '%.module%.css$'
   local is_component_file = current_file:match '%.tsx$'
 
   if is_style_file then
     -- If we're in a style file, switch to the component
-    local component_file = current_file:gsub('%.style%.ts$', '.tsx'):gsub('%.css%.ts$', '.tsx')
+    local component_file = current_file:gsub('%.style%.ts$', '.tsx'):gsub('%.css%.ts$', '.tsx'):gsub('%.module%.css$', '.tsx')
     if vim.fn.filereadable(component_file) == 1 then
       vim.cmd('edit ' .. component_file)
     else
@@ -173,7 +173,13 @@ vim.keymap.set('n', '<leader>ss', function()
       if vim.fn.filereadable(style_file) == 1 then
         vim.cmd('edit ' .. style_file)
       else
-        vim.notify('No corresponding style file found (.style.ts or .css.ts)', vim.log.levels.WARN)
+        -- Try .module.css if other style files don't exist
+        style_file = current_file:gsub('%.tsx$', '.module.css')
+        if vim.fn.filereadable(style_file) == 1 then
+          vim.cmd('edit ' .. style_file)
+        else
+          vim.notify('No corresponding style file found', vim.log.levels.WARN)
+        end
       end
     end
   else
