@@ -87,7 +87,7 @@ end, { desc = '[y]ank [d]iagnostics messages under cursor' })
 vim.keymap.set('n', '<leader>yx', function()
   local line = vim.api.nvim_get_current_line()
   local row = vim.api.nvim_win_get_cursor(0)[1]
-  local todo = 'TODO: Delete this line and uncomment the one above'
+  local warn = 'WARN: Delete this line and uncomment the one above'
   local cms = vim.bo.commentstring
   local comment_start = cms:match '^(.*)%%s' or '//'
   local comment_end = cms:match '%%s(.*)$' or ''
@@ -95,7 +95,7 @@ vim.keymap.set('n', '<leader>yx', function()
   -- Insert the uncommented copy first
   vim.api.nvim_buf_set_lines(0, row - 1, row, false, {
     line,
-    line .. ' ' .. comment_start .. todo .. comment_end,
+    line .. ' ' .. comment_start .. warn .. comment_end,
   })
 
   -- Move cursor to first line and comment it with gcc
