@@ -48,6 +48,23 @@ end
 
 vim.keymap.set('i', 't', add_async, { buffer = true })
 
+vim.keymap.set('n', '<leader>ii', function()
+  vim.lsp.buf.code_action {
+    apply = true,
+    context = {
+      only = { 'source.removeUnused' }, --[[@diagnostic disable-line assign-type-mismatch]]
+      diagnostics = {},
+    },
+  }
+  vim.lsp.buf.code_action {
+    apply = true,
+    context = {
+      only = { 'source.organizeImports' },
+      diagnostics = {},
+    },
+  }
+end, { desc = '[i]mports remove and organ[i]ze' })
+
 vim.keymap.set('n', '<leader>io', function()
   vim.lsp.buf.code_action {
     apply = true,
