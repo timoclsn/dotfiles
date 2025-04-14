@@ -167,6 +167,7 @@ return {
         yamlls = {},
         bashls = {},
         astro = {},
+        emmet_language_server = {},
         --
         tailwindcss = {
           settings = {
