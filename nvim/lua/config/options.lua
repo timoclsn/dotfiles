@@ -30,8 +30,6 @@ vim.opt.colorcolumn = '120'
 
 vim.opt.switchbuf = 'useopen,usetab'
 
-vim.opt.confirm = true
-
 vim.opt.termguicolors = true
 
 -- Save undo history
