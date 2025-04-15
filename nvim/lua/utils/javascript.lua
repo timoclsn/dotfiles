@@ -56,6 +56,9 @@ vim.keymap.set('n', '<leader>ii', function()
       diagnostics = {},
     },
   }
+
+  vim.wait(100)
+
   vim.lsp.buf.code_action {
     apply = true,
     context = {
