@@ -52,6 +52,16 @@ vim.keymap.set('n', '<leader>ii', function()
   vim.lsp.buf.code_action {
     apply = true,
     context = {
+      only = { 'source.addMissingImports' }, --[[@diagnostic disable-line assign-type-mismatch]]
+      diagnostics = {},
+    },
+  }
+
+  vim.wait(100)
+
+  vim.lsp.buf.code_action {
+    apply = true,
+    context = {
       only = { 'source.removeUnused' }, --[[@diagnostic disable-line assign-type-mismatch]]
       diagnostics = {},
     },
