@@ -44,11 +44,11 @@ return {
     opts = {
       provider = 'copilot',
       copilot = {
-        -- model = 'claude-3.5-sonnet',
+        model = 'claude-3.5-sonnet',
         -- model = 'claude-3.7-sonnet',
-        model = 'claude-3.7-sonnet-thought',
-        tmperature = 1,
-        max_tokens = 20000,
+        -- model = 'claude-3.7-sonnet-thought',
+        -- tmperature = 1,
+        -- max_tokens = 20000,
       },
       hints = {
         enabled = false,
