@@ -156,6 +156,7 @@ vim.keymap.set('n', '<leader>ss', function()
     '.style.ts',
     '.css.ts',
     '.module.css',
+    '.module.sass',
   }
 
   -- Check if current file is a style file
