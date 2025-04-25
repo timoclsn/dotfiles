@@ -6,7 +6,7 @@ return {
       'MunifTanjim/nui.nvim',
       'folke/snacks.nvim',
     },
-    cmd = 'Neotree',
+    lazy = false,
     keys = {
       { '<C-e>', ':Neotree toggle<CR>', desc = 'Toggle File [e]xplorer', silent = true },
       { '<leader>e', ':Neotree reveal<CR>', desc = 'Reveal file in [e]xplorer', silent = true },
