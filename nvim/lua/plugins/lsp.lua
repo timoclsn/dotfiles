@@ -116,6 +116,7 @@ return {
         -- Linters
         eslint_d = {},
         markdownlint = {},
+        jsonlint = {},
 
         -- Formatters
         prettierd = {},
