@@ -13,7 +13,6 @@ return {
     dependencies = {
       { 'williamboman/mason.nvim', opts = {} },
       { 'j-hui/fidget.nvim', opts = {} },
-      { 'saghen/blink.cmp' },
     },
     config = function()
       vim.api.nvim_create_autocmd('LspAttach', {
