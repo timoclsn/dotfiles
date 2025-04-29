@@ -48,6 +48,13 @@ return {
         end,
       })
 
+      vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
+        pattern = '*.gitlab-ci*.{yml,yaml}',
+        callback = function()
+          vim.bo.filetype = 'yaml.gitlab'
+        end,
+      })
+
       local capabilities = require('blink.cmp').get_lsp_capabilities()
 
       capabilities.textDocument.foldingRange = {
@@ -61,6 +68,7 @@ return {
         bashls = {},
         cssls = {},
         emmet_language_server = {},
+        gitlab_ci_ls = {},
         gopls = {},
         jsonls = {},
         lua_ls = {
