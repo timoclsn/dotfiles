@@ -12,8 +12,6 @@ return {
     'neovim/nvim-lspconfig',
     dependencies = {
       { 'williamboman/mason.nvim', opts = {} },
-      { 'williamboman/mason-lspconfig.nvim' },
-      { 'WhoIsSethDaniel/mason-tool-installer.nvim' },
       { 'j-hui/fidget.nvim', opts = {} },
       { 'saghen/blink.cmp' },
     },
@@ -54,13 +52,6 @@ return {
           vim.bo.filetype = 'yaml.gitlab'
         end,
       })
-
-      local capabilities = require('blink.cmp').get_lsp_capabilities()
-
-      capabilities.textDocument.foldingRange = {
-        dynamicRegistration = false,
-        lineFoldingOnly = true,
-      }
 
       local servers = {
         -- LSP servers
@@ -131,21 +122,10 @@ return {
         stylua = {},
       }
 
-      local ensure_installed = vim.tbl_keys(servers or {})
-
-      require('mason-tool-installer').setup { ensure_installed = ensure_installed }
-
-      require('mason-lspconfig').setup {
-        automatic_installation = false,
-        ensure_installed = {},
-        handlers = {
-          function(server_name)
-            local server = servers[server_name] or {}
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            require('lspconfig')[server_name].setup(server)
-          end,
-        },
-      }
+      for server, settings in pairs(servers) do
+        vim.lsp.config(server, settings)
+        vim.lsp.enable(server)
+      end
     end,
   },
 }
