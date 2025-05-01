@@ -65,6 +65,7 @@ return {
         emmet_language_server = {},
         gitlab_ci_ls = {},
         gopls = {},
+        html = {},
         jsonls = {},
         lua_ls = {
           settings = {
