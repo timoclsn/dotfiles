@@ -79,6 +79,7 @@ return {
           },
         },
         rust_analyzer = {},
+        somesass_ls = {},
         tailwindcss = {
           settings = {
             tailwindCSS = {
