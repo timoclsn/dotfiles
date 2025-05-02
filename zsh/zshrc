@@ -22,6 +22,9 @@ export PATH="$HOME/.local/bin:$PATH"
 # Load env vars from .env file
 [ -f "$HOME/.env" ] && source "$HOME/.env"
 
+# Ruby
+export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+
 # =============================================================================
 # Oh My Zsh Configuration
 # =============================================================================
