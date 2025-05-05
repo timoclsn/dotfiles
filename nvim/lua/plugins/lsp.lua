@@ -37,7 +37,7 @@ return {
           map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[d]ocument [s]ymbols')
           map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[w]orkspace [s]ymbols')
           map('<leader>r', vim.lsp.buf.rename, '[r]ename symbol')
-          map('<leader>ca', vim.lsp.buf.code_action, '[c]ode [a]ction', { 'n', 'x' })
+          map('<leader>c', vim.lsp.buf.code_action, '[c]ode action', { 'n', 'x' })
           map('<leader>D', vim.lsp.buf.declaration, 'Goto [D]eclaration')
           map('<leader>ti', function()
             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
@@ -60,6 +60,7 @@ return {
         emmet_language_server = {},
         gitlab_ci_ls = {},
         gopls = {},
+        html = {},
         jsonls = {},
         lua_ls = {
           settings = {
@@ -74,6 +75,7 @@ return {
           },
         },
         rust_analyzer = {},
+        somesass_ls = {},
         tailwindcss = {
           settings = {
             tailwindCSS = {
@@ -112,7 +114,7 @@ return {
         yamlls = {},
 
         -- Linters
-        eslint_d = {},
+        eslint = {},
         markdownlint = {},
         jsonlint = {},
 
