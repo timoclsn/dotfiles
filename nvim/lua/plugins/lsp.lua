@@ -12,6 +12,8 @@ return {
     'neovim/nvim-lspconfig',
     dependencies = {
       { 'williamboman/mason.nvim', opts = {} },
+      { 'williamboman/mason-lspconfig.nvim' },
+      { 'WhoIsSethDaniel/mason-tool-installer.nvim' },
       { 'j-hui/fidget.nvim', opts = {} },
     },
     config = function()
@@ -123,10 +125,19 @@ return {
         stylua = {},
       }
 
-      for server, settings in pairs(servers) do
-        vim.lsp.config(server, settings)
-        vim.lsp.enable(server)
-      end
+      local ensure_installed = vim.tbl_keys(servers or {})
+      require('mason-tool-installer').setup { ensure_installed = ensure_installed }
+      require('mason-lspconfig').setup {
+        ensure_installed = {},
+        automatic_installation = false,
+        handlers = {
+          function(server_name)
+            local config = servers[server_name] or {}
+            vim.lsp.config(server_name, config)
+            vim.lsp.enable(server_name)
+          end,
+        },
+      }
     end,
   },
 }
