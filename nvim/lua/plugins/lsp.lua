@@ -18,11 +18,11 @@ return {
     },
     config = function()
       local servers = {
-        -- Langauage servers
         astro = {},
         bashls = {},
         cssls = {},
         emmet_language_server = {},
+        eslint = {},
         gitlab_ci_ls = {},
         gopls = {},
         html = {},
@@ -77,31 +77,33 @@ return {
           },
         },
         yamlls = {},
-
-        -- Linters
-        eslint = {},
-        markdownlint = {},
-        jsonlint = {},
-
-        -- Formatters
-        prettierd = {},
-        stylua = {},
       }
 
-      require('mason-lspconfig').setup {
-        ensure_installed = {},
-        automatic_enable = false,
-      }
-
-      require('mason-tool-installer').setup {
-        ensure_installed = vim.tbl_keys(servers or {}),
-      }
-
-      -- Configure and enable servers
+      -- Configure LSP servers
       for server, settings in pairs(servers) do
         vim.lsp.config(server, settings)
-        vim.lsp.enable(server)
       end
+
+      -- Install and enable LSP servers
+      require('mason-lspconfig').setup {
+        ensure_installed = vim.tbl_keys(servers or {}),
+        automatic_enable = true,
+      }
+
+      local tools = {
+        -- Linters
+        'markdownlint',
+        'jsonlint',
+
+        -- Formatters
+        'prettierd',
+        'stylua',
+      }
+
+      -- Install tools
+      require('mason-tool-installer').setup {
+        ensure_installed = tools,
+      }
 
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('config-lsp-attach', { clear = true }),
