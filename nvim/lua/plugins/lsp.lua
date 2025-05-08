@@ -20,6 +20,7 @@ return {
       local servers = {
         astro = {},
         bashls = {},
+        clangd = {},
         cssls = {},
         emmet_language_server = {},
         eslint = {},
