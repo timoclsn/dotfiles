@@ -3,7 +3,7 @@ return {
     'mfussenegger/nvim-dap',
     dependencies = {
       { 'rcarriga/nvim-dap-ui', dependencies = { 'nvim-neotest/nvim-nio' } },
-      'mxsdev/nvim-dap-vscode-js',
+      { 'mxsdev/nvim-dap-vscode-js' },
       -- build debugger from source
       {
         'microsoft/vscode-js-debug',
@@ -47,13 +47,6 @@ return {
     config = function()
       -- First, set up the adapter explicitly
       local dap = require 'dap'
-
-      -- This is the key fix - explicitly define the adapter with port
-      dap.adapters['pwa-chrome'] = {
-        type = 'server',
-        host = 'localhost',
-        port = 9222, -- Chrome debugging port
-      }
 
       -- Now set up dap-vscode-js
       require('dap-vscode-js').setup {
