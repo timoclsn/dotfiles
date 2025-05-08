@@ -44,9 +44,9 @@ return {
     opts = {
       provider = 'copilot',
       copilot = {
-        model = 'claude-3.5-sonnet',
+        -- model = 'claude-3.5-sonnet',
         -- model = 'claude-3.7-sonnet',
-        -- model = 'claude-3.7-sonnet-thought',
+        model = 'claude-3.7-sonnet-thought',
         -- tmperature = 1,
         -- max_tokens = 20000,
       },
@@ -55,7 +55,7 @@ return {
       },
       behaviour = {
         use_cwd_as_project_root = true,
-        enable_claude_text_editor_tool_mode = true,
+        auto_apply_diff_after_generation = true,
       },
       windows = {
         position = 'left',
