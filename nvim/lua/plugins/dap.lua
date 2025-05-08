@@ -3,7 +3,6 @@ return {
     'mfussenegger/nvim-dap',
     dependencies = {
       { 'rcarriga/nvim-dap-ui', dependencies = { 'nvim-neotest/nvim-nio' } },
-      { 'mxsdev/nvim-dap-vscode-js' },
       -- build debugger from source
       {
         'microsoft/vscode-js-debug',
@@ -45,13 +44,34 @@ return {
       },
     },
     config = function()
-      -- First, set up the adapter explicitly
+      -- Set up the adapter explicitly
       local dap = require 'dap'
 
-      -- Now set up dap-vscode-js
-      require('dap-vscode-js').setup {
-        debugger_path = vim.fn.stdpath 'data' .. '/lazy/vscode-js-debug',
-        adapters = { 'pwa-node', 'pwa-chrome', 'pwa-msedge', 'node-terminal', 'pwa-extensionHost' },
+      -- Define JavaScript/TypeScript Debug adapters with fixed ports
+      dap.adapters['pwa-node'] = {
+        type = 'server',
+        host = 'localhost',
+        port = 8123,
+        executable = {
+          command = 'node',
+          args = {
+            vim.fn.stdpath 'data' .. '/lazy/vscode-js-debug/dist/src/vsDebugServer.js',
+            '8123',
+          },
+        },
+      }
+
+      dap.adapters['pwa-chrome'] = {
+        type = 'server',
+        host = 'localhost',
+        port = 8124,
+        executable = {
+          command = 'node',
+          args = {
+            vim.fn.stdpath 'data' .. '/lazy/vscode-js-debug/dist/src/vsDebugServer.js',
+            '8124',
+          },
+        },
       }
 
       for _, language in ipairs { 'typescript', 'javascript', 'typescriptreact', 'javascriptreact' } do
