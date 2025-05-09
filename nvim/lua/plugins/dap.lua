@@ -55,7 +55,7 @@ return {
         executable = {
           command = 'node',
           args = {
-            vim.fn.stdpath 'data' .. '/lazy/vscode-js-debug/dist/src/vsDebugServer.js',
+            vim.fn.stdpath 'data' .. '/lazy/vscode-js-debug/out/src/vsDebugServer.js',
             '8123',
           },
         },
@@ -68,7 +68,7 @@ return {
         executable = {
           command = 'node',
           args = {
-            vim.fn.stdpath 'data' .. '/lazy/vscode-js-debug/dist/src/vsDebugServer.js',
+            vim.fn.stdpath 'data' .. '/lazy/vscode-js-debug/out/src/vsDebugServer.js',
             '8124',
           },
         },
