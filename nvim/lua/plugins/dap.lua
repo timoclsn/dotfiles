@@ -7,7 +7,7 @@ return {
       {
         'microsoft/vscode-js-debug',
         version = '1.x',
-        build = 'npm i && npm run compile vsDebugServerBundle && mv dist out',
+        build = 'npm install --legacy-peer-deps --no-save && npx gulp vsDebugServerBundle && rm -rf out && mv dist out',
       },
     },
     keys = {
@@ -83,12 +83,7 @@ return {
             processId = require('dap.utils').pick_process,
             name = 'Attach debugger to existing `node --inspect` process',
             sourceMaps = true,
-            resolveSourceMapLocations = {
-              '${workspaceFolder}/**',
-              '!**/node_modules/**',
-            },
-            cwd = '${workspaceFolder}/src',
-            skipFiles = { '${workspaceFolder}/node_modules/**/*.js' },
+            cwd = '${workspaceFolder}',
           },
           {
             type = 'pwa-chrome',
@@ -97,9 +92,7 @@ return {
             url = 'http://localhost:3000',
             sourceMaps = true,
             protocol = 'inspector',
-            port = 9222,
-            webRoot = '${workspaceFolder}/src',
-            skipFiles = { '**/node_modules/**/*', '**/@vite/*', '**/src/client/*', '**/src/*' },
+            webRoot = '${workspaceFolder}',
           },
           language == 'javascript' and {
             type = 'pwa-node',
