@@ -3,36 +3,21 @@
     "nx-frontend-w3": {
       "disabled": true,
       "command": "npx",
-      "args": [
-        "-y",
-        "nx-mcp",
-        "/Users/timo/Developer/steuerbot/frontend-w3"
-      ]
+      "args": ["-y", "nx-mcp", "/Users/timo/Developer/steuerbot/frontend-w3"]
     },
     "nx-frontend": {
       "disabled": true,
       "command": "npx",
-      "args": [
-        "-y",
-        "nx-mcp",
-        "/Users/timo/Developer/steuerbot/frontend"
-      ]
+      "args": ["-y", "nx-mcp", "/Users/timo/Developer/steuerbot/frontend"]
     },
     "nx-frontend-w2": {
       "disabled": true,
       "command": "npx",
-      "args": [
-        "-y",
-        "nx-mcp",
-        "/Users/timo/Developer/steuerbot/frontend-w2"
-      ]
+      "args": ["-y", "nx-mcp", "/Users/timo/Developer/steuerbot/frontend-w2"]
     },
     "github": {
-      "disabled": false,
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-github"
-      ],
+      "disabled": true,
+      "args": ["-y", "@modelcontextprotocol/server-github"],
       "env": {
         "GITHUB_PERSONAL_ACCESS_TOKEN": null
       },
@@ -41,10 +26,23 @@
     "package-version": {
       "disabled": true,
       "command": "npx",
-      "args": [
-        "-y",
-        "mcp-package-version"
-      ]
+      "args": ["-y", "mcp-package-version"]
+    },
+    "playwright": {
+      "disabled": true,
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"]
+    },
+    "ios-simulator": {
+      "disabled": true,
+      "command": "npx",
+      "args": ["-y", "ios-simulator-mcp"]
+    },
+    "Framelink Figma MCP": {
+      "disabled": true,
+      "command": "npx",
+      "args": ["-y", "figma-developer-mcp", "--figma-api-key=", "--stdio"]
     }
   }
 }
+
