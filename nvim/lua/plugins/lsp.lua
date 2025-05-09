@@ -40,6 +40,7 @@ return {
             },
           },
         },
+        pyright = {},
         rust_analyzer = {},
         somesass_ls = {},
         tailwindcss = {
