@@ -28,6 +28,7 @@ return {
         'javascript',
         'javascriptreact',
         'json',
+        'less',
         'markdown',
         'markdown.mdx',
         'mdx',
