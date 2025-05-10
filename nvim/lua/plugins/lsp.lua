@@ -40,6 +40,7 @@ return {
             },
           },
         },
+        prismals = {},
         pyright = {},
         rust_analyzer = {},
         somesass_ls = {},
