@@ -19,6 +19,7 @@ return {
         lua = { 'stylua' },
         python = { 'black' },
         rust = { 'rustfmt' },
+        zig = { 'zigfmt' },
       }
 
       local web_filetypes = {
