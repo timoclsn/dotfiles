@@ -99,6 +99,7 @@ return {
         'jsonlint',
 
         -- Formatters
+        'black',
         'prettierd',
         'stylua',
       }

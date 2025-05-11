@@ -17,6 +17,7 @@ return {
       local formatters = {
         go = { 'gofmt' },
         lua = { 'stylua' },
+        python = { 'black' },
         rust = { 'rustfmt' },
       }
 
