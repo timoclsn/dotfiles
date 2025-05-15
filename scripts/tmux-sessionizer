@@ -27,7 +27,11 @@ if ! tmux has-session -t=$selected_name 2> /dev/null; then
     tmux new-window -t $selected_name: -n git -c $selected
     tmux send-keys -t $selected_name:git "lazygit" Enter
 
-    # Create a third window named 'term'
+    # Create a third window named 'agent' with a vertical split
+    tmux new-window -t $selected_name: -n agent -c $selected
+    tmux split-window -t $selected_name:agent -v -c $selected
+    
+    # Create a fourth window named 'term'
     tmux new-window -t $selected_name: -n term -c $selected
 
     # Select the first window
