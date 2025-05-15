@@ -2,4 +2,3 @@
 .aider*
 !.aider.conf.yml
 .env
-CLAUDE.md
