@@ -46,6 +46,9 @@ esac
 export PATH="/Users/timo/Library/Application Support/fnm:$PATH"
 eval "`fnm env`"
 
+# Node global packages
+export PATH=~/.npm-global/bin:$PATH
+
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
@@ -192,13 +195,6 @@ manage_node_version() {
     extract_version() {
         sed 's/^\* //'
     }
-    
-    install_global_packages() {
-        local packages=("pnpm" "yarn@1.22.22" "@antfu/ni" "npm-check-updates")
-        echo "Installing global packages..."
-        npm -g install "${packages[@]}"
-        echo "Global packages installation complete!"
-    }
 
     # Main menu options
     action=$(echo -e "1. Use installed version\n2. Set default version\n3. Install new version\n4. Uninstall version" | \
@@ -219,7 +215,6 @@ manage_node_version() {
                 extract_version)
             if [ ! -z "$version" ]; then
                 fnm use "$version"
-                install_global_packages
             fi
             ;;
     
@@ -249,7 +244,6 @@ manage_node_version() {
                 if [[ $answer =~ ^[Yy]$ ]]; then
                     fnm default "$version"
                     fnm use "$version"
-                    install_global_packages
                 fi
             fi
             ;;
