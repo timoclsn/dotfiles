@@ -1,7 +1,7 @@
 return {
   {
     'NMAC427/guess-indent.nvim',
-    ots = {},
+    opts = {},
   },
   {
     'folke/which-key.nvim',
@@ -12,7 +12,7 @@ return {
         -- set icon mappings to true if you have a Nerd Font
         mappings = vim.g.have_nerd_font,
         -- If you are using a Nerd Font: set icons.keys to an empty table which will use the
-        -- default whick-key.nvim defined Nerd Font icons, otherwise define a string table
+        -- default which-key.nvim defined Nerd Font icons, otherwise define a string table
         keys = vim.g.have_nerd_font and {} or {
           Up = '<Up> ',
           Down = '<Down> ',
@@ -64,7 +64,7 @@ return {
   },
   {
     'folke/todo-comments.nvim',
-    dependences = { 'nvim-lua/plenary.nvim' },
+    dependencies = { 'nvim-lua/plenary.nvim' },
     config = function()
       require('todo-comments').setup()
 
