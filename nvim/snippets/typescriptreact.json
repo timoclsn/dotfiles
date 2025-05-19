@@ -52,7 +52,7 @@
     "description": "Add debugger breakpoint"
   },
   "Pretty Print JSON": {
-    "prefix": "pps",
+    "prefix": "pp",
     "body": ["JSON.stringify($1, null, 2)$0"],
     "description": "Format object as JSON string"
   },
