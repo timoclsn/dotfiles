@@ -170,6 +170,9 @@ return {
     'folke/flash.nvim',
     event = 'VeryLazy',
     opts = {
+      highlight = {
+        backdrop = false,
+      },
       modes = {
         search = {
           enabled = false,
