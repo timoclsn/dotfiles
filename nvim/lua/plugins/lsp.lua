@@ -1,18 +1,9 @@
 return {
   {
-    'folke/lazydev.nvim',
-    ft = 'lua',
-    opts = {
-      library = {
-        { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
-      },
-    },
-  },
-  {
-    'neovim/nvim-lspconfig',
+    'mason-org/mason-lspconfig.nvim',
     dependencies = {
       { 'mason-org/mason.nvim', opts = {} },
-      { 'mason-org/mason-lspconfig.nvim' },
+      { 'neovim/nvim-lspconfig' },
       { 'WhoIsSethDaniel/mason-tool-installer.nvim' },
       { 'j-hui/fidget.nvim', opts = {} },
     },
@@ -146,5 +137,14 @@ return {
         end,
       })
     end,
+  },
+  {
+    'folke/lazydev.nvim',
+    ft = 'lua',
+    opts = {
+      library = {
+        { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
+      },
+    },
   },
 }
