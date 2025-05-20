@@ -1,0 +1,13 @@
+{
+  "model": "claude-3.7-sonnet",
+  "provider": "copilot",
+  "approvalMode": "full-auto",
+  "fullAutoErrorMode": "ask-user",
+  "notify": true,
+  "providers": {
+    "copilot": {
+      "name": "Copilot",
+      "baseURL": "https://api.githubcopilot.com"
+    }
+  }
+}

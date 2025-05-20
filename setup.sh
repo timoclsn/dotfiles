@@ -35,6 +35,10 @@ ln -sf "$DOTFILES/tmux/tmux.conf" "$HOME/.tmux.conf"
 ln -sf "$DOTFILES/wezterm/wezterm.lua" "$HOME/.wezterm.lua"
 ln -sf "$DOTFILES/zsh/zshrc" "$HOME/.zshrc"
 
+# codex
+rm "$HOME/.codex" 2>/dev/null || true
+ln -sf "$DOTFILES/codex" "$HOME/.codex"
+
 # Scripts
 mkdir -p "$HOME/.local/bin"
 ln -sf "$DOTFILES/scripts/tmux-sessionizer" "$HOME/.local/bin/tmux-sessionizer"
