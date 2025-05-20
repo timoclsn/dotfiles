@@ -66,7 +66,7 @@ vim.o.scrolloff = 8
 
 vim.g.netrw_banner = 0
 
--- Triger `autoread` when files changes on disk
+-- Trigger `autoread` when files changes on disk
 vim.o.autoread = true
 
 -- Highlight when yanking (copying) text

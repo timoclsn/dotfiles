@@ -83,7 +83,7 @@ vim.keymap.set('n', '<leader>yd', function()
   vim.notify('Yanked ' .. #diagnostics .. ' diagnostic messages', vim.log.levels.INFO)
 end, { desc = '[y]ank [d]iagnostics messages under cursor' })
 
--- This keymap is useful for testing and debugging condiions
+-- This keymap is useful for testing and debugging conditions
 vim.keymap.set('n', '<leader>yx', function()
   local line = vim.api.nvim_get_current_line()
   local row = vim.api.nvim_win_get_cursor(0)[1]
