@@ -69,7 +69,7 @@ alias c="clear"
 alias e="exit"
 
 # Navigation
-alias cd="z"
+# alias cd="z"
 alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
@@ -81,13 +81,14 @@ alias sbf="cd ~/Developer/steuerbot/frontend"
 alias sbw="cd ~/Developer/steuerbot/website"
 
 # File Operations
-alias ls="eza"
+# alias ls="eza"
 alias l='ls -l'
 alias la='ls -la'
 alias lt='ls --tree'
 alias lf='la | fzf'
-alias cat="bat"
-alias grep="rg"
+# alias cat="bat"
+# alias grep="rg"
+alias link="ln -sf"
 
 # Applications
 alias vim="nvim"
