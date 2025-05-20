@@ -24,6 +24,9 @@ ln -sf "$DOTFILES/lazygit" "$HOME/.config/lazygit"
 rm "$HOME/.config/nvim" 2>/dev/null || true
 ln -sf "$DOTFILES/nvim" "$HOME/.config/nvim"
 
+# codex
+ln -sf "$DOTFILES/codex/config.json" "$HOME/.codex/config.json"
+
 # Home directory symlinks
 ln -sf "$DOTFILES/aider/.aider.conf.yml" "$HOME/.aider.conf.yml"
 ln -sf "$DOTFILES/aerospace/aerospace.toml" "$HOME/.aerospace.toml"
@@ -34,10 +37,6 @@ ln -sf "$DOTFILES/ripgrep/.rgignore" "$HOME/.rgignore"
 ln -sf "$DOTFILES/tmux/tmux.conf" "$HOME/.tmux.conf"
 ln -sf "$DOTFILES/wezterm/wezterm.lua" "$HOME/.wezterm.lua"
 ln -sf "$DOTFILES/zsh/zshrc" "$HOME/.zshrc"
-
-# codex
-rm "$HOME/.codex" 2>/dev/null || true
-ln -sf "$DOTFILES/codex" "$HOME/.codex"
 
 # Scripts
 mkdir -p "$HOME/.local/bin"

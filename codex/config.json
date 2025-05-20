@@ -7,7 +7,8 @@
   "providers": {
     "copilot": {
       "name": "Copilot",
-      "baseURL": "https://api.githubcopilot.com"
+      "baseURL": "https://api.githubcopilot.com",
+      "envKey": "OPENAI_API_KEY"
     }
   }
 }
