@@ -29,7 +29,7 @@ if ! tmux has-session -t=$selected_name 2> /dev/null; then
 
     # Create a third window named 'agent' with a vertical split
     tmux new-window -t $selected_name: -n agent -c $selected
-    tmux split-window -t $selected_name:agent -v -c $selected
+    tmux split-window -t $selected_name:agent -h -c $selected
     # Run 'ai' in the left panel of the agent window
     tmux send-keys -t $selected_name:agent.left "ai" Enter
     
