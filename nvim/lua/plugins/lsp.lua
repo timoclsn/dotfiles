@@ -15,6 +15,7 @@ return {
         cssls = {},
         emmet_language_server = {},
         eslint = {},
+        gh_actions_ls = {},
         gitlab_ci_ls = {},
         gopls = {},
         html = {},
