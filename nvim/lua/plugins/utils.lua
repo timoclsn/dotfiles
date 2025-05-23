@@ -166,4 +166,10 @@ return {
     event = 'VeryLazy',
     enabled = vim.fn.has 'nvim-0.10.0' == 1,
   },
+  {
+    'm4xshen/hardtime.nvim',
+    lazy = false,
+    dependencies = { 'MunifTanjim/nui.nvim' },
+    opts = {},
+  },
 }
