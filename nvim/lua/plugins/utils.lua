@@ -166,39 +166,4 @@ return {
     event = 'VeryLazy',
     enabled = vim.fn.has 'nvim-0.10.0' == 1,
   },
-  {
-    'folke/flash.nvim',
-    event = 'VeryLazy',
-    opts = {
-      highlight = {
-        backdrop = false,
-      },
-      modes = {
-        search = {
-          enabled = false,
-        },
-        char = {
-          enabled = false,
-        },
-      },
-    },
-    keys = {
-      {
-        '<CR>',
-        mode = { 'n', 'x', 'o' },
-        function()
-          require('flash').jump()
-        end,
-        desc = 'Flash',
-      },
-      {
-        'r',
-        mode = 'o',
-        function()
-          require('flash').remote()
-        end,
-        desc = 'Remote Flash',
-      },
-    },
-  },
 }
