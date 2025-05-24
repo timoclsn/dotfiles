@@ -36,6 +36,7 @@ return {
         pyright = {},
         rust_analyzer = {},
         somesass_ls = {},
+        svelte = {},
         tailwindcss = {
           settings = {
             tailwindCSS = {
