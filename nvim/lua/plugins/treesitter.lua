@@ -1,11 +1,18 @@
 return {
   {
     'nvim-treesitter/nvim-treesitter',
+    dependencies = {
+      {
+        'nvim-treesitter/nvim-treesitter-textobjects',
+        branch = 'master',
+      },
+    },
     lazy = false,
-    branch = 'main',
+    branch = 'master',
     build = ':TSUpdate',
-    config = function()
-      require('nvim-treesitter').install {
+    main = 'nvim-treesitter.configs',
+    opts = {
+      ensure_installed = {
         'astro',
         'bash',
         'c',
@@ -29,8 +36,15 @@ return {
         'vim',
         'vimdoc',
         'yaml',
-      }
-    end,
+      },
+      incremental_selection = {
+        enable = true,
+        keymaps = {
+          node_incremental = 'v',
+          node_decremental = 'V',
+        },
+      },
+    },
   },
   {
     'nvim-treesitter/nvim-treesitter-context',
