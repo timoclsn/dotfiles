@@ -1,6 +1,6 @@
 {
   "model": "claude-3.7-sonnet",
-  "provider": "copilot",
+  "provider": "Copilot",
   "providers": {
     "openai": {
       "name": "OpenAI",
@@ -55,7 +55,12 @@
     "copilot": {
       "name": "Copilot",
       "baseURL": "https://api.githubcopilot.com",
-      "envKey": "OPENAI_API_KEY"
+      "envKey": "COPILOT_API_KEY"
+    },
+    "vercel": {
+      "name": "Vercel",
+      "baseURL": "https://api.v0.dev/v1",
+      "envKey": "V0_API_KEY"
     }
   },
   "approvalMode": "full-auto",
