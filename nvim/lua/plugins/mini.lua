@@ -1,18 +1,28 @@
 return {
   {
     'echasnovski/mini.nvim',
+    depedencies = {
+      'nvim-treesitter/nvim-treesitter',
+      'nvim-treesitter/nvim-treesitter-textobjects',
+    },
     config = function()
+      require('mini.extra').setup()
+
       -- ============================================
       -- Text editing modules
       -- ============================================
 
       require('mini.ai').setup {
         custom_textobjects = {
-          F = require('mini.ai').gen_spec.treesitter { a = '@function.outer', i = '@function.inner' },
+          F = require('mini.ai').gen_spec.treesitter {
+            a = '@function.outer',
+            i = '@function.inner',
+          },
           o = require('mini.ai').gen_spec.treesitter {
             a = { '@conditional.outer', '@loop.outer' },
             i = { '@conditional.inner', '@loop.inner' },
           },
+          B = require('mini.extra').gen_ai_spec.buffer(),
         },
       }
 
