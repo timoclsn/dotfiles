@@ -1,6 +1,6 @@
 {
-  "model": "claude-3.7-sonnet",
-  "provider": "Copilot",
+  "model": "o4-mini",
+  "provider": "OpenAI",
   "providers": {
     "openai": {
       "name": "OpenAI",
@@ -79,4 +79,3 @@
     }
   }
 }
-
