@@ -45,6 +45,9 @@ return {
           },
         },
         ts_ls = {
+          on_attach = function(client, bufnr)
+            require('twoslash-queries').attach(client, bufnr)
+          end,
           settings = {
             typescript = {
               inlayHints = {
@@ -126,9 +129,9 @@ return {
           map('<leader>r', vim.lsp.buf.rename, '[r]ename symbol')
           map('<leader>c', vim.lsp.buf.code_action, '[c]ode action', { 'n', 'x' })
           map('<leader>D', vim.lsp.buf.declaration, 'Goto [D]eclaration')
-          map('<leader>ti', function()
+          map('<leader>wi', function()
             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
-          end, '[t]oggle [i]nlay hints')
+          end, '[w]orkspace [i]nlay hints')
         end,
       })
 

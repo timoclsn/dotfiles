@@ -4,65 +4,6 @@ return {
     opts = {},
   },
   {
-    'folke/which-key.nvim',
-    event = 'VimEnter',
-    opts = {
-      delay = 500,
-      icons = {
-        -- set icon mappings to true if you have a Nerd Font
-        mappings = vim.g.have_nerd_font,
-        -- If you are using a Nerd Font: set icons.keys to an empty table which will use the
-        -- default which-key.nvim defined Nerd Font icons, otherwise define a string table
-        keys = vim.g.have_nerd_font and {} or {
-          Up = '<Up> ',
-          Down = '<Down> ',
-          Left = '<Left> ',
-          Right = '<Right> ',
-          C = '<C-…> ',
-          M = '<M-…> ',
-          D = '<D-…> ',
-          S = '<S-…> ',
-          CR = '<CR> ',
-          Esc = '<Esc> ',
-          ScrollWheelDown = '<ScrollWheelDown> ',
-          ScrollWheelUp = '<ScrollWheelUp> ',
-          NL = '<NL> ',
-          BS = '<BS> ',
-          Space = '<Space> ',
-          Tab = '<Tab> ',
-          F1 = '<F1>',
-          F2 = '<F2>',
-          F3 = '<F3>',
-          F4 = '<F4>',
-          F5 = '<F5>',
-          F6 = '<F6>',
-          F7 = '<F7>',
-          F8 = '<F8>',
-          F9 = '<F9>',
-          F10 = '<F10>',
-          F11 = '<F11>',
-          F12 = '<F12>',
-        },
-      },
-
-      -- Document existing key chains
-      spec = {
-        { '<leader>d', group = '[d]ocument' },
-        { '<leader>s', group = '[s]earch' },
-        { '<leader>w', group = '[w]orkspace' },
-        { '<leader>t', group = '[t]oggle' },
-        { '<leader>h', group = '[h]arpoon' },
-        { '<leader>g', group = '[g]it' },
-        { '<leader>a', group = '[a]i' },
-        { '<leader>y', group = '[y]ank' },
-        { '<leader>p', group = '[p]aste' },
-        { '<leader>q', group = '[q]uickfix list' },
-        { '<leader>b', group = '[b]uffer' },
-        { '<leader>i', group = '[i]mports' },
-      },
-    },
-  },
-  {
     'folke/todo-comments.nvim',
     dependencies = { 'nvim-lua/plenary.nvim' },
     config = function()
@@ -78,13 +19,6 @@ return {
         ['Find Under'] = '∂', -- Alt + d
         ['Find Subword Under'] = '∂', -- Alt + d
       }
-    end,
-  },
-  {
-    'windwp/nvim-ts-autotag',
-    dependencies = 'nvim-treesitter/nvim-treesitter',
-    config = function()
-      require('nvim-ts-autotag').setup()
     end,
   },
   {
@@ -148,7 +82,6 @@ return {
   -- No additional dependencies required, Zilchmasta was kind enough to let me
   -- know about this in discord
   -- https://discord.com/channels/1005603569187160125/1300462095946485790/1300534513788653630
-
   {
     'ghostty',
     dir = '/Applications/Ghostty.app/Contents/Resources/vim/vimfiles/',
@@ -159,11 +92,5 @@ return {
     opts = {
       highlight_on_key = true,
     },
-  },
-  {
-    'folke/ts-comments.nvim',
-    opts = {},
-    event = 'VeryLazy',
-    enabled = vim.fn.has 'nvim-0.10.0' == 1,
   },
 }

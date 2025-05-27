@@ -1,14 +1,3 @@
--- Disable arrow keys
-vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
-vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
-vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
-vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
--- vim.keymap.set('i', '<left>', '<cmd>echo "Move in normal mode!!"<CR>')
--- vim.keymap.set('i', '<right>', '<cmd>echo "Move in normal mode!!"<CR>')
--- vim.keymap.set('i', '<up>', '<cmd>echo "Move in normal mode!!"<CR>')
--- vim.keymap.set('i', '<down>', '<cmd>echo "Move in normal mode!!"<CR>')
-
--- General
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Jump half page down and center cursor' })
@@ -16,7 +5,6 @@ vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Jump half page up and center c
 vim.keymap.set('n', 'n', 'nzzzv', { desc = 'Next Search Result Centered' })
 vim.keymap.set('n', 'N', 'Nzzzv', { desc = 'Previous Search Result Centered' })
 vim.keymap.set({ 'n', 'v' }, '<leader>p', '"0p', { desc = 'Paste last yanked' })
-vim.keymap.set({ 'n', 'v' }, '<leader>d', '"_d', { desc = 'Delete without copying' })
 vim.keymap.set('n', '<C-i>', '<C-i>', { desc = 'Go forward in jumplist' })
 vim.keymap.set('n', '<C-s>', ':w<CR>', { desc = 'Write File' })
 vim.keymap.set('n', '<C-S-s>', ':wa<CR>', { desc = 'Write All Files' })
@@ -42,16 +30,12 @@ vim.keymap.set('n', '<leader>K', function()
     end,
   })
 end, { desc = '[K] show virtual line diagnostics under the cursor' })
-vim.keymap.set('n', '<leader>td', function()
+vim.keymap.set('n', '<leader>wd', function()
   vim.diagnostic.config {
     virtual_lines = not vim.diagnostic.config().virtual_lines,
     virtual_text = not vim.diagnostic.config().virtual_text,
   }
-end, { desc = '[t]oggle [d]iagnostic style' })
-
-vim.keymap.set('n', 'gX', function()
-  vim.ui.open(vim.fn.expand '<cfile>')
-end, { desc = 'Open file/url under cursor' })
+end, { desc = 'Toggle [w]orkspace [d]iagnostic style' })
 vim.keymap.set('n', 'X', '$x', { desc = 'Delete last character in line' })
 
 -- Remap brackets for easier access to brakets keymaps
