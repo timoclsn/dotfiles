@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+# Get the current pane's working directory
+current_dir=$(tmux display-message -p "#{pane_current_path}")
+
+# Change to that directory
+cd "$current_dir" || exit 1
+
+# Check if we're in a git repository
+if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    tmux display-message "Not in a git repository"
+    exit 1
+fi
+
+# Get the remote URL
+remote_url=$(git config --get remote.origin.url 2>/dev/null)
+
+if [[ -z "$remote_url" ]]; then
+    tmux display-message "No remote origin found"
+    exit 1
+fi
+
+# Convert SSH URL to HTTPS if needed
+if [[ $remote_url == git@* ]]; then
+    # Convert git@github.com:user/repo.git to https://github.com/user/repo
+    remote_url=$(echo "$remote_url" | sed -e 's/git@/https:\/\//' -e 's/:/\//' -e 's/\.git$//')
+elif [[ $remote_url == https://* ]]; then
+    # Remove .git suffix if present
+    remote_url=$(echo "$remote_url" | sed 's/\.git$//')
+fi
+
+# Open in default browser
+if command -v open >/dev/null 2>&1; then
+    # macOS
+    open "$remote_url"
+elif command -v xdg-open >/dev/null 2>&1; then
+    # Linux
+    xdg-open "$remote_url"
+else
+    tmux display-message "Cannot open browser: no suitable command found"
+    exit 1
+fi
+
+tmux display-message "Opened repository in browser: $remote_url" 

@@ -43,5 +43,7 @@ ln -sf "$DOTFILES/codex/AGENTS.md" "$HOME/.codex/AGENTS.md"
 mkdir -p "$HOME/.local/bin"
 ln -sf "$DOTFILES/scripts/tmux-sessionizer" "$HOME/.local/bin/tmux-sessionizer"
 chmod +x "$HOME/.local/bin/tmux-sessionizer"
+ln -sf "$DOTFILES/scripts/tmux-open-repo" "$HOME/.local/bin/tmux-open-repo"
+chmod +x "$HOME/.local/bin/tmux-open-repo"
 
 echo "Symlinks created successfully!"
