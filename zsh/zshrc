@@ -348,7 +348,6 @@ manage_ollama() {
             ;;
     esac
 }
-
 # =============================================================================
 # Brew Package Management Functions
 # =============================================================================
@@ -399,6 +398,50 @@ bcp() {
     for prog in $(echo $uninst);
     do; brew uninstall $prog; done;
   fi
+}
+
+function gconv() {
+    local types=(
+        "feat:A new feature"
+        "fix:A bug fix"
+        "docs:Documentation only changes"
+        "style:Changes that do not affect the meaning of the code"
+        "refactor:A code change that neither fixes a bug nor adds a feature"
+        "perf:A code change that improves performance"
+        "test:Adding missing tests"
+        "build:Changes that affect the build system"
+        "ci:Changes to CI configuration files"
+        "chore:Other changes that don't modify src or test files"
+        "revert:Reverts a previous commit"
+    )
+    
+    local selected=$(printf '%s\n' "${types[@]}" | fzf \
+        --height=~50% \
+        --layout=reverse \
+        --border \
+        --prompt="Select commit type: " \
+        --preview='echo {2..}' \
+        --preview-window=up:3:wrap)
+    
+    if [[ -n $selected ]]; then
+        local type=$(echo $selected | cut -d: -f1)
+        
+        echo -n "Enter scope (optional): "
+        read scope
+        echo -n "Enter description: "
+        read desc
+        
+        if [[ -z $desc ]]; then
+            echo "Description is required"
+            return 1
+        fi
+        
+        if [[ -n $scope ]]; then
+            git commit -m "$type($scope): $desc"
+        else
+            git commit -m "$type: $desc"
+        fi
+    fi
 }
 
 # =============================================================================
