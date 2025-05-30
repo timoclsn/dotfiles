@@ -132,6 +132,7 @@ return {
           map('<leader>wi', function()
             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
           end, '[w]orkspace [i]nlay hints')
+          map('<leader>tr', '<cmd>LspRestart ts_ls<CR>', '[t]ypescript language server [r]estart')
         end,
       })
 
