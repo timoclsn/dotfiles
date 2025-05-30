@@ -32,6 +32,8 @@ if ! tmux has-session -t=$selected_name 2> /dev/null; then
     tmux split-window -t $selected_name:agent -h -c $selected
     # Run 'ai' in the left panel of the agent window
     tmux send-keys -t $selected_name:agent.left "ai" Enter
+    # Focus the left pane where the ai command is running
+    tmux select-pane -t $selected_name:agent.left
     
     # Create a fourth window named 'term'
     tmux new-window -t $selected_name: -n term -c $selected
