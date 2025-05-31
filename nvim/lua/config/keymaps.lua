@@ -10,44 +10,11 @@ vim.keymap.set('n', 'H', '^', { desc = 'Goto first character of line' })
 vim.keymap.set('n', 'L', '$', { desc = 'Goto last character of line' })
 vim.keymap.set('n', '<C-f>', '<cmd>silent !tmux neww tmux-sessionizer<CR>')
 vim.keymap.set('n', '<leader>k', vim.diagnostic.open_float, { desc = 'Show diagnostic under cursor' })
-vim.keymap.set('n', '<leader>K', function()
-  vim.diagnostic.config {
-    virtual_lines = {
-      current_line = true,
-    },
-    virtual_text = false,
-  }
-  vim.api.nvim_create_autocmd('CursorMoved', {
-    group = vim.api.nvim_create_augroup('line-diagnostics', { clear = true }),
-    callback = function()
-      vim.diagnostic.config {
-        virtual_lines = false,
-        virtual_text = true,
-      }
-      return true
-    end,
-  })
-end, { desc = '[K] show virtual line diagnostics under the cursor' })
-vim.keymap.set('n', '<leader>wd', function()
-  vim.diagnostic.config {
-    virtual_lines = not vim.diagnostic.config().virtual_lines,
-    virtual_text = not vim.diagnostic.config().virtual_text,
-  }
-end, { desc = 'Toggle [w]orkspace [d]iagnostic style' })
 vim.keymap.set('n', 'X', '$x', { desc = 'Delete last character in line' })
-
--- Remap brackets for easier access to brakets keymaps
 vim.keymap.set('n', 'ö', '[', { remap = true })
 vim.keymap.set('n', 'ä', ']', { remap = true })
 vim.keymap.set('n', 'Ö', '{', { remap = true })
 vim.keymap.set('n', 'Ä', '}', { remap = true })
-
--- Quickfix list
-vim.keymap.set('n', '<leader>qq', '<cmd>copen<CR>', { desc = '[q]uickfix list [o]pen' })
-vim.keymap.set('n', '<leader>qc', '<cmd>cclose<CR>', { desc = '[q]uickfix list [c]lose' })
-vim.keymap.set('n', '<leader>qo', '<cmd>colder<CR>', { desc = '[q]uickfix list [o]lder list' })
-vim.keymap.set('n', '<leader>qn', '<cmd>cnewer<CR>', { desc = '[q]uickfix list [n]ewer list' })
-vim.keymap.set('n', '<leader>qd', vim.diagnostic.setloclist, { desc = '[q]uickfix list [d]iagnostics' })
 
 -- Yank
 vim.keymap.set('n', '<leader>yb', 'ggVGy', { desc = '[y]ank [b]uffer content' })

@@ -14,7 +14,6 @@ return {
         { '<leader>a', group = '[a]i' },
         { '<leader>y', group = '[y]ank' },
         { '<leader>p', group = '[p]aste' },
-        { '<leader>q', group = '[q]uickfix list' },
         { '<leader>b', group = '[b]uffer' },
         { '<leader>i', group = '[i]mports' },
       },
