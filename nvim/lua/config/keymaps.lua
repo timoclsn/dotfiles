@@ -15,10 +15,9 @@ vim.keymap.set('n', 'ö', '[', { remap = true })
 vim.keymap.set('n', 'ä', ']', { remap = true })
 vim.keymap.set('n', 'Ö', '{', { remap = true })
 vim.keymap.set('n', 'Ä', '}', { remap = true })
-
--- Yank
 vim.keymap.set('n', '<leader>yb', 'ggVGy', { desc = '[y]ank [b]uffer content' })
 vim.keymap.set('n', '<leader>pb', 'ggVG"+p', { desc = '[p]aste clipboard content and replace [b]uffer content' })
+
 vim.keymap.set('n', '<leader>yd', function()
   local diagnostics = vim.diagnostic.get(0, { line = vim.api.nvim_win_get_cursor(0)[1] - 1 })
   if #diagnostics == 0 then
