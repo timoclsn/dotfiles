@@ -1,22 +1,47 @@
+-- ============================================================================
+-- Search & Highlighting
+-- ============================================================================
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
-vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
-vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Jump half page down and center cursor' })
-vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Jump half page up and center cursor' })
 vim.keymap.set('n', 'n', 'nzzzv', { desc = 'Next Search Result Centered' })
 vim.keymap.set('n', 'N', 'Nzzzv', { desc = 'Previous Search Result Centered' })
-vim.keymap.set({ 'n', 'v' }, '<leader>p', '"0p', { desc = 'Paste last yanked' })
+
+-- ============================================================================
+-- Navigation & Movement
+-- ============================================================================
+vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Jump half page down and center cursor' })
+vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Jump half page up and center cursor' })
 vim.keymap.set('n', '<C-i>', '<C-i>', { desc = 'Go forward in jumplist' })
 vim.keymap.set('n', 'H', '^', { desc = 'Goto first character of line' })
 vim.keymap.set('n', 'L', '$', { desc = 'Goto last character of line' })
-vim.keymap.set('n', '<C-f>', '<cmd>silent !tmux neww tmux-sessionizer<CR>')
-vim.keymap.set('n', '<leader>k', vim.diagnostic.open_float, { desc = 'Show diagnostic under cursor' })
+
+-- ============================================================================
+-- Terminal Mode
+-- ============================================================================
+vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+
+-- ============================================================================
+-- Editing & Text Manipulation
+-- ============================================================================
 vim.keymap.set('n', 'X', '$x', { desc = 'Delete last character in line' })
+vim.keymap.set({ 'n', 'v' }, '<leader>p', '"0p', { desc = 'Paste last yanked' })
+
+-- ============================================================================
+-- International Keyboard Support
+-- ============================================================================
 vim.keymap.set('n', 'ö', '[', { remap = true })
 vim.keymap.set('n', 'ä', ']', { remap = true })
 vim.keymap.set('n', 'Ö', '{', { remap = true })
 vim.keymap.set('n', 'Ä', '}', { remap = true })
-vim.keymap.set('n', '<leader>yb', 'ggVGy', { desc = '[y]ank [b]uffer content' })
-vim.keymap.set('n', '<leader>pb', 'ggVG"+p', { desc = '[p]aste clipboard content and replace [b]uffer content' })
+
+-- ============================================================================
+-- External Tools
+-- ============================================================================
+vim.keymap.set('n', '<C-f>', '<cmd>silent !tmux neww tmux-sessionizer<CR>')
+
+-- ============================================================================
+-- Diagnostics
+-- ============================================================================
+vim.keymap.set('n', '<leader>k', vim.diagnostic.open_float, { desc = 'Show diagnostic under cursor' })
 
 vim.keymap.set('n', '<leader>yd', function()
   local diagnostics = vim.diagnostic.get(0, { line = vim.api.nvim_win_get_cursor(0)[1] - 1 })
@@ -31,38 +56,15 @@ vim.keymap.set('n', '<leader>yd', function()
   vim.notify('Yanked ' .. #diagnostics .. ' diagnostic messages', vim.log.levels.INFO)
 end, { desc = '[y]ank [d]iagnostics messages under cursor' })
 
--- This keymap is useful for testing and debugging conditions
-vim.keymap.set('n', '<leader>yx', function()
-  local line = vim.api.nvim_get_current_line()
-  local row = vim.api.nvim_win_get_cursor(0)[1]
-  local warn = 'WARN: Delete this line and uncomment the one above'
-  local cms = vim.bo.commentstring
-  local comment_start = cms:match '^(.*)%%s' or '//'
-  local comment_end = cms:match '%%s(.*)$' or ''
+-- ============================================================================
+-- Buffer & Clipboard Operations
+-- ============================================================================
+vim.keymap.set('n', '<leader>yb', 'ggVGy', { desc = '[y]ank [b]uffer content' })
+vim.keymap.set('n', '<leader>pb', 'ggVG"+p', { desc = '[p]aste clipboard content and replace [b]uffer content' })
 
-  -- Insert the uncommented copy first
-  vim.api.nvim_buf_set_lines(0, row - 1, row, false, {
-    line,
-    line .. ' ' .. comment_start .. warn .. comment_end,
-  })
-
-  -- Move cursor to first line and comment it with gcc
-  vim.api.nvim_win_set_cursor(0, { row, 0 })
-  vim.cmd 'normal gcc'
-
-  -- Move cursor to first non-empty character of the second line
-  vim.api.nvim_win_set_cursor(0, { row + 1, 0 })
-  vim.cmd 'normal! ^'
-end, { desc = '[y]ank [x] - duplicate and comment line' })
-
--- Keymap to revert the above keymap
-vim.keymap.set('n', '<leader>yc', function()
-  vim.cmd 'normal! dd'
-  vim.cmd 'normal! k'
-  vim.cmd 'normal gcc'
-  vim.cmd 'normal! ^'
-end, { desc = '[y]ank [c] - revert duplicate and comment line' })
-
+-- ============================================================================
+-- File Operations
+-- ============================================================================
 vim.keymap.set('n', '<leader>yp', function()
   -- Get the current buffer's full path
   local full_path = vim.fn.expand '%:p'
@@ -147,3 +149,39 @@ vim.keymap.set('n', '<leader>ss', function()
     vim.notify('Not a React component or style file', vim.log.levels.WARN)
   end
 end, { noremap = true, silent = true, desc = '[s]earch [s]tyles' })
+
+-- ============================================================================
+-- Development Utilities
+-- ============================================================================
+
+-- This keymap is useful for testing and debugging conditions
+vim.keymap.set('n', '<leader>yx', function()
+  local line = vim.api.nvim_get_current_line()
+  local row = vim.api.nvim_win_get_cursor(0)[1]
+  local warn = 'WARN: Delete this line and uncomment the one above'
+  local cms = vim.bo.commentstring
+  local comment_start = cms:match '^(.*)%%s' or '//'
+  local comment_end = cms:match '%%s(.*)$' or ''
+
+  -- Insert the uncommented copy first
+  vim.api.nvim_buf_set_lines(0, row - 1, row, false, {
+    line,
+    line .. ' ' .. comment_start .. warn .. comment_end,
+  })
+
+  -- Move cursor to first line and comment it with gcc
+  vim.api.nvim_win_set_cursor(0, { row, 0 })
+  vim.cmd 'normal gcc'
+
+  -- Move cursor to first non-empty character of the second line
+  vim.api.nvim_win_set_cursor(0, { row + 1, 0 })
+  vim.cmd 'normal! ^'
+end, { desc = '[y]ank [x] - duplicate and comment line' })
+
+-- Keymap to revert the above keymap
+vim.keymap.set('n', '<leader>yc', function()
+  vim.cmd 'normal! dd'
+  vim.cmd 'normal! k'
+  vim.cmd 'normal gcc'
+  vim.cmd 'normal! ^'
+end, { desc = '[y]ank [c] - revert duplicate and comment line' })
