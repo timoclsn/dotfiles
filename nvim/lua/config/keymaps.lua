@@ -57,12 +57,6 @@ vim.keymap.set('n', '<leader>yd', function()
 end, { desc = '[y]ank [d]iagnostics messages under cursor' })
 
 -- ============================================================================
--- Buffer & Clipboard Operations
--- ============================================================================
-vim.keymap.set('n', '<leader>yb', 'ggVGy', { desc = '[y]ank [b]uffer content' })
-vim.keymap.set('n', '<leader>pb', 'ggVG"+p', { desc = '[p]aste clipboard content and replace [b]uffer content' })
-
--- ============================================================================
 -- File Operations
 -- ============================================================================
 vim.keymap.set('n', '<leader>yp', function()
