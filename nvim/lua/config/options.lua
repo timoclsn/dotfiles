@@ -12,7 +12,6 @@ vim.o.breakindent = true
 vim.o.shiftwidth = 2
 vim.o.softtabstop = 2
 vim.o.expandtab = true
-vim.o.autoindent = true
 vim.o.smartindent = true
 vim.o.colorcolumn = '120'
 vim.o.switchbuf = 'useopen,usetab'
@@ -30,7 +29,6 @@ vim.o.inccommand = 'nosplit'
 vim.o.cursorline = true
 vim.o.scrolloff = 8
 vim.g.netrw_banner = 0
-vim.o.autoread = true
 vim.o.laststatus = 3
 vim.diagnostic.config {
   severity_sort = true,
@@ -67,10 +65,10 @@ vim.o.foldlevelstart = 99
 vim.o.foldenable = true
 vim.o.foldtext = ''
 vim.o.foldmethod = 'expr'
--- Default to treesitter folding
-vim.o.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
--- Prefer LSP folding if client supports it
+vim.o.foldexpr = 'v:lua.vim.treesitter.foldexpr()' -- Default to treesitter folding
 vim.api.nvim_create_autocmd('LspAttach', {
+  desc = 'Set foldexpr for LSP clients that support foldingRange',
+  group = vim.api.nvim_create_augroup('lsp-folding', { clear = true }),
   callback = function(args)
     local client = vim.lsp.get_client_by_id(args.data.client_id)
     if client and client:supports_method 'textDocument/foldingRange' then
@@ -79,9 +77,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end
   end,
 })
-vim.api.nvim_create_autocmd('LspDetach', { command = 'setl foldexpr<' })
-
+vim.api.nvim_create_autocmd('LspDetach', { command = 'setl foldexpr<' }) -- Reset foldexpr when LSP client detaches
 vim.api.nvim_create_autocmd('TextYankPost', {
+  desc = 'Create yank history',
+  group = vim.api.nvim_create_augroup('yank-history', { clear = true }),
   callback = function()
     if vim.v.event.operator == 'y' then
       for i = 9, 1, -1 do
@@ -90,7 +89,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     end
   end,
 })
-
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
   group = vim.api.nvim_create_augroup('highlight-yank', { clear = true }),
