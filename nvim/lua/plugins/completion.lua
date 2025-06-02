@@ -6,6 +6,7 @@ return {
       'brenoprata10/nvim-highlight-colors',
       'Kaiser-Yang/blink-cmp-avante',
       'folke/lazydev.nvim',
+      'fang2hou/blink-copilot',
     },
     version = '1.*',
     opts = {
@@ -43,27 +44,33 @@ return {
                 text = function(ctx)
                   local icon = ctx.kind_icon
 
-                  -- First handle LSP kind icons
-                  if not vim.tbl_contains({ 'Path' }, ctx.source_name) then
-                    local lspkind = require 'lspkind'
-                    icon = lspkind.symbolic(ctx.kind, {
-                      mode = 'symbol',
-                    })
-                  else
-                    -- Handle Path source with devicons
-                    local dev_icon, _ = require('nvim-web-devicons').get_icon(ctx.label)
-                    if dev_icon then
-                      icon = dev_icon
-                    end
-                  end
-
-                  -- Then check for color highlighting
+                  -- First check for color highlighting (takes precedence)
                   if ctx.item.source_name == 'LSP' then
                     local color_item = require('nvim-highlight-colors').format(ctx.item.documentation, { kind = ctx.kind })
                     if color_item and color_item.abbr ~= '' then
-                      icon = color_item.abbr
+                      return color_item.abbr .. ctx.icon_gap
                     end
                   end
+
+                  -- Handle Path source with devicons
+                  if ctx.source_name == 'Path' then
+                    local dev_icon, _ = require('nvim-web-devicons').get_icon(ctx.label)
+                    if dev_icon then
+                      return dev_icon .. ctx.icon_gap
+                    end
+                    return icon .. ctx.icon_gap
+                  end
+
+                  -- Handle copilot source (keep original icon)
+                  if ctx.source_name == 'copilot' then
+                    return icon .. ctx.icon_gap
+                  end
+
+                  -- Default to lspkind for other sources
+                  local lspkind = require 'lspkind'
+                  icon = lspkind.symbolic(ctx.kind, {
+                    mode = 'symbol',
+                  })
 
                   return icon .. ctx.icon_gap
                 end,
@@ -80,8 +87,15 @@ return {
           'buffer',
           'avante',
           'lazydev',
+          'copilot',
         },
         providers = {
+          copilot = {
+            name = 'copilot',
+            module = 'blink-copilot',
+            score_offset = 100,
+            async = true,
+          },
           avante = {
             module = 'blink-cmp-avante',
             name = 'Avante',
