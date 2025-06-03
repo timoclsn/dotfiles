@@ -124,7 +124,6 @@ return {
           scroll_strategy = 'cycle',
           sort_mru = true,
           ignore_current_buffer = true,
-          only_cwd = true,
           previewer = false,
           winblend = 10,
           initial_mode = 'normal',
