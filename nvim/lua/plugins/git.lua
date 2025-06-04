@@ -14,6 +14,7 @@ return {
       on_attach = function()
         local gitsigns = require 'gitsigns'
         vim.keymap.set('n', '<leader>gp', gitsigns.preview_hunk, { desc = '[g]it [p]review hunk' })
+        vim.keymap.set('n', '<leader>gi', gitsigns.preview_hunk_inline, { desc = '[g]it preview hunk [i]nline' })
         vim.keymap.set('n', '<leader>gs', gitsigns.stage_hunk, { desc = '[g]it toggle [s]tage hunk' })
         vim.keymap.set('n', '<leader>gr', gitsigns.reset_hunk, { desc = '[g]it [r]eset hunk' })
         vim.keymap.set('n', '<leader>gS', gitsigns.stage_buffer, { desc = '[g]it [S]tage buffer' })
