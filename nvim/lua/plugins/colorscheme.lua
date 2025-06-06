@@ -1,10 +1,26 @@
 return {
   {
     'folke/tokyonight.nvim',
-    priority = 1000, -- Make sure to load this before all the other start plugins.
+    priority = 1000,
     config = function()
-      require('tokyonight').setup()
       vim.cmd.colorscheme 'tokyonight-night'
     end,
+  },
+  {
+    'rebelot/kanagawa.nvim',
+    priority = 1000,
+  },
+  {
+    'rose-pine/neovim',
+    priority = 1000,
+  },
+  {
+    'sainnhe/everforest',
+    priority = 1000,
+  },
+  {
+    'zenbones-theme/zenbones.nvim',
+    dependencies = 'rktjmp/lush.nvim',
+    priority = 1000,
   },
 }
