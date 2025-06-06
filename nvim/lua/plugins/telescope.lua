@@ -75,15 +75,12 @@ return {
 
       vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[s]earch [f]iles' })
       vim.keymap.set('n', '<leader>sg', require 'telescope.live_grep', { desc = '[s]earch by [g]rep' })
-
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[s]earch [h]elp' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[s]earch [k]eymaps' })
-      vim.keymap.set('n', '<leader>sc', builtin.git_commits, { desc = '[s]earch [c]ommits' })
-      vim.keymap.set('n', '<leader>sC', builtin.git_bcommits, { desc = '[s]earch [C]ommits' })
-      vim.keymap.set('n', '<leader>sb', builtin.git_branches, { desc = '[s]earch [b]ranches' })
       vim.keymap.set('n', '<leader>sr', builtin.registers, { desc = '[s]earch [r]egisters' })
       vim.keymap.set('n', '<leader>sm', builtin.marks, { desc = '[s]earch [m]arks' })
       vim.keymap.set('n', '<leader>st', builtin.builtin, { desc = '[s]earch [t]elescope pickers' })
+      vim.keymap.set('n', '<leader>sc', builtin.colorscheme, { desc = '[s]earch [c]olorschemes' })
 
       vim.keymap.set('n', '<leader>sw', function()
         local word = vim.fn.expand '<cword>'
@@ -102,7 +99,7 @@ return {
         require 'telescope.live_grep' { default_text = selected_text }
       end, { desc = '[s]earch by [g]rep' })
 
-      vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[s]earch [d]iagnostics' })
+      vim.keymap.set('n', '<leader>wd', builtin.diagnostics, { desc = '[w]orkspace [d]iagnostics' })
       vim.keymap.set('n', '<leader>dd', function()
         builtin.diagnostics { bufnr = 0 }
       end, { desc = 'Show [d]ocument [d]iagnostics' })
