@@ -81,13 +81,10 @@ alias sbf="cd ~/Developer/steuerbot/frontend"
 alias sbw="cd ~/Developer/steuerbot/website"
 
 # File Operations
-# alias ls="eza"
-alias l='ls -l'
-alias la='ls -la'
-alias lt='ls --tree'
-alias lf='la | fzf'
-# alias cat="bat"
-# alias grep="rg"
+alias l='eza -l'
+alias la='eza -la'
+alias lt='eza --tree'
+alias lf='eza | fzf'
 alias link="ln -sf"
 
 # Applications
@@ -98,6 +95,7 @@ alias g="git"
 alias r="run_npm_script"
 alias t="tmux"
 alias ta="tmux attach"
+alias tk="tmux kill-server"
 alias ai="codex"
 alias y="yazy-shell"
 alias i="fastfetch"
