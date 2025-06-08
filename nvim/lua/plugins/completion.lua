@@ -11,22 +11,7 @@ return {
     version = '1.*',
     opts = {
       keymap = {
-        preset = 'none',
-        ['<C-space>'] = { 'show', 'hide' },
-        ['<C-c>'] = { 'cancel', 'fallback' },
-        ['<CR>'] = { 'select_and_accept', 'fallback' },
-
-        ['<C-k>'] = { 'select_prev', 'fallback' },
-        ['<C-j>'] = { 'select_next', 'fallback' },
-
-        ['<C-u>'] = { 'scroll_documentation_up', 'fallback' },
-        ['<C-d>'] = { 'scroll_documentation_down', 'fallback' },
-
-        ['<C-l>'] = { 'snippet_forward', 'fallback' },
-        ['<C-h>'] = { 'snippet_backward', 'fallback' },
-
-        ['<C-b>'] = { 'show_signature', 'hide_signature', 'fallback' },
-        ['<C-f>'] = { 'show_documentation', 'hide_documentation', 'fallback' },
+        preset = 'default',
       },
       completion = {
         documentation = {
