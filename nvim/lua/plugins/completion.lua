@@ -12,6 +12,7 @@ return {
     opts = {
       keymap = {
         preset = 'default',
+        ['<C-x>'] = { 'show', 'hide' },
       },
       completion = {
         documentation = {
