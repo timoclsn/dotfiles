@@ -81,10 +81,10 @@ alias sbf="cd ~/Developer/steuerbot/frontend"
 alias sbw="cd ~/Developer/steuerbot/website"
 
 # File Operations
-alias l='eza -l'
-alias la='eza -la'
-alias lt='eza --tree'
-alias lf='eza | fzf'
+alias l='eza -l --icons'
+alias la='eza -la --icons'
+alias lt='eza --tree --icons'
+alias lf='eza | fzf --icons'
 alias link="ln -sf"
 
 # Applications
