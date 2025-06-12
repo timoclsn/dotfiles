@@ -1,5 +1,5 @@
 {
-  "model": "o4-mini",
+  "model": "codex-mini-latest",
   "provider": "OpenAI",
   "providers": {
     "openai": {
