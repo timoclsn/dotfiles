@@ -68,6 +68,6 @@ customCommands:
         key: "Description"
     command: 'git commit -m "{{.Form.Type}}{{if .Form.Scope}}({{.Form.Scope}}){{end}}: {{.Form.Description}}"'
   - key: "<c-a>"
-    description: "AI commit message (Codex)"
+    description: "AI commit"
     context: "files"
-    command: "ai-commit-message"
+    command: "ai-commit"

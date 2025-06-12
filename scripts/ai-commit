@@ -7,8 +7,6 @@ if [ -z "$DIFF" ]; then
     exit 1
 fi
 
-echo "Generating AI commit message..."
-
 RECENT_COMMITS=$(git log -n 10 --pretty=format:"%s" 2>/dev/null)
 
 PROMPT="You are a senior software developer.
