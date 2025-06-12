@@ -11,7 +11,6 @@ echo "Generating AI commit message..."
 
 RECENT_COMMITS=$(git log -n 5 --pretty=format:"%s" 2>/dev/null)
 
-# Create a prompt that includes recent commits and the diff
 PROMPT="You are a senior software developer.
 
 Here are the 5 most recent commit messages in this repository:
@@ -23,23 +22,12 @@ Here are the currently staged changes:
 <diff>$DIFF</diff>
 
 Generate a commit message for the staged changes.
-The commit message should match the project's commit style from the recent commits.
+The commit message should match the projects commit style from the recent commits.
 
 Only respond with the commit message text, nothing else!."
-
-# Try to generate commit message with codex in quiet JSON mode to avoid interactive UI hangs
-#   --json:     stream responses as JSON lines for easy parsing
-#   -q:         non-interactive/CI friendly mode so codex exits after replying
-#   -p/-m:      ensure we hit the expected provider/model (falls back to config defaults if absent)
 
 COMMIT_MSG=$(codex -q --json -p OpenAI -m gpt-4.1-mini "$PROMPT" 2>/dev/null | \
   jq -r 'select(.type=="message" and .role=="assistant") | .content[0].text' | \
   head -n 1)
-
-# Fallback if codex fails or returns empty
-if [ -z "$COMMIT_MSG" ] || [ "$COMMIT_MSG" = "null" ]; then
-    echo "AI failed to generate a message, using default..."
-    COMMIT_MSG="Update files"
-fi
 
 git commit -m "$COMMIT_MSG" --edit
