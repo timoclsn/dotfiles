@@ -28,8 +28,6 @@ $DIFF
 
 Generate a commit message for the staged changes. the commit message should match the project's commit style from the recent commits. Only respond with the commit message text, nothing else!."
 
-echo $PROMPT
-
 # Try to generate commit message with codex in quiet JSON mode to avoid interactive UI hangs
 #   --json:     stream responses as JSON lines for easy parsing
 #   -q:         non-interactive/CI friendly mode so codex exits after replying
