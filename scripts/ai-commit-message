@@ -30,4 +30,4 @@ COMMIT_MSG=$(codex -q --json -p OpenAI -m gpt-4.1-mini "$PROMPT" 2>/dev/null | \
   jq -r 'select(.type=="message" and .role=="assistant") | .content[0].text' | \
   head -n 1)
 
-git commit -m "$COMMIT_MSG" --edit
+git commit -m "$COMMIT_MSG"

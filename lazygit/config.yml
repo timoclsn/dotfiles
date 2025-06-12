@@ -71,4 +71,3 @@ customCommands:
     description: "AI commit message (Codex)"
     context: "files"
     command: "ai-commit-message"
-    output: terminal
