@@ -9,11 +9,11 @@ fi
 
 echo "Generating AI commit message..."
 
-RECENT_COMMITS=$(git log -n 5 --pretty=format:"%s" 2>/dev/null)
+RECENT_COMMITS=$(git log -n 10 --pretty=format:"%s" 2>/dev/null)
 
 PROMPT="You are a senior software developer.
 
-Here are the 5 most recent commit messages in this repository:
+Here are the 10 most recent commit messages in this repository:
 
 <recent-commits>$RECENT_COMMITS</recent-commits>
 
