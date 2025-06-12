@@ -33,6 +33,10 @@ return {
     priority = 1000,
   },
   {
+    'vague2k/vague.nvim',
+    priority = 1000,
+  },
+  {
     'zenbones-theme/zenbones.nvim',
     dependencies = 'rktjmp/lush.nvim',
     priority = 1000,
