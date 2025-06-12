@@ -32,3 +32,6 @@ shell-integration-features = no-cursor
 cursor-style = block
 cursor-click-to-move = true
 mouse-hide-while-typing = true
+
+# Claude code
+keybind = shift+enter=text:\n
