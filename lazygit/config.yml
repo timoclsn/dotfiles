@@ -29,7 +29,7 @@ gui:
     defaultFgColor:
       - "#c0caf5"
 customCommands:
-  - key: "C"
+  - key: "<c-c>"
     description: "conventional commit"
     context: "files"
     prompts:
