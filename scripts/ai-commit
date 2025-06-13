@@ -9,20 +9,35 @@ fi
 
 RECENT_COMMITS=$(git log -n 10 --pretty=format:"%s" 2>/dev/null)
 
-PROMPT="You are a senior software developer.
+PROMPT="
+You are a senior software developer.
+
+Generate a git commit message for the staged changes.
+
+## Rules
+- The commit message should match the projects commit style from the recent commits (conventional commit (choose right type and scope) vs. normal commit style).
+- Written in present tense.
+- Title is lowercase, no period at the end.
+- Title should be a clear summary, max 50 characters.
+- Use the body (optional) to explain *why*, not just *what*.
+- Bullet points should be concise and high-level.
+
+## Avoid
+
+- Vague titles like: 'update', 'fix stuff'
+- Overly long or unfocused titles
+- Excessive detail in bullet points
+
+Only respond with the commit message text, nothing else! Your entire response will be passed directly into git commit.
+
+Here are the staged changes:
+
+<diff>$DIFF</diff>
 
 Here are the 10 most recent commit messages in this repository:
 
 <recent-commits>$RECENT_COMMITS</recent-commits>
-
-Here are the currently staged changes:
-
-<diff>$DIFF</diff>
-
-Generate a commit message for the staged changes.
-The commit message should match the projects commit style from the recent commits.
-
-Only respond with the commit message text, nothing else!."
+"
 
 COMMIT_MSG=$(codex -q --json -p OpenAI -m gpt-4.1-mini "$PROMPT" 2>/dev/null | \
   jq -r 'select(.type=="message" and .role=="assistant") | .content[0].text' | \
