@@ -21,8 +21,9 @@ return {
 
         ['<CR>'] = { 'accept', 'fallback' },
         ['<C-y>'] = { 'select_and_accept', 'fallback' },
+        ['<C-i>'] = { 'select_and_accept', 'fallback' },
 
-        ['<C-j>'] = { 'select_next', 'fallback' },
+        ['<C-j>'] = { 'show', 'select_next', 'fallback' },
         ['<C-n>'] = { 'select_next', 'fallback' },
 
         ['<C-k>'] = { 'select_prev', 'fallback' },
@@ -32,7 +33,7 @@ return {
         ['<C-u>'] = { 'scroll_documentation_up', 'fallback' },
 
         ['<C-l>'] = { 'snippet_forward', 'fallback' },
-        ['<Tab>'] = { 'select_and_accept', 'snippet_forward', 'fallback' },
+        ['<Tab>'] = { 'snippet_forward', 'fallback' },
 
         ['<C-h>'] = { 'snippet_backward', 'fallback' },
         ['<S-Tab>'] = { 'snippet_backward', 'fallback' },
@@ -44,7 +45,7 @@ return {
         list = {
           selection = {
             preselect = false,
-            auto_insert = true,
+            auto_insert = false,
           },
         },
         documentation = {
