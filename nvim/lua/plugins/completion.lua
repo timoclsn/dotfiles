@@ -17,7 +17,7 @@ return {
         ['<C-x>'] = { 'show', 'hide' },
 
         ['<C-c>'] = { 'cancel', 'fallback' },
-        ['<C-e>'] = { 'hide', 'fallback' },
+        ['<C-e>'] = { 'cancel', 'fallback' },
 
         ['<CR>'] = { 'accept', 'fallback' },
         ['<C-y>'] = { 'select_and_accept', 'fallback' },
@@ -32,7 +32,10 @@ return {
         ['<C-u>'] = { 'scroll_documentation_up', 'fallback' },
 
         ['<C-l>'] = { 'snippet_forward', 'fallback' },
+        ['<Tab>'] = { 'select_and_accept', 'snippet_forward', 'fallback' },
+
         ['<C-h>'] = { 'snippet_backward', 'fallback' },
+        ['<S-Tab>'] = { 'snippet_backward', 'fallback' },
 
         ['<C-b>'] = { 'show_signature', 'hide_signature', 'fallback' },
         ['<C-f>'] = { 'show_documentation', 'hide_documentation', 'fallback' },
