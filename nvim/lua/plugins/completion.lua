@@ -43,12 +43,6 @@ return {
         ['<S-Tab>'] = { 'snippet_backward', 'fallback' },
       },
       completion = {
-        list = {
-          selection = {
-            preselect = true,
-            auto_insert = false,
-          },
-        },
         documentation = {
           auto_show = true,
         },
