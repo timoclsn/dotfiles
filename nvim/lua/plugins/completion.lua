@@ -34,7 +34,6 @@ return {
 
         ['<C-e>'] = { 'cancel', 'fallback' },
 
-        ['<CR>'] = { 'accept', 'fallback' },
         ['<C-y>'] = { 'select_and_accept', 'fallback' },
 
         ['<C-n>'] = { 'select_next', 'fallback' },
