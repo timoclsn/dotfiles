@@ -13,12 +13,28 @@ return {
     end,
   },
   {
-    'mg979/vim-visual-multi',
-    init = function()
-      vim.g.VM_maps = {
-        ['Find Under'] = '∂', -- Alt + d
-        ['Find Subword Under'] = '∂', -- Alt + d
-      }
+    'jake-stewart/multicursor.nvim',
+    config = function()
+      local mc = require 'multicursor-nvim'
+      mc.setup()
+
+      local set = vim.keymap.set
+
+      set({ 'n', 'x' }, '∂', function()
+        mc.matchAddCursor(1)
+      end)
+
+      set('x', 'S', mc.splitCursors)
+
+      mc.addKeymapLayer(function(layerSet)
+        layerSet('n', '<esc>', function()
+          if not mc.cursorsEnabled() then
+            mc.enableCursors()
+          else
+            mc.clearCursors()
+          end
+        end)
+      end)
     end,
   },
   {
