@@ -1,5 +1,5 @@
 {
-  "model": "codex-mini-latest",
+  "model": "o3",
   "provider": "OpenAI",
   "providers": {
     "openai": {
@@ -79,3 +79,4 @@
     }
   }
 }
+
