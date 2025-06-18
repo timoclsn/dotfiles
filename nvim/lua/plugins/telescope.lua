@@ -12,6 +12,7 @@ return {
       local actions = require 'telescope.actions'
       local smart_opener = require 'telescope.smart_opener'
       local custom_path_display = require 'telescope.path_display'
+      local copy_path = require 'telescope.copy_path'
 
       require('telescope').setup {
         defaults = {
@@ -27,6 +28,7 @@ return {
               ['<C-space>'] = actions.to_fuzzy_refine,
               ['<space>'] = require('telescope.actions.layout').toggle_preview,
               ['<C-l>'] = require('telescope.actions.layout').cycle_layout_next,
+              ['<C-y>'] = copy_path.copy_path,
             },
             i = {
               ['<CR>'] = smart_opener.smart_open,
@@ -38,6 +40,7 @@ return {
               ['<C-space>'] = actions.to_fuzzy_refine,
               ['<C-p>'] = require('telescope.actions.layout').toggle_preview,
               ['<C-l>'] = require('telescope.actions.layout').cycle_layout_next,
+              ['<C-y>'] = copy_path.copy_path,
             },
           },
           path_display = custom_path_display,

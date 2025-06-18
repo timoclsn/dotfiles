@@ -59,29 +59,11 @@ end, { desc = '[y]ank [d]iagnostics messages under cursor' })
 -- ============================================================================
 -- File Operations
 -- ============================================================================
+local path_utils = require 'utils.path_utils'
+
 vim.keymap.set('n', '<leader>yp', function()
-  -- Get the current buffer's full path
   local full_path = vim.fn.expand '%:p'
-
-  -- Get the project root directory
-  local root_dir = vim.fn.systemlist('git rev-parse --show-toplevel')[1]
-
-  -- If not in a git repo, try to use the current working directory
-  if vim.v.shell_error ~= 0 then
-    root_dir = vim.fn.getcwd()
-  end
-
-  -- Ensure root_dir ends with a separator
-  if root_dir:sub(-1) ~= '/' then
-    root_dir = root_dir .. '/'
-  end
-
-  -- Remove the root directory from the full path to get the relative path
-  local relative_path = full_path:sub(#root_dir + 1)
-
-  -- Copy to clipboard
-  vim.fn.setreg('+', relative_path)
-  print('Copied path to clipboard: ' .. relative_path)
+  path_utils.copy_relative_path(full_path)
 end, { noremap = true, silent = true, desc = '[y]ank full file [p]ath' })
 
 vim.keymap.set('n', '<leader>yf', function()
