@@ -7,7 +7,7 @@ local function custom_path_display(_, path)
   local relative_path = formatted_path.relative_path
 
   if relative_path == '.' or relative_path == '' then
-    return formatted_path.filename
+    return PATH_FORMAT:format(formatted_path.filename, '')
   end
 
   return PATH_FORMAT:format(formatted_path.filename, relative_path)
