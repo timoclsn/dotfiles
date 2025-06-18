@@ -61,10 +61,13 @@ end, { desc = '[y]ank [d]iagnostics messages under cursor' })
 -- ============================================================================
 local path_utils = require 'utils.path_utils'
 
-vim.keymap.set('n', '<leader>yp', function()
+local yank_path = function()
   local full_path = vim.fn.expand '%:p'
   path_utils.copy_relative_path(full_path)
-end, { noremap = true, silent = true, desc = '[y]ank full file [p]ath' })
+end
+
+vim.keymap.set('n', '<leader>yp', yank_path, { noremap = true, silent = true, desc = '[y]ank full file [p]ath' })
+vim.keymap.set('n', '<C-y>', yank_path, { noremap = true, silent = true })
 
 vim.keymap.set('n', '<leader>yf', function()
   local full_path = vim.fn.expand '%:p'
