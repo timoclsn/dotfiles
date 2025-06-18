@@ -10,7 +10,8 @@ return {
     },
     config = function()
       local actions = require 'telescope.actions'
-      local custom_path_display = require 'telescope.path_display'
+      local layout_actions = require 'telescope.actions.layout'
+      local path_display = require 'telescope.path_display'
       local copy_path = require 'telescope.copy_path'
 
       require('telescope').setup {
@@ -23,21 +24,29 @@ return {
               ['<S-Tab>'] = actions.move_selection_previous,
               ['<C-s>'] = actions.toggle_selection,
               ['<C-space>'] = actions.to_fuzzy_refine,
-              ['<space>'] = require('telescope.actions.layout').toggle_preview,
-              ['<C-l>'] = require('telescope.actions.layout').cycle_layout_next,
+              ['<space>'] = layout_actions.toggle_preview,
+              ['<C-l>'] = layout_actions.cycle_layout_next,
               ['<C-y>'] = copy_path.copy_path,
+              ['<C-d>'] = actions.results_scrolling_down,
+              ['<C-u>'] = actions.results_scrolling_up,
+              ['<C-b>'] = actions.preview_scrolling_up,
+              ['<C-f>'] = actions.preview_scrolling_down,
             },
             i = {
               ['<C-j>'] = actions.move_selection_next,
               ['<C-k>'] = actions.move_selection_previous,
               ['<C-s>'] = actions.toggle_selection,
               ['<C-space>'] = actions.to_fuzzy_refine,
-              ['<C-p>'] = require('telescope.actions.layout').toggle_preview,
-              ['<C-l>'] = require('telescope.actions.layout').cycle_layout_next,
+              ['<C-p>'] = layout_actions.toggle_preview,
+              ['<C-l>'] = layout_actions.cycle_layout_next,
               ['<C-y>'] = copy_path.copy_path,
+              ['<C-d>'] = actions.results_scrolling_down,
+              ['<C-u>'] = actions.results_scrolling_up,
+              ['<C-b>'] = actions.preview_scrolling_up,
+              ['<C-f>'] = actions.preview_scrolling_down,
             },
           },
-          path_display = custom_path_display,
+          path_display = path_display,
         },
         pickers = {
           find_files = {
