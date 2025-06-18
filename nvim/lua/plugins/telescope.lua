@@ -10,7 +10,6 @@ return {
     },
     config = function()
       local actions = require 'telescope.actions'
-      local smart_opener = require 'telescope.smart_opener'
       local custom_path_display = require 'telescope.path_display'
       local copy_path = require 'telescope.copy_path'
 
@@ -19,9 +18,7 @@ return {
           scroll_strategy = 'limit',
           mappings = {
             n = {
-              ['<CR>'] = smart_opener.smart_open,
               ['<C-c>'] = actions.close,
-              ['<C-v>'] = smart_opener.smart_open_split,
               ['<Tab>'] = actions.move_selection_next,
               ['<S-Tab>'] = actions.move_selection_previous,
               ['<C-s>'] = actions.toggle_selection,
@@ -31,9 +28,6 @@ return {
               ['<C-y>'] = copy_path.copy_path,
             },
             i = {
-              ['<CR>'] = smart_opener.smart_open,
-              ['<C-c>'] = actions.close,
-              ['<C-v>'] = smart_opener.smart_open_split,
               ['<C-j>'] = actions.move_selection_next,
               ['<C-k>'] = actions.move_selection_previous,
               ['<C-s>'] = actions.toggle_selection,
@@ -133,25 +127,6 @@ return {
           prompt_title = 'Open Buffers',
         })
       end, { desc = 'Open Buffers' })
-
-      -- vim.api.nvim_create_autocmd('FileType', {
-      --   pattern = 'TelescopeResults',
-      --   callback = function(ctx)
-      --     vim.api.nvim_buf_call(ctx.buf, function()
-      --       vim.fn.clearmatches()
-      --       local group = 'TelescopeResultsNormal'
-      --
-      --       -- Match everything first (priority 10)
-      --       vim.fn.matchadd('TelescopeResultsComment', '.\\+', 10)
-      --
-      --       -- Original patterns with higher priority (20)
-      --       vim.fn.matchadd(group, '/\\zs[^/]*\\ze/\\[.*\\]/\\%(page\\.tsx\\|route\\.ts\\)$', 20)
-      --       vim.fn.matchadd(group, '/\\zs[^\\[][^/]*\\ze/\\%(page\\.tsx\\|route\\.ts\\)$', 20)
-      --       vim.fn.matchadd(group, '\\%(libs\\|apps\\)/\\zs[^/]*', 20)
-      --       vim.fn.matchadd(group, '/\\zs[^/]*$', 20)
-      --     end)
-      --   end,
-      -- })
     end,
   },
 }
