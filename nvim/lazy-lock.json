@@ -1,5 +1,5 @@
 {
-  "avante.nvim": { "branch": "main", "commit": "07319d1bd61e4d7a58d99e2120128e63d8610e0e" },
+  "avante.nvim": { "branch": "main", "commit": "c356fc7ce16c3a3c1e09a8b890e589d7a0e7007a" },
   "blink-cmp-avante": { "branch": "master", "commit": "ddefb8de3cb1286ab39e0ccec0f32a45d03391f2" },
   "blink-copilot": { "branch": "main", "commit": "bdc45bbbed2ec252b3a29f4adecf031e157b5573" },
   "blink.cmp": { "branch": "main", "commit": "9bcb14b43852a6f2bfd5ac9ef29cb5cf09b1b39b" },
