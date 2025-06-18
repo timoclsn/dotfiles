@@ -3,7 +3,7 @@ vim.cmd [[
   anoremenu PopUp.Inspect     <cmd>Inspect<CR>
   amenu PopUp.-1-             <NOP>
   anoremenu PopUp.LspDefinition  <cmd>lua vim.lsp.buf.definition()<CR>
-  anoremenu PopUp.LspReferences  <cmd>Telescope lsp_references<CR>
+  anoremenu PopUp.LspReferences  <cmd>lua require('fzf-lua').lsp_references()<CR>
   nnoremenu PopUp.Back        <C-t>
   amenu PopUp.-2-             <NOP>
   amenu     PopUp.Hyperlink     gX

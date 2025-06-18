@@ -112,20 +112,12 @@ return {
             mode = mode or 'n'
             vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
           end
-          map('gd', function()
-            require('telescope.builtin').lsp_definitions { reuse_win = true }
-          end, '[g]oto [d]efinition')
-          map('gR', function()
-            require('telescope.builtin').lsp_references { reuse_win = true }
-          end, '[g]oto [R]eferences')
-          map('gI', function()
-            require('telescope.builtin').lsp_implementations { reuse_win = true }
-          end, '[g]oto [I]mplementation')
-          map('gD', function()
-            require('telescope.builtin').lsp_type_definitions { reuse_win = true }
-          end, '[g]oto type [D]efinition')
-          map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[d]ocument [s]ymbols')
-          map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[w]orkspace [s]ymbols')
+          map('gd', require('fzf-lua').lsp_definitions, '[g]oto [d]efinition')
+          map('gR', require('fzf-lua').lsp_references, '[g]oto [R]eferences')
+          map('gI', require('fzf-lua').lsp_implementations, '[g]oto [I]mplementation')
+          map('gD', require('fzf-lua').lsp_typedefs, '[g]oto type [D]efinition')
+          map('<leader>ds', require('fzf-lua').lsp_document_symbols, '[d]ocument [s]ymbols')
+          map('<leader>ws', require('fzf-lua').lsp_workspace_symbols, '[w]orkspace [s]ymbols')
           map('<leader>r', vim.lsp.buf.rename, '[r]ename symbol')
           map('<leader>c', vim.lsp.buf.code_action, '[c]ode action', { 'n', 'x' })
           map('<leader>D', vim.lsp.buf.declaration, 'Goto [D]eclaration')

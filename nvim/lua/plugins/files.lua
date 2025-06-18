@@ -105,42 +105,29 @@ return {
     commit = 'e76cb03', -- Custom key breaks for commits after this one
     dependencies = {
       'nvim-lua/plenary.nvim',
-      'nvim-telescope/telescope.nvim',
     },
     config = function()
       local harpoon = require 'harpoon'
-      local pickers = require 'telescope.pickers'
-      local themes = require 'telescope.themes'
-      local finders = require 'telescope.finders'
-      local make_entry = require 'telescope.make_entry'
-      local config = require 'telescope.config'
 
-      local function toggle_telescope(harpoon_files)
+      local function toggle_fzf(harpoon_files)
         local file_paths = {}
         for _, item in ipairs(harpoon_files.items) do
           table.insert(file_paths, item.value)
         end
 
-        pickers
-          .new(
-            {},
-            themes.get_dropdown {
-              scroll_strategy = 'cycle',
-              prompt_title = 'Harpoon',
-              finder = finders.new_table {
-                results = file_paths,
-                entry_maker = make_entry.gen_from_file {},
-              },
-              previewer = false,
-              sorter = config.values.generic_sorter {},
-              winblend = 10,
-              initial_mode = 'normal',
-              layout_config = {
-                width = 100,
-              },
-            }
-          )
-          :find()
+        require('fzf-lua').fzf_exec(file_paths, {
+          prompt = 'Harpoon> ',
+          actions = {
+            ['default'] = function(selected)
+              for i, path in ipairs(file_paths) do
+                if path == selected[1] then
+                  harpoon_files:select(i)
+                  break
+                end
+              end
+            end,
+          },
+        })
       end
 
       -- REQUIRED
@@ -183,8 +170,8 @@ return {
         harpoon:list():next()
       end, { desc = '[h]arpoon [n]ext Buffer' })
       vim.keymap.set('n', '<leader>hh', function()
-        toggle_telescope(harpoon:list())
-      end, { desc = '[h]arpoon [h]arpoon telescope' })
+        toggle_fzf(harpoon:list())
+      end, { desc = '[h]arpoon [h]arpoon files' })
     end,
   },
   {

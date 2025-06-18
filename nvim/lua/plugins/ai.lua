@@ -23,7 +23,6 @@ return {
       'nvim-lua/plenary.nvim',
       'MunifTanjim/nui.nvim',
       --- The below dependencies are optional,
-      'nvim-telescope/telescope.nvim', -- for file_selector provider telescope
       'zbirenbaum/copilot.lua', -- for providers='copilot'
       {
         'MeanderingProgrammer/render-markdown.nvim',

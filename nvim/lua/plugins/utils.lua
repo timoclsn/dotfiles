@@ -9,7 +9,7 @@ return {
     config = function()
       require('todo-comments').setup()
 
-      vim.keymap.set('n', '<leader>sy', '<cmd>:TodoTelescope<CR>', { desc = '[s]earch [y] todo comments' })
+      vim.keymap.set('n', '<leader>sy', '<cmd>:TodoQuickFix<CR>', { desc = '[s]earch [y] todo comments' })
     end,
   },
   {
