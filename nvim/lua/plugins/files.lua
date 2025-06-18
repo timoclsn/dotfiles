@@ -32,7 +32,6 @@ return {
             ['<space>'] = { 'toggle_preview', config = { use_float = true } },
             ['P'] = 'focus_preview',
             ['<C-e>'] = 'close_window',
-            ['oa'] = 'avante_add_files',
             ['<C-r>'] = {
               command = function(state)
                 local node = state.tree:get_node()
