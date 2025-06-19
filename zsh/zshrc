@@ -102,6 +102,8 @@ alias i="fastfetch"
 alias n='manage_node_version'
 alias o='manage_ollama'
 
+alias claude="/Users/timo/.config/claude/local/claude"
+
 # =============================================================================
 # Key Bindings
 # =============================================================================
