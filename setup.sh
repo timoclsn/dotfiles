@@ -39,6 +39,7 @@ ln -sf "$DOTFILES/zsh/zshrc" "$HOME/.zshrc"
 ln -sf "$DOTFILES/codex/config.json" "$HOME/.codex/config.json"
 ln -sf "$DOTFILES/codex/config.toml" "$HOME/.codex/config.toml"
 ln -sf "$DOTFILES/codex/AGENTS.md" "$HOME/.codex/AGENTS.md"
+ln -sf "$DOTFILES/codex/notify.py" "$HOME/.codex/notify.py"
 
 # Scripts
 mkdir -p "$HOME/.local/bin"

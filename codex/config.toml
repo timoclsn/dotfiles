@@ -1,4 +1,5 @@
 model = "o3"
+model_reasoning_effort = "high"
 approval_policy = "never"
 sandbox_permissions = [
     "disk-full-read-access",
@@ -6,9 +7,15 @@ sandbox_permissions = [
     "disk-write-platform-global-temp-folder",
     "disk-write-cwd",
 ]
+notify = ["python3", "/Users/timo/.codex/notify.py"]
+
 [mcp_servers.playwright]
 command = "npx"
 args = ["@playwright/mcp@latest"]
+
+# [mcp_servers.fetch]
+# command = "uvx"
+# args = ["mcp-server-fetch"]
 
 [mcp_servers.ios-simulator]
 command = "npx"
