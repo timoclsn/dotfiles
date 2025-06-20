@@ -21,7 +21,7 @@ def main() -> int:
             cwd = os.getcwd()
             root_folder = os.path.basename(cwd) or "~"
             title = f"Codex -> {root_folder}"
-            message = "Agent turn Complete."
+            message = "Agent turn complete."
 
         case _:
             print(f"not sending a push notification for: {notification_type}")
