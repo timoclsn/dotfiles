@@ -18,6 +18,7 @@ export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
 
 # Local bin
 export PATH="$HOME/.local/bin:$PATH"
+export EDITOR='nvim'
 
 # Load env vars from .env file
 [ -f "$HOME/.env" ] && source "$HOME/.env"
@@ -97,12 +98,13 @@ alias t="tmux"
 alias ta="tmux attach"
 alias tk="tmux kill-server"
 alias ai="codex"
+alias ac="codex"
+alias ao="opencode"
+alias au="update-ai"
 alias y="yazy-shell"
 alias i="fastfetch"
 alias n='manage_node_version'
 alias o='manage_ollama'
-
-alias claude="/Users/timo/.config/claude/local/claude"
 
 # =============================================================================
 # Key Bindings

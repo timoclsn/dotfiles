@@ -24,6 +24,9 @@ ln -sf "$DOTFILES/lazygit" "$HOME/.config/lazygit"
 rm "$HOME/.config/nvim" 2>/dev/null || true
 ln -sf "$DOTFILES/nvim" "$HOME/.config/nvim"
 
+#opencode
+ln -sf "$DOTFILES/opencode/config.json" "$HOME/.config/opencode/config.json"
+
 # Home directory symlinks
 ln -sf "$DOTFILES/aider/.aider.conf.yml" "$HOME/.aider.conf.yml"
 ln -sf "$DOTFILES/aerospace/aerospace.toml" "$HOME/.aerospace.toml"
@@ -34,12 +37,12 @@ ln -sf "$DOTFILES/ripgrep/.rgignore" "$HOME/.rgignore"
 ln -sf "$DOTFILES/tmux/tmux.conf" "$HOME/.tmux.conf"
 ln -sf "$DOTFILES/wezterm/wezterm.lua" "$HOME/.wezterm.lua"
 ln -sf "$DOTFILES/zsh/zshrc" "$HOME/.zshrc"
-
 # codex
 ln -sf "$DOTFILES/codex/config.json" "$HOME/.codex/config.json"
 ln -sf "$DOTFILES/codex/config.toml" "$HOME/.codex/config.toml"
 ln -sf "$DOTFILES/codex/AGENTS.md" "$HOME/.codex/AGENTS.md"
 ln -sf "$DOTFILES/codex/notify.py" "$HOME/.codex/notify.py"
+
 
 # Scripts
 mkdir -p "$HOME/.local/bin"
@@ -49,5 +52,7 @@ ln -sf "$DOTFILES/scripts/tmux-open-repo" "$HOME/.local/bin/tmux-open-repo"
 chmod +x "$HOME/.local/bin/tmux-open-repo"
 ln -sf "$DOTFILES/scripts/ai-commit" "$HOME/.local/bin/ai-commit"
 chmod +x "$HOME/.local/bin/ai-commit"
+ln -sf "$DOTFILES/scripts/update-ai.sh" "$HOME/.local/bin/update-ai"
+chmod +x "$HOME/.local/bin/update-ai"
 
 echo "Symlinks created successfully!"
