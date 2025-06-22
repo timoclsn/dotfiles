@@ -4,7 +4,7 @@
   "autoshare": false,
   "model": "google/gemini-2.5-pro",
   "keybinds": {
-    "leader": "ctrl+x",
+    "leader": "ctrl+a",
     "help": "<leader>h",
     "editor_open": "<leader>e",
     "session_new": "<leader>n",
