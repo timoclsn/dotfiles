@@ -19,6 +19,7 @@ Generate a git commit message for the staged changes and commit them.
 - Written in present tense.
 - Title is lowercase, no period at the end.
 - Title should be a clear summary, max 50 characters.
+- Add bullet points in body for details when appropriate, max 72 characters per line.
 
 ## Avoid
 - Vague titles like: 'update', 'fix stuff'
