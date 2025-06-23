@@ -37,4 +37,4 @@ Here are the 10 most recent commit messages in this repository:
 <recent-commits>$RECENT_COMMITS</recent-commits>
 "
 
-opencode run "$PROMPT" -m google/gemini-2.0-flash 2>/dev/null
+opencode run "$PROMPT" -m google/gemini-2.0-flash
