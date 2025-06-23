@@ -24,8 +24,11 @@ ln -sf "$DOTFILES/lazygit" "$HOME/.config/lazygit"
 rm "$HOME/.config/nvim" 2>/dev/null || true
 ln -sf "$DOTFILES/nvim" "$HOME/.config/nvim"
 
-#opencode
+# opencode
 ln -sf "$DOTFILES/opencode/config.json" "$HOME/.config/opencode/config.json"
+
+# agents
+ln -sf "$DOTFILES/agents/AGENTS.md" "$HOME/.config/AGENTS.md"
 
 # Home directory symlinks
 ln -sf "$DOTFILES/aider/.aider.conf.yml" "$HOME/.aider.conf.yml"
@@ -40,7 +43,7 @@ ln -sf "$DOTFILES/zsh/zshrc" "$HOME/.zshrc"
 # codex
 ln -sf "$DOTFILES/codex/config.json" "$HOME/.codex/config.json"
 ln -sf "$DOTFILES/codex/config.toml" "$HOME/.codex/config.toml"
-ln -sf "$DOTFILES/codex/AGENTS.md" "$HOME/.codex/AGENTS.md"
+ln -sf "$DOTFILES/agents/AGENTS.md" "$HOME/.codex/AGENTS.md"
 ln -sf "$DOTFILES/codex/notify.py" "$HOME/.codex/notify.py"
 
 
