@@ -52,7 +52,7 @@ ln -sf "$DOTFILES/scripts/tmux-open-repo" "$HOME/.local/bin/tmux-open-repo"
 chmod +x "$HOME/.local/bin/tmux-open-repo"
 ln -sf "$DOTFILES/scripts/ai-commit" "$HOME/.local/bin/ai-commit"
 chmod +x "$HOME/.local/bin/ai-commit"
-ln -sf "$DOTFILES/scripts/ai-update-clis.sh" "$HOME/.local/bin/ai-update-clis"
+ln -sf "$DOTFILES/scripts/ai-update-clis" "$HOME/.local/bin/ai-update-clis"
 chmod +x "$HOME/.local/bin/ai-update-clis"
 
 echo "Symlinks created successfully!"
