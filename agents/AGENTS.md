@@ -9,7 +9,9 @@
 
 # Git Commit Guidelines
 
-- When creating git commits, never add the "Generated with [opencode]" or "Co-Authored-By" footers to the commit message.
+- When creating git commits NEVER stage files yourself. Only commit the already staged files.
+- When creating git commits, NEVER add the "Generated with [opencode]" or "Co-Authored-By" footers to the commit message.
+- NEVER git push.
 
 ## Typescript
 
