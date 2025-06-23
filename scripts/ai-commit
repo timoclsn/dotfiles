@@ -20,13 +20,11 @@ Generate a git commit message for the staged changes and commit the staged files
 - Title is lowercase, no period at the end.
 - Title should be a clear summary, max 50 characters.
 - Add bullet points in body for details when appropriate, max 72 characters per line.
-
-## Avoid
-- NEVER add any information about opencode in the commit message (no 'Generated with [opencode]' or 'Co-Authored-By: opencode')
+- When creating git commits, never add the 'Generated with [opencode]' or 'Co-Authored-By' footers to the commit message.
 - NEVER stage files on you own. Only commit the already staged files!
-- Vague titles like: 'update', 'fix stuff'
-- Overly long or unfocused titles
-- Excessive detail in bullet points
+- Avoid vague titles like: 'update', 'fix stuff'
+- Avoid overly long or unfocused titles
+- Avoid excessive detail in bullet points
 
 Here are the staged changes:
 

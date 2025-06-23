@@ -7,6 +7,10 @@
 - Don't add comments all over the place. Only comment where it adds value.
 - Dont use git commit or git push if not otherwise instructed by the user.
 
+# Git Commit Guidelines
+
+- When creating git commits, never add the "Generated with [opencode]" or "Co-Authored-By" footers to the commit message.
+
 ## Typescript
 
 - Always prefer arrow functions.
