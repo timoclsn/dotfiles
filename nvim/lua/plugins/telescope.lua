@@ -31,6 +31,7 @@ return {
               ['<C-u>'] = actions.results_scrolling_up,
               ['<C-b>'] = actions.preview_scrolling_up,
               ['<C-f>'] = actions.preview_scrolling_down,
+              ['<C-q>'] = actions.smart_send_to_qflist + actions.open_qflist,
             },
             i = {
               ['<C-j>'] = actions.move_selection_next,
@@ -44,6 +45,7 @@ return {
               ['<C-u>'] = actions.results_scrolling_up,
               ['<C-b>'] = actions.preview_scrolling_up,
               ['<C-f>'] = actions.preview_scrolling_down,
+              ['<C-q>'] = actions.smart_send_to_qflist + actions.open_qflist,
             },
           },
           path_display = path_display,
