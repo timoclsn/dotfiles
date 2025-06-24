@@ -4,7 +4,6 @@ return {
     dependencies = {
       'onsails/lspkind.nvim',
       'brenoprata10/nvim-highlight-colors',
-      'Kaiser-Yang/blink-cmp-avante',
       'folke/lazydev.nvim',
       'fang2hou/blink-copilot',
     },
@@ -99,7 +98,6 @@ return {
           'lsp',
           'path',
           'buffer',
-          'avante',
           'lazydev',
           'copilot',
         },
@@ -108,11 +106,6 @@ return {
             name = 'copilot',
             module = 'blink-copilot',
             async = true,
-          },
-          avante = {
-            module = 'blink-cmp-avante',
-            name = 'Avante',
-            opts = {},
           },
           lazydev = {
             name = 'LazyDev',

@@ -13,30 +13,4 @@ return {
       },
     },
   },
-  {
-    'yetone/avante.nvim',
-    event = 'VeryLazy',
-    lazy = false,
-    build = 'make',
-    dependencies = {
-      'stevearc/dressing.nvim',
-      'nvim-lua/plenary.nvim',
-      'MunifTanjim/nui.nvim',
-      'zbirenbaum/copilot.lua', -- for providers='copilot'
-    },
-    opts = {
-      provider = 'copilot',
-      providers = {
-        copilot = {
-          model = 'claude-3.5-sonnet',
-        },
-      },
-      hints = {
-        enabled = false,
-      },
-      windows = {
-        position = 'left',
-      },
-    },
-  },
 }
