@@ -5,32 +5,8 @@
   "model": "github-copilot/claude-sonnet-4",
   "keybinds": {
     "leader": "ctrl+a",
-    "help": "<leader>h",
-    "editor_open": "<leader>e",
-    "session_new": "<leader>n",
-    "session_list": "<leader>l",
-    "session_share": "<leader>s",
-    "session_interrupt": "esc",
-    "session_compact": "<leader>c",
-    "tool_details": "<leader>d",
-    "model_list": "<leader>m",
-    "theme_list": "<leader>t",
-    "project_init": "<leader>i",
-    "input_clear": "ctrl+c",
-    "input_paste": "ctrl+v",
-    "input_submit": "enter",
-    "input_newline": "shift+enter,ctrl+j",
-    "history_previous": "up",
-    "history_next": "down",
-    "messages_page_up": "pgup",
-    "messages_page_down": "pgdown",
     "messages_half_page_up": "ctrl+u",
-    "messages_half_page_down": "ctrl+d",
-    "messages_previous": "ctrl+alt+k",
-    "messages_next": "ctrl+alt+j",
-    "messages_first": "ctrl+g",
-    "messages_last": "ctrl+alt+g",
-    "app_exit": "ctrl+c,<leader>q"
+    "messages_half_page_down": "ctrl+d"
   },
   "mcp": {
     "playwright": {
