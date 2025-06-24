@@ -7,12 +7,6 @@
 - Don't add comments all over the place. Only comment where it adds value.
 - Dont use git commit or git push if not otherwise instructed by the user.
 
-# Git Commit Guidelines
-
-- When creating git commits NEVER stage files yourself. Only commit the already staged files.
-- When creating git commits, NEVER add the "Generated with [opencode]" or "Co-Authored-By" footers to the commit message.
-- NEVER git push.
-
 ## Typescript
 
 - Always prefer arrow functions.

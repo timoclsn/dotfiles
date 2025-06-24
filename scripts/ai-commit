@@ -12,19 +12,20 @@ RECENT_COMMITS=$(git log -n 10 --pretty=format:"%s" 2>/dev/null)
 PROMPT="
 You are a senior software developer.
 
-Generate a git commit message for the staged changes and commit the staged files.
+Generate a git commit message for the staged changes.
 
 ## Rules
 - The commit message should match the projects commit style from the recent commits (conventional commit (choose right type and scope) vs. normal commit style).
 - Written in present tense.
 - Title is lowercase, no period at the end.
 - Title should be a clear summary, max 50 characters.
-- Add bullet points in body for details when appropriate, max 72 characters per line.
-- When creating git commits, never add the 'Generated with [opencode]' or 'Co-Authored-By' footers to the commit message.
-- NEVER stage files on you own. Only commit the already staged files!
-- Avoid vague titles like: 'update', 'fix stuff'
-- Avoid overly long or unfocused titles
-- Avoid excessive detail in bullet points
+
+## Avoid
+- Vague titles like: 'update', 'fix stuff'
+- Overly long or unfocused titles
+- Excessive detail in bullet points
+
+Only respond with the commit message text, nothing else! Your entire response will be passed directly into git commit.
 
 Here are the staged changes:
 
@@ -35,4 +36,8 @@ Here are the 10 most recent commit messages in this repository:
 <recent-commits>$RECENT_COMMITS</recent-commits>
 "
 
-opencode run "$PROMPT" -m google/gemini-2.0-flash
+COMMIT_MSG=$(npx -y @openai/codex@latest -q --json -p OpenAI -m gpt-4.1-mini "$PROMPT" 2>/dev/null | \
+  jq -r 'select(.type=="message" and .role=="assistant") | .content[0].text' | \
+  head -n 1)
+
+git commit -m "$COMMIT_MSG"
