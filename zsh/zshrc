@@ -66,6 +66,7 @@ export PATH="/Users/timo/.turso:$PATH"
 # Shell
 alias src="source ~/.zshrc"
 alias s="src"
+alias clear='printf "\033c"'
 alias c="clear"
 alias e="exit"
 
