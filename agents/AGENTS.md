@@ -6,6 +6,7 @@
 - Allways make your soultions accessible.
 - Don't add comments all over the place. Only comment where it adds value.
 - Dont use git commit or git push if not otherwise instructed by the user.
+- Use the todo tool to break down your task and progress.
 
 ## Typescript
 
