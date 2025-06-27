@@ -28,7 +28,6 @@ vim.o.shiftwidth = 2
 vim.o.softtabstop = 2
 vim.o.expandtab = true
 vim.o.smartindent = true
-vim.o.undofile = true
 vim.o.updatetime = 250
 vim.o.inccommand = 'nosplit'
 
@@ -53,6 +52,14 @@ vim.o.splitright = true
 vim.o.splitbelow = true
 vim.o.switchbuf = 'useopen,usetab'
 vim.g.netrw_banner = 0
+
+-- ============================================================================
+-- File & Backup Management
+-- ============================================================================
+vim.o.backup = false
+vim.o.writebackup = false
+vim.o.swapfile = false
+vim.o.undofile = true
 
 -- ============================================================================
 -- Diagnostics
