@@ -6,7 +6,7 @@ return {
       local lint = require 'lint'
       vim.env.ESLINT_D_PPID = vim.fn.getpid()
       lint.linters_by_ft = {
-        go = { 'golangcilint' },
+        go = { 'golangci-lint' },
         -- markdown = {'markdownlint',},
         json = { 'jsonlint' },
         rust = { 'clippy' },
