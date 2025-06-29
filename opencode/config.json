@@ -12,12 +12,19 @@
   },
   "mcp": {
     "playwright": {
+      "enabled": false,
       "type": "local",
       "command": ["npx", "@playwright/mcp@latest"]
     },
     "ios-simulator": {
+      "enabled": false,
       "type": "local",
       "command": ["npx", "-y", "ios-simulator-mcp"]
+    },
+    "figma": {
+      "enabled": false,
+      "type": "remote",
+      "url": "http://127.0.0.1:3845/sse"
     }
   }
 }
