@@ -25,6 +25,21 @@
       "enabled": false,
       "type": "remote",
       "url": "http://127.0.0.1:3845/sse"
+    },
+    "package-version": {
+      "enabled": false,
+      "type": "local",
+      "command": ["npx", "-y", "mcp-package-version"]
+    },
+    "nx-frontend": {
+      "enabled": false,
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "nx-mcp",
+        "/Users/timo/Developer/steuerbot/frontend"
+      ]
     }
   }
 }
