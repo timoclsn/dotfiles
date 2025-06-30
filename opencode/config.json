@@ -3,7 +3,7 @@
   "theme": "tokyonight",
   "autoupdate": false,
   "autoshare": false,
-  "model": "google/gemini-2.5-pro",
+  "model": "github-copilot/claude-sonnet-4",
   "keybinds": {
     "leader": "ctrl+a",
     "messages_half_page_up": "ctrl+u",
