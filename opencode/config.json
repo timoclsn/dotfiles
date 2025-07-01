@@ -59,6 +59,16 @@
       "enabled": false,
       "type": "local",
       "command": ["uvx", "duckduckgo-mcp-server"]
+    },
+    "linear": {
+      "enabled": false,
+      "type": "local",
+      "command": ["npx", "-y", "mcp-remote", "https://mcp.linear.app/sse"]
+    },
+    "notion": {
+      "enabled": false,
+      "type": "local",
+      "command": ["npx", "-y", "mcp-remote", "https://mcp.notion.com/sse"]
     }
   }
 }
