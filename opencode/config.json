@@ -54,6 +54,11 @@
         "-y",
         "@modelcontextprotocol/server-sequential-thinking"
       ]
+    },
+    "ddg-search": {
+      "enabled": false,
+      "type": "local",
+      "command": ["uvx", "duckduckgo-mcp-server"]
     }
   }
 }
