@@ -40,6 +40,20 @@
         "nx-mcp",
         "/Users/timo/Developer/steuerbot/frontend"
       ]
+    },
+    "context7": {
+      "enabled": false,
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp"
+    },
+    "sequential-thinking": {
+      "enabled": false,
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ]
     }
   }
 }
