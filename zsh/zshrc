@@ -30,7 +30,7 @@ export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 # Oh My Zsh Configuration
 # =============================================================================
 ZSH_THEME="powerlevel10k/powerlevel10k"
-plugins=(git vi-mode)
+plugins=(git)
 source $ZSH/oh-my-zsh.sh
 
 # =============================================================================
