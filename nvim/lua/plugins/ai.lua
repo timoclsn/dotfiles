@@ -9,7 +9,15 @@ return {
         enabled = false,
       },
       suggestion = {
-        enabled = false,
+        enabled = true,
+        auto_trigger = true,
+        keymap = {
+          accept = '<Tab>',
+          accept_line = '<S-Tab>',
+          prev = '<C-k>',
+          next = '<C-j>',
+          dismiss = '<C-c>',
+        },
       },
     },
   },

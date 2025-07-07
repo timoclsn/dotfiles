@@ -5,7 +5,6 @@ return {
       'onsails/lspkind.nvim',
       'brenoprata10/nvim-highlight-colors',
       'folke/lazydev.nvim',
-      'fang2hou/blink-copilot',
     },
     version = '1.*',
     opts = {
@@ -37,9 +36,6 @@ return {
 
         ['<C-n>'] = { 'select_next', 'fallback' },
         ['<C-p>'] = { 'select_prev', 'fallback' },
-
-        ['<Tab>'] = { 'snippet_forward', 'fallback' },
-        ['<S-Tab>'] = { 'snippet_backward', 'fallback' },
       },
       completion = {
         list = {
@@ -80,11 +76,6 @@ return {
                     return icon .. ctx.icon_gap
                   end
 
-                  -- Handle copilot source (keep original icon)
-                  if ctx.source_name == 'copilot' then
-                    return icon .. ctx.icon_gap
-                  end
-
                   -- Default to lspkind for other sources
                   local lspkind = require 'lspkind'
                   icon = lspkind.symbolic(ctx.kind, {
@@ -105,14 +96,8 @@ return {
           'path',
           'buffer',
           'lazydev',
-          'copilot',
         },
         providers = {
-          copilot = {
-            name = 'copilot',
-            module = 'blink-copilot',
-            async = true,
-          },
           lazydev = {
             name = 'LazyDev',
             module = 'lazydev.integrations.blink',
