@@ -13,6 +13,7 @@ return {
         preset = 'none',
 
         ['<C-i>'] = { 'select_and_accept', 'fallback' },
+        ['<CR>'] = { 'accept', 'fallback' },
 
         ['<C-j>'] = { 'show', 'select_next', 'fallback' },
         ['<C-k>'] = { 'select_prev', 'fallback' },
@@ -42,6 +43,12 @@ return {
         ['<S-Tab>'] = { 'snippet_backward', 'fallback' },
       },
       completion = {
+        list = {
+          selection = {
+            preselect = false,
+            auto_insert = true,
+          },
+        },
         documentation = {
           auto_show = true,
         },
