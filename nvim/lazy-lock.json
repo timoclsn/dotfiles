@@ -49,7 +49,7 @@
   "tsc.nvim": { "branch": "main", "commit": "8c1b4ec6a48d038a79ced8674cb15e7db6dd8ef0" },
   "twoslash-queries.nvim": { "branch": "main", "commit": "b92622c7b71eceefabd02eef24236041069904b1" },
   "undotree": { "branch": "master", "commit": "15d91b0afe04ea9ba5cd53e30190d1602af9a925" },
-  "vague.nvim": { "branch": "main", "commit": "41b6b9a985c9091d0ec8571191e89d6950968cec" },
+  "vague.nvim": { "branch": "main", "commit": "adc3838cbbcf26aaec2fb89e6ed59cb93266a1b7" },
   "vim-tmux-navigator": { "branch": "master", "commit": "412c474e97468e7934b9c217064025ea7a69e05e" },
   "which-key.nvim": { "branch": "main", "commit": "370ec46f710e058c9c1646273e6b225acf47cbed" },
   "zenbones.nvim": { "branch": "main", "commit": "510819be60a7e470f244488bc705c1fbcd88c4fc" }
