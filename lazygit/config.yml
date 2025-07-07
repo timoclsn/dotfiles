@@ -28,6 +28,7 @@ gui:
       - "#db4b4b"
     defaultFgColor:
       - "#c0caf5"
+  useHunkModeInStagingView: true
 customCommands:
   - key: "<c-c>"
     description: "conventional commit"
