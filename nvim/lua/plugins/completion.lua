@@ -12,7 +12,6 @@ return {
       keymap = {
         preset = 'none',
 
-        ['<C-i>'] = { 'select_and_accept', 'fallback' },
         ['<CR>'] = { 'accept', 'fallback' },
 
         ['<C-j>'] = { 'show', 'select_next', 'fallback' },
@@ -46,7 +45,7 @@ return {
         list = {
           selection = {
             preselect = false,
-            auto_insert = true,
+            auto_insert = false,
           },
         },
         documentation = {
