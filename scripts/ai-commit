@@ -36,7 +36,7 @@ Here are the 10 most recent commit messages in this repository:
 <recent-commits>$RECENT_COMMITS</recent-commits>
 "
 
-COMMIT_MSG=$(npx -y @openai/codex@latest -q --json -p OpenAI -m gpt-4.1-mini "$PROMPT" 2>/dev/null | \
+COMMIT_MSG=$(npx -y @openai/codex@0.1.2505172129 -q --json -p OpenAI -m gpt-4.1-mini "$PROMPT" 2>/dev/null | \
   jq -r 'select(.type=="message" and .role=="assistant") | .content[0].text' | \
   head -n 1)
 
