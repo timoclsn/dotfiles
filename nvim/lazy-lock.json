@@ -8,7 +8,7 @@
   "everforest": { "branch": "master", "commit": "f40c2e6c8784c99c57c79edc94cd180e76450222" },
   "eyeliner.nvim": { "branch": "main", "commit": "8f197eb30cecdf4c2cc9988a5eecc6bc34c0c7d6" },
   "fidget.nvim": { "branch": "main", "commit": "d9ba6b7bfe29b3119a610892af67602641da778e" },
-  "gitsigns.nvim": { "branch": "main", "commit": "7bbc674278f22376850576dfdddf43bbc17e62b5" },
+  "gitsigns.nvim": { "branch": "main", "commit": "4666d040b60d1dc0e474ccd9a3fd3c4d67b4767c" },
   "gruvbox-material": { "branch": "master", "commit": "66cfeb7050e081a746a62dd0400446433e802368" },
   "gruvbox.nvim": { "branch": "main", "commit": "58a2cda2e953a99e2f87c12b7fb4602da4e0709c" },
   "guess-indent.nvim": { "branch": "main", "commit": "84a4987ff36798c2fc1169cbaff67960aed9776f" },
