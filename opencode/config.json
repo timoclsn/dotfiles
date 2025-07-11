@@ -10,18 +10,6 @@
     "messages_last": "ctrl+z"
   },
   "mode": {
-    "build": {
-      "model": "github-copilot/claude-sonnet-4"
-    },
-    "plan": {
-      "model": "google/gemini-2.5-pro",
-      "tools": {
-        "write": false,
-        "edit": false,
-        "patch": false,
-        "bash": false
-      }
-    },
     "think": {
       "model": "openai/o3",
       "tools": {
