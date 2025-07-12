@@ -35,25 +35,28 @@
       "type": "remote",
       "url": "http://127.0.0.1:3845/sse"
     },
+    "figma-framelink": {
+      "enabled": false,
+      "type": "local",
+      "command": ["npx", "-y", "figma-developer-mcp", "--stdio"],
+      "environment": {
+        "FIGMA_API_KEY": "{env:FIGMA_API_KEY}"
+      }
+    },
     "package-version": {
       "enabled": false,
       "type": "local",
       "command": ["npx", "-y", "mcp-package-version"]
     },
-    "nx-frontend": {
+    "nx": {
       "enabled": false,
       "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "nx-mcp",
-        "/Users/timo/Developer/steuerbot/frontend"
-      ]
+      "command": ["npx", "-y", "nx-mcp", "~/Developer/steuerbot/frontend"]
     },
     "context7": {
       "enabled": false,
-      "type": "remote",
-      "url": "https://mcp.context7.com/mcp"
+      "type": "local",
+      "command": ["npx", "-y", "@upstash/context7-mcp"]
     },
     "sequential-thinking": {
       "enabled": false,
