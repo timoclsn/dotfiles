@@ -26,7 +26,8 @@
         "baseURL": "http://localhost:11434/v1"
       },
       "models": {
-        "qwen2.5-coder:7b": {}
+        "qwen2.5-coder:7b": {},
+        "deepseek-r1:7b": {}
       }
     }
   },
