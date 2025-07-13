@@ -93,6 +93,7 @@ return {
         -- Linters
         'markdownlint',
         'jsonlint',
+        'golangci-lint',
 
         -- Formatters
         'black',
