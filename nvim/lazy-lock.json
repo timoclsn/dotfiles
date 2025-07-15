@@ -34,7 +34,7 @@
   "nvim-treesitter-textobjects": { "branch": "master", "commit": "89ebe73cd2836db80a22d9748999ace0241917a5" },
   "nvim-ts-autotag": { "branch": "main", "commit": "a1d526af391f6aebb25a8795cbc05351ed3620b5" },
   "plenary.nvim": { "branch": "master", "commit": "857c5ac632080dba10aae49dba902ce3abf91b35" },
-  "render-markdown.nvim": { "branch": "main", "commit": "b977c94b32afdcadb8e53ba33d5934d1937d4eab" },
+  "render-markdown.nvim": { "branch": "main", "commit": "b8c3d474d4da14fa1a5f9a0a18955c6e7db88f65" },
   "rose-pine": { "branch": "main", "commit": "f93360149e9ed4df8677fbb07c7231ea0fd03b97" },
   "snacks.nvim": { "branch": "main", "commit": "bc0630e43be5699bb94dadc302c0d21615421d93" },
   "telescope-luasnip.nvim": { "branch": "master", "commit": "07a2a2936a7557404c782dba021ac0a03165b343" },
@@ -49,7 +49,7 @@
   "twoslash-queries.nvim": { "branch": "main", "commit": "b92622c7b71eceefabd02eef24236041069904b1" },
   "undotree": { "branch": "master", "commit": "28f2f54a34baff90ea6f4a735ef1813ad875c743" },
   "vague.nvim": { "branch": "main", "commit": "53b6060efb85a18c4587a39e5fb2c1071c719ab2" },
-  "vim-tmux-navigator": { "branch": "master", "commit": "412c474e97468e7934b9c217064025ea7a69e05e" },
+  "vim-tmux-navigator": { "branch": "master", "commit": "c45243dc1f32ac6bcf6068e5300f3b2b237e576a" },
   "which-key.nvim": { "branch": "main", "commit": "370ec46f710e058c9c1646273e6b225acf47cbed" },
   "zenbones.nvim": { "branch": "main", "commit": "510819be60a7e470f244488bc705c1fbcd88c4fc" }
 }
