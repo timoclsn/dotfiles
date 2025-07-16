@@ -27,6 +27,8 @@ return {
         ['<C-b>'] = { 'show_signature', 'hide_signature', 'fallback' },
         ['<C-f>'] = { 'show_documentation', 'hide_documentation', 'fallback' },
 
+        ['<Tab>'] = { 'fallback' },
+
         -- Also enable default mappings
         ['<C-space>'] = { 'show', 'hide' },
 
