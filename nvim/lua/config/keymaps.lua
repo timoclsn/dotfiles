@@ -13,6 +13,7 @@ vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Jump half page up and center c
 vim.keymap.set('n', '<C-i>', '<C-i>', { desc = 'Go forward in jumplist' })
 vim.keymap.set('n', 'H', '^', { desc = 'Goto first character of line' })
 vim.keymap.set('n', 'L', '$', { desc = 'Goto last character of line' })
+vim.keymap.set({ 'n', 'v' }, '<leader>l', '<C-^>', { desc = 'Alternate buffer' })
 
 -- ============================================================================
 -- Terminal Mode
