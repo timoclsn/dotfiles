@@ -31,6 +31,25 @@
       }
     }
   },
+  "experimental": {
+    "hook": {
+      "session_completed": [
+        {
+          "command": [
+            "terminal-notifier",
+            "-title",
+            "opencode",
+            "-message",
+            "Agent run completed 🤖",
+            "-group",
+            "opencode",
+            "-activate",
+            "com.mitchellh.ghostty"
+          ]
+        }
+      ]
+    }
+  },
   "mcp": {
     "playwright": {
       "enabled": false,
