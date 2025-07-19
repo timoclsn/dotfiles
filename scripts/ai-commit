@@ -15,7 +15,8 @@ You are a senior software developer.
 Generate a git commit message for the staged changes.
 
 ## Rules
-- The commit message should match the projects commit style from the recent commits (conventional commit (choose right type and scope) vs. normal commit style).
+- The commit message should match the projects commit style from the recent commits (is conventional commit style needed or is it mostly normal commit style?).
+- If conventional commit style choose right type and scope based on the the staged changes (available types: feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert).
 - Written in present tense.
 - Title is lowercase, no period at the end.
 - Title should be a clear summary, max 50 characters.
@@ -36,8 +37,8 @@ Here are the 10 most recent commit messages in this repository:
 <recent-commits>$RECENT_COMMITS</recent-commits>
 "
 
-COMMIT_MSG=$(npx -y @openai/codex@0.1.2505172129 -q --json -p OpenAI -m gpt-4.1-mini "$PROMPT" 2>/dev/null | \
-  jq -r 'select(.type=="message" and .role=="assistant") | .content[0].text' | \
+COMMIT_MSG=$(codex exec "$PROMPT" --json --model gpt-4.1-mini  2>/dev/null | \
+  jq -r 'select(.msg.type=="task_complete") | .msg.last_agent_message' | \
   head -n 1)
 
 git commit -m "$COMMIT_MSG"
