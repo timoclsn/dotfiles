@@ -7,7 +7,7 @@ sandbox_permissions = [
     "disk-write-platform-global-temp-folder",
     "disk-write-cwd",
 ]
-notify = ["python3", "~/.codex/notify.py"]
+notify = ["python3", "/Users/timo/.codex/notify.py"]
 
 [mcp_servers.playwright]
 command = "npx"
