@@ -3,22 +3,8 @@
   "theme": "tokyonight",
   "autoupdate": false,
   "share": "disabled",
-  "keybinds": {
-    "leader": "ctrl+a",
-    "messages_half_page_up": "ctrl+u",
-    "messages_half_page_down": "ctrl+d",
-    "messages_last": "ctrl+z"
-  },
-  "mode": {
-    "think": {
-      "model": "openai/o3",
-      "tools": {
-        "write": false,
-        "edit": false,
-        "patch": false
-      }
-    }
-  },
+  "model": "github-copilot/claude-sonnet-4",
+  "small_model": "gemini/gemini-1.5-flash",
   "provider": {
     "Ollama": {
       "npm": "@ai-sdk/openai-compatible",
@@ -30,6 +16,22 @@
         "deepseek-r1:7b": {}
       }
     }
+  },
+  "mode": {
+    "think": {
+      "model": "openai/o3",
+      "tools": {
+        "write": false,
+        "edit": false,
+        "patch": false
+      }
+    }
+  },
+  "keybinds": {
+    "leader": "ctrl+a",
+    "messages_half_page_up": "ctrl+u",
+    "messages_half_page_down": "ctrl+d",
+    "messages_last": "ctrl+z"
   },
   "experimental": {
     "hook": {
