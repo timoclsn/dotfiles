@@ -113,23 +113,24 @@ return {
             mode = mode or 'n'
             vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
           end
+
           map('gd', function()
             require('telescope.builtin').lsp_definitions { reuse_win = true }
-          end, '[g]oto [d]efinition')
-          map('gR', function()
+          end, 'Goto definition')
+          map('grr', function()
             require('telescope.builtin').lsp_references { reuse_win = true }
-          end, '[g]oto [R]eferences')
-          map('gI', function()
+          end, 'Goto references')
+          map('gri', function()
             require('telescope.builtin').lsp_implementations { reuse_win = true }
-          end, '[g]oto [I]mplementation')
-          map('gD', function()
+          end, 'Goto implementation')
+          map('grt', function()
             require('telescope.builtin').lsp_type_definitions { reuse_win = true }
-          end, '[g]oto type [D]efinition')
-          map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[d]ocument [s]ymbols')
-          map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[w]orkspace [s]ymbols')
-          map('<leader>r', vim.lsp.buf.rename, '[r]ename symbol')
-          map('<leader>c', vim.lsp.buf.code_action, '[c]ode action', { 'n', 'x' })
-          map('<leader>D', vim.lsp.buf.declaration, 'Goto [D]eclaration')
+          end, 'Goto type Definition')
+          map('gO', require('telescope.builtin').lsp_document_symbols, 'Document symbols')
+          map('gW', require('telescope.builtin').lsp_dynamic_workspace_symbols, 'Workspace symbols')
+          map('grn', vim.lsp.buf.rename, 'rename symbol')
+          map('gra', vim.lsp.buf.code_action, 'Code action', { 'n', 'x' })
+          map('grd', vim.lsp.buf.declaration, 'Goto declaration')
           map('<leader>wi', function()
             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
           end, '[w]orkspace [i]nlay hints')

@@ -36,7 +36,23 @@ return {
         },
       }
 
-      require('mini.operators').setup()
+      require('mini.operators').setup {
+        evaluate = {
+          prefix = 'c=',
+        },
+        exchange = {
+          prefix = 'cx',
+        },
+        multiply = {
+          prefix = 'cm',
+        },
+        replace = {
+          prefix = 'cr',
+        },
+        sort = {
+          prefix = 'cs',
+        },
+      }
 
       require('mini.pairs').setup()
 
