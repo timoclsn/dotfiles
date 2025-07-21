@@ -4,7 +4,7 @@
   "autoupdate": false,
   "share": "disabled",
   "model": "github-copilot/claude-sonnet-4",
-  "small_model": "gemini/gemini-1.5-flash",
+  "small_model": "google/gemini-1.5-flash",
   "provider": {
     "Ollama": {
       "npm": "@ai-sdk/openai-compatible",
