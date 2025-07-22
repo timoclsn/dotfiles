@@ -15,6 +15,11 @@
         "qwen2.5-coder:7b": {},
         "deepseek-r1:7b": {}
       }
+    },
+    "openrouter": {
+      "models": {
+        "moonshotai/kimi-k2:free": {}
+      }
     }
   },
   "mode": {
