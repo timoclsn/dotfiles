@@ -36,7 +36,7 @@ return {
 
         ['<C-y>'] = { 'select_and_accept', 'fallback' },
 
-        ['<C-n>'] = { 'select_next', 'fallback' },
+        ['<C-n>'] = { 'show', 'select_next', 'fallback' },
         ['<C-p>'] = { 'select_prev', 'fallback' },
       },
       completion = {
