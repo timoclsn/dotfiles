@@ -26,6 +26,8 @@ ln -sf "$DOTFILES/nvim" "$HOME/.config/nvim"
 
 # opencode
 ln -sf "$DOTFILES/opencode/opencode.json" "$HOME/.config/opencode/opencode.json"
+rm "$HOME/.config/opencode/agent" 2>/dev/null || true
+ln -sf "$DOTFILES/opencode/agent" "$HOME/.config/opencode/agent"
 
 # agents
 ln -sf "$DOTFILES/agents/AGENTS.md" "$HOME/.config/AGENTS.md"
