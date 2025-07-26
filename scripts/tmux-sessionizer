@@ -14,36 +14,36 @@ selected_name=$(basename "$selected" | tr . _)
 tmux_running=$(pgrep tmux)
 
 if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
-    tmux new-session -s $selected_name -c $selected
+    tmux new-session -s "$selected_name" -c "$selected"
     exit 0
 fi
 
-if ! tmux has-session -t=$selected_name 2> /dev/null; then
+if ! tmux has-session -t="$selected_name" 2> /dev/null; then
     # Start a new session with the first window named 'code' and open neovim
-    tmux new-session -ds $selected_name -c $selected -n code
-    tmux send-keys -t $selected_name:code "nvim" Enter
+    tmux new-session -ds "$selected_name" -c "$selected" -n code
+    tmux send-keys -t "$selected_name:code" "nvim" Enter
 
     # Create a second window named 'git' and open lazygit
-    tmux new-window -t $selected_name: -n git -c $selected
-    tmux send-keys -t $selected_name:git "lazygit" Enter
+    tmux new-window -t "$selected_name:" -n git -c "$selected"
+    tmux send-keys -t "$selected_name:git" "lazygit" Enter
 
     # Create a third window named 'agent' with a vertical split
-    tmux new-window -t $selected_name: -n agent -c $selected
-    tmux split-window -t $selected_name:agent -h -c $selected
+    tmux new-window -t "$selected_name:" -n agent -c "$selected"
+    tmux split-window -t "$selected_name:agent" -h -c "$selected"
     # Run 'ai' in the left panel of the agent window
-    tmux send-keys -t $selected_name:agent.left "ai" Enter
+    tmux send-keys -t "$selected_name:agent.left" "ai" Enter
     # Focus the left pane where the ai command is running
-    tmux select-pane -t $selected_name:agent.left
+    tmux select-pane -t "$selected_name:agent.left"
     
     # Create a fourth window named 'term'
-    tmux new-window -t $selected_name: -n term -c $selected
+    tmux new-window -t "$selected_name:" -n term -c "$selected"
 
     # Select the first window
-    tmux select-window -t $selected_name:code
+    tmux select-window -t "$selected_name:code"
 fi
 
 if [[ -z $TMUX ]]; then
-    tmux attach-session -t $selected_name
+    tmux attach-session -t "$selected_name"
 else
-    tmux switch-client -t $selected_name
+    tmux switch-client -t "$selected_name"
 fi
