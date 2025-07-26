@@ -83,8 +83,8 @@
     },
     "context7": {
       "enabled": false,
-      "type": "local",
-      "command": ["npx", "-y", "@upstash/context7-mcp"]
+      "type": "remote",
+      "url": "https://mcp.context7.com/sse"
     },
     "sequential-thinking": {
       "enabled": false,
