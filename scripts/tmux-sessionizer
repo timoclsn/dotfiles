@@ -3,7 +3,7 @@
 if [[ $# -eq 1 ]]; then
     selected=$1
 else
-    selected=$(find ~/Developer/personal ~/Developer/steuerbot ~/Developer/taxfix ~/Developer/codeatelier -mindepth 1 -maxdepth 1 -type d | fzf --border-label " Select Project ")
+    selected=$(find ~/Developer/personal ~/Developer/steuerbot ~/Developer/taxfix ~/Developer/codeatelier ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents -mindepth 1 -maxdepth 1 -type d | fzf --border-label " Select Project ")
 fi
 
 if [[ -z $selected ]]; then
