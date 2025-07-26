@@ -6,7 +6,7 @@ echo "Updating AI CLIs..."
 npm i -g @anthropic-ai/claude-code
 npm i -g @sourcegraph/amp
 npm i -g opencode-ai
-npm i -g @openai/codex
+npm i -g @openai/codex@0.8.0
 npm i -g @google/gemini-cli
 
 echo "AI CLIs updated successfully!"
