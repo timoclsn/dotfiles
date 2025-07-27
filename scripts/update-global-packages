@@ -1,0 +1,16 @@
+#!/bin/bash
+set -e
+
+echo "Updating global npm packages ..."
+npm i -g pnpm@10.13.1
+npm i -g @antfu/ni
+npm i -g npm-check-updates
+
+echo "Updating AI CLIs..."
+npm i -g @anthropic-ai/claude-code
+npm i -g @sourcegraph/amp
+npm i -g opencode-ai
+npm i -g @openai/codex@0.8.0
+npm i -g @google/gemini-cli
+
+echo "Packages updated successfully!"
