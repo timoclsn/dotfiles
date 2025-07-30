@@ -78,6 +78,21 @@ vim.keymap.set('n', '<leader>yf', function()
   print('Copied file to clipboard: ' .. full_path)
 end, { noremap = true, silent = true, desc = '[y]ank [f]ile to clipboard' })
 
+-- Open file path from clipboard
+vim.keymap.set('n', '<leader>o', function()
+  local file_path = vim.fn.getreg('+')
+  if file_path == '' then
+    vim.notify('Clipboard is empty', vim.log.levels.ERROR)
+    return
+  end
+  
+  if vim.fn.filereadable(file_path) == 1 then
+    vim.cmd('edit ' .. vim.fn.fnameescape(file_path))
+  else
+    vim.notify('File not found: ' .. file_path, vim.log.levels.ERROR)
+  end
+end, { noremap = true, silent = true, desc = '[o]pen file path from clipboard' })
+
 -- Switch between React component and its style file
 vim.keymap.set('n', '<leader>ss', function()
   local current_file = vim.fn.expand '%:p'
