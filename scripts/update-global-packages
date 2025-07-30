@@ -14,5 +14,6 @@ npm i -g @sourcegraph/amp
 npm i -g opencode-ai
 npm i -g @openai/codex@0.8.0
 npm i -g @google/gemini-cli
+npm i -g @charmland/crush
 
 echo "Packages updated successfully!"
