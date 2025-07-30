@@ -9,14 +9,33 @@ return {
     version = '1.*',
     opts = {
       keymap = {
-        preset = 'default',
+        preset = 'none',
+
         ['<C-i>'] = { 'accept', 'fallback' },
+
+        ['<C-e>'] = { 'cancel', 'fallback' },
+        ['<C-c>'] = { 'hide', 'fallback' },
+
         ['<C-n>'] = { 'show', 'select_next', 'fallback' },
+        ['<C-p>'] = { 'select_prev', 'fallback' },
+
+        ['<C-j>'] = { 'show_documentation', 'hide_documentation', 'fallback' },
+        ['<C-b>'] = { 'scroll_documentation_up', 'fallback' },
+        ['<C-f>'] = { 'scroll_documentation_down', 'fallback' },
+
+        ['<C-k>'] = { 'show_signature', 'hide_signature', 'fallback' },
+
         ['<C-l>'] = { 'snippet_forward', 'fallback' },
         ['<C-h>'] = { 'snippet_backward', 'fallback' },
+
+        -- Fallback / defaults
+        ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
+        ['<C-y>'] = { 'accept', 'fallback' },
+        ['<Down>'] = { 'select_next', 'fallback' },
+        ['<Up>'] = { 'select_prev', 'fallback' },
+
+        -- Disable tab
         ['<Tab>'] = { 'fallback' },
-        ['<C-j>'] = { 'show_documentation', 'hide_documentation', 'fallback' },
-        ['<C-c>'] = { 'cancel', 'fallback' },
       },
       completion = {
         list = {
