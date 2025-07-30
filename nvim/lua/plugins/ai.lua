@@ -13,9 +13,8 @@ return {
         keymap = {
           accept = '<Tab>',
           accept_line = '<S-Tab>',
-          prev = '<C-k>',
-          next = '<C-j>',
-          dismiss = '<C-c>',
+          prev = '<C->',
+          dismiss = '<C-e>',
         },
       },
     },
