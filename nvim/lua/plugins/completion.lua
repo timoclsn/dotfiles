@@ -9,35 +9,14 @@ return {
     version = '1.*',
     opts = {
       keymap = {
-        preset = 'none',
-
+        preset = 'default',
         ['<C-i>'] = { 'accept', 'fallback' },
-
-        ['<C-j>'] = { 'show', 'select_next', 'fallback' },
-        ['<C-k>'] = { 'select_prev', 'fallback' },
-
-        ['<C-c>'] = { 'cancel', 'fallback' },
-
-        ['<C-d>'] = { 'scroll_documentation_down', 'fallback' },
-        ['<C-u>'] = { 'scroll_documentation_up', 'fallback' },
-
+        ['<C-n>'] = { 'show', 'select_next', 'fallback' },
         ['<C-l>'] = { 'snippet_forward', 'fallback' },
         ['<C-h>'] = { 'snippet_backward', 'fallback' },
-
-        ['<C-b>'] = { 'show_signature', 'hide_signature', 'fallback' },
-        ['<C-f>'] = { 'show_documentation', 'hide_documentation', 'fallback' },
-
         ['<Tab>'] = { 'fallback' },
-
-        -- Also enable default mappings
-        ['<C-space>'] = { 'show', 'hide' },
-
-        ['<C-e>'] = { 'cancel', 'fallback' },
-
-        ['<C-y>'] = { 'select_and_accept', 'fallback' },
-
-        ['<C-n>'] = { 'show', 'select_next', 'fallback' },
-        ['<C-p>'] = { 'select_prev', 'fallback' },
+        ['<C-j>'] = { 'show_documentation', 'hide_documentation', 'fallback' },
+        ['<C-c>'] = { 'cancel', 'fallback' },
       },
       completion = {
         list = {
