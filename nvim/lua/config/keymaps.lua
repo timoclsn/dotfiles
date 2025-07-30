@@ -80,16 +80,16 @@ end, { noremap = true, silent = true, desc = '[y]ank [f]ile to clipboard' })
 
 -- Open file path from clipboard
 vim.keymap.set('n', '<leader>o', function()
-  local file_path = vim.fn.getreg('+')
-  if file_path == '' then
+  local clipboard_content = vim.fn.getreg '+'
+  if clipboard_content == '' then
     vim.notify('Clipboard is empty', vim.log.levels.ERROR)
     return
   end
-  
-  if vim.fn.filereadable(file_path) == 1 then
-    vim.cmd('edit ' .. vim.fn.fnameescape(file_path))
+
+  if vim.fn.filereadable(clipboard_content) == 1 then
+    vim.cmd('edit ' .. vim.fn.fnameescape(clipboard_content))
   else
-    vim.notify('File not found: ' .. file_path, vim.log.levels.ERROR)
+    vim.notify('File not found: ' .. clipboard_content, vim.log.levels.ERROR)
   end
 end, { noremap = true, silent = true, desc = '[o]pen file path from clipboard' })
 
