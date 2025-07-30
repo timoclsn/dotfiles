@@ -29,6 +29,9 @@ gui:
     defaultFgColor:
       - "#c0caf5"
   useHunkModeInStagingView: true
+keybinding:
+  universal:
+    copyToClipboard: "<c-y>"
 customCommands:
   - key: "<c-c>"
     description: "conventional commit"
