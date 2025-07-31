@@ -22,6 +22,12 @@
       }
     }
   },
+  "permission": {
+    "bash": {
+      "git push": "ask",
+      "*": "allow"
+    }
+  },
   "keybinds": {
     "leader": "ctrl+a",
     "messages_half_page_up": "ctrl+u",
