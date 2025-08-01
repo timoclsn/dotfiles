@@ -26,11 +26,9 @@ ln -sf "$DOTFILES/nvim" "$HOME/.config/nvim"
 
 # opencode
 ln -sf "$DOTFILES/opencode/opencode.json" "$HOME/.config/opencode/opencode.json"
+ln -sf "$DOTFILES/agents/AGENTS.md" "$HOME/.config/opencode/AGENTS.md"
 rm "$HOME/.config/opencode/agent" 2>/dev/null || true
 ln -sf "$DOTFILES/opencode/agent" "$HOME/.config/opencode/agent"
-
-# agents
-ln -sf "$DOTFILES/agents/AGENTS.md" "$HOME/.config/AGENTS.md"
 
 # Home directory symlinks
 ln -sf "$DOTFILES/aider/.aider.conf.yml" "$HOME/.aider.conf.yml"
@@ -42,6 +40,7 @@ ln -sf "$DOTFILES/ripgrep/.rgignore" "$HOME/.rgignore"
 ln -sf "$DOTFILES/tmux/tmux.conf" "$HOME/.tmux.conf"
 ln -sf "$DOTFILES/wezterm/wezterm.lua" "$HOME/.wezterm.lua"
 ln -sf "$DOTFILES/zsh/zshrc" "$HOME/.zshrc"
+
 # codex
 ln -sf "$DOTFILES/codex/config.json" "$HOME/.codex/config.json"
 ln -sf "$DOTFILES/codex/config.toml" "$HOME/.codex/config.toml"
