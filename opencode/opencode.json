@@ -29,6 +29,7 @@
       "*": "allow"
     }
   },
+  "instructions": [".cursor/rules/*.mdc"],
   "keybinds": {
     "leader": "ctrl+a",
     "messages_half_page_up": "ctrl+u",
