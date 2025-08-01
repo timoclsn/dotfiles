@@ -23,6 +23,7 @@
     }
   },
   "permission": {
+    "edit": "allow",
     "bash": {
       "git push": "ask",
       "*": "allow"
