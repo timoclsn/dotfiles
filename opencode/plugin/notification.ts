@@ -4,11 +4,12 @@ export const NotificationPlugin: Plugin = async ({ app, $ }) => {
   return {
     async event({ event }) {
       if (event.type === "session.idle") {
-        const projectName = app.path.cwd.split("/").pop() || "";
+        const pathParts = app.path.cwd.split("/");
+        const projectName = pathParts.slice(-2).join("/") || "";
 
         await $`terminal-notifier \
           -title "opencode" \
-          -subtitle "Project: ${projectName}" \
+          -subtitle "\[${projectName}]" \
           -message "Agent run complete" \
           -group "opencode-${projectName}" \
           -activate "com.mitchellh.ghostty"`.quiet();
