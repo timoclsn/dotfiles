@@ -37,7 +37,6 @@
     "messages_half_page_down": "ctrl+d",
     "messages_last": "ctrl+z"
   },
-  "plugin": ["./plugin/notification.ts"],
   "mcp": {
     "playwright": {
       "enabled": false,
