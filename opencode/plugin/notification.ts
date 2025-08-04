@@ -1,4 +1,6 @@
-export const NotificationPlugin = async ({ app, client, $ }) => {
+import type { Plugin } from "@opencode-ai/plugin";
+
+export const NotificationPlugin: Plugin = async ({ app, $ }) => {
   return {
     async event({ event }) {
       if (event.type === "session.idle") {
