@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "lib": [
+      "ES2020",
+      "DOM"
+    ],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "paths": {
+      "@opencode-ai/plugin": [
+        "/Users/timo/.npm-global/lib/node_modules/@opencode-ai/plugin/dist/index.d.ts"
+      ]
+    }
+  },
+  "include": [
+    "opencode/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
