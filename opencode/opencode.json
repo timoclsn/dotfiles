@@ -36,25 +36,7 @@
     "messages_half_page_down": "ctrl+d",
     "messages_last": "ctrl+z"
   },
-  "experimental": {
-    "hook": {
-      "session_completed": [
-        {
-          "command": [
-            "terminal-notifier",
-            "-title",
-            "opencode",
-            "-message",
-            "Agent run completed 🤖",
-            "-group",
-            "opencode",
-            "-activate",
-            "com.mitchellh.ghostty"
-          ]
-        }
-      ]
-    }
-  },
+  "plugin": ["./plugin/notification.ts"],
   "mcp": {
     "playwright": {
       "enabled": false,

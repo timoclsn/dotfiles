@@ -29,6 +29,8 @@ ln -sf "$DOTFILES/opencode/opencode.json" "$HOME/.config/opencode/opencode.json"
 ln -sf "$DOTFILES/agents/AGENTS.md" "$HOME/.config/opencode/AGENTS.md"
 rm "$HOME/.config/opencode/agent" 2>/dev/null || true
 ln -sf "$DOTFILES/opencode/agent" "$HOME/.config/opencode/agent"
+rm "$HOME/.config/opencode/plugin" 2>/dev/null || true
+ln -sf "$DOTFILES/opencode/plugin" "$HOME/.config/opencode/plugin"
 
 # Home directory symlinks
 ln -sf "$DOTFILES/aider/.aider.conf.yml" "$HOME/.aider.conf.yml"
