@@ -25,6 +25,7 @@
   "permission": {
     "edit": "allow",
     "bash": {
+      "git commit": "ask",
       "git push": "ask",
       "*": "allow"
     }
