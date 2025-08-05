@@ -2,7 +2,7 @@
   "lockfileVersion": 1,
   "workspaces": {
     "": {
-      "name": "dotfiles",
+      "name": "opencode",
       "devDependencies": {
         "@opencode-ai/plugin": "^0.3.130",
       },
