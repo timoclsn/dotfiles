@@ -9,10 +9,9 @@ export const Notify: Plugin = async ({ app, client, $ }) => {
         const projectName = pathParts.slice(-2).join("/") || "";
 
         // Session title
+        const sessionID = event.properties.sessionID;
         const { data } = await client.session.list();
-        const currentSession = data?.find(
-          (s) => s.id === event.properties.sessionID,
-        );
+        const currentSession = data?.find((s) => s.id === sessionID);
         const sessionTitle = currentSession?.title || "";
         const message = sessionTitle ? sessionTitle : "Agent run complete";
 
@@ -20,7 +19,7 @@ export const Notify: Plugin = async ({ app, client, $ }) => {
           -title "opencode" \
           -subtitle "\[${projectName}]" \
           -message "${message}" \
-          -group "opencode-${projectName}" \
+          -group "opencode-${projectName}-${sessionID}" \
           -activate "com.mitchellh.ghostty"`.quiet();
       }
     },
