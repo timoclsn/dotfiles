@@ -16,6 +16,18 @@
         "deepseek-r1:7b": {}
       }
     },
+    "lmstudio": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "LM Studio (local)",
+      "options": {
+        "baseURL": "http://127.0.0.1:1234/v1"
+      },
+      "models": {
+        "qwen/qwen3-8b": {
+          "name": "Qwen3 8b (local)"
+        }
+      }
+    },
     "openrouter": {
       "models": {
         "moonshotai/kimi-k2:free": {}
