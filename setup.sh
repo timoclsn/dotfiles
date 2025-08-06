@@ -32,6 +32,14 @@ ln -sf "$DOTFILES/opencode/agent" "$HOME/.config/opencode/agent"
 rm "$HOME/.config/opencode/plugin" 2>/dev/null || true
 ln -sf "$DOTFILES/opencode/plugin" "$HOME/.config/opencode/plugin"
 
+# claude code
+ln -sf "$DOTFILES/claude/settings.json" "$HOME/.claude/settings.json"
+ln -sf "$DOTFILES/claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
+rm "$HOME/.config/claude/agents" 2>/dev/null || true
+ln -sf "$DOTFILES/claude/agents" "$HOME/.claude/agents"
+rm "$HOME/.config/claude/commands" 2>/dev/null || true
+ln -sf "$DOTFILES/claude/commands" "$HOME/.claude/commands"
+
 # Home directory symlinks
 ln -sf "$DOTFILES/aider/.aider.conf.yml" "$HOME/.aider.conf.yml"
 ln -sf "$DOTFILES/aerospace/aerospace.toml" "$HOME/.aerospace.toml"
