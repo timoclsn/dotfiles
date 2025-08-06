@@ -1,8 +1,9 @@
 {
+  "autoUpdates": false,
+  "preferredNotifChannel": "notifications_disabled",
+  "theme": "dark",
+  "enableAllProjectMcpServers": false,
   "permissions": {
-    "autoUpdates": false,
-    "preferredNotifChannel": "notifications_disabled",
-    "theme": "dark",
     "allow": [],
     "deny": ["Bash(git commit)", "Bash(git push)"]
   },
