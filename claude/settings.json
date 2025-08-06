@@ -6,12 +6,6 @@
     "allow": [],
     "deny": ["Bash(git commit)", "Bash(git push)"]
   },
-  "mcpServers": {
-    "playwright": {
-      "command": "npx",
-      "args": ["@playwright/mcp@latest"]
-    }
-  },
   "hooks": {
     "Stop": [
       {
