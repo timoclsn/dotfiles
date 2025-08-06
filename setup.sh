@@ -26,7 +26,7 @@ ln -sf "$DOTFILES/nvim" "$HOME/.config/nvim"
 
 # opencode
 ln -sf "$DOTFILES/opencode/opencode.json" "$HOME/.config/opencode/opencode.json"
-ln -sf "$DOTFILES/agents/AGENTS.md" "$HOME/.config/opencode/AGENTS.md"
+ln -sf "$DOTFILES/ai/AGENTS.md" "$HOME/.config/opencode/AGENTS.md"
 rm "$HOME/.config/opencode/agent" 2>/dev/null || true
 ln -sf "$DOTFILES/opencode/agent" "$HOME/.config/opencode/agent"
 rm "$HOME/.config/opencode/plugin" 2>/dev/null || true
@@ -34,7 +34,7 @@ ln -sf "$DOTFILES/opencode/plugin" "$HOME/.config/opencode/plugin"
 
 # claude code
 ln -sf "$DOTFILES/claude/settings.json" "$HOME/.claude/settings.json"
-ln -sf "$DOTFILES/claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
+ln -sf "$DOTFILES/ai/AGENTS.md" "$HOME/.claude/CLAUDE.md"
 rm "$HOME/.config/claude/agents" 2>/dev/null || true
 ln -sf "$DOTFILES/claude/agents" "$HOME/.claude/agents"
 rm "$HOME/.config/claude/commands" 2>/dev/null || true
@@ -52,9 +52,8 @@ ln -sf "$DOTFILES/wezterm/wezterm.lua" "$HOME/.wezterm.lua"
 ln -sf "$DOTFILES/zsh/zshrc" "$HOME/.zshrc"
 
 # codex
-ln -sf "$DOTFILES/codex/config.json" "$HOME/.codex/config.json"
 ln -sf "$DOTFILES/codex/config.toml" "$HOME/.codex/config.toml"
-ln -sf "$DOTFILES/agents/AGENTS.md" "$HOME/.codex/AGENTS.md"
+ln -sf "$DOTFILES/ai/AGENTS.md" "$HOME/.codex/AGENTS.md"
 ln -sf "$DOTFILES/codex/notify.py" "$HOME/.codex/notify.py"
 
 
