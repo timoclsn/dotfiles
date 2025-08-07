@@ -1,6 +1,5 @@
 ---
-name: analyzer
-description: Analyzes codebase implementation details. Call the analyzer agent when you need to find detailed information about specific components. As always, the more detailed your request prompt, the better! :)
+description: Analyzes codebase implementation details. Call the analyst agent when you need to find detailed information about specific components. As always, the more detailed your request prompt, the better! :)
 model: google/gemini-2.5-pro
 tools:
   write: false
