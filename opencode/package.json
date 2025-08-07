@@ -2,6 +2,6 @@
   "name": "opencode",
   "version": "1.0.0",
   "devDependencies": {
-    "@opencode-ai/plugin": "^0.3.130"
+    "@opencode-ai/plugin": "^0.3.133"
   }
 }
