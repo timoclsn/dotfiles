@@ -18,6 +18,10 @@ return {
     end,
   },
   {
+    'dmmulroy/ts-error-translator.nvim',
+    opts = {},
+  },
+  {
     'marilari88/twoslash-queries.nvim',
     event = 'VeryLazy',
     opts = {
