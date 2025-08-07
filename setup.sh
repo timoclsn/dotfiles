@@ -35,9 +35,9 @@ ln -sf "$DOTFILES/opencode/plugin" "$HOME/.config/opencode/plugin"
 # claude code
 ln -sf "$DOTFILES/claude/settings.json" "$HOME/.claude/settings.json"
 ln -sf "$DOTFILES/ai/AGENTS.md" "$HOME/.claude/CLAUDE.md"
-rm "$HOME/.config/claude/agents" 2>/dev/null || true
+rm "$HOME/.claude/agents" 2>/dev/null || true
 ln -sf "$DOTFILES/claude/agents" "$HOME/.claude/agents"
-rm "$HOME/.config/claude/commands" 2>/dev/null || true
+rm "$HOME/.claude/commands" 2>/dev/null || true
 ln -sf "$DOTFILES/claude/commands" "$HOME/.claude/commands"
 
 # Home directory symlinks
