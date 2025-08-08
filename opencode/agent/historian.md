@@ -1,5 +1,6 @@
 ---
 description: Git-based context agent that analyzes recent changes to provide comprehensive historical context
+mode: subagent
 model: google/gemini-2.5-pro
 tools:
   write: false

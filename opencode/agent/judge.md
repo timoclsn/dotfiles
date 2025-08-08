@@ -1,5 +1,6 @@
 ---
 description: The Judge an expert code review specialist. Reviews code for quality, security, and maintainability.
+mode: subagent
 model: google/gemini-2.5-pro
 tools:
   write: false

@@ -1,5 +1,6 @@
 ---
 description: Debugging specialist for errors, test failures, and unexpected behavior.
+mode: subagent
 model: google/gemini-2.5-pro
 ---
 
