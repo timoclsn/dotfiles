@@ -30,15 +30,17 @@ Only respond with the commit message text, nothing else! Your entire response wi
 
 Here are the staged changes:
 
-<diff>$DIFF</diff>
+<diff>
+$DIFF
+</diff>
 
 Here are the 10 most recent commit messages in this repository:
 
-<recent-commits>$RECENT_COMMITS</recent-commits>
+<recent-commits>
+$RECENT_COMMITS
+</recent-commits>
 "
 
-COMMIT_MSG=$(codex exec "$PROMPT" --json --model gpt-4.1-mini  2>/dev/null | \
-  jq -r 'select(.msg.type=="task_complete") | .msg.last_agent_message' | \
-  head -n 1)
+COMMIT_MSG=$(opencode run "$PROMPT" --model openai/gpt-5-mini 2>/dev/null | head -n 1)
 
 git commit -m "$COMMIT_MSG"
