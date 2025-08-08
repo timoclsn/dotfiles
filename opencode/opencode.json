@@ -6,7 +6,16 @@
   "model": "github-copilot/claude-sonnet-4",
   "small_model": "google/gemini-2.5-flash",
   "provider": {
-    "Ollama": {
+    "openai": {
+      "models": {
+        "o3": {
+          "options": {
+            "reasoningEffort": "high"
+          }
+        }
+      }
+    },
+    "ollama": {
       "npm": "@ai-sdk/openai-compatible",
       "options": {
         "baseURL": "http://localhost:11434/v1"
