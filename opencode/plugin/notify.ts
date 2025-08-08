@@ -10,8 +10,11 @@ export const Notify: Plugin = async ({ app, client, $ }) => {
 
         // Session title
         const sessionID = event.properties.sessionID;
-        const { data } = await client.session.list();
-        const currentSession = data?.find((s) => s.id === sessionID);
+        const { data: currentSession } = await client.session.get({
+          path: {
+            sessionID,
+          },
+        });
         const sessionTitle = currentSession?.title || "";
         const message = sessionTitle ? sessionTitle : "Agent run complete";
 
