@@ -28,7 +28,6 @@ gui:
       - "#db4b4b"
     defaultFgColor:
       - "#c0caf5"
-  useHunkModeInStagingView: true
 keybinding:
   universal:
     copyToClipboard: "<c-y>"
