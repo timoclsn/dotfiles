@@ -14,7 +14,9 @@ export const Notify: Plugin = async ({ app, client, $ }) => {
           path: { id: sessionID },
         });
         const sessionTitle = currentSession?.title || "";
-        const message = sessionTitle ? sessionTitle : "Agent run complete";
+        const isDefaultTitle = sessionTitle.startsWith("New session - ");
+        const message =
+          sessionTitle && !isDefaultTitle ? sessionTitle : "Agent run complete";
 
         await $`terminal-notifier \
           -title "opencode" \
