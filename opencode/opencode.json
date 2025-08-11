@@ -3,18 +3,9 @@
   "theme": "tokyonight",
   "autoupdate": false,
   "share": "disabled",
-  "model": "github-copilot/claude-sonnet-4",
+  "model": "anthropic/claude-sonnet-4",
   "small_model": "google/gemini-2.5-flash",
   "provider": {
-    "openai": {
-      "models": {
-        "o3": {
-          "options": {
-            "reasoningEffort": "high"
-          }
-        }
-      }
-    },
     "ollama": {
       "npm": "@ai-sdk/openai-compatible",
       "options": {
