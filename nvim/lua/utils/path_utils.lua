@@ -32,11 +32,7 @@ function M.copy_relative_path(full_path, opts)
   vim.fn.setreg('+', rel)
   vim.fn.setreg('"', rel)
 
-  if not opts.silent then
-    print('Copied path: ' .. rel)
-  end
-
-  return rel
+  vim.notify('Copied: ' .. rel)
 end
 
 return M

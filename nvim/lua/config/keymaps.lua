@@ -60,15 +60,41 @@ end, { desc = '[y]ank [d]iagnostics messages under cursor' })
 -- ============================================================================
 -- File Operations
 -- ============================================================================
-local path_utils = require 'utils.path_utils'
-
 local yank_path = function()
+  local path_utils = require 'utils.path_utils'
+
   local full_path = vim.fn.expand '%:p'
   path_utils.copy_relative_path(full_path)
 end
 
-vim.keymap.set('n', '<leader>yp', yank_path, { noremap = true, silent = true, desc = '[y]ank full file [p]ath' })
-vim.keymap.set('n', '<C-y>', yank_path, { noremap = true, silent = true })
+local yank_path_with_lines = function()
+  local path_utils = require 'utils.path_utils'
+
+  local start_line = vim.fn.line 'v'
+  local end_line = vim.fn.line '.'
+  local line_range = ''
+
+  if start_line == end_line then
+    line_range = '#L' .. start_line
+  else
+    line_range = '#L' .. start_line .. '-' .. end_line
+  end
+
+  local full_path = vim.fn.expand '%:p'
+  local rel_path = path_utils.relative_to_root(full_path)
+  local str = rel_path .. line_range
+
+  vim.fn.setreg('"', str)
+  vim.fn.setreg('+', str)
+
+  vim.notify('Copied: ' .. str)
+end
+
+-- Copy relative path in normal mode, relative path with line numbers in visual mode
+vim.keymap.set('n', '<C-y>', yank_path, { desc = 'Copy relative path' })
+vim.keymap.set('v', '<C-y>', yank_path_with_lines, { desc = 'Copy relative path with line numbers' })
+vim.keymap.set('n', '<leader>yp', yank_path, { desc = '[y]ank full file [p]ath' })
+vim.keymap.set('v', '<leader>yp', yank_path_with_lines, { desc = '[y]ank full file [p]ath with line numbers' })
 
 vim.keymap.set('n', '<leader>yf', function()
   local full_path = vim.fn.expand '%:p'
