@@ -6,6 +6,22 @@
   "model": "anthropic/claude-sonnet-4-20250514",
   "small_model": "google/gemini-2.5-flash",
   "provider": {
+    "openai": {
+      "models": {
+        "o3": {
+          "options": {
+            "reasoningSummary": "auto"
+          }
+        },
+        "gpt-5": {
+          "options": {
+            "reasoningEffort": "low",
+            "textVerbosity": "low",
+            "reasoningSummary": "auto"
+          }
+        }
+      }
+    },
     "ollama": {
       "npm": "@ai-sdk/openai-compatible",
       "options": {
