@@ -29,6 +29,11 @@
 - If the project has a design system or ui components use these whenever possible.
 - Try to find solutions with css if possible only use React / JavaScript if necessary.
 
+## Tmux
+
+- When no pane to work in is provided create a new window in the current session to use (the one you are running in). There you can add as many panes as you want. Close the created window again when you are done.
+- Use `tmux capture-pane -p` to capture current pane content before sending keys to preserve context
+
 ## MCP Servers
 
 ### Figma Dev Mode MCP Rules
