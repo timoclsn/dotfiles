@@ -2,6 +2,8 @@
 description: Analyzes codebase implementation details. Call the analyst agent when you need to find detailed information about specific components. As always, the more detailed your request prompt, the better! :)
 mode: subagent
 model: google/gemini-2.5-pro
+thinkingConfig:
+  thinkingBudget: 10000
 tools:
   write: false
   edit: false
