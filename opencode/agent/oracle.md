@@ -3,6 +3,7 @@ description: Consult the Oracle - an AI advisor powered by OpenAI's o3 reasoning
 mode: subagent
 model: openai/o3
 reasoningEffort: high
+reasoningSummary: auto
 tools:
   write: false
   edit: false
