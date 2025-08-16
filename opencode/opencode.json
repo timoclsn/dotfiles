@@ -3,6 +3,7 @@
   "theme": "tokyonight",
   "autoupdate": false,
   "share": "disabled",
+  "model": "anthropic/claude-sonnet-4-20250514",
   "small_model": "google/gemini-2.5-flash",
   "provider": {
     "ollama": {
