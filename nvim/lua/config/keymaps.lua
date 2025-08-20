@@ -112,10 +112,24 @@ vim.keymap.set('n', '<leader>o', function()
     return
   end
 
-  if vim.fn.filereadable(clipboard_content) == 1 then
-    vim.cmd('edit ' .. vim.fn.fnameescape(clipboard_content))
+  local file_path, line_num, col_num = clipboard_content:match '^([^:]+):?(%d*):?(%d*)$'
+
+  if not file_path then
+    file_path = clipboard_content
+  end
+
+  if vim.fn.filereadable(file_path) == 1 then
+    vim.cmd('edit ' .. vim.fn.fnameescape(file_path))
+
+    if line_num and line_num ~= '' then
+      vim.cmd('normal! ' .. line_num .. 'G')
+      if col_num and col_num ~= '' then
+        vim.cmd('normal! ' .. col_num .. '|')
+      end
+      vim.cmd 'normal! zz'
+    end
   else
-    vim.notify('File not found: ' .. clipboard_content, vim.log.levels.ERROR)
+    vim.notify('File not found: ' .. file_path, vim.log.levels.ERROR)
   end
 end, { noremap = true, silent = true, desc = '[o]pen file path from clipboard' })
 
