@@ -75,9 +75,24 @@
   },
   "mcp": {
     "playwright": {
-      "enabled": false,
+      "enabled": true,
       "type": "local",
       "command": ["npx", "@playwright/mcp@latest"]
+    },
+    "ddg-search": {
+      "enabled": true,
+      "type": "local",
+      "command": ["uvx", "duckduckgo-mcp-server"]
+    },
+    "context7": {
+      "enabled": true,
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp"
+    },
+    "grep": {
+      "enabled": true,
+      "type": "remote",
+      "url": "https://mcp.grep.app/"
     },
     "ios-simulator": {
       "enabled": false,
@@ -97,44 +112,20 @@
         "FIGMA_API_KEY": "{env:FIGMA_API_KEY}"
       }
     },
-    "package-version": {
-      "enabled": false,
-      "type": "local",
-      "command": ["npx", "-y", "mcp-package-version"]
-    },
     "nx": {
       "enabled": false,
       "type": "local",
       "command": ["npx", "-y", "nx-mcp", "~/Developer/steuerbot/frontend"]
     },
-    "context7": {
-      "enabled": false,
-      "type": "remote",
-      "url": "https://mcp.context7.com/sse"
-    },
-    "sequential-thinking": {
-      "enabled": false,
-      "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "@modelcontextprotocol/server-sequential-thinking"
-      ]
-    },
-    "ddg-search": {
-      "enabled": false,
-      "type": "local",
-      "command": ["uvx", "duckduckgo-mcp-server"]
-    },
     "linear": {
       "enabled": false,
-      "type": "local",
-      "command": ["npx", "-y", "mcp-remote", "https://mcp.linear.app/sse"]
+      "type": "remote",
+      "url": "https://mcp.linear.app/mcp"
     },
     "notion": {
       "enabled": false,
-      "type": "local",
-      "command": ["npx", "-y", "mcp-remote", "https://mcp.notion.com/sse"]
+      "type": "remote",
+      "url": "https://mcp.notion.com/mcp"
     }
   }
 }
