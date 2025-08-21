@@ -4,6 +4,7 @@ mode: subagent
 model: openai/gpt-5
 reasoningEffort: high
 reasoningSummary: auto
+textVerbosity: low
 tools:
   write: false
   edit: false
