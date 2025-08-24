@@ -31,6 +31,8 @@ rm "$HOME/.config/opencode/agent" 2>/dev/null || true
 ln -sf "$DOTFILES/opencode/agent" "$HOME/.config/opencode/agent"
 rm "$HOME/.config/opencode/plugin" 2>/dev/null || true
 ln -sf "$DOTFILES/opencode/plugin" "$HOME/.config/opencode/plugin"
+rm "$HOME/.config/opencode/command" 2>/dev/null || true
+ln -sf "$DOTFILES/opencode/command" "$HOME/.config/opencode/command"
 
 # claude code
 ln -sf "$DOTFILES/claude/settings.json" "$HOME/.claude/settings.json"
