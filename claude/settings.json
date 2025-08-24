@@ -13,10 +13,14 @@
         "hooks": [
           {
             "type": "command",
-            "command": "terminal-notifier -title \"Claude Code\" -message \"Agent run completed\" -group \"claude-code\" -activate \"com.mitchellh.ghostty\""
+            "command": "bash ~/.claude/notify.sh"
           }
         ]
       }
     ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash ~/.claude/statusline.sh"
   }
 }

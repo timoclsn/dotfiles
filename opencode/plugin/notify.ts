@@ -34,7 +34,7 @@ export const Notify: Plugin = async ({ app, client, $ }) => {
           -title "opencode" \
           -subtitle "${subtitle}" \
           -message "${message}" \
-          -group "opencode-${projectCategory}-${sessionID}" \
+          -group "opencode-${projectName}-${sessionID}" \
           -execute "${onClick}"`.quiet();
       }
     },
