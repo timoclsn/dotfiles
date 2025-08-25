@@ -9,7 +9,7 @@ path=$(pwd)
 project_name=$(basename "$path")
 project_category=$(basename "$(dirname "$path")")
 subtitle="\[$project_category/$project_name]"
-summary=$(head -n 1 "$transcript_path" | jq -r 'select(.type == "user") | .message.content' 2>/dev/null | cut -c 1-100)
+summary=$(head -n 1 "$transcript_path" | jq -r 'select(.type == "user") | .message.content' 2>/dev/null | cut -c 1-50)
 
 if [[ -z "$summary" || "$summary" == "null" ]]; then
   message="Agent run complete"
@@ -22,7 +22,7 @@ on_click="osascript -e 'tell application \"Ghostty\" to activate' -e 'tell appli
 group_name="claude-$project_name-$session_id"
 
 terminal-notifier \
-  -title "claude" \
+  -title "Claude Code" \
   -subtitle "$subtitle" \
   -message "$message" \
   -group "$group_name" \
