@@ -2,7 +2,7 @@
 description: implement jira ticket
 ---
 
-Implement the following ticket pulled from Jira.
+Implement the following Jira ticket.
 
 Ticket key: SF-$ARGUMENTS
 
