@@ -1,7 +1,7 @@
 git:
   paging:
     colorArg: always
-    pager: delta --dark --paging=never --line-numbers
+    pager: delta --dark --syntax-theme=tokyonight_night --paging=never --line-numbers
 gui:
   nerdFontsVersion: "3"
   theme:

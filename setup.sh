@@ -24,6 +24,10 @@ ln -sf "$DOTFILES/lazygit" "$HOME/.config/lazygit"
 rm "$HOME/.config/nvim" 2>/dev/null || true
 ln -sf "$DOTFILES/nvim" "$HOME/.config/nvim"
 
+# bat
+rm "$HOME/.config/bat" 2>/dev/null || true
+ln -sf "$DOTFILES/bat" "$HOME/.config/bat"
+
 # opencode
 ln -sf "$DOTFILES/opencode/opencode.json" "$HOME/.config/opencode/opencode.json"
 ln -sf "$DOTFILES/ai/AGENTS.md" "$HOME/.config/opencode/AGENTS.md"
