@@ -10,8 +10,8 @@ adjust-cursor-height = 20%
 adjust-underline-position = 4
 
 # Window
-# background-opacity = 0.9
-# background-blur = 20
+background-opacity = 0.9
+background-blur = 20
 window-padding-x = 8
 window-padding-y = 8
 window-padding-balance = true
