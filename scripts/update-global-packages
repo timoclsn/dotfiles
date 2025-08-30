@@ -1,19 +1,27 @@
 #!/bin/bash
 set -e
 
-echo "Updating global npm packages ..."
-npm i -g npm
+PACKAGES=(
+  "npm"
+  "pnpm"
+  "@antfu/ni"
+  "npm-check-updates"
+  "@anthropic-ai/claude-code"
+  "@sourcegraph/amp"
+  "opencode-ai"
+  "@openai/codex"
+  "@google/gemini-cli"
+  "@charmland/crush"
+)
 
-npm i -g pnpm@10.13.1
-npm i -g @antfu/ni
-npm i -g npm-check-updates
+echo "Updating global npm packages (${#PACKAGES[@]} total)..."
 
-echo "Updating AI CLIs..."
-npm i -g @anthropic-ai/claude-code
-npm i -g @sourcegraph/amp
-npm i -g opencode-ai
-npm i -g @openai/codex
-npm i -g @google/gemini-cli
-npm i -g @charmland/crush
+npm i -g "${PACKAGES[@]}"
 
-echo "Packages updated successfully!"
+echo ""
+echo "All packages updated successfully!"
+echo ""
+echo "Installed global packages:"
+echo ""
+
+npm list -g --depth=0
