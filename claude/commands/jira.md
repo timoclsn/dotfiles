@@ -11,4 +11,4 @@ Ticket key: SF-$ARGUMENTS
 - Implement the ticket and verify it is working.
 - Run typecheck, lint and test
 - Commit the changes using conventional commit style
-- Create a PR (using the GitHub cli "gh") with the commit name as the title and a description (what was changed and why)
+- Create a draft PR (using the GitHub cli "gh") with the commit name as the title (postfixed with the ticket key in square brackets "… [SF-100]"), a description in in german (what was changed and why) and assign it to myself (timoclsn)
