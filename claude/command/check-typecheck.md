@@ -1,5 +1,5 @@
 ---
-description: run typecheck
+description: run typecheck script and fix issues
 ---
 
 Here are the current typecheck results:

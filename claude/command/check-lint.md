@@ -1,5 +1,5 @@
 ---
-description: run lint
+description: run lint script and fix issues
 ---
 
 Here are the current lint results:
