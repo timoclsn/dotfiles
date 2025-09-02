@@ -1,7 +1,7 @@
 ---
-description: review staged changes
+description: review changes to parent branch
 ---
 
-Use the @judge to do code review on $ARGUMENTS.
+Use the judge subagent to do code review on all changes compared with the parent branch.
 
 Don't directly implement the review feedback just list it.

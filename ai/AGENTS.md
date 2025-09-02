@@ -7,7 +7,6 @@
 - Don't add comments all over the place. Only comment where it adds value.
 - Dont use git commit or git push if not otherwise instructed by the user.
 - Use the todo tool to break down your task and progress.
-- When asked about PRs or GitHub use the GitHub CLI (gh).
 
 ## Typescript
 
@@ -42,3 +41,8 @@
 - IMPORTANT: If the Figma Dev Mode MCP Server returns a localhost source for an image or an SVG, use that image or SVG source directly
 - IMPORTANT: DO NOT import/add new icon packages, all the assets should be in the Figma payload
 - IMPORTANT: do NOT use or create placeholders if a localhost source is provided
+
+## GitHub
+
+- When asked about PRs or GitHub in general use the GitHub CLI (gh).
+- When using the GitHub CLI ensure you are using the "timoclsn" account `gh auth switch --user timoclsn`. Stop if you are not.
