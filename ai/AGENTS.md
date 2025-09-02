@@ -42,6 +42,10 @@
 - IMPORTANT: DO NOT import/add new icon packages, all the assets should be in the Figma payload
 - IMPORTANT: do NOT use or create placeholders if a localhost source is provided
 
+### Context7
+
+- Use context7 when the user requests code examples, setup or configuration steps, or library/API documentation.
+
 ## GitHub
 
 - When asked about PRs or GitHub in general use the GitHub CLI (gh).
