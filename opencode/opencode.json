@@ -82,22 +82,22 @@
   },
   "mcp": {
     "playwright": {
-      "enabled": true,
+      "enabled": false,
       "type": "local",
       "command": ["npx", "@playwright/mcp@latest"]
     },
     "ddg-search": {
-      "enabled": true,
+      "enabled": false,
       "type": "local",
       "command": ["uvx", "duckduckgo-mcp-server"]
     },
     "context7": {
-      "enabled": true,
+      "enabled": false,
       "type": "remote",
       "url": "https://mcp.context7.com/mcp"
     },
     "grep": {
-      "enabled": true,
+      "enabled": false,
       "type": "remote",
       "url": "https://mcp.grep.app/"
     },
