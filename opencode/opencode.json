@@ -69,10 +69,11 @@
   "permission": {
     "edit": "allow",
     "bash": {
-      "git commit": "ask",
-      "git push": "ask",
+      "git commit *": "ask",
+      "git push *": "ask",
       "*": "allow"
-    }
+    },
+    "webfetch": "allow"
   },
   "keybinds": {
     "leader": "ctrl+a",
@@ -82,19 +83,19 @@
   },
   "mcp": {
     "playwright": {
-      "enabled": false,
+      "enabled": true,
       "type": "local",
       "command": ["npx", "@playwright/mcp@latest"]
     },
     "ddg-search": {
-      "enabled": false,
+      "enabled": true,
       "type": "local",
       "command": ["uvx", "duckduckgo-mcp-server"]
     },
     "context7": {
-      "enabled": false,
-      "type": "remote",
-      "url": "https://mcp.context7.com/mcp"
+      "enabled": true,
+      "type": "local",
+      "command": ["npx", "-y", "@upstash/context7-mcp"]
     },
     "grep": {
       "enabled": false,
