@@ -17,7 +17,7 @@ Follow these steps:
 3. Understand the intent of the PR using the PR description.
 4. If PR description is not detailed enough to understand the intent of the PR,
    make sure to note it in your review.
-5. Search the codebase if required.
+5. Search the codebase if required (keep in mind that the checked out branch might not be the review branch but don't change the currently checked out branch)
 6. Write a concise review of the PR, keeping in mind to encourage strong code
    quality and best practices.
 
