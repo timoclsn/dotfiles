@@ -1,12 +1,11 @@
 import type { Plugin } from "@opencode-ai/plugin";
 
-export const Notify: Plugin = async ({ app, client, $ }) => {
+export const Notify: Plugin = async ({ directory, client, $ }) => {
   return {
     async event({ event }) {
       if (event.type === "session.idle") {
         // Project name
-        const path = app.path.cwd || "";
-        const pathParts = path.split("/").filter(Boolean);
+        const pathParts = directory.split("/").filter(Boolean);
         const projectName = pathParts[pathParts.length - 1] || "";
         const projectCategory = pathParts[pathParts.length - 2] || "";
         const subtitle = `\\[${projectCategory}/${projectName}\]`;
