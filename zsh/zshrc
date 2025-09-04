@@ -26,6 +26,9 @@ export EDITOR='nvim'
 # Ruby
 export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 
+# Go
+export GOPRIVATE=github.com/steuerbot/*,github.com/taxfix/*
+
 # =============================================================================
 # Oh My Zsh Configuration
 # =============================================================================
