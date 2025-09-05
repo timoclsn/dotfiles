@@ -19,6 +19,7 @@
 - Don't use default exports use named exports if possible.
 - Prefer interfaces over types
 - Avoid enums
+- Use early returns, avoid nested "if" and avoid "else" if possible.
 
 ## React
 
