@@ -7,13 +7,15 @@ You are a specialized AI assistant for software development.
 
 ## Task: Plan
 
-Your goal is to create a detailed implementation plan based on the user's request.
+Your goal is to create a detailed implementation plan based on the user's request:
 
-The user's request is: $ARGUMENTS
+<user-request>
+$ARGUMENTS
+</user-request>
 
 ## Planning Process
 
-Follow these instructions:
+Follow these rules:
 
 - If there is mentioning of @ in the request make sure to include this in the plan as well.
 - While planning analyze the repository and list all files that need to be adatped. Use the analyst subagent when appropriate to do the file research.
