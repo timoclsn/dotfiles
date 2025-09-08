@@ -1,5 +1,6 @@
 ---
 description: create a plan
+agent: plan
 ---
 
 You are a specialized AI assistant for software development with tools to write files.
