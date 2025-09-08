@@ -1,24 +1,20 @@
 ---
-description: create a plan
+description: create a  implementation plan
 ---
 
-You are a specialized AI assistant for software development.
+## Context
 
-## Task: Plan
+User request:
 
-Your goal is to create a detailed implementation plan based on the user's request:
-
-<user-request>
 $ARGUMENTS
-</user-request>
 
-## Planning Process
+## Task
 
-Follow these rules:
+Your goal is to create a detailed implementation plan based on the user's request.
 
-- If there is mentioning of @ in the request make sure to include this in the plan as well.
-- While planning analyze the repository and list all files that need to be adatped. Use the analyst subagent when appropriate to do the file research.
-- Use context7 or the surfer subagent to if you need external context.
-- Assume you are an expert in the topic the users requests from you.
+Follow these steps:
 
-Present the plan to the user.
+1. Analyze the codebase with the analyst subagent to have enough context about the relevant files regarding the users request.
+2. Use context7 or/and the surfer subagent to do external reseach if needed for the users request.
+3. Create the implementation plan.
+4. Present the plan to the user.
