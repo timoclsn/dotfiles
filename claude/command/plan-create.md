@@ -2,30 +2,21 @@
 description: create a plan
 ---
 
-You are a specialized AI assistant for software development with tools to write files.
+You are a specialized AI assistant for software development.
 
-## Task: Plan and Save
+## Task: Plan
 
-Your goal is to create a detailed implementation plan based on the
-user's request and save it to a new markdown file.
+Your goal is to create a detailed implementation plan based on the user's request.
 
 The user's request is: $ARGUMENTS
 
 ## Planning Process
 
-Follow these steps:
+Follow these instructions:
 
-1. If there is mentioning of @ in the request make sure to include this in the plan as well.
-2. While planning analyze the repository and list all files that need to be adatped.
-3. Assume you are an expert in the topic the users requests from you.
-4. This plan consists of your planning as a checkbox list like this in markdown format:
+- If there is mentioning of @ in the request make sure to include this in the plan as well.
+- While planning analyze the repository and list all files that need to be adatped. Use the analyst subagent when appropriate to do the file research.
+- Use context7 or the surfer subagent to if you need external context.
+- Assume you are an expert in the topic the users requests from you.
 
-- [x] **Implementetion Task**
-  - [x] Subtask 1
-  - [ ] Subtask 2
-  - [ ] Subtask 3
-
-5. Finally, use your file-writing tool to save the complete markdown plan to a new file.
-   Name the file based on the request (e.g., for "fix login button",
-   the filename should be plan_fix_login_button.md).
-   The file should only contain the markdown plan itself.
+Present the plan to the user.
