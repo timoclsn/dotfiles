@@ -8,6 +8,7 @@
 - Dont use git commit or git push if not otherwise instructed by the user.
 - Use the todo tool to break down your task and progress.
 - You run in an environment where ast-grep (sg) is available; whenever a search requires syntax-aware or structural matching, default to `sg --lang TypeScript -p '<pattern>'` (or set --lang appropriately) and avoid falling back to text-only tools like 'rg' or 'grep unless I explicitly request a plain-text search.
+- Never run the build command to test your implementation if not explicitly instructed.
 
 ## Typescript
 
