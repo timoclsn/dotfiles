@@ -1,12 +1,9 @@
 {
-  "autoUpdates": false,
-  "preferredNotifChannel": "notifications_disabled",
-  "theme": "dark",
-  "enableAllProjectMcpServers": false,
   "permissions": {
     "allow": [],
     "deny": ["Bash(git commit)", "Bash(git push)"]
   },
+  "enableAllProjectMcpServers": false,
   "hooks": {
     "Stop": [
       {
@@ -33,5 +30,12 @@
   "statusLine": {
     "type": "command",
     "command": "bash ~/.claude/statusline.sh"
+  },
+  "autoUpdates": false,
+  "preferredNotifChannel": "notifications_disabled",
+  "theme": "dark",
+  "env": {
+    "DISABLE_AUTOUPDATER": "1"
   }
 }
+
