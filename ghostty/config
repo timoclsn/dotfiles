@@ -7,7 +7,6 @@ font-family = Berkeley Mono
 font-style = Retina SemiCondensed
 adjust-cell-height = 20%
 adjust-cursor-height = 20%
-adjust-underline-position = 4
 
 # Window
 background-opacity = 0.9
@@ -16,19 +15,8 @@ window-padding-x = 8
 window-padding-y = 8
 window-padding-balance = true
 window-padding-color = extend
-window-colorspace = display-p3
 macos-titlebar-proxy-icon = hidden
 macos-titlebar-style = tabs
 
 # Icon
 macos-icon = xray
-# macos-icon = custom-style
-macos-icon-frame = aluminum
-macos-icon-ghost-color = c0caf5
-macos-icon-screen-color = 1a1b26
-
-# Cursor and mouse
-shell-integration-features = no-cursor
-cursor-style = block
-cursor-click-to-move = true
-mouse-hide-while-typing = true
