@@ -17,28 +17,4 @@ return {
       vim.keymap.set('n', '<leader>tc', '<cmd>TSC<CR>', { desc = '[t]ype [c]heck' })
     end,
   },
-  {
-    'dmmulroy/ts-error-translator.nvim',
-    opts = {},
-  },
-  {
-    'marilari88/twoslash-queries.nvim',
-    event = 'VeryLazy',
-    opts = {
-      is_enabled = false,
-      multi_line = true,
-      highlight = 'Comment',
-    },
-    config = function()
-      require('twoslash-queries').setup {
-        is_enabled = false,
-        multi_line = true,
-        highlight = 'Comment',
-      }
-      vim.keymap.set('n', '<leader>ti', function()
-        vim.cmd 'TwoslashQueriesInspect'
-        vim.cmd 'TwoslashQueriesEnable'
-      end, { desc = '[t]ype [i]nspect' })
-    end,
-  },
 }
