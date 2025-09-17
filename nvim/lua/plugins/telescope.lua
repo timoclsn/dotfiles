@@ -122,7 +122,6 @@ return {
           ignore_current_buffer = true,
           previewer = false,
           winblend = 10,
-          initial_mode = 'normal',
           layout_config = {
             width = 100,
           },

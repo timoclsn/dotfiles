@@ -110,7 +110,6 @@ return {
               previewer = false,
               sorter = config.values.generic_sorter {},
               winblend = 10,
-              initial_mode = 'normal',
               layout_config = {
                 width = 100,
               },
