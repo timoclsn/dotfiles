@@ -83,7 +83,7 @@
   },
   "mcp": {
     "playwright": {
-      "enabled": true,
+      "enabled": false,
       "type": "local",
       "command": ["npx", "@playwright/mcp@latest"]
     },
