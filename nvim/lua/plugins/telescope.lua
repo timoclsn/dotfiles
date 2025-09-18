@@ -54,6 +54,9 @@ return {
               n = {
                 ['d'] = actions.delete_buffer,
               },
+              i = {
+                ['<C-d>'] = actions.delete_buffer,
+              },
             },
           },
         },
