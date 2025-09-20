@@ -1,6 +1,9 @@
 return {
   {
     'zbirenbaum/copilot.lua',
+    dependencies = {
+      'copilotlsp-nvim/copilot-lsp',
+    },
     cmd = 'Copilot',
     event = 'InsertEnter',
     opts = {
@@ -13,8 +16,14 @@ return {
         keymap = {
           accept = '<Tab>',
           accept_line = '<S-Tab>',
-          prev = '<C->',
           dismiss = '<C-e>',
+        },
+      },
+      nes = {
+        enabled = true,
+        keymap = {
+          accept_and_goto = '<leader>a',
+          dismiss = '<Esc>',
         },
       },
     },
