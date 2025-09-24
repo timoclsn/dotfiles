@@ -43,6 +43,7 @@
       "mode": "primary",
       "model": "openai/gpt-5-codex",
       "reasoningEffort": "high",
+      "reasoningSummary": null,
       "textVerbosity": "medium"
     },
     "think": {
@@ -57,6 +58,7 @@
       "mode": "primary",
       "model": "openai/gpt-5-codex",
       "reasoningEffort": "high",
+      "reasoningSummary": null,
       "textVerbosity": "medium"
     },
     "free": {
