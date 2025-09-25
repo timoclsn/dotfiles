@@ -20,3 +20,5 @@ macos-titlebar-style = tabs
 
 # Icon
 macos-icon = xray
+
+mouse-hide-while-typing = true
