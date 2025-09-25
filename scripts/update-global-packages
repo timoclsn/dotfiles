@@ -11,8 +11,6 @@ PACKAGES=(
   "opencode-ai"
   "@openai/codex"
   "@google/gemini-cli"
-  "@charmland/crush"
-  "dev3000"
 )
 
 echo "Updating global npm packages (${#PACKAGES[@]} total)..."
