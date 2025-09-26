@@ -92,7 +92,7 @@
       "command": ["npx", "chrome-devtools-mcp@latest"]
     },
     "ddg-search": {
-      "enabled": true,
+      "enabled": false,
       "type": "local",
       "command": ["uvx", "duckduckgo-mcp-server"]
     },
