@@ -11,6 +11,7 @@ PACKAGES=(
   "opencode-ai"
   "@openai/codex"
   "@google/gemini-cli"
+  "@github/copilot"
 )
 
 echo "Updating global npm packages (${#PACKAGES[@]} total)..."
