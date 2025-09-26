@@ -97,7 +97,7 @@
       "command": ["uvx", "duckduckgo-mcp-server"]
     },
     "context7": {
-      "enabled": true,
+      "enabled": false,
       "type": "local",
       "command": ["npx", "-y", "@upstash/context7-mcp"]
     },
