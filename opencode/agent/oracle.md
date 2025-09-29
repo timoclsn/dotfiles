@@ -3,7 +3,7 @@ description: Consult the Oracle - an AI advisor powered by OpenAI's GTP-5 reason
 mode: subagent
 model: openai/gpt-5
 reasoningEffort: high
-reasoningSummary: auto,
+reasoningSummary: auto
 textVerbosity: medium
 tools:
   write: false
