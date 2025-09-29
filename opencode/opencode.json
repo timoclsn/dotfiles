@@ -36,7 +36,7 @@
   "agent": {
     "build": {
       "mode": "primary",
-      "model": "anthropic/claude-sonnet-4-20250514"
+      "model": "anthropic/claude-sonnet-4-5-20250929"
     },
     "plan": {
       "mode": "primary",
@@ -47,7 +47,7 @@
     },
     "think": {
       "mode": "primary",
-      "model": "anthropic/claude-sonnet-4-20250514",
+      "model": "anthropic/claude-sonnet-4-5-20250929",
       "thinking": {
         "type": "enabled",
         "budgetTokens": 5000
