@@ -8,10 +8,10 @@ export const Notify: Plugin = async ({ directory, client, $ }) => {
         const pathParts = directory.split("/").filter(Boolean);
         const projectName = pathParts[pathParts.length - 1] || "";
         const projectCategory = pathParts[pathParts.length - 2] || "";
+        const subtitle = `\\[${projectCategory}/${projectName}\]`;
 
         // Session title
         const sessionID = event.properties.sessionID;
-        const subtitle = `opencode-${projectName}-${sessionID}`;
         const { data: currentSession } = await client.session.get({
           path: { id: sessionID },
         });
