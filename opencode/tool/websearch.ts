@@ -18,7 +18,7 @@ export default tool({
       tools: {
         google_search: google.tools.googleSearch({}),
       },
-      prompt: `Search the web for "${args.query}". Summarize your findings in bullets points. Also list your sources (links). Th your findings in ults will be used by a coding agent.`,
+      prompt: `Search the web for "${args.query}". Summarize your findings in bullets points. Also list your sources (URLs). Your findings will be used by a coding agent.`,
     });
 
     return text;

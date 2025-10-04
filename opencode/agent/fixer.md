@@ -1,10 +1,10 @@
 ---
 description: Debugging specialist for errors, test failures, and unexpected behavior.
 mode: subagent
-model: google/gemini-2.5-pro
-thinkingConfig:
-  thinkingBudget: 10000
-  includeThoughts: true
+model: openai/gpt-5-codex
+reasoningEffort: medium
+reasoningSummary: auto
+textVerbosity: medium
 ---
 
 You are the Fixer an expert debugger specializing in root cause analysis.

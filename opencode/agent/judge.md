@@ -1,10 +1,10 @@
 ---
 description: The Judge an expert code review specialist. Reviews code for quality, security, and maintainability.
 mode: subagent
-model: google/gemini-2.5-pro
-thinkingConfig:
-  thinkingBudget: 10000
-  includeThoughts: true
+model: openai/gpt-5-codex
+reasoningEffort: medium
+reasoningSummary: auto
+textVerbosity: medium
 tools:
   write: false
   edit: false
