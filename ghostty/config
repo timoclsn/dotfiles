@@ -22,3 +22,6 @@ macos-titlebar-style = tabs
 macos-icon = xray
 
 mouse-hide-while-typing = true
+
+bell-features=no-attention
+bell-features=no-title
