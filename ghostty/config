@@ -18,10 +18,8 @@ window-padding-color = extend
 macos-titlebar-proxy-icon = hidden
 macos-titlebar-style = tabs
 
-# Icon
+# Misc
 macos-icon = xray
-
 mouse-hide-while-typing = true
-
 bell-features=no-attention
 bell-features=no-title
