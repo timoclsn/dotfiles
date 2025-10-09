@@ -98,6 +98,7 @@ alias v="vim"
 alias lg="lazygit"
 alias g="git"
 alias r="run_npm_script"
+alias x="run_nx_target"
 alias t="tmux"
 alias ta="tmux attach"
 alias tk="tmux kill-server"
@@ -169,6 +170,54 @@ run_npm_script() {
         print -s "$cmd"  # Add to zsh history
         eval "$cmd"
     fi
+}
+
+run_nx_target() {
+  local missing_deps=()
+  
+  if ! command -v jq >/dev/null 2>&1; then
+    missing_deps+=("jq")
+  fi
+  
+  if ! command -v fzf >/dev/null 2>&1; then
+    missing_deps+=("fzf")
+  fi
+  
+  if [ ${#missing_deps[@]} -ne 0 ]; then
+    echo "Error: Missing required dependencies: ${missing_deps[*]}"
+    echo "Please install them before running this script."
+    return 1
+  fi
+  
+  if [ ! -f "nx.json" ]; then
+    echo "Error: nx.json not found in current directory"
+    return 1
+  fi
+  
+  local project
+  project=$(npx nx show projects --json 2>/dev/null | jq -r '.[]' | sort | \
+    fzf --height 15 \
+        --cycle \
+        --prompt="Select project: " \
+        --border-label=" Select Nx project ")
+  
+  if [ -z "$project" ]; then
+    return 0
+  fi
+  
+  local target
+  target=$(npx nx show project "$project" --json 2>/dev/null | \
+    jq -r '.targets | keys[]' | sort | \
+    fzf --height 15 \
+        --cycle \
+        --prompt="Select target to run: " \
+        --border-label=" Run target for $project ")
+  
+  if [ -n "$target" ]; then
+    local cmd="npx nx run $project:$target"
+    print -s "$cmd"
+    eval "$cmd"
+  fi
 }
 
 manage_node_version() {
