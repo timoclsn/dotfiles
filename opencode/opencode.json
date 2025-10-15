@@ -89,7 +89,12 @@
     "chrome-devtools": {
       "enabled": false,
       "type": "local",
-      "command": ["npx", "chrome-devtools-mcp@latest"]
+      "command": [
+        "npx",
+        "chrome-devtools-mcp@latest",
+        "-u",
+        "http://localhost:9222"
+      ]
     },
     "ddg-search": {
       "enabled": false,
