@@ -33,6 +33,7 @@
 
 ## Tmux
 
+- Only start long running task like watchers or dev servers via tmux.
 - When no pane to work in is provided use pane 2 in window 3 in the current session to (the one you are running in).
 - Use `tmux capture-pane -p` to capture current pane content before sending keys to preserve context
 
