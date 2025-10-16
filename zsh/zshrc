@@ -110,7 +110,7 @@ alias y="yazy-shell"
 alias i="fastfetch"
 alias n='manage_node_version'
 alias o='manage_ollama'
-alias chrome='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222 --user-data-dir="$HOME/.config/chrome-profile"'
+alias b='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222 --user-data-dir="$HOME/.config/chrome-profile"'
 
 # =============================================================================
 # Key Bindings
