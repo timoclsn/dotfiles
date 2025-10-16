@@ -1,9 +1,6 @@
 ---
 description: write the current plan to a markdown file for team handoff
-agent: build
 ---
-
-You have already created a plan. Now write that plan to a markdown file in the project root directory.
 
 ## Task: Save Plan to Markdown File
 
@@ -16,5 +13,4 @@ Format the plan as a proper markdown document that a coworker without context ca
 - Files to modify/create
 - Any relevant context or code examples
 
-Use the Write tool to save the plan to the root directory.
-
+Use the write tool to save the plan to the root directory.

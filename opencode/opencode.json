@@ -38,31 +38,32 @@
       "mode": "primary",
       "model": "anthropic/claude-sonnet-4-5-20250929"
     },
-    "plan": {
-      "mode": "primary",
-      "model": "openai/gpt-5-codex",
-      "reasoningEffort": "medium",
-      "reasoningSummary": "auto",
-      "textVerbosity": "medium"
-    },
     "think": {
       "mode": "primary",
       "model": "anthropic/claude-sonnet-4-5-20250929",
       "thinking": {
         "type": "enabled",
-        "budgetTokens": 5000
+        "budgetTokens": 10000
       }
     },
-    "reason": {
+    "smart": {
       "mode": "primary",
       "model": "openai/gpt-5-codex",
       "reasoningEffort": "medium",
-      "reasoningSummary": "auto",
+      "reasoningSummary": "detailed",
+      "include": ["reasoning.encrypted_content"],
       "textVerbosity": "medium"
+    },
+    "fast": {
+      "mode": "primary",
+      "model": "anthropic/claude-haiku-4-5-20251001"
     },
     "free": {
       "mode": "primary",
       "model": "github-copilot/gpt-5-mini"
+    },
+    "plan": {
+      "disable": true
     }
   },
   "permission": {

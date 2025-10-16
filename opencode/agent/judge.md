@@ -3,7 +3,7 @@ description: The Judge an expert code review specialist. Reviews code for qualit
 mode: subagent
 model: openai/gpt-5-codex
 reasoningEffort: medium
-reasoningSummary: auto
+reasoningSummary: detailed
 textVerbosity: medium
 tools:
   write: false

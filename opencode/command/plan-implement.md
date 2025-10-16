@@ -1,6 +1,5 @@
 ---
 description: implement the plan from IMPLEMENTATION_PLAN.md
-agent: build
 ---
 
 ## Context
@@ -23,4 +22,3 @@ Follow these steps:
 
 - If `IMPLEMENTATION_PLAN.md` doesn't exist, inform the user they need to create a plan first using `/plan-create` and `/plan-write`, or provide another plan file.
 - If you encounter issues not covered in the plan, document them and suggest solutions
-
