@@ -6,6 +6,8 @@ description: implement the plan from IMPLEMENTATION_PLAN.md
 
 Plan file: @IMPLEMENTATION_PLAN.md
 
+Notes: $ARGUMENTS
+
 ## Task
 
 Your goal is to execute the implementation plan found in the plan file.
