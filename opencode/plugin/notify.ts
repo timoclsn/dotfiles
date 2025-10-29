@@ -16,6 +16,11 @@ export const Notify: Plugin = async ({ directory, client, $ }) => {
           path: { id: sessionID },
         });
         const sessionTitle = currentSession?.title || "";
+
+        if (sessionTitle === "ai-commit") {
+          return;
+        }
+
         const isDefaultTitle = sessionTitle.startsWith("New session - ");
         const message =
           sessionTitle && !isDefaultTitle ? sessionTitle : "Agent run complete";
