@@ -6,6 +6,7 @@ PACKAGES=(
   "pnpm"
   "@antfu/ni"
   "npm-check-updates"
+  "yalc"
   "@anthropic-ai/claude-code"
   "@sourcegraph/amp"
   "opencode-ai"
