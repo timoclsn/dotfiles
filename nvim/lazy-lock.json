@@ -24,7 +24,7 @@
   "mason.nvim": { "branch": "main", "commit": "ad7146aa61dcaeb54fa900144d768f040090bff0" },
   "mini.nvim": { "branch": "main", "commit": "f545dcc3831ffcf1f15c708bbc63bac29fcef2d5" },
   "multicursor.nvim": { "branch": "main", "commit": "0c6ceae228bf209e8b8717df9de500770c4e7022" },
-  "neo-tree.nvim": { "branch": "main", "commit": "92d1e014c25b71a66e8cddd556db63f5883aa9f9" },
+  "neo-tree.nvim": { "branch": "main", "commit": "a9c9251b3c6f9d0fc5a65ed632e04169ab2bcf89" },
   "nui.nvim": { "branch": "main", "commit": "de740991c12411b663994b2860f1a4fd0937c130" },
   "nvim-highlight-colors": { "branch": "main", "commit": "e0c4a58ec8c3ca7c92d3ee4eb3bc1dd0f7be317e" },
   "nvim-lint": { "branch": "master", "commit": "8c694e1a1ee2ac14df931679cd54e6b8d402c2c2" },
