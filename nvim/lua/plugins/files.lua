@@ -126,9 +126,12 @@ return {
           key = function()
             local git_branch_reader = io.popen 'git branch --show-current'
             if git_branch_reader then
-              local branch = git_branch_reader:read('*l'):match '^%s*(.-)%s*$'
+              local branch = git_branch_reader:read('*l')
               git_branch_reader:close()
-              return vim.fn.getcwd() .. '-' .. branch
+              if branch and branch ~= '' then
+                branch = branch:match '^%s*(.-)%s*$'
+                return vim.fn.getcwd() .. '-' .. branch
+              end
             end
             return vim.fn.getcwd()
           end,
