@@ -513,3 +513,4 @@ eval "$(zoxide init zsh)"
 export PATH="$PATH:/Users/timo/.lmstudio/bin"
 # End of LM Studio CLI section
 
+eval "$(rbenv init - zsh)"
