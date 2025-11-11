@@ -98,7 +98,7 @@ alias v="vim"
 alias lg="lazygit"
 alias g="git"
 alias r="run_npm_script"
-alias x="run_nx_target"
+alias m="run_nx_target"
 alias t="tmux"
 alias ta="tmux attach"
 alias tk="tmux kill-server"
@@ -110,6 +110,7 @@ alias y="yazy-shell"
 alias i="fastfetch"
 alias n='manage_node_version'
 alias o='manage_ollama'
+alias x='manage_xcode_version'
 alias b='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222 --user-data-dir="$HOME/.config/chrome-profile"'
 
 # =============================================================================
@@ -403,6 +404,54 @@ manage_ollama() {
             fi
             ;;
     esac
+}
+
+manage_xcode_version() {
+    # Check if fzf is installed
+    if ! command -v fzf >/dev/null 2>&1; then
+        echo "fzf is not installed. Please install it first."
+        return 1
+    fi
+
+    # Get current Xcode path
+    local current_xcode=$(xcode-select -p 2>/dev/null | sed 's|/Contents/Developer||')
+    local current_xcode_name=$(basename "$current_xcode" 2>/dev/null || echo "none")
+    local current_xcode_string="(current: $current_xcode_name)"
+
+    # Find all Xcode applications
+    local xcode_apps=()
+    while IFS= read -r app; do
+        xcode_apps+=("$app")
+    done < <(find /Applications -maxdepth 1 -name "Xcode*.app" -type d 2>/dev/null | sort)
+
+    if [ ${#xcode_apps[@]} -eq 0 ]; then
+        echo "No Xcode applications found in /Applications"
+        return 1
+    fi
+
+    # Select Xcode version
+    local selected_xcode=$(printf '%s\n' "${xcode_apps[@]}" | \
+        sed 's|/Applications/||' | \
+        fzf --height 15 \
+            --cycle \
+            --prompt="Select Xcode version: " \
+            --border-label " Manage Xcode $current_xcode_string")
+
+    if [ -z "$selected_xcode" ]; then
+        return 0
+    fi
+
+    local xcode_path="/Applications/$selected_xcode"
+    
+    sudo xcode-select -s "$xcode_path"
+    
+    if [ $? -eq 0 ]; then
+        echo "Successfully switched to:"
+        xcodebuild -version
+    else
+        echo "Failed to switch Xcode version"
+        return 1
+    fi
 }
 # =============================================================================
 # Brew Package Management Functions
