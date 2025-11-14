@@ -561,3 +561,7 @@ eval "$(zoxide init zsh)"
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/Users/timo/.lmstudio/bin"
 # End of LM Studio CLI section
+
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
