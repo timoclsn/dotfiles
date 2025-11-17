@@ -1,7 +1,7 @@
 ---
 description: Consult the Oracle - an AI advisor powered by OpenAI's GTP-5 reasoning model that can plan, review, and provide expert guidance.
 mode: subagent
-model: openai/gpt-5-codex
+model: openai/gpt-5.1-codex
 reasoningEffort: medium
 reasoningSummary: auto
 textVerbosity: medium
