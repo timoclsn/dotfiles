@@ -2,11 +2,11 @@
   "name": "opencode",
   "version": "1.0.0",
   "dependencies": {
-    "@ai-sdk/google": "^2.0.28",
-    "@opencode-ai/plugin": "^1.0.35",
-    "ai": "^5.0.88"
+    "@ai-sdk/google": "^2.0.34",
+    "@opencode-ai/plugin": "^1.0.72",
+    "ai": "^5.0.93"
   },
   "devDependencies": {
-    "@types/node": "^24.10.0"
+    "@types/node": "^24.10.1"
   }
 }
