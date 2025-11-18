@@ -15,7 +15,11 @@ export const Notify: Plugin = async ({ directory, client, $ }) => {
         const { data: currentSession } = await client.session.get({
           path: { id: sessionID },
         });
-        const sessionTitle = currentSession?.title || "";
+
+        if (!currentSession) return;
+        if (currentSession.parentID) return; // Ignore child sessions
+
+        const sessionTitle = currentSession.title;
 
         if (sessionTitle === "ai-commit") {
           return;
