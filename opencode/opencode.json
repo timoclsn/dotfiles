@@ -36,7 +36,7 @@
   "agent": {
     "build": {
       "mode": "primary",
-      "model": "anthropic/claude-sonnet-4-5-20250929"
+      "model": "github-copilot/claude-sonnet-4.5"
     },
     "smart": {
       "mode": "primary",
@@ -48,7 +48,7 @@
     },
     "fast": {
       "mode": "primary",
-      "model": "anthropic/claude-haiku-4-5-20251001"
+      "model": "github-copilot/claude-haiku-4.5"
     },
     "free": {
       "mode": "primary",
