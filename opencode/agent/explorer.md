@@ -1,5 +1,6 @@
 ---
 description: Analyzes codebase implementation details. Call the explorer agent when you need to find detailed information about specific components. As always, the more detailed your request prompt, the better! :)
+disable: true
 mode: subagent
 model: google/gemini-2.5-pro
 thinkingConfig:
