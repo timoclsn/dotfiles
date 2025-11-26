@@ -6,9 +6,6 @@
 - Allways make your soultions accessible.
 - Don't add comments all over the place. Only comment where it adds value.
 - Dont use git commit or git push if not otherwise instructed by the user.
-- Use the todo tool to break down your task and progress.
-- You run in an environment where ast-grep (sg) is available; whenever a search requires syntax-aware or structural matching, default to `sg --lang TypeScript -p '<pattern>'` (or set --lang appropriately) and avoid falling back to text-only tools like 'rg' or 'grep unless I explicitly request a plain-text search.
-- Never run the build command to test your implementation if not explicitly instructed.
 
 ## Typescript
 
@@ -20,7 +17,10 @@
 - Don't use default exports use named exports if possible.
 - Prefer interfaces over types
 - Avoid enums
-- Use early returns, avoid nested "if" and avoid "else" if possible.
+- Only create an abstraction if it’s actually needed
+- Prefer clear function/variable names over inline comments
+- Don’t unnecessarily add `try`/`catch`
+- Don’t cast to `any`Avoid helper functions when a simple inline expression would suffice Use early returns, avoid nested "if" and avoid "else" if possible.
 
 ## React
 
@@ -29,7 +29,14 @@
 - Type components with a "Props" interface and destructure its props: { prop }: Props.
 - Name Components in PascalCase (in code and the files).
 - If the project has a design system or ui components use these whenever possible.
-- Try to find solutions with css if possible only use React / JavaScript if necessary.
+- Avoid massive JSX blocks and compose smaller components
+- Colocate code that changes together
+- Avoid `useEffect` unless absolutely neededTry to find solutions with css if possible only use React / JavaScript if necessary.
+
+## Tailwind
+
+- Mostly use built-in values, occasionally allow dynamic values, rarely globals
+- Always use v4 + global CSS file format
 
 ## Tmux
 
@@ -45,10 +52,6 @@
 - IMPORTANT: If the Figma Dev Mode MCP Server returns a localhost source for an image or an SVG, use that image or SVG source directly
 - IMPORTANT: DO NOT import/add new icon packages, all the assets should be in the Figma payload
 - IMPORTANT: do NOT use or create placeholders if a localhost source is provided
-
-### Context7
-
-- Use context7 when the user requests code examples, setup or configuration steps, or library/API documentation.
 
 ## GitHub
 
