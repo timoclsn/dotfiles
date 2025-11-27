@@ -60,10 +60,6 @@
       "mode": "primary",
       "model": "github-copilot/claude-haiku-4.5"
     },
-    "free": {
-      "mode": "primary",
-      "model": "github-copilot/gpt-5-mini"
-    },
     "plan": {
       "disable": true
     }
