@@ -107,7 +107,6 @@ vim.o.foldlevelstart = 99
 vim.o.foldenable = true
 vim.o.foldtext = ''
 vim.o.foldmethod = 'expr'
-vim.o.foldexpr = 'v:lua.vim.treesitter.foldexpr()' -- Default to treesitter folding
 
 -- ============================================================================
 -- Autocmds
