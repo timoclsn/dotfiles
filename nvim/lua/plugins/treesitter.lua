@@ -1,16 +1,21 @@
 return {
   {
     'nvim-treesitter/nvim-treesitter',
-    branch = 'main',
+    dependencies = {
+      {
+        'nvim-treesitter/nvim-treesitter-textobjects',
+        branch = 'master',
+      },
+    },
+    lazy = false,
+    branch = 'master',
     build = ':TSUpdate',
-  },
-  {
-    'MeanderingProgrammer/treesitter-modules.nvim',
-    dependencies = { 'nvim-treesitter/nvim-treesitter' },
+    main = 'nvim-treesitter.configs',
     opts = {
       ensure_installed = {
         'astro',
         'bash',
+        'c',
         'css',
         'diff',
         'gitcommit',
@@ -22,29 +27,33 @@ return {
         'luadoc',
         'markdown',
         'markdown_inline',
+        'python',
+        'query',
         'rust',
+        'svelte',
+        'toml',
         'tsx',
         'typescript',
+        'vim',
+        'vimdoc',
         'yaml',
       },
       auto_install = true,
-      highlight = { enable = true },
-      fold = { enable = true },
-      indent = { enable = true },
+      highlight = {
+        enable = true,
+        additional_vim_regex_highlighting = false,
+      },
+      indent = {
+        enable = true,
+      },
       incremental_selection = {
         enable = true,
         keymaps = {
           node_incremental = 'v',
           node_decremental = 'V',
-          init_selection = false,
-          scope_incremental = false,
         },
       },
     },
-  },
-  {
-    'nvim-treesitter/nvim-treesitter-textobjects',
-    branch = 'main',
   },
   {
     'nvim-treesitter/nvim-treesitter-context',
