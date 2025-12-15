@@ -3,6 +3,11 @@ local frontend_patterns = {
   'steuerbot/frontend%-[^/]+/',
 }
 
+local mobile_app_patterns = {
+  'taxfix/mobile%-app/',
+  'taxfix/mobile%-app%-[^/]+/',
+}
+
 local nextjs_patterns = {
   'page.tsx$',
   'route.ts$',
@@ -29,6 +34,20 @@ local function format_frontend_path(full_path, filename)
   component_name = full_path:match '/libs/([^/]+)'
   if component_name then
     return filename .. ' [' .. component_name .. ']'
+  end
+
+  return filename
+end
+
+local function format_mobile_app_path(full_path, filename)
+  local package_name = full_path:match '/packages/([^/]+)'
+  if package_name then
+    return filename .. ' [' .. package_name .. ']'
+  end
+
+  local adapter_name = full_path:match '/modules/mobile%-app%-legacy/src/domain%-adapters/([^/]+)'
+  if adapter_name then
+    return filename .. ' [' .. adapter_name .. ']'
   end
 
   return filename
@@ -87,6 +106,8 @@ local function format_path(path)
   local formatted_filename
   if match_patterns(full_path, frontend_patterns) then
     formatted_filename = format_frontend_path(full_path, filename)
+  elseif match_patterns(full_path, mobile_app_patterns) then
+    formatted_filename = format_mobile_app_path(full_path, filename)
   elseif match_patterns(full_path, nextjs_patterns) then
     formatted_filename = format_nextjs_path(full_path, filename)
   else
