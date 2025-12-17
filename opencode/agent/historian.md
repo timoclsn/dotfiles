@@ -2,7 +2,7 @@
 description: Git-based context agent that analyzes recent changes to provide comprehensive historical context
 disable: true
 mode: subagent
-model: google/gemini-2.5-pro
+model: google/gemini-3-flash-preview
 thinkingConfig:
   thinkingBudget: 10000
   includeThoughts: true

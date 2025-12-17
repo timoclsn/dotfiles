@@ -14,7 +14,7 @@ export default tool({
   },
   async execute(args) {
     const { text } = await generateText({
-      model: google("gemini-2.5-flash"),
+      model: google("gemini-3-flash"),
       tools: {
         google_search: google.tools.googleSearch({}),
       },
