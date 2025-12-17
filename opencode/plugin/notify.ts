@@ -22,6 +22,10 @@ export const Notify: Plugin = async ({ directory, client, $ }) => {
         const sessionTitle = currentSession.title;
 
         if (sessionTitle === "ai-commit") {
+          await client.session.delete({
+            path: { id: sessionID },
+          });
+
           return;
         }
 
