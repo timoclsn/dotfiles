@@ -30,6 +30,7 @@ return {
         'query',
         'rust',
         'svelte',
+        'tmux',
         'toml',
         'tsx',
         'typescript',
