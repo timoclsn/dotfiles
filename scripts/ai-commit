@@ -41,6 +41,6 @@ $RECENT_COMMITS
 </recent-commits>
 "
 
-COMMIT_MSG=$(opencode run "$PROMPT" --model google/gemini-3-flash-preview --title ai-commit 2>/dev/null | head -n 1)
+COMMIT_MSG=$(opencode run "$PROMPT" --model google/gemini-2.5-flash-lite --title ai-commit 2>/dev/null | head -n 1)
 
 git commit -m "$COMMIT_MSG"
