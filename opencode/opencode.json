@@ -149,6 +149,11 @@
       "enabled": false,
       "type": "remote",
       "url": "https://mcp.notion.com/mcp"
+    },
+    "answeroverflow": {
+      "enabled": false,
+      "type": "remote",
+      "url": "https://www.answeroverflow.com/mcp"
     }
   }
 }
