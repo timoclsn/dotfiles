@@ -9,10 +9,8 @@ adjust-cell-height = 20%
 adjust-cursor-height = 20%
 
 # Window
-# background-opacity = 0.9
-background-opacity = 0.5
-# background-blur = 20
-background-blur = macos-glass-regular
+background-opacity = 0.9
+background-blur = 20
 window-padding-x = 8
 # window-padding-y = 8
 window-padding-balance = true
@@ -23,8 +21,4 @@ macos-titlebar-style = tabs
 # Misc
 macos-icon = xray
 mouse-hide-while-typing = true
-bell-features=no-attention
-bell-features=no-title
-
-# Update
-auto-update-channel = tip
+bell-features=no-attention,no-title
