@@ -82,6 +82,11 @@
     "messages_last": "ctrl+z"
   },
   "mcp": {
+    "playwrighter": {
+      "enabled": false,
+      "type": "local",
+      "command": ["npx", "playwriter"]
+    },
     "playwright": {
       "enabled": false,
       "type": "local",
