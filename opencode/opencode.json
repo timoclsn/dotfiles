@@ -71,6 +71,7 @@
   "permission": {
     "edit": "allow",
     "bash": "allow",
+    "skill": "allow",
     "webfetch": "allow",
     "doom_loop": "ask",
     "external_directory": "ask"
