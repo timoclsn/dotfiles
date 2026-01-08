@@ -3,7 +3,7 @@
   "theme": "tokyonight",
   "autoupdate": false,
   "share": "disabled",
-  "small_model": "google/gemini-3-flash-preview",
+  "small_model": "google/gemini-2.5-flash",
   "provider": {
     "openai": {
       "models": {

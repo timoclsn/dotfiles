@@ -2,7 +2,7 @@
 description: Web research specialist for technical topics, bugs, and general web searches. Uses websearch tool and web fetching to gather comprehensive information.
 disable: true
 mode: subagent
-model: google/gemini-3-flash-preview
+model: google/gemini-2.5-flash
 thinkingConfig:
   thinkingBudget: 10000
   includeThoughts: true
