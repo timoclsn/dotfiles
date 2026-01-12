@@ -1,16 +1,8 @@
-model = "gtp-5"
-approval_policy = "never"
-sandbox_permissions = [
-    "disk-full-read-access",
-    "disk-write-platform-user-temp-folder",
-    "disk-write-platform-global-temp-folder",
-    "disk-write-cwd",
-]
-notify = ["python3", "/Users/timo/.codex/notify.py"]
+notify = ["bun", "/Users/timo/.codex/hooks/notify.ts"]
 
-[mcp_servers.playwright]
-command = "npx"
-args = ["@playwright/mcp@latest"]
+# [mcp_servers.playwright]
+# command = "npx"
+# args = ["@playwright/mcp@latest"]
 
 # [mcp_servers.fetch]
 # command = "uvx"
