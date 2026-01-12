@@ -1,16 +1,18 @@
 {
+  "env": {
+    "DISABLE_AUTOUPDATER": "1"
+  },
   "permissions": {
     "allow": [],
-    "deny": ["Bash(git commit)", "Bash(git push)"]
+    "deny": []
   },
-  "enableAllProjectMcpServers": false,
   "hooks": {
     "Stop": [
       {
         "hooks": [
           {
             "type": "command",
-            "command": "bash ~/.claude/notify.sh"
+            "command": "bun ~/.claude/hooks/notify.ts"
           }
         ]
       }
@@ -29,13 +31,11 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "bash ~/.claude/statusline.sh"
+    "command": "bun ~/.claude/hooks/statusline.ts"
   },
-  "autoUpdates": false,
   "preferredNotifChannel": "notifications_disabled",
   "theme": "dark",
-  "env": {
-    "DISABLE_AUTOUPDATER": "1"
+  "enabledPlugins": {
+    "typescript-lsp@claude-plugins-official": true
   }
 }
-

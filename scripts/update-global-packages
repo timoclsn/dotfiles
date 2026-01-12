@@ -8,7 +8,6 @@ PACKAGES=(
   "npm-check-updates"
   "vercel"
   "yalc"
-  "@anthropic-ai/claude-code"
   "@sourcegraph/amp"
   "opencode-ai"
   "@openai/codex"

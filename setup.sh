@@ -42,15 +42,13 @@ ln -sf "$DOTFILES/opencode/tool" "$HOME/.config/opencode/tool"
 
 # claude code
 ln -sf "$DOTFILES/claude/settings.json" "$HOME/.claude/settings.json"
-ln -sf "$DOTFILES/claude/statusline.sh" "$HOME/.claude/statusline.sh"
-chmod +x "$HOME/.claude/statusline.sh"
-ln -sf "$DOTFILES/claude/notify.sh" "$HOME/.claude/notify.sh"
-chmod +x "$HOME/.claude/notify.sh"
 ln -sf "$DOTFILES/ai/AGENTS.md" "$HOME/.claude/CLAUDE.md"
 rm "$HOME/.claude/agents" 2>/dev/null || true
 ln -sf "$DOTFILES/claude/agents" "$HOME/.claude/agents"
 rm "$HOME/.claude/commands" 2>/dev/null || true
 ln -sf "$DOTFILES/claude/commands" "$HOME/.claude/commands"
+rm "$HOME/.claude/hooks" 2>/dev/null || true
+ln -sf "$DOTFILES/claude/hooks" "$HOME/.claude/hooks"
 
 # Home directory symlinks
 ln -sf "$DOTFILES/aider/.aider.conf.yml" "$HOME/.aider.conf.yml"
