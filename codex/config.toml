@@ -1,5 +1,11 @@
 notify = ["bun", "/Users/timo/.codex/hooks/notify.ts"]
 
+[features]
+web_search_request = true
+
+[sandbox_workspace_write]
+network_access = true
+
 # [mcp_servers.playwright]
 # command = "npx"
 # args = ["@playwright/mcp@latest"]

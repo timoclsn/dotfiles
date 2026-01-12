@@ -64,6 +64,8 @@ ln -sf "$DOTFILES/zsh/zshrc" "$HOME/.zshrc"
 # codex
 ln -sf "$DOTFILES/codex/config.toml" "$HOME/.codex/config.toml"
 ln -sf "$DOTFILES/ai/AGENTS.md" "$HOME/.codex/AGENTS.md"
+rm "$HOME/.codex/prompts" 2>/dev/null || true
+ln -sf "$DOTFILES/codex/prompts" "$HOME/.codex/prompts"
 rm "$HOME/.codex/hooks" 2>/dev/null || true
 ln -sf "$DOTFILES/codex/hooks" "$HOME/.codex/hooks"
 
