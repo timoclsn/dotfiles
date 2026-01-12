@@ -9,9 +9,8 @@ adjust-cell-height = 20%
 adjust-cursor-height = 20%
 
 # Window
-background-opacity = 0.8
-# background-blur = 20
-background-blur = macos-glass-regular
+background-opacity = 0.9
+background-blur = 20
 window-padding-x = 8
 # window-padding-y = 8
 window-padding-balance = true
