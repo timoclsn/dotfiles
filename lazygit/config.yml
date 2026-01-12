@@ -71,6 +71,14 @@ customCommands:
         title: "Description"
         key: "Description"
     command: 'git commit -m "{{.Form.Type}}{{if .Form.Scope}}({{.Form.Scope}}){{end}}: {{.Form.Description}}"'
+  - key: "<c-n>"
+    description: "commit (no verify)"
+    context: "files"
+    prompts:
+      - type: "input"
+        title: "Commit message"
+        key: "Message"
+    command: 'git commit --no-verify -m "{{.Form.Message}}"'
   - key: "<c-a>"
     description: "AI commit"
     context: "files"
