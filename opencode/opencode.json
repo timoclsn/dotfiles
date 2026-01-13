@@ -5,24 +5,6 @@
   "share": "disabled",
   "small_model": "google/gemini-2.5-flash",
   "provider": {
-    "openai": {
-      "models": {
-        "gpt-5.1-codex-max": {
-          "options": {
-            "reasoningEffort": "medium",
-            "reasoningSummary": "auto",
-            "textVerbosity": "medium"
-          }
-        },
-        "gpt-5.2": {
-          "options": {
-            "reasoningEffort": "high",
-            "reasoningSummary": "auto",
-            "textVerbosity": "medium"
-          }
-        }
-      }
-    },
     "ollama": {
       "npm": "@ai-sdk/openai-compatible",
       "options": {
@@ -49,23 +31,6 @@
       "models": {
         "moonshotai/kimi-k2:free": {}
       }
-    }
-  },
-  "agent": {
-    "build": {
-      "mode": "primary",
-      "model": "github-copilot/claude-opus-4.5"
-    },
-    "smart": {
-      "mode": "primary",
-      "model": "openai/gpt-5.1-codex-max"
-    },
-    "fast": {
-      "mode": "primary",
-      "model": "github-copilot/claude-haiku-4.5"
-    },
-    "plan": {
-      "disable": true
     }
   },
   "permission": {
