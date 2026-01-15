@@ -77,8 +77,8 @@ while true; do
     done
   fi
 
-  # Sort by project, then status (working first), then timestamp desc
-  sorted=$(sort -t'|' -k1,1 -k3,3r -k4,4rn "$tmpfile" 2>/dev/null)
+  # Sort by project (parent/name alphabetically), then window number, then pane number
+  sorted=$(sort -t'|' -k1,1 -k5,5n -k6,6n "$tmpfile" 2>/dev/null)
   rm "$tmpfile"
 
   # Build arrays
