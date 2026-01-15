@@ -1,0 +1,99 @@
+#!/usr/bin/env bash
+
+STATUS_DIR="$HOME/.claude/instance-status"
+SPINNER=('⠋' '⠙' '⠹' '⠸' '⠼' '⠴' '⠦' '⠧' '⠇' '⠏')
+spin_idx=0
+selected=0
+
+cleanup() {
+  tput cnorm 2>/dev/null
+  exit 0
+}
+
+trap cleanup EXIT INT TERM
+
+tput civis 2>/dev/null
+clear
+
+while true; do
+  output="Claude Code Instances (j/k or ↑/↓ to navigate, Enter to select, q to close)
+==============================================================================
+
+"
+
+  instances=()
+  pane_refs=()
+
+  if [[ -d "$STATUS_DIR" ]]; then
+    for file in "$STATUS_DIR"/*.json; do
+      [[ -f "$file" ]] || continue
+
+      status=$(jq -r '.status' "$file")
+      path=$(jq -r '.path' "$file")
+      session=$(jq -r '.tmux.session' "$file")
+      window=$(jq -r '.tmux.window' "$file")
+      pane=$(jq -r '.tmux.pane' "$file")
+      prompt=$(jq -r '.prompt // empty' "$file")
+
+      parent=$(basename "$(dirname "$path")")
+      name=$(basename "$path")
+      project="$parent/$name"
+
+      if ! tmux list-panes -t "$session:$window" -F '#{pane_index}' 2>/dev/null | grep -q "^$pane$"; then
+        rm "$file"
+        continue
+      fi
+
+      if [[ "$status" == "working" ]]; then
+        indicator="${SPINNER[$spin_idx]}"
+      else
+        indicator="○"
+      fi
+
+      if [[ -n "$prompt" ]]; then
+        instances+=("$indicator $project ($window.$pane) - $prompt")
+      else
+        instances+=("$indicator $project ($window.$pane)")
+      fi
+      pane_refs+=("$session:$window.$pane")
+    done
+  fi
+
+  count=${#instances[@]}
+
+  if [[ $count -eq 0 ]]; then
+    output+="No instances found"
+  else
+    [[ $selected -ge $count ]] && selected=$((count - 1))
+    [[ $selected -lt 0 ]] && selected=0
+
+    for i in "${!instances[@]}"; do
+      if [[ $i -eq $selected ]]; then
+        output+=$(printf "> %s\n" "${instances[$i]}")
+      else
+        output+=$(printf "  %s\n" "${instances[$i]}")
+      fi
+      output+=$'\n'
+    done
+  fi
+
+  tput cup 0 0 2>/dev/null
+  printf "%s" "$output"
+  tput ed 2>/dev/null
+
+  spin_idx=$(( (spin_idx + 1) % ${#SPINNER[@]} ))
+
+  if read -t 0.1 -n 1 -s -r key; then
+    case "$key" in
+      j|B) ((selected++)) ;;
+      k|A) ((selected--)) ;;
+      q) break ;;
+      "")
+        if [[ $count -gt 0 ]]; then
+          tmux switch-client -t "${pane_refs[$selected]}"
+          break
+        fi
+        ;;
+    esac
+  fi
+done

@@ -80,5 +80,7 @@ ln -sf "$DOTFILES/scripts/ai-commit" "$HOME/.local/bin/ai-commit"
 chmod +x "$HOME/.local/bin/ai-commit"
 ln -sf "$DOTFILES/scripts/update-global-packages" "$HOME/.local/bin/update-global-packages"
 chmod +x "$HOME/.local/bin/update-global-packages"
+ln -sf "$DOTFILES/scripts/claude-instances" "$HOME/.local/bin/claude-instances"
+chmod +x "$HOME/.local/bin/claude-instances"
 
 echo "Symlinks created successfully!"
