@@ -9,7 +9,7 @@
           },
           {
             "type": "command",
-            "command": "bun ~/.claude/hooks/status-tracker.ts"
+            "command": "bun ~/.claude/hooks/agent-control-center.ts"
           }
         ]
       }
@@ -19,7 +19,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bun ~/.claude/hooks/status-tracker.ts"
+            "command": "bun ~/.claude/hooks/agent-control-center.ts"
           }
         ]
       }

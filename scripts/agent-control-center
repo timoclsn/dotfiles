@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-STATUS_DIR="$HOME/.claude/instance-status"
+STATUS_DIR="$HOME/.local/share/agent-control-center"
 SPINNER=('⠋' '⠙' '⠹' '⠸' '⠼' '⠴' '⠦' '⠧' '⠇' '⠏')
 spin_idx=0
 selected=0
@@ -12,6 +12,17 @@ RESET='\033[0m'
 CYAN='\033[36m'
 YELLOW='\033[33m'
 GREEN='\033[32m'
+MAGENTA='\033[35m'
+BLUE='\033[34m'
+
+get_agent_label() {
+  case "$1" in
+    claude) echo "${CYAN}CC${RESET}" ;;
+    opencode) echo "${MAGENTA}OC${RESET}" ;;
+    codex) echo "${BLUE}CX${RESET}" ;;
+    *) echo "${DIM}??${RESET}" ;;
+  esac
+}
 
 cleanup() {
   tput cnorm 2>/dev/null
@@ -29,8 +40,8 @@ while true; do
 
   # Header
   output+="\n"
-  output+="${BOLD}${CYAN}  Claude Code Control Center${RESET}\n"
-  output+="${DIM}  ───────────────────────────${RESET}\n"
+  output+="${BOLD}${CYAN}  Agent Control Center${RESET}\n"
+  output+="${DIM}  ─────────────────────${RESET}\n"
   output+="\n"
   output+="${DIM}  j/k navigate • enter select • x delete • q quit${RESET}\n"
   output+="\n"
@@ -42,6 +53,7 @@ while true; do
     for file in "$STATUS_DIR"/*.json; do
       [[ -f "$file" ]] || continue
 
+      agent=$(jq -r '.agent // "claude"' "$file")
       status=$(jq -r '.status' "$file")
       path=$(jq -r '.path' "$file")
       session=$(jq -r '.tmux.session' "$file")
@@ -60,13 +72,13 @@ while true; do
         continue
       fi
 
-      # Format: project|status|timestamp|window|pane|pane_ref|prompt|session
-      echo "${project}|${status}|${timestamp}|${window}|${pane}|${pane_ref}|${prompt}|${session}" >> "$tmpfile"
+      # Format: project|agent|status|timestamp|window|pane|pane_ref|prompt|session
+      echo "${project}|${agent}|${status}|${timestamp}|${window}|${pane}|${pane_ref}|${prompt}|${session}" >> "$tmpfile"
     done
   fi
 
   # Sort by project, then status (working first), then timestamp desc
-  sorted=$(sort -t'|' -k1,1 -k2,2r -k3,3rn "$tmpfile" 2>/dev/null)
+  sorted=$(sort -t'|' -k1,1 -k3,3r -k4,4rn "$tmpfile" 2>/dev/null)
   rm "$tmpfile"
 
   # Build arrays
@@ -75,7 +87,7 @@ while true; do
   file_paths=()
   current_project=""
 
-  while IFS='|' read -r project status timestamp window pane pane_ref prompt session; do
+  while IFS='|' read -r project agent status timestamp window pane pane_ref prompt session; do
     [[ -z "$project" ]] && continue
 
     # Project header
@@ -86,7 +98,10 @@ while true; do
       current_project="$project"
     fi
 
-    # Instance line
+    # Agent label
+    agent_label=$(get_agent_label "$agent")
+
+    # Status indicator
     if [[ "$status" == "working" ]]; then
       indicator="${YELLOW}${SPINNER[$spin_idx]}${RESET}"
     else
@@ -94,9 +109,9 @@ while true; do
     fi
 
     if [[ -n "$prompt" ]]; then
-      display="$indicator ${DIM}$prompt${RESET} ${DIM}($window.$pane)${RESET}"
+      display="$indicator [$agent_label] ${DIM}$prompt${RESET} ${DIM}($window.$pane)${RESET}"
     else
-      display="$indicator ${DIM}($window.$pane)${RESET}"
+      display="$indicator [$agent_label] ${DIM}($window.$pane)${RESET}"
     fi
 
     instances+=("ITEM|$display")

@@ -1,4 +1,4 @@
-notify = ["bun", "/Users/timo/.codex/hooks/notify.ts"]
+notify = ["bun", "/Users/timo/.codex/hooks/notify-all.ts"]
 
 [features]
 web_search_request = true

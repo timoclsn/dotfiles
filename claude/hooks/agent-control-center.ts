@@ -1,7 +1,7 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { $ } from "bun";
 
-const STATUS_DIR = `${process.env.HOME}/.claude/instance-status`;
+const STATUS_DIR = `${process.env.HOME}/.local/share/agent-control-center`;
 
 const getStatus = (event: string) => {
   if (event === "Stop") return "idle";
@@ -40,19 +40,18 @@ const main = async () => {
   const statusFile = `${STATUS_DIR}/${tmux.session}-${tmux.window}-${tmux.pane}.json`;
   const path = input.workspace?.current_dir ?? input.cwd ?? process.cwd();
 
-  // Read existing file to preserve initial prompt
   let prompt: string | undefined;
   try {
     const existing = JSON.parse(await Bun.file(statusFile).text());
     prompt = existing.prompt;
   } catch {}
 
-  // Only capture prompt on first UserPromptSubmit (when no prompt exists yet)
   if (!prompt && input.hook_event_name === "UserPromptSubmit" && input.prompt) {
     prompt = truncate(input.prompt.replace(/\n/g, " ").trim(), 40);
   }
 
   writeFileSync(statusFile, JSON.stringify({
+    agent: "claude",
     status,
     path,
     tmux,
