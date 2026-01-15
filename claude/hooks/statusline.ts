@@ -15,6 +15,17 @@ interface StatusLineInput {
     total_lines_added: number;
     total_lines_removed: number;
   };
+  context_window: {
+    total_input_tokens: number;
+    total_output_tokens: number;
+    context_window_size: number;
+    current_usage: {
+      input_tokens: number;
+      output_tokens: number;
+      cache_creation_input_tokens: number;
+      cache_read_input_tokens: number;
+    } | null;
+  };
 }
 
 const getGitBranch = async () => {
@@ -27,14 +38,39 @@ const getGitBranch = async () => {
   }
 };
 
+const formatTokens = (tokens: number) => {
+  if (tokens >= 1000) return `${Math.round(tokens / 1000)}k`;
+  return `${tokens}`;
+};
+
+const getContextUsage = (input: StatusLineInput) => {
+  const { context_window } = input;
+  if (!context_window.current_usage) return "0% (0/0)";
+
+  const currentTokens =
+    context_window.current_usage.input_tokens +
+    context_window.current_usage.cache_creation_input_tokens +
+    context_window.current_usage.cache_read_input_tokens;
+
+  const percentUsed = Math.round(
+    (currentTokens * 100) / context_window.context_window_size
+  );
+
+  const current = formatTokens(currentTokens);
+  const total = formatTokens(context_window.context_window_size);
+
+  return `${current}/${total} (${percentUsed}%)`;
+};
+
 const main = async () => {
   const input: StatusLineInput = await Bun.stdin.json();
 
   const model = input.model.display_name;
   const dir = input.workspace.current_dir.split("/").pop() ?? "";
   const gitBranch = await getGitBranch();
+  const contextUsage = getContextUsage(input);
 
-  console.log(`[${model}]  ${dir}${gitBranch}`);
+  console.log(`${model} | ${contextUsage} | ${dir}${gitBranch}`);
 };
 
 main();
