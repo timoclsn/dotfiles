@@ -78,8 +78,9 @@ const main = async () => {
   const dir = input.workspace.current_dir.split("/").pop() ?? "";
   const gitBranch = await getGitBranch();
   const contextUsage = getContextUsage(input);
+  const linesChanged = `+${input.cost.total_lines_added}/-${input.cost.total_lines_removed}`;
 
-  console.log(`${model} | ${contextUsage} | ${dir}${gitBranch}`);
+  console.log(`${model} | ${contextUsage} | ${linesChanged} | ${dir}${gitBranch}`);
 };
 
 main();
