@@ -1,11 +1,4 @@
 {
-  "env": {
-    "DISABLE_AUTOUPDATER": "1"
-  },
-  "permissions": {
-    "allow": [],
-    "deny": []
-  },
   "hooks": {
     "Stop": [
       {
@@ -33,9 +26,11 @@
     "type": "command",
     "command": "bun ~/.claude/hooks/statusline.ts"
   },
-  "preferredNotifChannel": "notifications_disabled",
-  "theme": "dark",
   "enabledPlugins": {
     "typescript-lsp@claude-plugins-official": true
-  }
+  },
+  "promptSuggestionEnabled": false,
+  "theme": "dark",
+  "autoUpdatesChannel": "stable",
+  "minimumVersion": "2.1.5"
 }
