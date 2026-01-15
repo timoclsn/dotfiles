@@ -1,7 +1,12 @@
 import { $ } from "bun";
 
 interface StatusLineInput {
+  hook_event_name: string;
+  session_id: string;
+  transcript_path: string;
+  cwd: string;
   model: {
+    id: string;
     display_name: string;
   };
   workspace: {
@@ -9,9 +14,13 @@ interface StatusLineInput {
     project_dir: string;
   };
   version: string;
+  output_style: {
+    name: string;
+  };
   cost: {
     total_cost_usd: number;
     total_duration_ms: number;
+    total_api_duration_ms: number;
     total_lines_added: number;
     total_lines_removed: number;
   };
@@ -45,7 +54,7 @@ const formatTokens = (tokens: number) => {
 
 const getContextUsage = (input: StatusLineInput) => {
   const { context_window } = input;
-  if (!context_window.current_usage) return "0% (0/0)";
+  if (!context_window.current_usage) return "0/0 (0%)";
 
   const currentTokens =
     context_window.current_usage.input_tokens +
