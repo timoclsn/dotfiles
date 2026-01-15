@@ -5,7 +5,6 @@ const STATUS_DIR = `${process.env.HOME}/.claude/instance-status`;
 
 const getStatus = (event: string) => {
   if (event === "Stop") return "idle";
-  if (event === "Notification") return "idle";
   if (event === "UserPromptSubmit") return "working";
   return "working";
 };
@@ -32,6 +31,7 @@ const main = async () => {
   mkdirSync(STATUS_DIR, { recursive: true });
 
   const input = await Bun.stdin.json();
+
   const status = getStatus(input.hook_event_name);
 
   const tmux = await getTmuxInfo();
@@ -40,16 +40,16 @@ const main = async () => {
   const statusFile = `${STATUS_DIR}/${tmux.session}-${tmux.window}-${tmux.pane}.json`;
   const path = input.workspace?.current_dir ?? input.cwd ?? process.cwd();
 
-  // Read existing file to preserve prompt if this isn't a UserPromptSubmit event
+  // Read existing file to preserve initial prompt
   let prompt: string | undefined;
   try {
     const existing = JSON.parse(await Bun.file(statusFile).text());
     prompt = existing.prompt;
   } catch {}
 
-  // Capture prompt from UserPromptSubmit, truncated to 50 chars
-  if (input.hook_event_name === "UserPromptSubmit" && input.prompt) {
-    prompt = truncate(input.prompt.replace(/\n/g, " ").trim(), 50);
+  // Only capture prompt on first UserPromptSubmit (when no prompt exists yet)
+  if (!prompt && input.hook_event_name === "UserPromptSubmit" && input.prompt) {
+    prompt = truncate(input.prompt.replace(/\n/g, " ").trim(), 40);
   }
 
   writeFileSync(statusFile, JSON.stringify({

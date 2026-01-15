@@ -5,8 +5,17 @@ SPINNER=('⠋' '⠙' '⠹' '⠸' '⠼' '⠴' '⠦' '⠧' '⠇' '⠏')
 spin_idx=0
 selected=0
 
+# Colors
+DIM='\033[2m'
+BOLD='\033[1m'
+RESET='\033[0m'
+CYAN='\033[36m'
+YELLOW='\033[33m'
+GREEN='\033[32m'
+
 cleanup() {
   tput cnorm 2>/dev/null
+  printf "${RESET}"
   exit 0
 }
 
@@ -16,13 +25,18 @@ tput civis 2>/dev/null
 clear
 
 while true; do
-  output="Claude Code Instances (j/k or ↑/↓ to navigate, Enter to select, q to close)
-==============================================================================
+  output=""
 
-"
+  # Header
+  output+="\n"
+  output+="${BOLD}${CYAN}  Claude Code Control Center${RESET}\n"
+  output+="${DIM}  ───────────────────────────${RESET}\n"
+  output+="\n"
+  output+="${DIM}  j/k navigate • enter select • x delete • q quit${RESET}\n"
+  output+="\n"
 
-  instances=()
-  pane_refs=()
+  # Read all instances into temp file for sorting
+  tmpfile=$(mktemp)
 
   if [[ -d "$STATUS_DIR" ]]; then
     for file in "$STATUS_DIR"/*.json; do
@@ -33,52 +47,99 @@ while true; do
       session=$(jq -r '.tmux.session' "$file")
       window=$(jq -r '.tmux.window' "$file")
       pane=$(jq -r '.tmux.pane' "$file")
-      prompt=$(jq -r '.prompt // empty' "$file")
+      prompt=$(jq -r '.prompt // ""' "$file")
+      timestamp=$(jq -r '.timestamp' "$file")
 
       parent=$(basename "$(dirname "$path")")
       name=$(basename "$path")
       project="$parent/$name"
+      pane_ref="$session:$window.$pane"
 
       if ! tmux list-panes -t "$session:$window" -F '#{pane_index}' 2>/dev/null | grep -q "^$pane$"; then
         rm "$file"
         continue
       fi
 
-      if [[ "$status" == "working" ]]; then
-        indicator="${SPINNER[$spin_idx]}"
-      else
-        indicator="○"
-      fi
-
-      if [[ -n "$prompt" ]]; then
-        instances+=("$indicator $project ($window.$pane) - $prompt")
-      else
-        instances+=("$indicator $project ($window.$pane)")
-      fi
-      pane_refs+=("$session:$window.$pane")
+      # Format: project|status|timestamp|window|pane|pane_ref|prompt|session
+      echo "${project}|${status}|${timestamp}|${window}|${pane}|${pane_ref}|${prompt}|${session}" >> "$tmpfile"
     done
   fi
 
-  count=${#instances[@]}
+  # Sort by project, then status (working first), then timestamp desc
+  sorted=$(sort -t'|' -k1,1 -k2,2r -k3,3rn "$tmpfile" 2>/dev/null)
+  rm "$tmpfile"
+
+  # Build arrays
+  instances=()
+  pane_refs=()
+  file_paths=()
+  current_project=""
+
+  while IFS='|' read -r project status timestamp window pane pane_ref prompt session; do
+    [[ -z "$project" ]] && continue
+
+    # Project header
+    if [[ "$project" != "$current_project" ]]; then
+      instances+=("HEADER|$project")
+      pane_refs+=("")
+      file_paths+=("")
+      current_project="$project"
+    fi
+
+    # Instance line
+    if [[ "$status" == "working" ]]; then
+      indicator="${YELLOW}${SPINNER[$spin_idx]}${RESET}"
+    else
+      indicator="${GREEN}○${RESET}"
+    fi
+
+    if [[ -n "$prompt" ]]; then
+      display="$indicator ${DIM}$prompt${RESET} ${DIM}($window.$pane)${RESET}"
+    else
+      display="$indicator ${DIM}($window.$pane)${RESET}"
+    fi
+
+    instances+=("ITEM|$display")
+    pane_refs+=("$pane_ref")
+    file_paths+=("$STATUS_DIR/$session-$window-$pane.json")
+  done <<< "$sorted"
+
+  # Count selectable items
+  selectable=()
+  for i in "${!instances[@]}"; do
+    if [[ "${instances[$i]}" == ITEM* ]]; then
+      selectable+=("$i")
+    fi
+  done
+  count=${#selectable[@]}
+
+  [[ $count -gt 0 && $selected -ge $count ]] && selected=$((count - 1))
+  [[ $selected -lt 0 ]] && selected=0
+
+  # Render
+  sel_idx=0
+  for i in "${!instances[@]}"; do
+    type="${instances[$i]%%|*}"
+    content="${instances[$i]#*|}"
+
+    if [[ "$type" == "HEADER" ]]; then
+      output+="${BOLD}  $content${RESET}\n"
+    elif [[ "$type" == "ITEM" ]]; then
+      if [[ $count -gt 0 && $sel_idx -eq $selected ]]; then
+        output+="  ${CYAN}▸${RESET} $content\n"
+      else
+        output+="    $content\n"
+      fi
+      ((sel_idx++))
+    fi
+  done
 
   if [[ $count -eq 0 ]]; then
-    output+="No instances found"
-  else
-    [[ $selected -ge $count ]] && selected=$((count - 1))
-    [[ $selected -lt 0 ]] && selected=0
-
-    for i in "${!instances[@]}"; do
-      if [[ $i -eq $selected ]]; then
-        output+=$(printf "> %s\n" "${instances[$i]}")
-      else
-        output+=$(printf "  %s\n" "${instances[$i]}")
-      fi
-      output+=$'\n'
-    done
+    output+="${DIM}  No active instances${RESET}\n"
   fi
 
   tput cup 0 0 2>/dev/null
-  printf "%s" "$output"
+  printf "${output}"
   tput ed 2>/dev/null
 
   spin_idx=$(( (spin_idx + 1) % ${#SPINNER[@]} ))
@@ -87,10 +148,17 @@ while true; do
     case "$key" in
       j|B) ((selected++)) ;;
       k|A) ((selected--)) ;;
+      x)
+        if [[ $count -gt 0 ]]; then
+          ref_idx="${selectable[$selected]}"
+          rm -f "${file_paths[$ref_idx]}" 2>/dev/null
+        fi
+        ;;
       q) break ;;
       "")
         if [[ $count -gt 0 ]]; then
-          tmux switch-client -t "${pane_refs[$selected]}"
+          ref_idx="${selectable[$selected]}"
+          tmux switch-client -t "${pane_refs[$ref_idx]}"
           break
         fi
         ;;

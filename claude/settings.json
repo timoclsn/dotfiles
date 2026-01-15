@@ -23,16 +23,6 @@
           }
         ]
       }
-    ],
-    "Notification": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bun ~/.claude/hooks/status-tracker.ts"
-          }
-        ]
-      }
     ]
   },
   "statusLine": {
