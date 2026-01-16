@@ -80,8 +80,4 @@ ln -sf "$DOTFILES/scripts/ai-commit" "$HOME/.local/bin/ai-commit"
 chmod +x "$HOME/.local/bin/ai-commit"
 ln -sf "$DOTFILES/scripts/update-global-packages" "$HOME/.local/bin/update-global-packages"
 chmod +x "$HOME/.local/bin/update-global-packages"
-ln -sf "$DOTFILES/scripts/agent-control-center" "$HOME/.local/bin/agent-control-center"
-chmod +x "$HOME/.local/bin/agent-control-center"
-mkdir -p "$HOME/.local/share/agent-control-center"
-
 echo "Symlinks created successfully!"

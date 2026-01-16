@@ -6,20 +6,6 @@
           {
             "type": "command",
             "command": "bun ~/.claude/hooks/notify.ts"
-          },
-          {
-            "type": "command",
-            "command": "bun ~/.claude/hooks/agent-control-center.ts"
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bun ~/.claude/hooks/agent-control-center.ts"
           }
         ]
       }
