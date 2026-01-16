@@ -68,7 +68,7 @@ const main = async () => {
     -e 'tell application "System Events" to keystroke "switch-client -t ${projectName}:3"' \
     -e 'tell application "System Events" to key code 36'`;
 
-  await $`terminal-notifier \
+  await $`/opt/homebrew/bin/terminal-notifier \
     -title "Claude Code" \
     -subtitle "${subtitle}" \
     -message "${message}" \
