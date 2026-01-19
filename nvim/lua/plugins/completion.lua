@@ -77,11 +77,7 @@ return {
                   end
 
                   -- Default to lspkind for other sources
-                  local lspkind = require 'lspkind'
-                  icon = lspkind.symbolic(ctx.kind, {
-                    mode = 'symbol',
-                  })
-
+                  icon = require('lspkind').symbol_map[ctx.kind] or ''
                   return icon .. ctx.icon_gap
                 end,
               },
