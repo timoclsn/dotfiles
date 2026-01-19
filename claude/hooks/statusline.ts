@@ -110,7 +110,7 @@ const main = async () => {
   const linesChanged = `+${input.cost.total_lines_added}/-${input.cost.total_lines_removed}`;
 
   const parts = [model, contextUsage, linesChanged, `${dir}${gitBranch}`];
-  if (session) parts.push(session);
+  if (session) parts.push(`"${session}"`);
 
   console.log(parts.join(" | "));
 };
