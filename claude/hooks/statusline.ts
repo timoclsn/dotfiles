@@ -1,4 +1,6 @@
 import { $ } from "bun";
+import { homedir } from "os";
+import { readFileSync } from "fs";
 
 interface StatusLineInput {
   hook_event_name: string;
@@ -47,6 +49,32 @@ const getGitBranch = async () => {
   }
 };
 
+interface SessionEntry {
+  sessionId: string;
+  firstPrompt: string;
+  customTitle?: string;
+}
+
+interface SessionsIndex {
+  entries: SessionEntry[];
+}
+
+const getSessionName = (projectDir: string, sessionId: string) => {
+  try {
+    const encodedPath = "-" + projectDir.split("/").slice(1).join("-");
+    const indexPath = `${homedir()}/.claude/projects/${encodedPath}/sessions-index.json`;
+    const index: SessionsIndex = JSON.parse(readFileSync(indexPath, "utf-8"));
+    const entry = index.entries.find((e) => e.sessionId === sessionId);
+    if (!entry) return null;
+    const title = entry.customTitle ?? entry.firstPrompt;
+    if (!title) return null;
+    const name = title.slice(0, 30).replace(/\n/g, " ");
+    return name.length < title.length ? `${name}…` : name;
+  } catch {
+    return null;
+  }
+};
+
 const formatTokens = (tokens: number) => {
   if (tokens >= 1000) return `${Math.round(tokens / 1000)}k`;
   return `${tokens}`;
@@ -75,12 +103,16 @@ const main = async () => {
   const input: StatusLineInput = await Bun.stdin.json();
 
   const model = input.model.display_name;
+  const session = getSessionName(input.workspace.project_dir, input.session_id);
   const dir = input.workspace.current_dir.split("/").slice(-2).join("/");
   const gitBranch = await getGitBranch();
   const contextUsage = getContextUsage(input);
   const linesChanged = `+${input.cost.total_lines_added}/-${input.cost.total_lines_removed}`;
 
-  console.log(`${model} | ${contextUsage} | ${linesChanged} | ${dir}${gitBranch}`);
+  const parts = [model, contextUsage, linesChanged, `${dir}${gitBranch}`];
+  if (session) parts.push(session);
+
+  console.log(parts.join(" | "));
 };
 
 main();
