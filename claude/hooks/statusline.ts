@@ -75,7 +75,7 @@ const main = async () => {
   const input: StatusLineInput = await Bun.stdin.json();
 
   const model = input.model.display_name;
-  const dir = input.workspace.current_dir.split("/").pop() ?? "";
+  const dir = input.workspace.current_dir.split("/").slice(-2).join("/");
   const gitBranch = await getGitBranch();
   const contextUsage = getContextUsage(input);
   const linesChanged = `+${input.cost.total_lines_added}/-${input.cost.total_lines_removed}`;
