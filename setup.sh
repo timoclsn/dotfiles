@@ -39,6 +39,8 @@ rm "$HOME/.config/opencode/command" 2>/dev/null || true
 ln -sf "$DOTFILES/opencode/command" "$HOME/.config/opencode/command"
 rm "$HOME/.config/opencode/tool" 2>/dev/null || true
 ln -sf "$DOTFILES/opencode/tool" "$HOME/.config/opencode/tool"
+rm "$HOME/.config/opencode/skills" 2>/dev/null || true
+ln -sf "$DOTFILES/ai/skills" "$HOME/.config/opencode/skills"
 
 # claude code
 ln -sf "$DOTFILES/claude/settings.json" "$HOME/.claude/settings.json"
@@ -49,6 +51,8 @@ rm "$HOME/.claude/commands" 2>/dev/null || true
 ln -sf "$DOTFILES/claude/commands" "$HOME/.claude/commands"
 rm "$HOME/.claude/hooks" 2>/dev/null || true
 ln -sf "$DOTFILES/claude/hooks" "$HOME/.claude/hooks"
+rm "$HOME/.claude/skills" 2>/dev/null || true
+ln -sf "$DOTFILES/ai/skills" "$HOME/.claude/skills"
 
 # Home directory symlinks
 ln -sf "$DOTFILES/aider/.aider.conf.yml" "$HOME/.aider.conf.yml"
@@ -68,6 +72,8 @@ rm "$HOME/.codex/prompts" 2>/dev/null || true
 ln -sf "$DOTFILES/codex/prompts" "$HOME/.codex/prompts"
 rm "$HOME/.codex/hooks" 2>/dev/null || true
 ln -sf "$DOTFILES/codex/hooks" "$HOME/.codex/hooks"
+rm "$HOME/.codex/skills" 2>/dev/null || true
+ln -sf "$DOTFILES/ai/skills" "$HOME/.codex/skills"
 
 
 # Scripts
