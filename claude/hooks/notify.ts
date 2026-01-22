@@ -1,4 +1,3 @@
-import { $ } from "bun";
 import { getSessionName } from "./utils";
 
 interface HookInput {
@@ -35,12 +34,14 @@ const main = async () => {
     -e 'tell application "System Events" to keystroke "switch-client -t ${projectName}:3"' \
     -e 'tell application "System Events" to key code 36'`;
 
-  await $`/opt/homebrew/bin/terminal-notifier \
-    -title "Claude Code" \
-    -subtitle "${subtitle}" \
-    -message "${message}" \
-    -group "claude-${projectName}-${sessionId}" \
-    -execute "${onClick}"`.quiet();
+  Bun.spawn([
+    '/opt/homebrew/bin/terminal-notifier',
+    '-title', 'Claude Code',
+    '-subtitle', subtitle,
+    '-message', message,
+    '-group', `claude-${projectName}-${sessionId}`,
+    '-execute', onClick
+  ]);
 };
 
 main();

@@ -1,5 +1,4 @@
 import { readFileSync } from "node:fs";
-import { $ } from "bun";
 
 interface NotificationInput {
   type?: string;
@@ -118,12 +117,14 @@ const main = async () => {
     -e 'tell application "System Events" to keystroke "switch-client -t ${projectName}:3"' \
     -e 'tell application "System Events" to key code 36'`;
 
-  await $`terminal-notifier \
-    -title "Codex" \
-    -subtitle "${subtitle}" \
-    -message "${message}" \
-    -group "codex-${groupSuffix}" \
-    -execute "${onClick}"`.quiet();
+  Bun.spawn([
+    'terminal-notifier',
+    '-title', 'Codex',
+    '-subtitle', subtitle,
+    '-message', message,
+    '-group', `codex-${groupSuffix}`,
+    '-execute', onClick
+  ]);
 };
 
 main();

@@ -1,6 +1,6 @@
 import type { Plugin } from "@opencode-ai/plugin";
 
-export const Notify: Plugin = async ({ directory, client, $ }) => {
+export const Notify: Plugin = async ({ directory, client }) => {
   return {
     async event({ event }) {
       if (event.type === "session.idle") {
@@ -33,21 +33,22 @@ export const Notify: Plugin = async ({ directory, client, $ }) => {
         const message =
           sessionTitle && !isDefaultTitle ? sessionTitle : "Agent run complete";
 
-        // On click action
-        const onClick = `osascript \\
-          -e 'tell application "Ghostty" to activate' \\
-          -e 'tell application "System Events" to key code 49 using control down' \\
-          -e 'tell application "System Events" to keystroke ":"' \\
-          -e 'delay 0.1' \\
-          -e 'tell application "System Events" to keystroke "switch-client -t ${projectName}:3"' \\
+        const onClick = `osascript \
+          -e 'tell application "Ghostty" to activate' \
+          -e 'tell application "System Events" to key code 49 using control down' \
+          -e 'tell application "System Events" to keystroke ":"' \
+          -e 'delay 0.1' \
+          -e 'tell application "System Events" to keystroke "switch-client -t ${projectName}:3"' \
           -e 'tell application "System Events" to key code 36'`;
 
-        await $`terminal-notifier \
-          -title "opencode" \
-          -subtitle "${subtitle}" \
-          -message "${message}" \
-          -group "opencode-${projectName}-${sessionID}" \
-          -execute "${onClick}"`.quiet();
+        Bun.spawn([
+          'terminal-notifier',
+          '-title', 'opencode',
+          '-subtitle', subtitle,
+          '-message', message,
+          '-group', `opencode-${projectName}-${sessionID}`,
+          '-execute', onClick
+        ]);
       }
     },
   };
