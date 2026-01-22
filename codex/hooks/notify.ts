@@ -118,7 +118,7 @@ const main = async () => {
     -e 'tell application "System Events" to key code 36'`;
 
   Bun.spawn([
-    'terminal-notifier',
+    '/opt/homebrew/bin/terminal-notifier',
     '-title', 'Codex',
     '-subtitle', subtitle,
     '-message', message,

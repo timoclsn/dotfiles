@@ -42,7 +42,7 @@ export const Notify: Plugin = async ({ directory, client }) => {
           -e 'tell application "System Events" to key code 36'`;
 
         Bun.spawn([
-          'terminal-notifier',
+          '/opt/homebrew/bin/terminal-notifier',
           '-title', 'opencode',
           '-subtitle', subtitle,
           '-message', message,
