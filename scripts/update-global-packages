@@ -1,8 +1,12 @@
 #!/bin/bash
 set -e
 
-echo "Updating Claude Code..."
+echo "Updating Claude Code…"
 claude update
+
+echo ""
+echo "Updating OpenCode…"
+opencode upgrade
 
 echo ""
 
@@ -13,14 +17,12 @@ PACKAGES=(
   "npm-check-updates"
   "vercel"
   "yalc"
-  "@sourcegraph/amp"
-  "opencode-ai"
   "@openai/codex"
   "@google/gemini-cli"
   "@github/copilot"
 )
 
-echo "Updating global npm packages (${#PACKAGES[@]} total)..."
+echo "Updating global npm packages (${#PACKAGES[@]} total)…"
 
 npm i -g "${PACKAGES[@]}"
 
@@ -31,7 +33,7 @@ echo ""
 npm list -g --depth=0
 
 echo ""
-echo "Updating Homebrew packages..."
+echo "Updating Homebrew packages…"
 brew upgrade
 
 echo ""
