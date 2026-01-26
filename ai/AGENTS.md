@@ -1,5 +1,6 @@
 ## General
 
+- Apply all of the rules in this file to new code you write. Don't change already present code that you don't have to touch. (Keep diffs minimal)
 - Use spaces for indentation.
 - Default to 2 spaces.
 - Focus on the most performant solutions.
@@ -24,7 +25,7 @@
 
 ## React
 
-- Dont't use React as a default import, import all react functions and types explicitly (useEffect, etc.)
+- Dont't use React as a default import (if not needed), import all react functions and types explicitly (useEffect, etc.)
 - Prefere function components don't use class components if not necessary.
 - Type components with a "Props" interface and destructure its props: { prop }: Props.
 - Name Components in PascalCase (in code and the files).
