@@ -18,13 +18,15 @@ const main = async () => {
   const projectCategory = pathParts[pathParts.length - 2] ?? "";
   const subtitle = `\\[${projectCategory}/${projectName}]`;
 
-  const sessionTitle = getSessionName({ projectDir, sessionId, transcriptPath });
+  const sessionTitle = getSessionName({
+    projectDir,
+    sessionId,
+    transcriptPath,
+  });
 
   if (sessionTitle === "ai-commit") return;
 
-  const isDefaultTitle = sessionTitle?.startsWith("New session - ");
-  const message =
-    sessionTitle && !isDefaultTitle ? sessionTitle : "Agent run complete";
+  const message = sessionTitle ?? "Agent run complete";
 
   const onClick = `osascript \
     -e 'tell application "Ghostty" to activate' \
@@ -35,12 +37,17 @@ const main = async () => {
     -e 'tell application "System Events" to key code 36'`;
 
   Bun.spawn([
-    '/opt/homebrew/bin/terminal-notifier',
-    '-title', 'Claude Code',
-    '-subtitle', subtitle,
-    '-message', message,
-    '-group', `claude-${projectName}-${sessionId}`,
-    '-execute', onClick
+    "/opt/homebrew/bin/terminal-notifier",
+    "-title",
+    "Claude Code",
+    "-subtitle",
+    subtitle,
+    "-message",
+    message,
+    "-group",
+    `claude-${projectName}-${sessionId}`,
+    "-execute",
+    onClick,
   ]);
 };
 
