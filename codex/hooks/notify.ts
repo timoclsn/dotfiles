@@ -1,78 +1,31 @@
-import { readFileSync } from "node:fs";
-
-interface NotificationInput {
+interface CodexNotification {
   type?: string;
-  session_id?: string;
-  transcript_path?: string;
+  "thread-id"?: string;
+  "turn-id"?: string;
+  cwd?: string;
   "input-messages"?: string[];
   "last-assistant-message"?: string;
-  cwd?: string;
 }
 
-interface TranscriptEntry {
-  type: string;
-  isMeta?: boolean;
-  content?: string;
-  message?: {
-    content: string;
-  };
-}
-
-const getSessionTitle = (transcriptPath?: string) => {
-  if (!transcriptPath) return null;
-
+const readNotification = (): CodexNotification | null => {
   try {
-    const content = readFileSync(transcriptPath, "utf-8");
-    const lines = content.split("\n").filter(Boolean);
-
-    for (const line of lines) {
-      const entry: TranscriptEntry = JSON.parse(line);
-
-      if (entry.type !== "user") continue;
-      if (entry.isMeta) continue;
-
-      const text =
-        (typeof entry.content === "string" ? entry.content : null) ??
-        entry.message?.content;
-
-      if (!text) continue;
-      if (text.startsWith("<")) continue;
-
-      return text.slice(0, 50);
-    }
-
-    return null;
+    return JSON.parse(Bun.argv[2]);
   } catch {
     return null;
   }
 };
 
-const readNotification = async () => {
-  const arg = Bun.argv[2];
-
-  if (arg) {
-    try {
-      return JSON.parse(arg) as NotificationInput;
-    } catch {
-      return null;
-    }
-  }
-
-  try {
-    return (await Bun.stdin.json()) as NotificationInput;
-  } catch {
-    return null;
-  }
-};
-
-const getCodexTitle = (notification: NotificationInput) => {
+const getTitle = (notification: CodexNotification) => {
   const inputMessages = notification["input-messages"];
-  const lastAssistantMessage = notification["last-assistant-message"];
 
   if (inputMessages?.length) {
-    return inputMessages[0]?.slice(0, 50) ?? null;
+    const firstUserMessage = inputMessages.find((msg) => !msg.startsWith("<"));
+    if (firstUserMessage) {
+      return firstUserMessage.slice(0, 50);
+    }
   }
 
+  const lastAssistantMessage = notification["last-assistant-message"];
   if (lastAssistantMessage) {
     return lastAssistantMessage.slice(0, 50);
   }
@@ -80,34 +33,25 @@ const getCodexTitle = (notification: NotificationInput) => {
   return null;
 };
 
-const main = async () => {
-  const notification = await readNotification();
-
+const main = () => {
+  const notification = readNotification();
   if (!notification) return;
 
-  const { type, session_id: sessionId, transcript_path: transcriptPath } =
-    notification;
+  if (notification.type !== "agent-turn-complete") return;
 
-  if (type !== "agent-turn-complete") {
-    if (type) console.log(`not sending a push notification for: ${type}`);
-    return;
-  }
+  const title = getTitle(notification);
 
-  const sessionTitle =
-    getSessionTitle(transcriptPath) ?? getCodexTitle(notification);
+  const pathParts = (notification.cwd ?? process.cwd())
+    .split("/")
+    .filter(Boolean);
+  const projectName = pathParts.at(-1) ?? "";
+  const projectCategory = pathParts.at(-2) ?? "";
 
-  if (sessionTitle === "ai-commit") return;
-
-  const pathParts = (notification.cwd ?? process.cwd()).split("/").filter(Boolean);
-  const projectName = pathParts[pathParts.length - 1] ?? "";
-  const projectCategory = pathParts[pathParts.length - 2] ?? "";
   const subtitle = `\\[${projectCategory}/${projectName}]`;
-
-  const isDefaultTitle = sessionTitle?.startsWith("New session - ");
-  const message =
-    sessionTitle && !isDefaultTitle ? sessionTitle : "Agent turn complete";
-
-  const groupSuffix = sessionId ? `${projectName}-${sessionId}` : projectName;
+  const message = title ?? "Agent turn complete";
+  const group = notification["thread-id"]
+    ? `codex-${projectName}-${notification["thread-id"]}`
+    : `codex-${projectName}`;
 
   const onClick = `osascript \
     -e 'tell application "Ghostty" to activate' \
@@ -118,12 +62,17 @@ const main = async () => {
     -e 'tell application "System Events" to key code 36'`;
 
   Bun.spawn([
-    '/opt/homebrew/bin/terminal-notifier',
-    '-title', 'Codex',
-    '-subtitle', subtitle,
-    '-message', message,
-    '-group', `codex-${groupSuffix}`,
-    '-execute', onClick
+    "/opt/homebrew/bin/terminal-notifier",
+    "-title",
+    "Codex",
+    "-subtitle",
+    subtitle,
+    "-message",
+    message,
+    "-group",
+    group,
+    "-execute",
+    onClick,
   ]);
 };
 
