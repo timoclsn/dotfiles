@@ -4,21 +4,29 @@ import { readFileSync } from "fs";
 interface SessionEntry {
   sessionId: string;
   customTitle?: string;
+  summary?: string;
 }
 
 interface SessionsIndex {
   entries: SessionEntry[];
 }
 
-const getCustomTitle = (projectDir: string, sessionId: string) => {
+const getSessionTitle = (projectDir: string, sessionId: string) => {
   try {
     const encodedPath = "-" + projectDir.split("/").slice(1).join("-");
     const indexPath = `${homedir()}/.claude/projects/${encodedPath}/sessions-index.json`;
     const index: SessionsIndex = JSON.parse(readFileSync(indexPath, "utf-8"));
-    return index.entries.find((e) => e.sessionId === sessionId)?.customTitle;
+    const entry = index.entries.find((e) => e.sessionId === sessionId);
+    return entry?.customTitle ?? entry?.summary ?? null;
   } catch {
     return null;
   }
+};
+
+const extractFromXml = (text: string) => {
+  const afterXml = text.replace(/<[^>]+>[^<]*<\/[^>]+>/g, "").trim();
+  if (afterXml && !afterXml.startsWith("<")) return afterXml;
+  return null;
 };
 
 const getFirstPrompt = (transcriptPath: string) => {
@@ -31,7 +39,10 @@ const getFirstPrompt = (transcriptPath: string) => {
       const text =
         (typeof entry.content === "string" ? entry.content : null) ??
         entry.message?.content;
-      if (text && !text.startsWith("<")) return text;
+      if (!text) continue;
+      if (!text.startsWith("<")) return text;
+      const extracted = extractFromXml(text);
+      if (extracted) return extracted;
     }
   } catch {}
   return null;
@@ -49,7 +60,7 @@ export const getSessionName = ({
   transcriptPath,
 }: GetSessionNameOptions) => {
   const title =
-    getCustomTitle(projectDir, sessionId) ?? getFirstPrompt(transcriptPath);
+    getSessionTitle(projectDir, sessionId) ?? getFirstPrompt(transcriptPath);
   if (!title) return null;
   const name = title.slice(0, 30).replace(/\n/g, " ");
   return name.length < title.length ? `${name}…` : name;
