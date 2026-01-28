@@ -16,7 +16,7 @@ const main = async () => {
   const pathParts = projectDir.split("/").filter(Boolean);
   const projectName = pathParts[pathParts.length - 1] ?? "";
   const projectCategory = pathParts[pathParts.length - 2] ?? "";
-  const subtitle = `\\[${projectCategory}/${projectName}]`;
+  const subtitle = `${projectCategory}/${projectName}`;
 
   const sessionTitle = getSessionName({
     projectDir,

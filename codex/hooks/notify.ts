@@ -52,7 +52,7 @@ const main = () => {
   const projectName = pathParts.at(-1) ?? "";
   const projectCategory = pathParts.at(-2) ?? "";
 
-  const subtitle = `\\[${projectCategory}/${projectName}]`;
+  const subtitle = `${projectCategory}/${projectName}`;
   const message = title ?? "Agent turn complete";
   const group = notification["thread-id"]
     ? `codex-${projectName}-${notification["thread-id"]}`
