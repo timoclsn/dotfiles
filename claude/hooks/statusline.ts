@@ -63,7 +63,7 @@ const getContextUsage = (input: StatusLineInput) => {
     context_window.current_usage.cache_read_input_tokens;
 
   const percentUsed = Math.round(
-    (currentTokens * 100) / context_window.context_window_size
+    (currentTokens * 100) / context_window.context_window_size,
   );
 
   const current = formatTokens(currentTokens);

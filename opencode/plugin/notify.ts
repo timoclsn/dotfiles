@@ -30,8 +30,14 @@ export const Notify: Plugin = async ({ directory, client }) => {
         }
 
         const isDefaultTitle = sessionTitle.startsWith("New session - ");
+        const truncatedTitle =
+          sessionTitle.length > 50
+            ? `${sessionTitle.slice(0, 50)}…`
+            : sessionTitle;
         const message =
-          sessionTitle && !isDefaultTitle ? sessionTitle : "Agent run complete";
+          sessionTitle && !isDefaultTitle
+            ? truncatedTitle
+            : "Agent run complete";
 
         const onClick = `osascript \
           -e 'tell application "Ghostty" to activate' \
@@ -42,12 +48,17 @@ export const Notify: Plugin = async ({ directory, client }) => {
           -e 'tell application "System Events" to key code 36'`;
 
         Bun.spawn([
-          '/opt/homebrew/bin/terminal-notifier',
-          '-title', 'opencode',
-          '-subtitle', subtitle,
-          '-message', message,
-          '-group', `opencode-${projectName}-${sessionID}`,
-          '-execute', onClick
+          "/opt/homebrew/bin/terminal-notifier",
+          "-title",
+          "opencode",
+          "-subtitle",
+          subtitle,
+          "-message",
+          message,
+          "-group",
+          `opencode-${projectName}-${sessionID}`,
+          "-execute",
+          onClick,
         ]);
       }
     },

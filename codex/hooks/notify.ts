@@ -15,19 +15,24 @@ const readNotification = (): CodexNotification | null => {
   }
 };
 
+const truncate = (text: string, max: number) => {
+  const normalized = text.replace(/\n/g, " ");
+  return normalized.length > max ? `${normalized.slice(0, max)}…` : normalized;
+};
+
 const getTitle = (notification: CodexNotification) => {
   const inputMessages = notification["input-messages"];
 
   if (inputMessages?.length) {
     const firstUserMessage = inputMessages.find((msg) => !msg.startsWith("<"));
     if (firstUserMessage) {
-      return firstUserMessage.slice(0, 50);
+      return truncate(firstUserMessage, 50);
     }
   }
 
   const lastAssistantMessage = notification["last-assistant-message"];
   if (lastAssistantMessage) {
-    return lastAssistantMessage.slice(0, 50);
+    return truncate(lastAssistantMessage, 50);
   }
 
   return null;
