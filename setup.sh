@@ -44,6 +44,7 @@ ln -sf "$DOTFILES/ai/skills" "$HOME/.config/opencode/skills"
 
 # claude code
 ln -sf "$DOTFILES/claude/settings.json" "$HOME/.claude/settings.json"
+ln -sf "$DOTFILES/claude/keybindings.json" "$HOME/.claude/keybindings.json"
 ln -sf "$DOTFILES/ai/AGENTS.md" "$HOME/.claude/CLAUDE.md"
 rm "$HOME/.claude/agents" 2>/dev/null || true
 ln -sf "$DOTFILES/claude/agents" "$HOME/.claude/agents"
