@@ -91,9 +91,11 @@ return {
         'markdownlint',
         'jsonlint',
         'golangci-lint',
+        'oxlint',
 
         -- Formatters
         'black',
+        'oxfmt',
         'prettierd',
         'stylua',
       }
