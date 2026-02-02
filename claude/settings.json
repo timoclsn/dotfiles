@@ -39,5 +39,6 @@
   },
   "promptSuggestionEnabled": false,
   "autoUpdatesChannel": "latest",
-  "theme": "dark"
+  "theme": "dark",
+  "tipsEnabled": false
 }
