@@ -7,7 +7,8 @@ Review the code changes and simplify them while preserving the exact same behavi
 
 ## Scope
 
-- Scope is $ARGUMENTS else default to uncommited changes.
+- Scope is: $ARGUMENTS
+- If scope is empty default to uncommited changes.
 
 ## Guidelines
 
