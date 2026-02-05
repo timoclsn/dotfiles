@@ -3,3 +3,4 @@
 !.aider.conf.yml
 .env
 node_modules
+tmp/
