@@ -8,7 +8,7 @@ Create a pull request for the current branch using the GitHub CLI.
 
 1. Run `git status` to check for uncommitted changes - warn if any exist
 2. Run `git log main..HEAD` (or master) to see all commits on this branch
-3. Check if branch is pushed and up to date with remote, if not push with `-u`
+3. Check if branch is published, pushed and up to date with remote, if not publish / push with `-u`
 4. Create PR using `gh pr create`
 
 ## PR Format
