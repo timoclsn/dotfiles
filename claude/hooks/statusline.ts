@@ -86,7 +86,14 @@ const main = async () => {
   const contextUsage = getContextUsage(input);
   const linesChanged = `+${input.cost.total_lines_added}/-${input.cost.total_lines_removed}`;
 
-  const parts = [model, contextUsage, linesChanged, `${dir}${gitBranch}`];
+  const maxProjectLen = 50;
+  const project = `${dir}${gitBranch}`;
+  const truncatedProject =
+    project.length > maxProjectLen
+      ? `${project.slice(0, maxProjectLen - 1)}…`
+      : project;
+
+  const parts = [model, contextUsage, linesChanged, truncatedProject];
   if (session) parts.push(`"${session}"`);
 
   console.log(parts.join(" | "));
