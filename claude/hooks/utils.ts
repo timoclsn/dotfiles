@@ -29,6 +29,17 @@ const extractFromXml = (text: string) => {
   return null;
 };
 
+const extractText = (content: unknown): string | null => {
+  if (typeof content === "string") return content;
+  if (Array.isArray(content)) {
+    const textBlock = content.find(
+      (block: { type: string }) => block.type === "text",
+    );
+    return textBlock?.text ?? null;
+  }
+  return null;
+};
+
 const getFirstPrompt = (transcriptPath: string) => {
   try {
     const content = readFileSync(transcriptPath, "utf-8");
@@ -37,8 +48,7 @@ const getFirstPrompt = (transcriptPath: string) => {
       const entry = JSON.parse(line);
       if (entry.type !== "user" || entry.isMeta) continue;
       const text =
-        (typeof entry.content === "string" ? entry.content : null) ??
-        entry.message?.content;
+        extractText(entry.content) ?? extractText(entry.message?.content);
       if (!text) continue;
       if (!text.startsWith("<")) return text;
       const extracted = extractFromXml(text);
