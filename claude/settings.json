@@ -39,7 +39,7 @@
   },
   "promptSuggestionEnabled": false,
   "autoUpdatesChannel": "latest",
+  "skipDangerousModePermissionPrompt": true,
   "theme": "dark",
-  "tipsEnabled": false,
-  "skipDangerousModePermissionPrompt": true
+  "tipsEnabled": false
 }
