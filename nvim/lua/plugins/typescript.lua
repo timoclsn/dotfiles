@@ -9,12 +9,4 @@ return {
     event = 'VeryLazy',
     opts = {},
   },
-  {
-    'dmmulroy/tsc.nvim',
-    event = 'VeryLazy',
-    config = function()
-      require('tsc').setup()
-      vim.keymap.set('n', '<leader>tc', '<cmd>TSC<CR>', { desc = '[t]ype [c]heck' })
-    end,
-  },
 }
