@@ -47,12 +47,12 @@ end
 local function format_mobile_app_path(full_path, filename)
   local package_name = full_path:match '/packages/([^/]+)'
   if package_name then
-    return filename .. ' [' .. package_name .. ']'
+    return filename .. ' [packages/' .. package_name .. ']'
   end
 
   local adapter_name = full_path:match '/modules/mobile%-app%-legacy/src/domain%-adapters/([^/]+)'
   if adapter_name then
-    return filename .. ' [' .. adapter_name .. ']'
+    return filename .. ' [domain-adapters/' .. adapter_name .. ']'
   end
 
   return filename
