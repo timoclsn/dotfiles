@@ -75,4 +75,37 @@ return {
       require('neo-tree').setup(opts)
     end,
   },
+  {
+    'dmtrKovalenko/fff.nvim',
+    build = function()
+      require('fff.download').download_or_build_binary()
+    end,
+    opts = { -- (optional)
+      debug = {
+        enabled = false, -- we expect your collaboration at least during the beta
+        show_scores = false, -- to help us optimize the scoring system, feel free to share your scores!
+      },
+    },
+    lazy = false,
+    keys = {
+      {
+        '<leader>sf', -- try it if you didn't it is a banger keybinding for a picker
+        function()
+          require('fff').find_files()
+        end,
+        desc = 'Find files',
+      },
+      {
+        '<leader>sg',
+        function()
+          require('fff').live_grep {
+            grep = {
+              modes = { 'fuzzy', 'plain', 'regex' },
+            },
+          }
+        end,
+        desc = 'Live grep',
+      },
+    },
+  },
 }
