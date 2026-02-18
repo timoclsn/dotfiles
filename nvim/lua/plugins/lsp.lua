@@ -80,6 +80,17 @@ return {
         vim.lsp.config(server, settings)
       end
 
+      -- Workaround for lazydev not providing vim as a global for the first open lua buffer
+      vim.lsp.config('lua_ls', {
+        settings = {
+          Lua = {
+            workspace = {
+              library = vim.api.nvim_get_runtime_file('', true),
+            },
+          },
+        },
+      })
+
       -- Install and enable LSP servers
       require('mason-lspconfig').setup {
         ensure_installed = vim.tbl_keys(servers or {}),
