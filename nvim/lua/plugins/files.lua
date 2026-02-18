@@ -80,32 +80,54 @@ return {
     build = function()
       require('fff.download').download_or_build_binary()
     end,
-    opts = { -- (optional)
+    opts = {
       debug = {
-        enabled = false, -- we expect your collaboration at least during the beta
-        show_scores = false, -- to help us optimize the scoring system, feel free to share your scores!
+        enabled = false,
+        show_scores = false,
       },
     },
     lazy = false,
-    keys = {
-      {
-        '<leader>sf', -- try it if you didn't it is a banger keybinding for a picker
-        function()
-          require('fff').find_files()
-        end,
-        desc = 'Find files',
-      },
-      {
-        '<leader>sg',
-        function()
-          require('fff').live_grep {
-            grep = {
-              modes = { 'fuzzy', 'plain', 'regex' },
-            },
-          }
-        end,
-        desc = 'Live grep',
-      },
-    },
+    config = function()
+      vim.keymap.set('n', '<leader>sf', function()
+        require('fff').find_files()
+      end, { desc = '[s]earch [f]iles' })
+
+      vim.keymap.set('n', '<leader>sg', function()
+        require('fff').live_grep {
+          grep = {
+            modes = { 'plain', 'regex', 'fuzzy' },
+          },
+        }
+      end, { desc = '[s]earch by [g]rep' })
+
+      vim.keymap.set('n', '<leader>sw', function()
+        local word = vim.fn.expand '<cword>'
+        require('fff').live_grep {
+          query = word,
+          grep = {
+            modes = { 'plain', 'regex', 'fuzzy' },
+          },
+        }
+      end, { desc = '[s]earch current [w]ord' })
+
+      vim.keymap.set('x', '<leader>sg', function()
+        local visual_selection = function()
+          local save_previous = vim.fn.getreg 'a'
+          vim.cmd 'noau normal! "ay'
+          local selection = vim.fn.getreg 'a'
+          vim.fn.setreg('a', save_previous)
+          return selection:gsub('\n', ' '):gsub('^%s*(.-)%s*$', '%1')
+        end
+
+        local selected_text = visual_selection()
+
+        require('fff').live_grep {
+          query = selected_text,
+          grep = {
+            modes = { 'plain', 'regex', 'fuzzy' },
+          },
+        }
+      end, { desc = '[s]earch by [g]rep' })
+    end,
   },
 }

@@ -84,22 +84,22 @@ return {
       vim.keymap.set('n', '<leader>st', builtin.builtin, { desc = '[s]earch [t]elescope pickers' })
       vim.keymap.set('n', '<leader>sc', builtin.colorscheme, { desc = '[s]earch [c]olorschemes' })
 
-      vim.keymap.set('n', '<leader>sw', function()
-        local word = vim.fn.expand '<cword>'
-        require 'telescope.live_grep' { default_text = word }
-      end, { desc = '[s]earch current [w]ord' })
-
-      vim.keymap.set('x', '<leader>sg', function()
-        local visual_selection = function()
-          local save_previous = vim.fn.getreg 'a'
-          vim.cmd 'noau normal! "ay'
-          local selection = vim.fn.getreg 'a'
-          vim.fn.setreg('a', save_previous)
-          return selection:gsub('\n', ' '):gsub('^%s*(.-)%s*$', '%1')
-        end
-        local selected_text = visual_selection()
-        require 'telescope.live_grep' { default_text = selected_text }
-      end, { desc = '[s]earch by [g]rep' })
+      -- vim.keymap.set('n', '<leader>sw', function()
+      --   local word = vim.fn.expand '<cword>'
+      --   require 'telescope.live_grep' { default_text = word }
+      -- end, { desc = '[s]earch current [w]ord' })
+      --
+      -- vim.keymap.set('x', '<leader>sg', function()
+      --   local visual_selection = function()
+      --     local save_previous = vim.fn.getreg 'a'
+      --     vim.cmd 'noau normal! "ay'
+      --     local selection = vim.fn.getreg 'a'
+      --     vim.fn.setreg('a', save_previous)
+      --     return selection:gsub('\n', ' '):gsub('^%s*(.-)%s*$', '%1')
+      --   end
+      --   local selected_text = visual_selection()
+      --   require 'telescope.live_grep' { default_text = selected_text }
+      -- end, { desc = '[s]earch by [g]rep' })
 
       vim.keymap.set('n', '<leader>wd', builtin.diagnostics, { desc = '[w]orkspace [d]iagnostics' })
       vim.keymap.set('n', '<leader>dd', function()
