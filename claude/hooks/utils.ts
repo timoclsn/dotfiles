@@ -73,5 +73,5 @@ export const getSessionName = ({
     getSessionTitle(projectDir, sessionId) ?? getFirstPrompt(transcriptPath);
   if (!title) return null;
   const name = title.trim().slice(0, 50).replace(/\n/g, " ");
-  return name.length < title.length ? `${name}…` : name;
+  return name.length < title.length ? `${name.trimEnd()}…` : name;
 };

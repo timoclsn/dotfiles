@@ -90,7 +90,7 @@ const main = async () => {
   const project = `${dir}${gitBranch}`;
   const truncatedProject =
     project.length > maxProjectLen
-      ? `${project.slice(0, maxProjectLen - 1)}…`
+      ? `${project.slice(0, maxProjectLen - 1).trimEnd()}…`
       : project;
 
   const parts = [model, contextUsage, linesChanged, truncatedProject];
