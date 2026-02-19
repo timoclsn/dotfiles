@@ -17,6 +17,7 @@ window-padding-balance = true
 window-padding-color = extend
 macos-titlebar-proxy-icon = hidden
 macos-titlebar-style = tabs
+palette-generate = false
 
 # Keybindings
 # Shift+Enter sends ESC+CR so apps like Claude Code can distinguish it from Enter (for newlines without submit)
