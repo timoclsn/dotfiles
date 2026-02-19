@@ -29,16 +29,28 @@ local function match_patterns(path, patterns)
 end
 
 local function format_nx_path(full_path, filename)
-  -- Check if path is under /apps/ directory
   local component_name = full_path:match '/apps/([^/]+)'
   if component_name then
     return filename .. ' [' .. component_name .. ']'
   end
 
-  -- Check if path is under /libs/ directory
   component_name = full_path:match '/libs/([^/]+)'
   if component_name then
     return filename .. ' [' .. component_name .. ']'
+  end
+
+  return filename
+end
+
+local function format_expert_interaction_path(full_path, filename)
+  local component_name = full_path:match '/apps/([^/]+)'
+  if component_name then
+    return filename .. ' [' .. component_name .. ']'
+  end
+
+  local two_segments = full_path:match '/libs/([^/]+/[^/]+)'
+  if two_segments then
+    return filename .. ' [' .. two_segments .. ']'
   end
 
   return filename
@@ -114,7 +126,7 @@ local function format_path(path)
   elseif match_patterns(full_path, mobile_app_patterns) then
     formatted_filename = format_mobile_app_path(full_path, filename)
   elseif match_patterns(full_path, expert_interaction_patterns) then
-    formatted_filename = format_nx_path(full_path, filename)
+    formatted_filename = format_expert_interaction_path(full_path, filename)
   elseif match_patterns(full_path, nextjs_patterns) then
     formatted_filename = format_nextjs_path(full_path, filename)
   else
