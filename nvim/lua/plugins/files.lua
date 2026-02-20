@@ -95,7 +95,7 @@ return {
       vim.keymap.set('n', '<leader>sg', function()
         require('fff').live_grep {
           grep = {
-            modes = { 'plain', 'regex', 'fuzzy' },
+            modes = { 'fuzzy', 'plain', 'regex' },
           },
         }
       end, { desc = '[s]earch by [g]rep' })
