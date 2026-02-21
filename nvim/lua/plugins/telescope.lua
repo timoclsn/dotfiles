@@ -129,6 +129,13 @@ return {
             width = 100,
           },
           prompt_title = 'Open Buffers',
+          attach_mappings = function(_, map)
+            map('i', '<Tab>', actions.move_selection_next)
+            map('n', '<Tab>', actions.move_selection_next)
+            map('i', '<S-Tab>', actions.move_selection_previous)
+            map('n', '<S-Tab>', actions.move_selection_previous)
+            return true
+          end,
         })
       end, { desc = 'Open Buffers' })
     end,
