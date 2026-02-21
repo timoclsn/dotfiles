@@ -13,31 +13,6 @@ return {
     end,
   },
   {
-    'jake-stewart/multicursor.nvim',
-    config = function()
-      local mc = require 'multicursor-nvim'
-      mc.setup()
-
-      local set = vim.keymap.set
-
-      set({ 'n', 'x' }, '∂', function()
-        mc.matchAddCursor(1)
-      end)
-
-      set('x', 'S', mc.splitCursors)
-
-      mc.addKeymapLayer(function(layerSet)
-        layerSet('n', '<esc>', function()
-          if not mc.cursorsEnabled() then
-            mc.enableCursors()
-          else
-            mc.clearCursors()
-          end
-        end)
-      end)
-    end,
-  },
-  {
     'christoomey/vim-tmux-navigator',
     cmd = {
       'TmuxNavigateLeft',
