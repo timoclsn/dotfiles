@@ -80,14 +80,16 @@ return {
     build = function()
       require('fff.download').download_or_build_binary()
     end,
-    opts = {
-      debug = {
-        enabled = false,
-        show_scores = false,
-      },
-    },
     lazy = false,
     config = function()
+      require('fff').setup {
+        prompt = '> ',
+        title = 'Search Files',
+        keymaps = {
+          close = '<C-c>',
+        },
+      }
+
       vim.keymap.set('n', '<leader>sf', function()
         require('fff').find_files()
       end, { desc = '[s]earch [f]iles' })
