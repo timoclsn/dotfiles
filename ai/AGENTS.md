@@ -8,6 +8,7 @@
 - Don't add comments all over the place. Only comment where it adds value.
 - Dont use git commit or git push if not otherwise instructed by the user.
 - Try to separate presentational and business logic when possible.
+- After making changes, check if related tests need to be updated as well.
 
 ## Typescript
 
