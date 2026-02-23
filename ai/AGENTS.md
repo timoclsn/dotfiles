@@ -7,6 +7,7 @@
 - Allways make your soultions accessible.
 - Don't add comments all over the place. Only comment where it adds value.
 - Dont use git commit or git push if not otherwise instructed by the user.
+- Try to separate presentational and business logic when possible.
 
 ## Typescript
 
@@ -21,7 +22,9 @@
 - Only create an abstraction if it’s actually needed
 - Prefer clear function/variable names over inline comments
 - Don’t unnecessarily add `try`/`catch`
-- Don’t cast to `any`Avoid helper functions when a simple inline expression would suffice Use early returns, avoid nested "if" and avoid "else" if possible.
+- Don’t cast to `any`
+- Avoid helper functions when a simple inline expression would suffice
+- Use early returns, avoid nested "if" and avoid "else" if possible.
 
 ## React
 
@@ -32,7 +35,8 @@
 - If the project has a design system or ui components use these whenever possible.
 - Avoid massive JSX blocks and compose smaller components
 - Colocate code that changes together
-- Avoid `useEffect` unless absolutely neededTry to find solutions with css if possible only use React / JavaScript if necessary.
+- Avoid `useEffect` unless absolutely needed
+- Try to find solutions with css if possible only use React / JavaScript if necessary.
 
 ## Tailwind
 
@@ -41,18 +45,7 @@
 
 ## Tmux
 
-- Only start long running task like watchers or dev servers via tmux.
-- When no pane to work in is provided use pane 2 in window 3 in the current session to (the one you are running in).
 - Use `tmux capture-pane -p` to capture current pane content before sending keys to preserve context
-
-## MCP Servers
-
-### Figma Dev Mode MCP Rules
-
-- The Figma Dev Mode MCP Server provides an assets endpoint which can serve image and SVG assets
-- IMPORTANT: If the Figma Dev Mode MCP Server returns a localhost source for an image or an SVG, use that image or SVG source directly
-- IMPORTANT: DO NOT import/add new icon packages, all the assets should be in the Figma payload
-- IMPORTANT: do NOT use or create placeholders if a localhost source is provided
 
 ## GitHub
 
