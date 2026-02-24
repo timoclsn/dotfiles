@@ -94,7 +94,7 @@ const main = async () => {
       : project;
 
   const parts = [model, contextUsage, linesChanged, truncatedProject];
-  if (session) parts.push(`"${session}"`);
+  if (session) parts.push(session);
 
   console.log(parts.join(" | "));
 };
