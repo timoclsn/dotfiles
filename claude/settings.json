@@ -30,12 +30,12 @@
   "enabledPlugins": {
     "context7@claude-plugins-official": true,
     "playwright@claude-plugins-official": false,
-    "code-review@claude-plugins-official": true,
     "frontend-design@claude-plugins-official": true,
     "figma@claude-plugins-official": false,
     "Notion@claude-plugins-official": false,
     "linear@claude-plugins-official": false,
-    "atlassian@claude-plugins-official": false
+    "atlassian@claude-plugins-official": false,
+    "slack@claude-plugins-official": false
   },
   "promptSuggestionEnabled": false,
   "autoUpdatesChannel": "latest",
