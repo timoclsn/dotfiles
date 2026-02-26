@@ -41,5 +41,6 @@
   "autoUpdatesChannel": "latest",
   "skipDangerousModePermissionPrompt": true,
   "theme": "dark",
-  "tipsEnabled": false
+  "tipsEnabled": false,
+  "spinnerTipsEnabled": false
 }
