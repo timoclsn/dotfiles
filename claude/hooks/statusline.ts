@@ -81,7 +81,7 @@ const main = async () => {
     sessionId: input.session_id,
     transcriptPath: input.transcript_path,
   });
-  const dir = input.workspace.current_dir.split("/").slice(-2).join("/");
+  const dir = input.workspace.current_dir.split("/").at(-1);
   const gitBranch = await getGitBranch();
   const contextUsage = getContextUsage(input);
   const linesChanged = `+${input.cost.total_lines_added}/-${input.cost.total_lines_removed}`;
