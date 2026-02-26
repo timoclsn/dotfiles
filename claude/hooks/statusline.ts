@@ -88,10 +88,14 @@ const main = async () => {
 
   const maxProjectLen = 50;
   const project = `${dir}${gitBranch}`;
-  const truncatedProject =
-    project.length > maxProjectLen
-      ? `${project.slice(0, maxProjectLen - 1).trimEnd()}…`
-      : project;
+  let truncatedProject = project;
+  if (project.length > maxProjectLen && gitBranch) {
+    const maxBranchLen = maxProjectLen - (dir?.length ?? 0) - 1;
+    const half = Math.floor(maxBranchLen / 2);
+    truncatedProject = `${dir}${gitBranch.slice(0, half)}…${gitBranch.slice(-(maxBranchLen - half))}`;
+  } else if (project.length > maxProjectLen) {
+    truncatedProject = `${project.slice(0, maxProjectLen - 1)}…`;
+  }
 
   const parts = [model, contextUsage, linesChanged, truncatedProject];
   if (session) parts.push(session);
