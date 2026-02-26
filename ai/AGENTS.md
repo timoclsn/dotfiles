@@ -52,3 +52,4 @@
 
 - When asked about PRs or GitHub in general use the GitHub CLI (gh).
 - When using the GitHub CLI ensure you are using the "timoclsn" account `gh auth switch --user timoclsn`. Stop if you are not.
+- Write PR titles and descriptions concise and to the point.
