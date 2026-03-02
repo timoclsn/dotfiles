@@ -4,6 +4,7 @@ interface HookInput {
   session_id: string;
   transcript_path: string;
   hook_event_name?: string;
+  notification_type?: string;
   cwd?: string;
   message?: string;
   workspace?: {
@@ -22,6 +23,8 @@ const main = async () => {
   const subtitle = `${projectCategory}/${projectName}`;
 
   if (input.hook_event_name === "Notification") {
+    if (input.notification_type === "auth_success") return;
+
     const message = input.message ?? "Waiting for input";
 
     sendNotification({ subtitle, message, projectName, sessionId });
