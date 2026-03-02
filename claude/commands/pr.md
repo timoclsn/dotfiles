@@ -25,9 +25,6 @@ Create a pull request for the current branch using the GitHub CLI.
 ```
 ## Summary
 <2-4 bullet points on what changed and why>
-
-## Test plan
-<how to verify the changes>
 ```
 
 ## Rules
