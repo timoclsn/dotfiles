@@ -26,6 +26,7 @@
 - Don’t cast to `any`
 - Avoid helper functions when a simple inline expression would suffice
 - Use early returns, avoid nested "if" and avoid "else" if possible.
+- Don't test what the type system already guarantees.
 
 ## React
 
