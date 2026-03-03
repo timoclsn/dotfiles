@@ -23,7 +23,11 @@ const main = async () => {
   const subtitle = `${projectCategory}/${projectName}`;
 
   if (input.hook_event_name === "Notification") {
-    if (input.notification_type === "auth_success") return;
+    if (
+      input.notification_type === "auth_success" ||
+      input.notification_type === "idle_prompt"
+    )
+      return;
 
     const message = input.message ?? "Waiting for input";
 
