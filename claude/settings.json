@@ -1,4 +1,8 @@
 {
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
   "hooks": {
     "Stop": [
       {
@@ -40,22 +44,12 @@
   },
   "enabledPlugins": {
     "context7@claude-plugins-official": true,
-    "playwright@claude-plugins-official": false,
-    "frontend-design@claude-plugins-official": true,
-    "figma@claude-plugins-official": false,
-    "Notion@claude-plugins-official": false,
-    "linear@claude-plugins-official": false,
-    "atlassian@claude-plugins-official": false,
-    "slack@claude-plugins-official": false
+    "frontend-design@claude-plugins-official": true
   },
+  "spinnerTipsEnabled": false,
   "promptSuggestionEnabled": false,
   "autoUpdatesChannel": "latest",
   "skipDangerousModePermissionPrompt": true,
   "theme": "dark",
-  "tipsEnabled": false,
-  "spinnerTipsEnabled": false,
-  "attribution": {
-    "commit": "",
-    "pr": ""
-  }
+  "tipsEnabled": false
 }
