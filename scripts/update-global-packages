@@ -21,6 +21,7 @@ PACKAGES=(
   "@google/gemini-cli"
   "@github/copilot"
   "playwriter"
+  "@googleworkspace/cli"
 )
 
 echo "Updating global npm packages (${#PACKAGES[@]} total)…"
