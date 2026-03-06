@@ -2,3 +2,4 @@ notify = ["bun", "/Users/timo/.codex/hooks/notify.ts"]
 model = "gpt-5.4"
 model_reasoning_effort = "xhigh"
 personality = "pragmatic"
+plan_mode_reasoning_effort = "xhigh"
