@@ -1,4 +1,9 @@
 import type { Plugin } from "@opencode-ai/plugin";
+import { getIdleTime, IDLE_THRESHOLD } from "../../scripts/idle-time";
+import { sendPushover } from "../../scripts/pushover";
+
+const pushToken = process.env.PUSHOVER_OPENCODE;
+const pushUser = process.env.PUSHOVER_USER_KEY;
 
 export const Notify: Plugin = async ({ directory, client }) => {
   return {
@@ -60,6 +65,30 @@ export const Notify: Plugin = async ({ directory, client }) => {
           "-execute",
           onClick,
         ]);
+
+        if (!pushToken || !pushUser) return;
+
+        const idleSeconds = await getIdleTime();
+        if (idleSeconds < IDLE_THRESHOLD) return;
+
+        const { data: messages } = await client.session.messages({
+          path: { id: sessionID },
+        });
+        if (!messages) return;
+        const lastAssistant = [...messages]
+          .reverse()
+          .find((m) => m.info.role === "assistant");
+        const textPart = lastAssistant?.parts.find((p) => p.type === "text");
+        const lastMessage =
+          textPart?.type === "text" ? textPart.text : undefined;
+        const pushMessage = lastMessage
+          ? `[${subtitle}] ${message}\n\n${lastMessage.slice(0, 500)}`
+          : `[${subtitle}] ${message}`;
+        sendPushover({
+          token: pushToken,
+          title: "OpenCode",
+          message: pushMessage,
+        });
       }
     },
   };

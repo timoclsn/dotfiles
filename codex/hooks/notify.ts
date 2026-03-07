@@ -1,3 +1,9 @@
+import { getIdleTime, IDLE_THRESHOLD } from "../../scripts/idle-time";
+import { sendPushover } from "../../scripts/pushover";
+
+const pushToken = process.env.PUSHOVER_CODEX;
+const pushUser = process.env.PUSHOVER_USER_KEY;
+
 interface CodexNotification {
   type?: string;
   "thread-id"?: string;
@@ -38,7 +44,7 @@ const getTitle = (notification: CodexNotification) => {
   return null;
 };
 
-const main = () => {
+const main = async () => {
   const notification = readNotification();
   if (!notification) return;
 
@@ -79,6 +85,21 @@ const main = () => {
     "-execute",
     onClick,
   ]);
+
+  if (!pushToken || !pushUser) return;
+
+  const idleSeconds = await getIdleTime();
+  if (idleSeconds < IDLE_THRESHOLD) return;
+
+  const lastMessage = notification["last-assistant-message"];
+  const pushMessage = lastMessage
+    ? `[${subtitle}] ${message}\n\n${lastMessage.slice(0, 500)}`
+    : `[${subtitle}] ${message}`;
+  sendPushover({
+    token: pushToken,
+    title: "Codex",
+    message: pushMessage,
+  });
 };
 
 main();

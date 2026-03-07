@@ -40,21 +40,18 @@ const extractText = (content: unknown): string | null => {
   return null;
 };
 
-const getFirstPrompt = (transcriptPath: string) => {
-  try {
-    const content = readFileSync(transcriptPath, "utf-8");
-    for (const line of content.split("\n")) {
-      if (!line.trim()) continue;
-      const entry = JSON.parse(line);
-      if (entry.type !== "user" || entry.isMeta) continue;
-      const text =
-        extractText(entry.content) ?? extractText(entry.message?.content);
-      if (!text) continue;
-      if (!text.startsWith("<")) return text;
-      const extracted = extractFromXml(text);
-      if (extracted) return extracted;
-    }
-  } catch {}
+const getFirstPrompt = (transcriptContent: string) => {
+  for (const line of transcriptContent.split("\n")) {
+    if (!line.trim()) continue;
+    const entry = JSON.parse(line);
+    if (entry.type !== "user" || entry.isMeta) continue;
+    const text =
+      extractText(entry.content) ?? extractText(entry.message?.content);
+    if (!text) continue;
+    if (!text.startsWith("<")) return text;
+    const extracted = extractFromXml(text);
+    if (extracted) return extracted;
+  }
   return null;
 };
 
@@ -70,8 +67,23 @@ export const getSessionName = ({
   transcriptPath,
 }: GetSessionNameOptions) => {
   const title =
-    getSessionTitle(projectDir, sessionId) ?? getFirstPrompt(transcriptPath);
+    getSessionTitle(projectDir, sessionId) ??
+    getFirstPrompt(readFileSync(transcriptPath, "utf-8"));
   if (!title) return null;
   const name = title.trim().slice(0, 50).replace(/\n/g, " ");
   return name.length < title.length ? `${name.trimEnd()}…` : name;
+};
+
+export const getLastAssistantMessage = (transcriptPath: string) => {
+  try {
+    const lines = readFileSync(transcriptPath, "utf-8").split("\n");
+    for (let i = lines.length - 1; i >= 0; i--) {
+      if (!lines[i].trim()) continue;
+      const entry = JSON.parse(lines[i]);
+      if (entry.type !== "assistant") continue;
+      const text = extractText(entry.message?.content);
+      if (text) return text;
+    }
+  } catch {}
+  return null;
 };

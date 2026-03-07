@@ -1,4 +1,9 @@
-import { getSessionName } from "./utils";
+import { getIdleTime, IDLE_THRESHOLD } from "../../scripts/idle-time";
+import { sendPushover } from "../../scripts/pushover";
+import { getLastAssistantMessage, getSessionName } from "./utils";
+
+const pushToken = process.env.PUSHOVER_CLAUDE_CODE;
+const pushUser = process.env.PUSHOVER_USER_KEY;
 
 interface HookInput {
   session_id: string;
@@ -31,7 +36,13 @@ const main = async () => {
 
     const message = input.message ?? "Waiting for input";
 
-    sendNotification({ subtitle, message, projectName, sessionId });
+    await sendNotification({
+      subtitle,
+      message,
+      transcriptPath,
+      projectName,
+      sessionId,
+    });
     return;
   }
 
@@ -45,19 +56,27 @@ const main = async () => {
 
   const message = sessionTitle ?? "Agent run complete";
 
-  sendNotification({ subtitle, message, projectName, sessionId });
+  await sendNotification({
+    subtitle,
+    message,
+    transcriptPath,
+    projectName,
+    sessionId,
+  });
 };
 
 interface NotificationOptions {
   subtitle: string;
   message: string;
+  transcriptPath: string;
   projectName: string;
   sessionId: string;
 }
 
-const sendNotification = ({
+const sendNotification = async ({
   subtitle,
   message,
+  transcriptPath,
   projectName,
   sessionId,
 }: NotificationOptions) => {
@@ -82,6 +101,21 @@ const sendNotification = ({
     "-execute",
     onClick,
   ]);
+
+  if (!pushToken || !pushUser) return;
+
+  const idleSeconds = await getIdleTime();
+  if (idleSeconds < IDLE_THRESHOLD) return;
+
+  const lastMessage = getLastAssistantMessage(transcriptPath);
+  const pushMessage = lastMessage
+    ? `[${subtitle}] ${message}\n\n${lastMessage.slice(0, 500)}`
+    : `[${subtitle}] ${message}`;
+  sendPushover({
+    token: pushToken,
+    title: "Claude Code",
+    message: pushMessage,
+  });
 };
 
 main();
