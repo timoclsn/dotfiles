@@ -32,7 +32,7 @@ const extractFromXml = (text: string) => {
 const extractText = (content: unknown): string | null => {
   if (typeof content === "string") return content;
   if (Array.isArray(content)) {
-    const textBlock = content.find(
+    const textBlock = content.findLast(
       (block: { type: string }) => block.type === "text",
     );
     return textBlock?.text ?? null;

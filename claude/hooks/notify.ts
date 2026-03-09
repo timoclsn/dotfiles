@@ -107,6 +107,7 @@ const sendNotification = async ({
   const idleSeconds = await getIdleTime();
   if (idleSeconds < IDLE_THRESHOLD) return;
 
+  await Bun.sleep(1000);
   const lastMessage = getLastAssistantMessage(transcriptPath);
   const pushMessage = lastMessage
     ? `[${subtitle}] ${message}\n\n${lastMessage.slice(0, 500)}`
