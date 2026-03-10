@@ -6,3 +6,12 @@ plan_mode_reasoning_effort = "xhigh"
 
 [projects."/Users/timo/Developer/personal/dotfiles"]
 trust_level = "trusted"
+
+[projects."/Users/timo/Developer/taxfix/expert-interaction-mono"]
+trust_level = "trusted"
+
+[projects."/Users/timo/Developer/taxfix/mobile-app"]
+trust_level = "trusted"
+
+[projects."/Users/timo/Developer/taxfix/tech-platform"]
+trust_level = "trusted"
