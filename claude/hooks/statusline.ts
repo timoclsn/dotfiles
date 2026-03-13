@@ -49,7 +49,8 @@ const getGitBranch = async () => {
 };
 
 const formatTokens = (tokens: number) => {
-  if (tokens >= 1000) return `${Math.round(tokens / 1000)}k`;
+  if (tokens >= 1_000_000) return `${Math.round(tokens / 1_000_000)}M`;
+  if (tokens >= 1_000) return `${Math.round(tokens / 1_000)}k`;
   return `${tokens}`;
 };
 
