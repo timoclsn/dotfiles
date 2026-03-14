@@ -24,6 +24,10 @@ ln -sf "$DOTFILES/lazygit" "$HOME/.config/lazygit"
 rm "$HOME/.config/nvim" 2>/dev/null || true
 ln -sf "$DOTFILES/nvim" "$HOME/.config/nvim"
 
+# nvim_new (vim.pack config - use with NVIM_APPNAME=nvim_new)
+rm "$HOME/.config/nvim_new" 2>/dev/null || true
+ln -sf "$DOTFILES/nvim_new" "$HOME/.config/nvim_new"
+
 # bat
 rm "$HOME/.config/bat" 2>/dev/null || true
 ln -sf "$DOTFILES/bat" "$HOME/.config/bat"
