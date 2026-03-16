@@ -54,6 +54,13 @@ const formatTokens = (tokens: number) => {
   return `${tokens}`;
 };
 
+const truncateMiddle = (str: string, maxLen: number) => {
+  if (str.length <= maxLen) return str;
+  const head = Math.ceil((maxLen - 1) / 2);
+  const tail = Math.floor((maxLen - 1) / 2);
+  return `${str.slice(0, head)}…${str.slice(-tail)}`;
+};
+
 const getContextUsage = (input: StatusLineInput) => {
   const { context_window } = input;
   if (!context_window.current_usage) return "0/0 (0%)";
@@ -76,26 +83,28 @@ const getContextUsage = (input: StatusLineInput) => {
 const main = async () => {
   const input: StatusLineInput = await Bun.stdin.json();
 
-  const model = input.model.display_name;
+  const model = input.model.display_name.replace(/\s*\(.*?\)/, "");
   const session = getSessionName({
     projectDir: input.workspace.project_dir,
     sessionId: input.session_id,
     transcriptPath: input.transcript_path,
   });
-  const dir = input.workspace.current_dir.split("/").at(-1);
+  const dir = truncateMiddle(
+    input.workspace.current_dir.split("/").at(-1) ?? "",
+    15,
+  );
   const gitBranch = await getGitBranch();
   const contextUsage = getContextUsage(input);
   const linesChanged = `+${input.cost.total_lines_added}/-${input.cost.total_lines_removed}`;
 
-  const maxProjectLen = 50;
+  const maxProjectLen = 46;
   const project = `${dir}${gitBranch}`;
   let truncatedProject = project;
   if (project.length > maxProjectLen && gitBranch) {
-    const maxBranchLen = maxProjectLen - (dir?.length ?? 0) - 1;
-    const half = Math.floor(maxBranchLen / 2);
-    truncatedProject = `${dir}${gitBranch.slice(0, half)}…${gitBranch.slice(-(maxBranchLen - half))}`;
+    const maxBranchLen = maxProjectLen - dir.length;
+    truncatedProject = `${dir}${truncateMiddle(gitBranch, maxBranchLen)}`;
   } else if (project.length > maxProjectLen) {
-    truncatedProject = `${project.slice(0, maxProjectLen - 1)}…`;
+    truncatedProject = truncateMiddle(project, maxProjectLen);
   }
 
   const parts = [model, contextUsage, linesChanged, truncatedProject];
