@@ -49,10 +49,11 @@
     "commit-commands@claude-plugins-official": true
   },
   "spinnerTipsEnabled": false,
+  "effortLevel": "high",
   "promptSuggestionEnabled": false,
   "autoUpdatesChannel": "latest",
   "skipDangerousModePermissionPrompt": true,
   "theme": "dark",
   "tipsEnabled": false,
-  "effortLevel": "high"
+  "model": "opus[1m]"
 }
