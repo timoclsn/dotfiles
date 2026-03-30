@@ -1,4 +1,5 @@
 git:
+  autoForwardBranches: none
   pagers:
     - pager: delta --dark --syntax-theme=tokyonight_night --paging=never --line-numbers
       colorArg: always
