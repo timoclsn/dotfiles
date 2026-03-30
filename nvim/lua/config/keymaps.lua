@@ -6,6 +6,12 @@ vim.keymap.set('n', 'n', 'nzzzv', { desc = 'Next Search Result Centered' })
 vim.keymap.set('n', 'N', 'Nzzzv', { desc = 'Previous Search Result Centered' })
 
 -- ============================================================================
+-- Selection
+-- ============================================================================
+vim.keymap.set('v', 'v', 'an', { remap = true, desc = 'Expand treesitter node selection' })
+vim.keymap.set('v', 'V', 'in', { remap = true, desc = 'Shrink treesitter node selection' })
+
+-- ============================================================================
 -- Navigation & Movement
 -- ============================================================================
 vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Jump half page down and center cursor' })

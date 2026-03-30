@@ -13,6 +13,13 @@ return {
       -- ============================================
 
       require('mini.ai').setup {
+        -- Remap next/last to free up an/in for built-in treesitter node selection (0.12)
+        mappings = {
+          around_next = 'aN',
+          inside_next = 'iN',
+          around_last = 'aL',
+          inside_last = 'iL',
+        },
         custom_textobjects = {
           F = require('mini.ai').gen_spec.treesitter {
             a = '@function.outer',
