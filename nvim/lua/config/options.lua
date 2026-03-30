@@ -90,13 +90,10 @@ vim.diagnostic.config {
 -- ============================================================================
 vim.opt.diffopt = {
   'vertical',
-  'internal',
-  'filler',
-  'closeoff',
   'context:12',
   'algorithm:histogram',
   'linematch:60',
-  'indent-heuristic',
+  'inline:word',
 }
 
 -- ============================================================================
@@ -154,3 +151,4 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     vim.hl.on_yank()
   end,
 })
+
