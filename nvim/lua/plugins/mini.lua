@@ -89,28 +89,6 @@ return {
       require('mini.icons').setup()
       require('mini.icons').mock_nvim_web_devicons()
 
-      local function footer()
-        local cwd = vim.fn.getcwd()
-        local current_dir = vim.fn.fnamemodify(cwd, ':t')
-        local parent_dir = vim.fn.fnamemodify(cwd, ':h:t')
-
-        if parent_dir == 'steuerbot' then
-          return 'Working on Steuerbot [' .. current_dir .. '] 🤖'
-        elseif parent_dir == 'taxfix' then
-          return 'Working on Taxfix [' .. current_dir .. '] %'
-        else
-          return 'Happy coding [' .. current_dir .. ']!'
-        end
-      end
-
-      require('mini.starter').setup {
-        items = {
-          require('mini.starter').sections.recent_files(10, true, true),
-          require('mini.starter').sections.builtin_actions(),
-        },
-        footer = footer(),
-      }
-
       -- Statusline
       local function cusom_location()
         return '%2l[%L]:%-2v'

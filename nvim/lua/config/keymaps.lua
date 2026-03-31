@@ -226,3 +226,24 @@ vim.keymap.set('n', '<leader>yc', function()
   vim.cmd 'normal gcc'
   vim.cmd 'normal! ^'
 end, { desc = '[y]ank [c] - revert duplicate and comment line' })
+
+-- ============================================================================
+-- Custom Commands
+-- ============================================================================
+local restart_nvim = function()
+  local has_session = vim.v.this_session ~= ''
+  local session = has_session and vim.v.this_session or vim.fs.joinpath(vim.fn.stdpath 'state', 'restart-session.vim')
+
+  vim.fn.mkdir(vim.fs.dirname(session), 'p')
+  vim.cmd('mksession! ' .. vim.fn.fnameescape(session))
+
+  if not has_session then
+    local session_x = session:gsub('%.vim$', 'x.vim')
+    vim.fn.writefile({ 'let v:this_session = ""' }, session_x)
+  end
+
+  vim.cmd('restart source ' .. vim.fn.fnameescape(session))
+end
+
+vim.api.nvim_create_user_command('R', restart_nvim, { desc = 'Restart Neovim and restore the current session' })
+vim.api.nvim_create_user_command('Restart', restart_nvim, { desc = 'Restart Neovim and restore the current session' })
