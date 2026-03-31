@@ -30,13 +30,6 @@ return {
     },
   },
   {
-    'brenoprata10/nvim-highlight-colors',
-    opts = {
-      render = 'virtual',
-      enable_tailwind = true,
-    },
-  },
-  {
     'axelvc/template-string.nvim',
     config = function()
       require('template-string').setup {

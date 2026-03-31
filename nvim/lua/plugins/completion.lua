@@ -3,7 +3,6 @@ return {
     'saghen/blink.cmp',
     dependencies = {
       'onsails/lspkind.nvim',
-      'brenoprata10/nvim-highlight-colors',
       'folke/lazydev.nvim',
     },
     version = '1.*',
@@ -58,14 +57,6 @@ return {
               kind_icon = {
                 text = function(ctx)
                   local icon = ctx.kind_icon
-
-                  -- First check for color highlighting (takes precedence)
-                  if ctx.item.source_name == 'LSP' then
-                    local color_item = require('nvim-highlight-colors').format(ctx.item.documentation, { kind = ctx.kind })
-                    if color_item and color_item.abbr ~= '' then
-                      return color_item.abbr .. ctx.icon_gap
-                    end
-                  end
 
                   -- Handle Path source with devicons
                   if ctx.source_name == 'Path' then

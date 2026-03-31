@@ -130,6 +130,8 @@ return {
           vim.bo.filetype = 'yaml.gitlab'
         end,
       })
+
+      vim.lsp.document_color.enable(true, nil, { style = 'virtual' })
     end,
   },
   {
