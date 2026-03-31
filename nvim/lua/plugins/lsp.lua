@@ -44,34 +44,8 @@ return {
             },
           },
         },
-        ts_ls = {
-          settings = {
-            typescript = {
-              inlayHints = {
-                includeInlayParameterNameHints = 'all', -- 'none' | 'literals' | 'all'
-                includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-                includeInlayVariableTypeHints = true,
-                includeInlayFunctionParameterTypeHints = true,
-                includeInlayVariableTypeHintsWhenTypeMatchesName = true,
-                includeInlayPropertyDeclarationTypeHints = true,
-                includeInlayFunctionLikeReturnTypeHints = true,
-                includeInlayEnumMemberValueHints = true,
-              },
-            },
-            javascript = {
-              inlayHints = {
-                includeInlayParameterNameHints = 'all', -- 'none' | 'literals' | 'all'
-                includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-                includeInlayVariableTypeHints = true,
-                includeInlayFunctionParameterTypeHints = true,
-                includeInlayVariableTypeHintsWhenTypeMatchesName = true,
-                includeInlayPropertyDeclarationTypeHints = true,
-                includeInlayFunctionLikeReturnTypeHints = true,
-                includeInlayEnumMemberValueHints = true,
-              },
-            },
-          },
-        },
+        tsgo = {},
+        ts_ls = {},
         yamlls = {},
       }
 
@@ -94,7 +68,9 @@ return {
       -- Install and enable LSP servers
       require('mason-lspconfig').setup {
         ensure_installed = vim.tbl_keys(servers or {}),
-        automatic_enable = true,
+        automatic_enable = {
+          exclude = { 'ts_ls' },
+        },
       }
 
       local tools = {
@@ -144,7 +120,7 @@ return {
           map('<leader>wi', function()
             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
           end, '[w]orkspace [i]nlay hints')
-          map('<leader>tr', '<cmd>LspRestart ts_ls<CR>', '[t]ypescript language server [r]estart')
+          map('<leader>tr', '<cmd>LspRestart tsgo<CR>', '[t]ypescript language server [r]estart')
         end,
       })
 
