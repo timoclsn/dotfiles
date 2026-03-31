@@ -18,6 +18,7 @@ vim.o.colorcolumn = '120'
 vim.o.laststatus = 3
 vim.o.list = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+require('vim._core.ui2').enable {}
 
 -- ============================================================================
 -- Editing & Indentation
@@ -151,4 +152,3 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     vim.hl.on_yank()
   end,
 })
-
