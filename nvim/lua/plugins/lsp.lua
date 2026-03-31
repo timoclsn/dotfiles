@@ -11,6 +11,7 @@ return {
       local servers = {
         astro = {},
         bashls = {},
+        copilot = {},
         clangd = {},
         cssls = {},
         emmet_language_server = {},
@@ -132,6 +133,13 @@ return {
       })
 
       vim.lsp.document_color.enable(true, nil, { style = 'virtual' })
+
+      vim.lsp.inline_completion.enable()
+      vim.keymap.set('i', '<Tab>', function()
+        if not vim.lsp.inline_completion.get() then
+          return '<Tab>'
+        end
+      end, { expr = true, desc = 'Accept the current inline completion' })
     end,
   },
   {
