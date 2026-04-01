@@ -15,13 +15,6 @@ require('guess-indent').setup()
 require('todo-comments').setup()
 vim.keymap.set('n', '<leader>sy', '<cmd>:TodoTelescope<CR>', { desc = '[s]earch [y] todo comments' })
 
--- Vim-tmux-navigator keymaps
-vim.keymap.set('n', '<c-h>', '<cmd><C-U>TmuxNavigateLeft<cr>')
-vim.keymap.set('n', '<c-j>', '<cmd><C-U>TmuxNavigateDown<cr>')
-vim.keymap.set('n', '<c-k>', '<cmd><C-U>TmuxNavigateUp<cr>')
-vim.keymap.set('n', '<c-l>', '<cmd><C-U>TmuxNavigateRight<cr>')
-vim.keymap.set('n', '<c-\\>', '<cmd><C-U>TmuxNavigatePrevious<cr>')
-
 -- Template string
 require('template-string').setup {
   remove_template_string = true,
