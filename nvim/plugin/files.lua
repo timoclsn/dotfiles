@@ -70,8 +70,8 @@ vim.keymap.set('n', '<leader>e', ':Neotree reveal<CR>', { desc = 'Reveal file in
 
 -- fff.nvim
 vim.api.nvim_create_autocmd('PackChanged', {
-  callback = function(event)
-    if event.data.updated then
+  callback = function(ev)
+    if ev.data.spec.name == 'fff.nvim' and (ev.data.kind == 'install' or ev.data.kind == 'update') then
       require('fff.download').download_or_build_binary()
     end
   end,
