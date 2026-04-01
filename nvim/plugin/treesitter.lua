@@ -1,3 +1,9 @@
+vim.pack.add {
+  { src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'main' },
+  { src = 'https://github.com/nvim-treesitter/nvim-treesitter-textobjects', version = 'main' },
+  'https://github.com/nvim-treesitter/nvim-treesitter-context',
+}
+
 vim.api.nvim_create_autocmd('PackChanged', {
   callback = function(ev)
     if ev.data.spec.name == 'nvim-treesitter' and (ev.data.kind == 'install' or ev.data.kind == 'update') then
@@ -8,12 +14,6 @@ vim.api.nvim_create_autocmd('PackChanged', {
     end
   end,
 })
-
-vim.pack.add {
-  { src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'main' },
-  { src = 'https://github.com/nvim-treesitter/nvim-treesitter-textobjects', version = 'main' },
-  'https://github.com/nvim-treesitter/nvim-treesitter-context',
-}
 
 -- Treesitter setup
 local ts = require 'nvim-treesitter'
