@@ -77,15 +77,8 @@ vim.api.nvim_create_autocmd('PackChanged', {
   end,
 })
 
-vim.g.fff = {
-  lazy_sync = true,
-  debug = {
-    enabled = true,
-    show_scores = true,
-  },
-}
-
 require('fff').setup {
+  lazy_sync = true,
   prompt = '> ',
   title = 'Search Files',
   keymaps = {
