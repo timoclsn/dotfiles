@@ -231,6 +231,12 @@ end, { desc = '[y]ank [c] - revert duplicate and comment line' })
 -- Custom Commands
 -- ============================================================================
 local restart_nvim = function()
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.bo[buf].filetype == 'neo-tree' then
+      vim.api.nvim_buf_delete(buf, { force = true })
+    end
+  end
+
   local has_session = vim.v.this_session ~= ''
   local session = has_session and vim.v.this_session or vim.fs.joinpath(vim.fn.stdpath 'state', 'restart-session.vim')
 
