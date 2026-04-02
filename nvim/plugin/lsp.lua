@@ -1,28 +1,3 @@
-vim.pack.add {
-  'https://github.com/mason-org/mason.nvim',
-  'https://github.com/neovim/nvim-lspconfig',
-  'https://github.com/mason-org/mason-lspconfig.nvim',
-  'https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim',
-  'https://github.com/j-hui/fidget.nvim',
-  'https://github.com/folke/lazydev.nvim',
-}
-
--- Fidget
-require('fidget').setup {}
-
--- Lazydev (only for lua files)
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = 'lua',
-  once = true,
-  callback = function()
-    require('lazydev').setup {
-      library = {
-        { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
-      },
-    }
-  end,
-})
-
 -- LSP servers
 local servers = {
   astro = {},

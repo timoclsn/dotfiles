@@ -1,7 +1,3 @@
-vim.pack.add {
-  'https://github.com/stevearc/conform.nvim',
-}
-
 local formatters = {
   go = { 'gofmt' },
   lua = { 'stylua' },

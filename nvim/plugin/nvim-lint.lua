@@ -1,7 +1,3 @@
-vim.pack.add {
-  'https://github.com/mfussenegger/nvim-lint',
-}
-
 local lint = require 'lint'
 vim.env.ESLINT_D_PPID = vim.fn.getpid()
 lint.linters_by_ft = {

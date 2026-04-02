@@ -18,6 +18,8 @@ vim.o.colorcolumn = '120'
 vim.o.laststatus = 3
 vim.o.list = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+-- Ghostty syntax highlighting (local, non-git plugin)
+vim.opt.rtp:append '/Applications/Ghostty.app/Contents/Resources/vim/vimfiles/'
 require('vim._core.ui2').enable {}
 
 -- ============================================================================

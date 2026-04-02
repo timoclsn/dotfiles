@@ -1,11 +1,3 @@
-vim.pack.add {
-  'https://github.com/nvim-lua/plenary.nvim',
-  'https://github.com/nvim-telescope/telescope.nvim',
-  'https://github.com/natecraddock/telescope-zf-native.nvim',
-  'https://github.com/nvim-telescope/telescope-ui-select.nvim',
-  'https://github.com/benfowler/telescope-luasnip.nvim',
-}
-
 local actions = require 'telescope.actions'
 local layout_actions = require 'telescope.actions.layout'
 local path_display = require 'telescope.path_display'
