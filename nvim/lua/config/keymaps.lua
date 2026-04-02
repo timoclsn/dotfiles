@@ -253,3 +253,6 @@ end
 
 vim.api.nvim_create_user_command('R', restart_nvim, { desc = 'Restart Neovim and restore the current session' })
 vim.api.nvim_create_user_command('Restart', restart_nvim, { desc = 'Restart Neovim and restore the current session' })
+
+vim.api.nvim_create_user_command('Update', function() vim.pack.update() end, { desc = 'Update plugins' })
+vim.api.nvim_create_user_command('U', function() vim.pack.update() end, { desc = 'Update plugins' })
