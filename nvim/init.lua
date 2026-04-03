@@ -1,7 +1,8 @@
 vim.loader.enable()
 
-require 'config.options'
-require 'config.keymaps'
+require 'options'
+require 'keymaps'
+require 'commands'
 
 -- PackChanged hooks
 vim.api.nvim_create_autocmd('PackChanged', {
