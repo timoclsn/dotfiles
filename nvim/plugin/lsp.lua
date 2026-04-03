@@ -8,7 +8,6 @@ local servers = {
   emmet_language_server = {},
   eslint = {},
   gh_actions_ls = {},
-  gitlab_ci_ls = {},
   gopls = {},
   html = {},
   jsonls = {},
@@ -44,17 +43,6 @@ local servers = {
 for server, settings in pairs(servers) do
   vim.lsp.config(server, settings)
 end
-
--- Workaround for lazydev not providing vim as a global for the first open lua buffer
-vim.lsp.config('lua_ls', {
-  settings = {
-    Lua = {
-      workspace = {
-        library = vim.api.nvim_get_runtime_file('', true),
-      },
-    },
-  },
-})
 
 -- Mason setup
 require('mason').setup()
@@ -114,13 +102,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
       vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
     end, '[w]orkspace [i]nlay hints')
     map('<leader>tr', '<cmd>LspRestart tsgo<CR>', '[t]ypescript language server [r]estart')
-  end,
-})
-
-vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
-  pattern = '*.gitlab-ci*.{yml,yaml}',
-  callback = function()
-    vim.bo.filetype = 'yaml.gitlab'
   end,
 })
 
