@@ -72,6 +72,15 @@ require('mason-tool-installer').setup {
   ensure_installed = tools,
 }
 
+vim.lsp.document_color.enable(true, nil, { style = 'virtual' })
+
+vim.lsp.inline_completion.enable()
+vim.keymap.set('i', '<Tab>', function()
+  if not vim.lsp.inline_completion.get() then
+    return '<Tab>'
+  end
+end, { expr = true, desc = 'Accept the current inline completion' })
+
 -- LSP keymaps
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('config-lsp-attach', { clear = true }),
@@ -104,12 +113,3 @@ vim.api.nvim_create_autocmd('LspAttach', {
     map('<leader>tr', '<cmd>LspRestart tsgo<CR>', '[t]ypescript language server [r]estart')
   end,
 })
-
-vim.lsp.document_color.enable(true, nil, { style = 'virtual' })
-
-vim.lsp.inline_completion.enable()
-vim.keymap.set('i', '<Tab>', function()
-  if not vim.lsp.inline_completion.get() then
-    return '<Tab>'
-  end
-end, { expr = true, desc = 'Accept the current inline completion' })
