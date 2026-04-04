@@ -59,11 +59,9 @@ local tools = {
   'markdownlint',
   'jsonlint',
   'golangci-lint',
-  'oxlint',
 
   -- Formatters
   'black',
-  'oxfmt',
   'prettierd',
   'stylua',
 }
