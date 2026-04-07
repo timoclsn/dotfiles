@@ -1,12 +1,26 @@
 #!/usr/bin/env bash
 
+dirs=(
+    ~/Developer/personal
+    ~/Developer/steuerbot
+    ~/Developer/taxfix
+    ~/Developer/codeatelier
+    ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents
+)
+
 if [[ $# -eq 1 ]]; then
     selected=$1
 else
-    selected=$(find ~/Developer/personal ~/Developer/steuerbot ~/Developer/taxfix ~/Developer/codeatelier ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents -mindepth 1 -maxdepth 1 -type d | fzf --border-label " Select Project ")
+    result=$(find "${dirs[@]}" -mindepth 1 -maxdepth 1 -type d | fzf --border-label " Select Project " --expect=ctrl-y)
+    { read -r key; read -r selected; } <<< "$result"
 fi
 
 if [[ -z $selected ]]; then
+    exit 0
+fi
+
+if [[ $key == "ctrl-y" ]]; then
+    printf '%s' "$selected" | sed "s|^$HOME|~|" | pbcopy
     exit 0
 fi
 
