@@ -1,4 +1,3 @@
--- LSP servers
 local servers = {
   astro = {},
   bashls = {},
@@ -36,38 +35,36 @@ local servers = {
     },
   },
   tsgo = {},
-  ts_ls = {},
   yamlls = {},
+  zls = {},
 }
 
 for server, settings in pairs(servers) do
   vim.lsp.config(server, settings)
 end
 
--- Mason setup
+vim.lsp.enable(vim.tbl_keys(servers))
+
 require('mason').setup()
 
-require('mason-lspconfig').setup {
-  ensure_installed = vim.tbl_keys(servers or {}),
-  automatic_enable = {
-    exclude = { 'ts_ls' },
-  },
-}
+local ensure_installed = vim.tbl_keys(servers or {})
 
-local tools = {
+-- Other tools
+vim.list_extend(ensure_installed, {
   -- Linters
-  'markdownlint',
-  'jsonlint',
   'golangci-lint',
+  'jsonlint',
+  'markdownlint',
 
   -- Formatters
   'black',
   'prettierd',
   'stylua',
-}
+})
 
 require('mason-tool-installer').setup {
-  ensure_installed = tools,
+  ensure_installed = ensure_installed,
+  auto_update = true,
 }
 
 vim.lsp.document_color.enable(true, nil, { style = 'virtual' })
