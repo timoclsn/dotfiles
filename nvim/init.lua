@@ -20,6 +20,9 @@ vim.api.nvim_create_autocmd('PackChanged', {
       end
       vim.cmd 'TSUpdate'
     elseif name == 'fff.nvim' then
+      if not ev.data.active then
+        vim.cmd.packadd 'fff.nvim'
+      end
       require('fff.download').download_or_build_binary()
     end
   end,
