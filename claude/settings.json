@@ -3,6 +3,9 @@
     "commit": "",
     "pr": ""
   },
+  "permissions": {
+    "defaultMode": "auto"
+  },
   "model": "opus[1m]",
   "hooks": {
     "Stop": [
@@ -51,14 +54,11 @@
     "dev-toolkit@taxfix-plugins-marketplace": true
   },
   "spinnerTipsEnabled": false,
-  "effortLevel": "high",
+  "effortLevel": "xhigh",
   "promptSuggestionEnabled": false,
   "autoUpdatesChannel": "latest",
   "skipDangerousModePermissionPrompt": true,
-  "theme": "dark",
-  "tipsEnabled": false,
   "skipAutoPermissionPrompt": true,
-  "permissions": {
-    "defaultMode": "auto"
-  }
+  "theme": "dark",
+  "tipsEnabled": false
 }
