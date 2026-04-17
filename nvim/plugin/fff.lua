@@ -2,9 +2,7 @@ require('fff').setup {
   lazy_sync = true,
   prompt = '> ',
   title = 'Search Files',
-  keymaps = {
-    close = '<C-c>',
-  },
+  prompt_vim_mode = true,
 }
 
 vim.keymap.set('n', '<leader>sf', function()
