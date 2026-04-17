@@ -33,7 +33,6 @@ vim.pack.add {
   { src = 'https://github.com/saghen/blink.cmp', version = vim.version.range '1.*' },
   { src = 'https://github.com/nat-418/boole.nvim' },
   { src = 'https://github.com/stevearc/conform.nvim' },
-  { src = 'https://github.com/sindrets/diffview.nvim' },
   { src = 'https://github.com/jinh0/eyeliner.nvim' },
   { src = 'https://github.com/dmtrKovalenko/fff.nvim' },
   { src = 'https://github.com/j-hui/fidget.nvim' },
@@ -66,4 +65,5 @@ vim.pack.add {
   { src = 'https://github.com/folke/ts-comments.nvim' },
   { src = 'https://github.com/christoomey/vim-tmux-navigator' },
   { src = 'https://github.com/folke/which-key.nvim' },
+  { src = 'https://github.com/esmuellert/codediff.nvim' },
 }

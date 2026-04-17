@@ -9,13 +9,13 @@
       "rev": "7b4a3dae28e3b2497747aa840439e9493cabdc49",
       "src": "https://github.com/nat-418/boole.nvim"
     },
+    "codediff.nvim": {
+      "rev": "832f1ecc5f8b15a44cf7537e31d3266d657775b1",
+      "src": "https://github.com/esmuellert/codediff.nvim"
+    },
     "conform.nvim": {
       "rev": "086a40dc7ed8242c03be9f47fbcee68699cc2395",
       "src": "https://github.com/stevearc/conform.nvim"
-    },
-    "diffview.nvim": {
-      "rev": "4516612fe98ff56ae0415a259ff6361a89419b0a",
-      "src": "https://github.com/sindrets/diffview.nvim"
     },
     "eyeliner.nvim": {
       "rev": "8f197eb30cecdf4c2cc9988a5eecc6bc34c0c7d6",
