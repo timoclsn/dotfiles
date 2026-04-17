@@ -1,6 +1,6 @@
 ---
 name: go
-description: End-to-end task execution: implement, verify, simplify, then open a draft PR. Use when the user invokes `/go` with a task description and wants the full pipeline run without further prompts.
+description: "End-to-end task execution: implement, verify, simplify, then open a draft PR. Use when the user invokes `/go` with a task description and wants the full pipeline run without further prompts."
 ---
 
 Execute the task below end-to-end, running all steps in order without stopping for confirmation between them.
