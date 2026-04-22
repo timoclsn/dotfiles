@@ -22,7 +22,7 @@
       "src": "https://github.com/jinh0/eyeliner.nvim"
     },
     "fff.nvim": {
-      "rev": "8298260c64e2bb517fd6624362673c64e0a05848",
+      "rev": "1b79eecb58a73fdfb8045ed9919ef9af487357be",
       "src": "https://github.com/dmtrKovalenko/fff.nvim"
     },
     "fidget.nvim": {
@@ -121,7 +121,7 @@
       "src": "https://github.com/natecraddock/telescope-zf-native.nvim"
     },
     "telescope.nvim": {
-      "rev": "028d9a0695a0cc4cfa893889f8c408ed7ccc8adc",
+      "rev": "506338434fec5ad19cb1f8d45bf92d66c4917393",
       "src": "https://github.com/nvim-telescope/telescope.nvim"
     },
     "template-string.nvim": {
