@@ -58,7 +58,9 @@
   "promptSuggestionEnabled": false,
   "autoUpdatesChannel": "latest",
   "skipDangerousModePermissionPrompt": true,
-  "skipAutoPermissionPrompt": true,
   "theme": "dark",
-  "tipsEnabled": false
+  "skipAutoPermissionPrompt": true,
+  "tipsEnabled": false,
+  "preferredNotifChannel": "notifications_disabled",
+  "terminalProgressBarEnabled": false
 }
