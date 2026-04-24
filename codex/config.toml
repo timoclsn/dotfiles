@@ -1,5 +1,5 @@
 notify = ["bun", "/Users/timo/.codex/hooks/notify.ts"]
-model = "gpt-5.4"
+model = "gpt-5.5"
 model_reasoning_effort = "xhigh"
 personality = "pragmatic"
 plan_mode_reasoning_effort = "xhigh"
@@ -30,3 +30,6 @@ trust_level = "trusted"
 
 [projects."/Users/timo/Developer/personal/agents-dashboard"]
 trust_level = "trusted"
+
+[tui.model_availability_nux]
+"gpt-5.5" = 3
