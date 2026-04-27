@@ -61,3 +61,18 @@
 ## Vercel
 
 - When debugging Vercel builds or deployments use the Vercel CLI (`vercel`). It is installed locally.
+
+## Notifications
+
+- When I ask you to "ping me", "notify me", "let me know", or similar, send BOTH a local notification and a push to my phone.
+- Local: use `terminal-notifier -title "<title>" -message "<message>"`.
+- Phone: use Pushover via curl to the REST API. Credentials live in `$PUSHOVER_TOKEN` and `$PUSHOVER_USER`:
+  ```sh
+  curl -s \
+    --form-string "token=$PUSHOVER_TOKEN" \
+    --form-string "user=$PUSHOVER_USER" \
+    --form-string "title=<title>" \
+    --form-string "message=<message>" \
+    https://api.pushover.net/1/messages.json
+  ```
+- Always send both unless I explicitly say "local only" or "phone only".
