@@ -51,7 +51,8 @@
     "frontend-design@claude-plugins-official": true,
     "code-review@claude-plugins-official": true,
     "commit-commands@claude-plugins-official": true,
-    "dev-toolkit@taxfix-plugins-marketplace": true
+    "dev-toolkit@taxfix-plugins-marketplace": true,
+    "vercel@claude-plugins-official": true
   },
   "spinnerTipsEnabled": false,
   "effortLevel": "xhigh",
@@ -59,8 +60,8 @@
   "autoUpdatesChannel": "latest",
   "skipDangerousModePermissionPrompt": true,
   "theme": "dark",
-  "skipAutoPermissionPrompt": true,
-  "tipsEnabled": false,
   "preferredNotifChannel": "notifications_disabled",
-  "terminalProgressBarEnabled": false
+  "terminalProgressBarEnabled": false,
+  "skipAutoPermissionPrompt": true,
+  "tipsEnabled": false
 }
