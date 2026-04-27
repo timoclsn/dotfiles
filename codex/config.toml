@@ -37,5 +37,8 @@ trust_level = "trusted"
 [projects."/Users/timo/Developer/personal/makersleague-de"]
 trust_level = "trusted"
 
+[projects."/Users/timo/Developer/steuerbot/frontend"]
+trust_level = "trusted"
+
 [tui.model_availability_nux]
 "gpt-5.5" = 4
