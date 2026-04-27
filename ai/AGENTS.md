@@ -49,6 +49,7 @@
 ## Tmux
 
 - Use `tmux capture-pane -p` to capture current pane content before sending keys to preserve context
+- A pattern like `dotfiles:4.4` refers to a tmux pane (format: `session:window.pane`)
 
 ## GitHub
 
