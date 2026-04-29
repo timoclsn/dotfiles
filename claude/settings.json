@@ -60,6 +60,7 @@
   "autoUpdatesChannel": "latest",
   "skipDangerousModePermissionPrompt": true,
   "theme": "dark",
+  "editorMode": "vim",
   "preferredNotifChannel": "notifications_disabled",
   "terminalProgressBarEnabled": false,
   "skipAutoPermissionPrompt": true,
