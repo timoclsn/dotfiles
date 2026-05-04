@@ -110,7 +110,7 @@ const sendNotification = async ({
   await Bun.sleep(1000);
   const lastMessage = getLastAssistantMessage(transcriptPath);
   const pushMessage = lastMessage
-    ? `[${subtitle}] ${message}\n\n${lastMessage.slice(0, 500)}`
+    ? `[${subtitle}] ${message}\n\n${lastMessage}`
     : `[${subtitle}] ${message}`;
   sendPushover({
     token: pushToken,
