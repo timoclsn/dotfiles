@@ -33,6 +33,10 @@ gui:
 keybinding:
   universal:
     copyToClipboard: "<c-y>"
+    prevTab: "<backtab>"
+    nextTab: "<tab>"
+    prevBlock-alt2: <disabled>
+    nextBlock-alt2: <disabled>
 customCommands:
   - key: "<c-c>"
     description: "conventional commit"
