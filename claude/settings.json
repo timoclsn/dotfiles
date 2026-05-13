@@ -42,6 +42,9 @@
       }
     ]
   },
+  "worktree": {
+    "baseRef": "fresh"
+  },
   "statusLine": {
     "type": "command",
     "command": "bun ~/.claude/hooks/statusline.ts"
@@ -63,6 +66,9 @@
   "editorMode": "vim",
   "preferredNotifChannel": "notifications_disabled",
   "terminalProgressBarEnabled": false,
+  "remoteControlAtStartup": true,
+  "inputNeededNotifEnabled": false,
+  "agentPushNotifEnabled": false,
   "skipAutoPermissionPrompt": true,
   "tipsEnabled": false
 }
