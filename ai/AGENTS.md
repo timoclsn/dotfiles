@@ -1,12 +1,8 @@
 ## General
 
 - Apply all of the rules in this file to new code you write. Don't change already present code that you don't have to touch. (Keep diffs minimal)
-- Use spaces for indentation.
-- Default to 2 spaces.
 - Focus on the most performant solutions.
 - Always make your solutions accessible.
-- Only add comments where they add value.
-- Don't use git commit or git push if not otherwise instructed by the user.
 - Try to separate presentational and business logic when possible.
 - After making changes, check if related tests need to be updated as well.
 
