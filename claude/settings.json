@@ -67,8 +67,8 @@
   "preferredNotifChannel": "notifications_disabled",
   "terminalProgressBarEnabled": false,
   "remoteControlAtStartup": true,
-  "inputNeededNotifEnabled": false,
-  "agentPushNotifEnabled": false,
+  "inputNeededNotifEnabled": true,
+  "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
   "tipsEnabled": false
 }
