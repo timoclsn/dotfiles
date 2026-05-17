@@ -122,6 +122,16 @@ alias o='manage_ollama'
 alias x='manage_xcode_version'
 alias b='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222 --user-data-dir="$HOME/.config/chrome-profile"'
 
+# comview
+alias cv="git diff | comview"
+cvpr() {
+  local base
+  base=$(git symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null) \
+    || base="origin/$(git config --get init.defaultBranch 2>/dev/null || echo main)"
+  git diff "$(git merge-base HEAD "$base")"...HEAD | comview
+}
+cvgh() { gh pr diff "$@" | comview; }
+
 # =============================================================================
 # Key Bindings
 # =============================================================================
