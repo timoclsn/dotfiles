@@ -23,6 +23,7 @@ PACKAGES=(
   "@mariozechner/pi-coding-agent"
   "playwriter"
   "@googleworkspace/cli"
+  "hunkdiff"
 )
 
 echo "Updating global npm packages (${#PACKAGES[@]} total)…"
