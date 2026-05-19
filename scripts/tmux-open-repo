@@ -8,19 +8,13 @@ if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
     exit 1
 fi
 
-origin=$(git remote get-url origin 2>/dev/null)
-if [ -z "$origin" ]; then
-    tmux display-message "No remote origin found"
-    exit 1
-fi
-
-if gh pr view --web -R "$origin" >/dev/null 2>&1; then
+if gh pr view --web >/dev/null 2>&1; then
     tmux display-message "Opened PR in browser"
     exit 0
 fi
 
-gh browse -R "$origin" >/dev/null 2>&1 || {
-    tmux display-message "Failed to open repository"
+gh browse >/dev/null 2>&1 || {
+    tmux display-message "No remote origin found"
     exit 1
 }
 
