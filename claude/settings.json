@@ -66,9 +66,9 @@
   "editorMode": "vim",
   "preferredNotifChannel": "notifications_disabled",
   "terminalProgressBarEnabled": false,
-  "remoteControlAtStartup": true,
-  "inputNeededNotifEnabled": true,
-  "agentPushNotifEnabled": true,
+  "inputNeededNotifEnabled": false,
+  "agentPushNotifEnabled": false,
   "skipAutoPermissionPrompt": true,
-  "tipsEnabled": false
+  "tipsEnabled": false,
+  "remoteControlAtStartup": true
 }
