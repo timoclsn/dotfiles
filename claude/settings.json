@@ -52,15 +52,15 @@
   "enabledPlugins": {
     "context7@claude-plugins-official": true,
     "frontend-design@claude-plugins-official": true,
-    "code-review@claude-plugins-official": true,
     "commit-commands@claude-plugins-official": true,
-    "dev-toolkit@taxfix-plugins-marketplace": true,
+    "dev-toolkit@taxfix-plugins-marketplace": false,
     "vercel@claude-plugins-official": true
   },
   "spinnerTipsEnabled": false,
   "effortLevel": "xhigh",
   "promptSuggestionEnabled": false,
   "autoUpdatesChannel": "latest",
+  "tui": "default",
   "skipDangerousModePermissionPrompt": true,
   "theme": "dark",
   "editorMode": "vim",
@@ -70,6 +70,5 @@
   "inputNeededNotifEnabled": false,
   "agentPushNotifEnabled": false,
   "skipAutoPermissionPrompt": true,
-  "tipsEnabled": false,
-  "tui": "fullscreen"
+  "tipsEnabled": false
 }
