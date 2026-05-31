@@ -20,7 +20,7 @@ $ARGUMENTS
 
    Detect available checks from `package.json` scripts, `Makefile`, or project conventions. Skip a check only if no tooling exists for it. Fix any failures before continuing.
 
-3. **Simplify.** Invoke the `simplify` skill to review changed code for reuse, quality, and efficiency, and apply its fixes. If the changes meaningfully affect behavior, re-run the relevant checks from step 2.
+3. **Simplify.** Invoke the `code-review` skill with the `--fix` flag to review changed code and apply its fixes. If the changes meaningfully affect behavior, re-run the relevant checks from step 2.
 
 4. **Ship.** Invoke the `commit-commands:commit-push-pr` skill. The PR must be a **draft** and **assigned to the current user** (`@me`).
 
