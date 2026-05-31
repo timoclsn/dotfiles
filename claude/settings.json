@@ -57,7 +57,7 @@
     "vercel@claude-plugins-official": true
   },
   "spinnerTipsEnabled": false,
-  "effortLevel": "xhigh",
+  "effortLevel": "high",
   "promptSuggestionEnabled": false,
   "autoUpdatesChannel": "latest",
   "tui": "default",
