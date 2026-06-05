@@ -1,9 +1,10 @@
 ---
 name: ci-failure
-description: Investigate failing CI checks on the current branch's PR, analyze the logs, and walk the user through each failure with a root cause and suggested fix. Read-only — no changes are made. Use when the user invokes `/ci-failure` to triage red CI before deciding what to act on.
+description: Investigate failing CI checks on the current branch's PR, analyze the logs, and walk the user through each failure with a root cause and suggested fix. Read-only by default; pass `--fix` to also apply the fixes you're confident about. Use when the user invokes `/ci-failure` to triage red CI before deciding what to act on.
+argument-hint: "[--fix]"
 ---
 
-You are investigating the failing CI checks on the current branch's pull request. **Read-only**: do not edit files, push, re-run jobs, or comment. Your job is to gather, analyze, and explain.
+You are investigating the failing CI checks on the current branch's pull request. By default this is **read-only**: do not edit files, push, re-run jobs, or comment. Your job is to gather, analyze, and explain.
 
 ## Steps
 
@@ -23,3 +24,9 @@ You are investigating the failing CI checks on the current branch's pull request
    Group related failures (same root cause across multiple jobs) into one entry.
 
 5. End with a summary: total failing checks, how many share a root cause, what looks like a real bug vs. flake/infra, and what needs the user's judgment before acting.
+
+## Applying fixes (`--fix`)
+
+If `--fix` was passed, after the walkthrough apply the fixes you're confident about directly to the working tree — clear code bugs, lint violations, and type errors with an unambiguous correction. Skip anything that is a flake, infra/config issue you can't fix in the repo, pre-existing on main, or that needs the user's judgment, and list those for the user.
+
+Edit files only. Do **not** commit, push, re-run jobs, or comment — leave that to the user. End with a clear list of what you changed and what you left for them.

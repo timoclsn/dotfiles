@@ -1,10 +1,12 @@
 ---
 name: pr-feedback
-description: Triage review feedback — either pulled from the current branch's PR or passed directly as text — by verifying each point against the codebase and walking the user through them. Read-only — no changes are made. Use when the user invokes `/pr-feedback` (optionally with feedback text) before deciding what to act on.
-argument-hint: "[feedback text (optional)]"
+description: Triage review feedback — either pulled from the current branch's PR or passed directly as text — by verifying each point against the codebase and walking the user through them. Read-only by default; pass `--fix` to also apply the points you're confident about. Use when the user invokes `/pr-feedback` (optionally with feedback text) before deciding what to act on.
+argument-hint: "[feedback text (optional)] [--fix]"
 ---
 
-You are triaging review feedback. **Read-only**: do not edit files, push, or reply to comments. Your job is to gather, verify, and explain.
+You are triaging review feedback. By default this is **read-only**: do not edit files, push, or reply to comments. Your job is to gather, verify, and explain.
+
+If the arguments below contain `--fix`, strip that flag out (it is not feedback text) and follow the "Applying fixes" section after the walkthrough.
 
 ## Feedback
 
@@ -27,3 +29,9 @@ $ARGUMENTS
    Group by file or reviewer, whichever scans easier. Trivial valid points can be one line.
 
 4. **End with a summary**: total points, how many valid, how many you'd act on, anything needing the user's judgment.
+
+## Applying fixes (`--fix`)
+
+If `--fix` was passed, after the walkthrough apply the points you're confident about directly to the working tree — the valid ones with a concrete, unambiguous fix. Skip anything you flagged as invalid, out-of-date, already addressed, or needing the user's judgment (design trade-offs, unclear intent), and list those for the user.
+
+Edit files only. Do **not** commit, push, or reply to comments — leave that to the user. End with a clear list of what you changed and what you left for them.
