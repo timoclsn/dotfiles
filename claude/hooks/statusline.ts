@@ -18,6 +18,9 @@ interface StatusLineInput {
   output_style: {
     name: string;
   };
+  effort?: {
+    level: "low" | "medium" | "high" | "xhigh" | "max";
+  };
   cost: {
     total_cost_usd: number;
     total_duration_ms: number;
@@ -83,7 +86,10 @@ const getContextUsage = (input: StatusLineInput) => {
 const main = async () => {
   const input: StatusLineInput = await Bun.stdin.json();
 
-  const model = input.model.display_name.replace(/\s*\(.*?\)/, "");
+  const modelName = input.model.display_name.replace(/\s*\(.*?\)/, "");
+  const model = input.effort
+    ? `${modelName} (${input.effort.level})`
+    : modelName;
   const session = getSessionName({
     projectDir: input.workspace.project_dir,
     sessionId: input.session_id,
