@@ -65,6 +65,8 @@ require('mini.surround').setup()
 
 require('mini.bracketed').setup()
 
+require('mini.input').setup()
+
 require('mini.files').setup()
 local open_mini_files = function()
   if not MiniFiles.close() then

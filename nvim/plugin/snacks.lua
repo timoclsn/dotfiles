@@ -10,13 +10,6 @@ require('snacks').setup {
       enabled = false,
     },
   },
-  input = {
-    win = {
-      relative = 'cursor',
-      row = -3,
-      col = 0,
-    },
-  },
   notifier = {
     style = 'minimal',
   },
