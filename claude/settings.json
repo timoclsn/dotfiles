@@ -69,7 +69,5 @@
   "inputNeededNotifEnabled": false,
   "agentPushNotifEnabled": false,
   "skipAutoPermissionPrompt": true,
-  "tipsEnabled": false,
-  "autoUpdatesChannel": "stable",
-  "minimumVersion": "2.1.168"
+  "tipsEnabled": false
 }
