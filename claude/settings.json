@@ -59,7 +59,6 @@
   "spinnerTipsEnabled": false,
   "effortLevel": "high",
   "promptSuggestionEnabled": false,
-  "autoUpdatesChannel": "latest",
   "tui": "default",
   "skipDangerousModePermissionPrompt": true,
   "theme": "dark",
@@ -70,5 +69,7 @@
   "inputNeededNotifEnabled": false,
   "agentPushNotifEnabled": false,
   "skipAutoPermissionPrompt": true,
-  "tipsEnabled": false
+  "tipsEnabled": false,
+  "autoUpdatesChannel": "stable",
+  "minimumVersion": "2.1.168"
 }
