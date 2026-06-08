@@ -44,9 +44,8 @@ if ! tmux has-session -t="$selected_name" 2> /dev/null; then
     # Create a third window named 'agents' with a vertical split
     tmux new-window -t "$selected_name:" -n agents -c "$selected"
     tmux split-window -t "$selected_name:agents" -h -c "$selected"
-    # Run 'cc' in the left pane and 'cx' in the right pane
+    # Run 'cc' in the left pane, leave the right pane as a plain terminal
     sleep 0.2
-    tmux send-keys -t "$selected_name:agents.2" "cx" Enter
     tmux send-keys -t "$selected_name:agents.1" "cc" Enter
     # Focus the left pane
     tmux select-pane -t "$selected_name:agents.left"
