@@ -10,7 +10,7 @@
       "src": "https://github.com/nat-418/boole.nvim"
     },
     "codediff.nvim": {
-      "rev": "29b06f37251f2e010f53a0892573b2ec03d165e2",
+      "rev": "5d6aa753797a0ebda14dd769ed03d12a320d689b",
       "src": "https://github.com/esmuellert/codediff.nvim"
     },
     "conform.nvim": {
@@ -22,7 +22,7 @@
       "src": "https://github.com/jinh0/eyeliner.nvim"
     },
     "fff.nvim": {
-      "rev": "f56c38b5b82a88ab9f60fadc654078e28854ae99",
+      "rev": "8092cfa3faf3471d29b3e11049e921d7e759d789",
       "src": "https://github.com/dmtrKovalenko/fff.nvim"
     },
     "fidget.nvim": {
@@ -58,7 +58,7 @@
       "src": "https://github.com/mason-org/mason.nvim"
     },
     "mini.nvim": {
-      "rev": "cbae4fa396bbf9c802b3d2dc2e9c5362e8fb9468",
+      "rev": "ff8b3580935818ef2f21bdd651f057a2ae071eab",
       "src": "https://github.com/nvim-mini/mini.nvim"
     },
     "neo-tree.nvim": {
@@ -71,7 +71,7 @@
       "src": "https://github.com/MunifTanjim/nui.nvim"
     },
     "nvim-lint": {
-      "rev": "d48f3a76189d03b2239f6df1b2f7e3fa8353743b",
+      "rev": "99cbc3ca8a76845fca50e496be7212bebf907dd3",
       "src": "https://github.com/mfussenegger/nvim-lint"
     },
     "nvim-lspconfig": {
