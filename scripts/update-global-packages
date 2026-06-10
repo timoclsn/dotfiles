@@ -24,6 +24,7 @@ PACKAGES=(
   "playwriter"
   "@googleworkspace/cli"
   "hunkdiff"
+  "@taxfix/altitudo-cli"
 )
 
 echo "Updating global npm packages (${#PACKAGES[@]} total)…"
