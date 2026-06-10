@@ -6,7 +6,6 @@
   "permissions": {
     "defaultMode": "auto"
   },
-  "model": "opus[1m]",
   "hooks": {
     "Stop": [
       {
