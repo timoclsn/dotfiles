@@ -39,7 +39,7 @@ npm list -g --depth=0
 
 echo ""
 echo "Updating Homebrew packages…"
-brew upgrade
+brew upgrade --no-ask
 
 echo ""
 echo "All updates complete!"
