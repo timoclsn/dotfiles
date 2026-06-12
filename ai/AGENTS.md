@@ -58,6 +58,10 @@
 
 - When debugging Vercel builds or deployments use the Vercel CLI (`vercel`). It is installed locally.
 
+## Jira
+
+- When asked about Jira issues or working with Jira in general use the Atlassian CLI (`acli`).
+
 ## Notifications
 
 - When I ask you to "ping me", "notify me", "let me know", or similar, send BOTH a local notification and a push to my phone.
