@@ -62,6 +62,10 @@
 
 - When asked about Jira issues or working with Jira in general use the Atlassian CLI (`acli`).
 
+## MongoDB
+
+- When asked to interact with the local MongoDB use the MongoDB Shell (`mongosh`).
+
 ## Notifications
 
 - When I ask you to "ping me", "notify me", "let me know", or similar, send BOTH a local notification and a push to my phone.
