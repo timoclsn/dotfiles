@@ -19,7 +19,7 @@ The narrow case (waiting on a Copilot review you requested) is just this loop on
 
 2. **Assess the merge state.** Determine, for this round: CI status (per check), whether the branch is behind or conflicts with its base, and what review comments are open (inline review comments, top-level reviews, issue-style PR comments) from both Copilot and humans. Skip resolved/outdated threads.
 
-3. **If the PR is fully clean** — CI green and complete, branch up to date with base and conflict-free, no actionable review comments — do **not** exit. Report the clean state (step 8), then keep watching: wait on a sensible cadence and re-assess (step 2) as new CI runs, base changes, or review comments arrive. You stop only when the user stops you.
+3. **Drive the monitoring with the `loop` skill** rather than blocking or busy-waiting: invoke `/loop` to re-assess (step 2) on a sensible cadence (let it self-pace, or pass an interval). **If the PR is fully clean** — CI green and complete, branch up to date with base and conflict-free, no actionable review comments — do **not** exit. Report the clean state (step 8) and keep looping, picking up new CI runs, base changes, or review comments as they arrive. You stop only when the user stops you.
 
 4. **Fix CI** if any check failed or was cancelled:
    - Invoke the `ci-failure` skill with `--fix` to triage and apply confident fixes.

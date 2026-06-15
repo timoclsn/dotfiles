@@ -9,7 +9,7 @@ You are babysitting CI for the current branch's pull request: watch it, fix what
 
 1. **Find the PR** for the current branch. If there is no PR, stop and tell the user — there is nothing to babysit.
 
-2. **Watch the run.** Wait for the PR's checks to finish rather than busy-looping; re-check on a sensible cadence until every check has reached a terminal state.
+2. **Watch the run.** Drive the monitoring with the `loop` skill rather than blocking or busy-waiting: invoke `/loop` to re-check on a sensible cadence (let it self-pace, or pass an interval) until every check has reached a terminal state.
 
 3. **If everything is green and complete**, you are done — go to step 6.
 
