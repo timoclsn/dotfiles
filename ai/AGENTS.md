@@ -6,6 +6,11 @@
 - Try to separate presentational and business logic when possible.
 - After making changes, check if related tests need to be updated as well.
 
+## Posting on my behalf
+
+- When you post under my identity where it would otherwise look like it came from me personally (GitHub, Slack, Jira, Notion, email, etc.), end with a one-line disclosure that you wrote it on my behalf — identify yourself, e.g. `_— Written by Claude on behalf of Timo._` (adapt formatting to the platform).
+- Applies to anything published to others, not to local files, code, commit messages, or PR descriptions/titles.
+
 ## Typescript
 
 - Always prefer arrow functions.
