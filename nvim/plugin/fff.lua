@@ -27,6 +27,8 @@ vim.keymap.set('n', '<leader>sw', function()
   }
 end, { desc = '[s]earch current [w]ord' })
 
+vim.keymap.set('n', '<leader>s.', '<cmd>FFFResume<CR>', { desc = '[s]earch resume ("." for repeat)' })
+
 vim.keymap.set('x', '<leader>sg', function()
   local visual_selection = function()
     local save_previous = vim.fn.getreg 'a'

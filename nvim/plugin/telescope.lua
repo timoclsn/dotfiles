@@ -75,7 +75,6 @@ vim.keymap.set('n', '<leader>wd', builtin.diagnostics, { desc = '[w]orkspace [d]
 vim.keymap.set('n', '<leader>dd', function()
   builtin.diagnostics { bufnr = 0 }
 end, { desc = 'Show [d]ocument [d]iagnostics' })
-vim.keymap.set('n', '<leader>s.', builtin.resume, { desc = '[s]earch resume ("." for repeat)' })
 vim.keymap.set('n', '<leader>so', builtin.oldfiles, { desc = '[s]earch [o]ld files' })
 vim.keymap.set('n', '<leader>sq', builtin.quickfixhistory, { desc = '[s]earch [q]uickfix history' })
 vim.keymap.set('n', '<leader>sp', require 'telescope.packages', { desc = '[s]earch node [p]ackages' })
