@@ -18,7 +18,7 @@ $ARGUMENTS
    - If the **Feedback** section above contains text, treat that as the complete feedback to triage. Do **not** fetch the PR. Parse it into individual points (one per concern, even if the user wrote it as a paragraph).
    - If the **Feedback** section is empty, find the PR for the current branch and pull all review feedback (inline review comments, top-level reviews, and issue-style PR comments). Skip resolved/outdated threads unless asked.
 
-2. **Verify each point against the current code.** For PR comments, the line referenced may have moved — find the relevant code at HEAD. For local feedback, locate the code the user is referring to. Judge whether the concern still applies.
+2. **Verify each point adversarially against the current code.** Don't reflexively trust the comment — a reviewer can be wrong, out of date, or misreading. For each point, actively try to _refute_ it: is the referenced line stale or moved (find the code at HEAD)? Was it already addressed? Did the reviewer misread the code? Is it valid in general but not in this context? Accept the point only if it survives that scrutiny.
 
 3. **Walk the user through them.** For each point:
    - **Source** — reviewer + file:line for PR comments; just file:line (or "general") for local feedback
@@ -32,6 +32,6 @@ $ARGUMENTS
 
 ## Applying fixes (`--fix`)
 
-If `--fix` was passed, after the walkthrough apply the points you're confident about directly to the working tree — the valid ones with a concrete, unambiguous fix. Skip anything you flagged as invalid, out-of-date, already addressed, or needing the user's judgment (design trade-offs, unclear intent), and list those for the user.
+If `--fix` was passed, after the walkthrough apply only the points that **survived refutation in step 2** and have a concrete, unambiguous fix. The bar is higher here because you're editing without user confirmation: if you couldn't refute the point and the fix is clear, apply it. Skip anything you flagged as invalid, out-of-date, already addressed, or needing the user's judgment (design trade-offs, unclear intent), and list those for the user.
 
 Edit files only. Do **not** commit, push, or reply to comments — leave that to the user. End with a clear list of what you changed and what you left for them.
