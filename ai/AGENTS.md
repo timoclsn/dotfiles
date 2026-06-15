@@ -66,6 +66,10 @@
 
 - When asked to interact with the local MongoDB use the MongoDB Shell (`mongosh`).
 
+## Skills
+
+- When creating skills, document the process/steps to follow, not the specific commands to run. Let the model figure out the exact commands itself. Only hardcode commands when they are genuinely project-specific.
+
 ## Notifications
 
 - When I ask you to "ping me", "notify me", "let me know", or similar, send BOTH a local notification and a push to my phone.
