@@ -33,7 +33,7 @@ The narrow case (waiting on a Copilot review you requested) is just this loop on
 6. **Address review comments** if any are open:
    - Invoke the `pr-feedback` skill with `--fix` to verify each point adversarially and apply the ones that survive refutation.
    - If it produced working-tree changes, commit and push them.
-   - For each thread it **addressed**, post a concise reply noting what changed and resolve it.
+   - For each thread it **addressed**, post a concise reply noting what changed. For **Copilot** threads, also resolve the thread once the fix is committed and pushed (don't resolve before the push lands). For **human** threads, only reply — leave them open for the reviewer to resolve.
    - For points it judged invalid, out-of-date, already addressed, or needing the user's judgment, do **not** auto-reply or argue with the reviewer — leave the thread open and list it for the report.
 
 7. **Let the loop run the next round (back to step 3).** Watch the new run triggered by any push, and re-check for comments that landed while you were working (a requested review may arrive mid-round). The loop does **not** self-terminate — keep babysitting until the user stops you. Guard against thrashing per workstream: if the same CI check, conflict, or comment fails to converge after a couple of attempts (your fix didn't take, or it bounces back), stop pushing more changes at it, leave it for the user, and keep watching the rest rather than looping on a fix that isn't working.
