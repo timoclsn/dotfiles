@@ -1,6 +1,6 @@
 ## General
 
-- Apply all of the rules in this file to new code you write. Don't change already present code that you don't have to touch. (Keep diffs minimal)
+- Apply these rules to new code you write, and to existing code only where the task already requires you to change it. Don't make unrelated changes — in particular, don't "fix" existing code just to satisfy these rules (e.g. rewriting a React default import in a file you're editing for another reason). Keep diffs minimal.
 - Focus on the most performant solutions.
 - Always make your solutions accessible.
 - Try to separate presentational and business logic when possible.
