@@ -1,0 +1,60 @@
+vim.pack.add {
+  'https://github.com/stevearc/conform.nvim',
+}
+
+local formatters = {
+  go = { 'gofmt' },
+  lua = { 'stylua' },
+  python = { 'black' },
+  rust = { 'rustfmt' },
+  zig = { 'zigfmt' },
+}
+
+local web_filetypes = {
+  'astro',
+  'css',
+  'graphql',
+  'html',
+  'javascript',
+  'javascriptreact',
+  'json',
+  'less',
+  'markdown',
+  'markdown.mdx',
+  'mdx',
+  'prisma',
+  'scss',
+  'svelte',
+  'typescript',
+  'typescriptreact',
+  'vue',
+  'yaml',
+}
+
+for _, ft in ipairs(web_filetypes) do
+  formatters[ft] = { 'prettierd', 'prettier', stop_after_first = true }
+end
+
+require('conform').setup {
+  notify_on_error = false,
+  format_on_save = function(bufnr)
+    local disable_filetypes = {
+      c = true,
+      cpp = true,
+    }
+
+    if disable_filetypes[vim.bo[bufnr].filetype] then
+      return nil
+    else
+      return {
+        timeout_ms = 500,
+        lsp_format = 'fallback',
+      }
+    end
+  end,
+  formatters_by_ft = formatters,
+}
+
+vim.keymap.set('', 'gq', function()
+  require('conform').format { async = true, lsp_format = 'fallback' }
+end, { desc = 'Format buffer' })
