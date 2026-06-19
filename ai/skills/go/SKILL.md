@@ -24,6 +24,6 @@ $ARGUMENTS
 
 4. **Ship.** Invoke the `commit-commands:commit-push-pr` skill. The PR must be a **draft** and **assigned to the current user** (`@me`).
 
-5. **Babysit CI.** Invoke the `ci-babysit` skill to watch the PR's CI and shepherd it to green, automatically fixing and pushing any failures.
+5. **Babysit CI.** Invoke the `babysit-ci` skill to watch the PR's CI and shepherd it to green, automatically fixing and pushing any failures.
 
 Report briefly at the end: what shipped, which checks ran, the final CI state, and the PR URL.

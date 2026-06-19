@@ -1,6 +1,6 @@
 ---
-name: ci-babysit
-description: Monitor CI on the current branch's PR until it goes green, automatically fixing and pushing failures along the way. On each failure round it runs `/ci-failure --fix`, commits, and pushes, then keeps watching. Use when the user invokes `/ci-babysit` and wants CI shepherded to green unattended.
+name: babysit-ci
+description: Monitor CI on the current branch's PR until it goes green, automatically fixing and pushing failures along the way. On each failure round it runs `/ci-failure --fix`, commits, and pushes, then keeps watching. Use when the user invokes `/babysit-ci` and wants CI shepherded to green unattended.
 ---
 
 You are babysitting CI for the current branch's pull request: watch it, fix what breaks, and keep going until it is green. Run unattended — do not stop for confirmation between rounds.
@@ -9,7 +9,7 @@ You are babysitting CI for the current branch's pull request: watch it, fix what
 
 1. **Find the PR** for the current branch. If there is no PR, stop and tell the user — there is nothing to babysit.
 
-2. **Watch the run.** Drive the monitoring with the `loop` skill rather than blocking or busy-waiting: invoke `/loop` to re-check on a sensible cadence (let it self-pace, or pass an interval) until every check has reached a terminal state.
+2. **Watch the run.** Drive the monitoring with the `loop` skill rather than blocking or busy-waiting: invoke `/loop` to re-check on a sensible cadence (let it self-pace, or pass an interval) until every check has reached a terminal state. **At the very start of each round — including when a scheduled wake-up fires — check the conversation history for a stop request** (a `/babysit-stop`, or the user asking to stop/halt/cancel babysitting) made since this loop started. If you find one, the user stopped babysitting: do nothing, do not schedule a new wake-up, briefly say babysitting is stopped, and end (see the `babysit-stop` skill).
 
 3. **If everything is green and complete**, you are done — go to step 6.
 
