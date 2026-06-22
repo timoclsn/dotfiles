@@ -58,6 +58,7 @@
 - When using the GitHub CLI ensure you are using the "timoclsn" account `gh auth switch --user timoclsn`. Stop if you are not.
 - When creating PRs, if not otherwise instructed, make them drafts and assign them to myself.
 - When writing PR descriptions don't add a test plan.
+- On push, update the PR description so it always reflects the full set of changes in the branch compared to the parent branch.
 
 ## Vercel
 
