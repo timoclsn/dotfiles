@@ -33,7 +33,7 @@
   "worktree": {
     "baseRef": "fresh"
   },
-  "enableWorkflows": false,
+  "workflowKeywordTriggerEnabled": false,
   "statusLine": {
     "type": "command",
     "command": "bun ~/.claude/hooks/statusline.ts"
@@ -53,6 +53,7 @@
   "tui": "fullscreen",
   "autoMemoryEnabled": false,
   "skipDangerousModePermissionPrompt": true,
+  "skipWorkflowUsageWarning": true,
   "theme": "dark",
   "editorMode": "vim",
   "preferredNotifChannel": "notifications_disabled",
@@ -62,5 +63,5 @@
   "agentPushNotifEnabled": false,
   "skipAutoPermissionPrompt": true,
   "tipsEnabled": false,
-  "workflowKeywordTriggerEnabled": false
+  "enableWorkflows": false
 }
