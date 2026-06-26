@@ -28,17 +28,6 @@
           }
         ]
       }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "Edit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bun ~/.claude/hooks/format.ts"
-          }
-        ]
-      }
     ]
   },
   "worktree": {
