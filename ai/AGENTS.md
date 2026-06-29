@@ -54,6 +54,7 @@
 
 ## GitHub
 
+- When committing, if the working tree contains multiple unrelated changes, split them into separate commits grouped by topic/intent (semantic commits) rather than lumping everything into one commit.
 - When asked about PRs or GitHub in general use the GitHub CLI (gh).
 - When using the GitHub CLI ensure you are using the "timoclsn" account `gh auth switch --user timoclsn`. Stop if you are not.
 - When creating PRs, if not otherwise instructed, make them drafts and assign them to myself.
