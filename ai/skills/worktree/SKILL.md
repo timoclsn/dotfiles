@@ -1,12 +1,12 @@
 ---
 name: worktree
-description: Create a new git worktree as a sibling of the current repo, branched off the default branch (main/master) by default — or off a given branch, tag, or PR. Names it after the repo plus a semantic extension, and optionally runs a given task inside it. Use when the user invokes `/worktree`, or asks to spin up / create a worktree to work on something in isolation, on a specific branch, or to check out a PR.
-argument-hint: "[base branch/tag/PR and/or task to run in the worktree (optional)]"
+description: Create and set up a new git worktree as a sibling of the current repo, branched off the default branch (main/master) by default — or off a given branch, tag, or PR. Names it after the repo plus a semantic extension derived from whatever content you give it. Use when the user invokes `/worktree`, or asks to spin up / create a worktree to work on something in isolation, on a specific branch, or to check out a PR.
+argument-hint: "[content to name the worktree/branch from, and/or a base branch/tag/PR (optional)]"
 ---
 
 # Create a worktree
 
-Create a fresh git worktree as a **sibling** of the current repo (one level up, not nested inside it), on a **new branch off the default branch**, then optionally carry out a task inside it.
+Create and set up a fresh git worktree as a **sibling** of the current repo (one level up, not nested inside it), on a **new branch off the default branch**. The argument is used only to **name** the worktree/branch and to pick the **base** — derive the semantic extension from whatever content is given (free text, a task description, a PR, etc.). Do **not** carry out any task inside the worktree; just create and set it up.
 
 ## Steps
 
@@ -16,7 +16,7 @@ Create a fresh git worktree as a **sibling** of the current repo (one level up, 
    - Parent dir: the directory containing the main repo root — worktrees go here as siblings
    - Default branch: read `git symbolic-ref refs/remotes/origin/HEAD` and strip to the branch name; if that fails, use `main` if it exists, otherwise `master`
 
-2. **Pick a semantic extension** — a short kebab-case slug describing the work (e.g. `auth-refactor`, `login-fix`, `docs`). Derive it from the task argument or the current conversation. Only ask the user if there's genuinely nothing to infer it from.
+2. **Pick a semantic extension** — a short kebab-case slug describing the work (e.g. `auth-refactor`, `login-fix`, `docs`). Derive it from the argument's content or the current conversation. Only ask the user if there's genuinely nothing to infer it from.
    - Worktree path: `<parent-dir>/<repo-name>-w-<extension>` (the `-w-` infix marks it as a worktree and groups it next to the repo; directory name never contains a `/`)
 
 3. **Derive the branch name from the project's convention.** Inspect existing branches (`git branch -a`, including remotes) and match their style:
@@ -38,18 +38,12 @@ Create a fresh git worktree as a **sibling** of the current repo (one level up, 
    For a PR (step 4), instead create a worktree that checks out the PR's existing branch (no `-b`) — e.g. `git worktree add <path> <pr-branch>`, or let `gh pr checkout` populate it.
    Don't use the built-in `EnterWorktree` to *create* it — that tool nests worktrees under `.claude/worktrees/`, which violates the sibling-placement requirement. Create it with `git worktree add` so you control the location and name.
 
-7. **Switch the session into the worktree** with the built-in tool, passing the path you just created:
-   ```
-   EnterWorktree({ path: "<parent-dir>/<repo-name>-w-<extension>" })
-   ```
-   This moves the session's working directory into the worktree (so subsequent steps and any task run there), tracks it for exit-time cleanup, and wires up tmux. Because it was entered via `path`, `ExitWorktree` will not delete it — the worktree stays put.
+   The session stays in the main repo — don't switch into the worktree, just operate on its path for the remaining setup steps.
 
-8. **Link local env files from the main worktree.** Fresh worktrees don't get gitignored local files (e.g. `.env`, `.env.local`, `.env.dev`, `.env.*.local`), but most projects need them to build or run. Find such files in the main repo root (and obvious app subdirectories) that are git-ignored and absent from the new worktree, and symlink each into the matching path in the worktree (`ln -s <main-worktree-file> <worktree-file>`) so they stay in sync with the original. Skip silently if there are none.
+7. **Link local env files from the main worktree.** Fresh worktrees don't get gitignored local files (e.g. `.env`, `.env.local`, `.env.dev`, `.env.*.local`), but most projects need them to build or run. Find such files in the main repo root (and obvious app subdirectories) that are git-ignored and absent from the new worktree, and symlink each into the matching path in the worktree (`ln -s <main-worktree-file> <worktree-file>`) so they stay in sync with the original. Skip silently if there are none.
 
-9. **Install dependencies** if the worktree contains a dependency manifest. Detect the package manager from its lockfile (e.g. `pnpm-lock.yaml`, `yarn.lock`, `bun.lockb`, `package-lock.json`) and run the matching install. Skip silently if there's no manifest.
+8. **Install dependencies** if the worktree contains a dependency manifest. Detect the package manager from its lockfile (e.g. `pnpm-lock.yaml`, `yarn.lock`, `bun.lockb`, `package-lock.json`) and run the matching install (e.g. `pnpm --dir <worktree-path> install`, or `cd` into the worktree for the install command). Skip silently if there's no manifest.
 
-10. **Report the result** — print the absolute worktree path so the user knows where the work lives. Also print a copy-paste-ready resume command so the user can pick this same session up from a terminal inside the worktree: `cc --resume $CLAUDE_CODE_SESSION_ID` (`cc` is the user's alias for `claude`; resolve `$CLAUDE_CODE_SESSION_ID` to its actual value). Resuming by explicit session ID continues the same transcript — including the initial prompt and all context — regardless of which directory's session picker would list it.
+9. **Report the result** — print the absolute worktree path so the user knows where the work lives.
 
-## Running a task in the worktree
-
-If a task/instruction was passed as the argument, carry it out now — the session is already inside the worktree after step 7, so just work normally. When done, summarize what changed and remind the user of the worktree path. To leave the worktree later, the user can use `ExitWorktree` (`keep` to preserve it, which is the safe default here).
+The skill ends here — the worktree is created and set up, but **don't start working on any task inside it**.
