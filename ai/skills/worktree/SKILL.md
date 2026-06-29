@@ -48,7 +48,7 @@ Create a fresh git worktree as a **sibling** of the current repo (one level up, 
 
 9. **Install dependencies** if the worktree contains a dependency manifest. Detect the package manager from its lockfile (e.g. `pnpm-lock.yaml`, `yarn.lock`, `bun.lockb`, `package-lock.json`) and run the matching install. Skip silently if there's no manifest.
 
-10. **Report the result** — print the absolute worktree path so the user knows where the work lives.
+10. **Report the result** — print the absolute worktree path so the user knows where the work lives. Also print a copy-paste-ready resume command so the user can pick this same session up from a terminal inside the worktree: `cc --resume $CLAUDE_CODE_SESSION_ID` (`cc` is the user's alias for `claude`; resolve `$CLAUDE_CODE_SESSION_ID` to its actual value). Resuming by explicit session ID continues the same transcript — including the initial prompt and all context — regardless of which directory's session picker would list it.
 
 ## Running a task in the worktree
 
