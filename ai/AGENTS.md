@@ -52,7 +52,7 @@
 - Use `tmux capture-pane -p` to capture current pane content before sending keys to preserve context
 - A pattern like `dotfiles:4.4` refers to a tmux pane (format: `session:window.pane`)
 
-## GitHub
+## Git / GitHub
 
 - When committing, if the working tree contains multiple unrelated changes, split them into separate commits grouped by topic/intent (semantic commits) rather than lumping everything into one commit.
 - When asked about PRs or GitHub in general use the GitHub CLI (gh).
