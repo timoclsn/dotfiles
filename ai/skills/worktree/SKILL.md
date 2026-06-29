@@ -27,7 +27,7 @@ Create a fresh git worktree as a **sibling** of the current repo (one level up, 
 4. **Determine the base.** Default to the latest default branch, but honor an explicit base named in the instruction:
    - **No base given:** if the repo has a remote, `git fetch` the default branch and base off `origin/<default>`; otherwise the local default branch. Never branch off the current HEAD.
    - **A branch or tag given** (e.g. "based on `staging`"): `git fetch` it and base the new branch off that ref instead.
-   - **A PR given** (e.g. "for PR 123", a `#123`, or a PR URL): resolve and check out the PR's actual head branch rather than creating a new branch off it — checking out a PR means working on *that* branch. Use the GitHub CLI (`gh pr checkout`/`gh pr view`) to get the PR's branch into a worktree; this also handles fork PRs. In this case skip the new-branch creation in step 6 and the convention naming in step 3, and derive the directory extension from the PR (e.g. its number or branch slug).
+   - **A PR given** (e.g. "for PR 123", a `#123`, or a PR URL): resolve and check out the PR's actual head branch rather than creating a new branch off it — checking out a PR means working on *that* branch. Use the GitHub CLI (`gh pr checkout`/`gh pr view`) to get the PR's branch into a worktree; this also handles fork PRs. In this case skip the new-branch creation in step 6 and the convention naming in step 3, and derive the directory extension from the **PR's title/content** — `gh pr view <pr> --json title,headRefName` and distill a short kebab-case slug describing what the PR does (e.g. PR titled "Add OAuth login flow" → `oauth-login`). Never use a bare `pr-<number>` slug. Only fall back to the PR's branch slug if the title yields nothing meaningful.
 
 5. **Guard before creating.** Abort and propose a different extension if the target path already exists or the branch name is already taken.
 
@@ -44,9 +44,11 @@ Create a fresh git worktree as a **sibling** of the current repo (one level up, 
    ```
    This moves the session's working directory into the worktree (so subsequent steps and any task run there), tracks it for exit-time cleanup, and wires up tmux. Because it was entered via `path`, `ExitWorktree` will not delete it — the worktree stays put.
 
-8. **Install dependencies** if the worktree contains a dependency manifest. Detect the package manager from its lockfile (e.g. `pnpm-lock.yaml`, `yarn.lock`, `bun.lockb`, `package-lock.json`) and run the matching install. Skip silently if there's no manifest.
+8. **Link local env files from the main worktree.** Fresh worktrees don't get gitignored local files (e.g. `.env`, `.env.local`, `.env.dev`, `.env.*.local`), but most projects need them to build or run. Find such files in the main repo root (and obvious app subdirectories) that are git-ignored and absent from the new worktree, and symlink each into the matching path in the worktree (`ln -s <main-worktree-file> <worktree-file>`) so they stay in sync with the original. Skip silently if there are none.
 
-9. **Report the result** — print the absolute worktree path so the user knows where the work lives.
+9. **Install dependencies** if the worktree contains a dependency manifest. Detect the package manager from its lockfile (e.g. `pnpm-lock.yaml`, `yarn.lock`, `bun.lockb`, `package-lock.json`) and run the matching install. Skip silently if there's no manifest.
+
+10. **Report the result** — print the absolute worktree path so the user knows where the work lives.
 
 ## Running a task in the worktree
 
