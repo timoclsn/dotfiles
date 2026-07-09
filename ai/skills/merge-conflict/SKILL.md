@@ -21,11 +21,18 @@ You are helping the user understand the conflicts in an in-progress git operatio
    - **Recommended resolution** — keep one side / combine (and how) / rewrite. Concrete: which lines stay, which go. Plan only, no edits.
    - **Open questions** — flag anything that needs the user's judgment (semantic conflicts, behavior changes, unclear intent)
 
-5. End with a summary: how many files, how many hunks, how many you'd resolve confidently vs. need user input on.
+5. Look beyond the conflicts. A conflict is only where the two sides touched the *same* lines — but the incoming side almost always brings in changes that merged **cleanly** too, and those can still be semantically at odds with the work on this branch. Skim what the merge brought in overall (`git diff` / `git log` on the incoming side, focused on files this branch also touched) and ask whether it fits the direction of our work: renamed/removed APIs we still call, changed behavior or assumptions our code relies on, new patterns that make our approach redundant or wrong. Treat the conflicts as a signal that the two sides diverged here — the clean parts may need attention too. Flag anything you find as an open question for the user.
+
+6. End with a summary: how many files, how many hunks, how many you'd resolve confidently vs. need user input on — plus any concerns from the clean-merge review in step 5.
 
 ## Applying fixes (`--fix`)
 
-If `--fix` was passed, after the walkthrough resolve the hunks you're confident about directly in the working tree — remove the conflict markers and write the resolution you recommended. Leave anything you flagged as needing the user's judgment (semantic conflicts, unclear intent, behavior changes) untouched with its markers intact, and list those for the user.
+If `--fix` was passed, after the walkthrough fix **everything that doesn't need the user's input** directly in the working tree:
+
+- Resolve the conflict hunks you're confident about — remove the conflict markers and write the resolution you recommended.
+- Also apply the follow-up fixes surfaced by the clean-merge review in step 5 when they're unambiguous — e.g. update our call sites to a renamed/moved incoming API, remove code the incoming side made redundant, adjust to changed behavior our code relied on.
+
+Leave anything that needs the user's judgment (semantic conflicts, unclear intent, behavior changes, design decisions) untouched — conflict markers intact where present — and list those for the user.
 
 Edit files only. Do **not** stage (`git add`), and do **not** continue or abort the operation (`rebase --continue/--abort`, `merge --abort`, `cherry-pick --continue`) — leave that to the user. End with a clear list of what you resolved and what you left for them.
 
