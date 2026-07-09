@@ -23,6 +23,8 @@
 - Avoid enums
 - Only create an abstraction if it’s actually needed
 - Prefer clear function/variable names over inline comments
+- If a workaround needs a paragraph-long comment to justify why it's OK, the code is wrong — fix the code, not the comment
+- When you do write comments, write them for a reader new to the codebase but familiar with the project's goal — explain intent plainly, avoid jargon
 - Don’t unnecessarily add `try`/`catch`
 - Don’t cast to `any`
 - Don’t fix type errors by premature type casting, fix the underlying issue instead
