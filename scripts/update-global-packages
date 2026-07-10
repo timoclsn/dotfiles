@@ -20,7 +20,7 @@ PACKAGES=(
   "@openai/codex"
   "@google/gemini-cli"
   "@github/copilot"
-  "@mariozechner/pi-coding-agent"
+  "@earendil-works/pi-coding-agent"
   "playwriter"
   "@googleworkspace/cli"
   "hunkdiff"
