@@ -16,7 +16,7 @@
       "bindings": {
         "escape": "chat:cancel",
         "shift+tab": "chat:cycleMode",
-        "meta+p": "chat:modelPicker",
+        "ctrl+m": "chat:modelPicker",
         "meta+t": "chat:thinkingToggle",
         "enter": "chat:submit",
         "up": "history:previous",
