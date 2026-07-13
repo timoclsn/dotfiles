@@ -62,6 +62,7 @@
 - When creating PRs, if not otherwise instructed, make them drafts and assign them to myself.
 - When writing PR descriptions don't add a test plan.
 - On push, update the PR description so it always reflects the full set of changes in the branch compared to the parent branch.
+- PR descriptions should only describe the net changes of the branch compared to the base branch, not the intermediate steps taken along the way.
 
 ## Vercel
 
