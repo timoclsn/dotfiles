@@ -37,9 +37,9 @@ if ! tmux has-session -t="$selected_name" 2> /dev/null; then
     tmux new-session -ds "$selected_name" -c "$selected" -n code
     tmux send-keys -t "$selected_name:code" "nvim" Enter
 
-    # Create a second window named 'git' and open lazygit
-    tmux new-window -t "$selected_name:" -n git -c "$selected"
-    tmux send-keys -t "$selected_name:git" "lazygit" Enter
+    # Create a second window named 'source' and open lazygit
+    tmux new-window -t "$selected_name:" -n source -c "$selected"
+    tmux send-keys -t "$selected_name:source" "lazygit" Enter
 
     # Create a third window named 'agents' with a vertical split
     tmux new-window -t "$selected_name:" -n agents -c "$selected"
