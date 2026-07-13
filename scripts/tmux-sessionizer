@@ -50,8 +50,8 @@ if ! tmux has-session -t="$selected_name" 2> /dev/null; then
     # Focus the left pane
     tmux select-pane -t "$selected_name:agents.left"
     
-    # Create a fourth window named 'term'
-    tmux new-window -t "$selected_name:" -n term -c "$selected"
+    # Create a fourth window named 'cmd'
+    tmux new-window -t "$selected_name:" -n cmd -c "$selected"
 
     # Select the first window
     tmux select-window -t "$selected_name:code"
