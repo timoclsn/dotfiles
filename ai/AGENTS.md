@@ -29,6 +29,7 @@
 - Don’t cast to `any`
 - Don’t fix type errors by premature type casting, fix the underlying issue instead
 - Avoid helper functions when a simple inline expression would suffice
+- When a function takes 3 or more arguments, accept a single object argument instead of positional params.
 - Use early returns, avoid nested "if" and avoid "else" if possible.
 - Don't test what the type system already guarantees.
 
