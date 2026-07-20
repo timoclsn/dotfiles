@@ -22,7 +22,6 @@ ts.install {
   'query',
   'rust',
   'svelte',
-  'tmux',
   'toml',
   'tsx',
   'typescript',
