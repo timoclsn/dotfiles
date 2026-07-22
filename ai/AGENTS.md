@@ -5,6 +5,7 @@
 - Always make your solutions accessible.
 - Try to separate presentational and business logic when possible.
 - After making changes, check if related tests need to be updated as well.
+- When done with a task, review the modules you touched: check whether the new code landed in the right place and whether names/scope still make sense. Flag larger refactors rather than doing them inline.
 
 ## Posting on my behalf
 
