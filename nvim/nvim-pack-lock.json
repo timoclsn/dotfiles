@@ -10,7 +10,7 @@
       "src": "https://github.com/nat-418/boole.nvim"
     },
     "codediff.nvim": {
-      "rev": "240f1ef950225fe558edae5d5a78eaf2c991ae2f",
+      "rev": "6bece3fa7af987bf6d265d8e948cea2ae29ceb1c",
       "src": "https://github.com/esmuellert/codediff.nvim"
     },
     "conform.nvim": {
