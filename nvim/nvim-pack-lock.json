@@ -22,7 +22,7 @@
       "src": "https://github.com/jinh0/eyeliner.nvim"
     },
     "fff.nvim": {
-      "rev": "167f7d67cb4534797f67491600979b5197705041",
+      "rev": "fde8c52a298a2fa4375edf626e0c37b0400f5a8b",
       "src": "https://github.com/dmtrKovalenko/fff.nvim"
     },
     "fidget.nvim": {
@@ -79,7 +79,7 @@
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-treesitter": {
-      "rev": "a45a920ec04cda5624f6dea0ff6454c81c3ad2d5",
+      "rev": "a03c6283b079df3ec55705d4702d515ab2072267",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
       "version": "'main'"
     },
