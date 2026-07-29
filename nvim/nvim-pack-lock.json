@@ -10,7 +10,7 @@
       "src": "https://github.com/nat-418/boole.nvim"
     },
     "codediff.nvim": {
-      "rev": "1c1746bb4208938c558363738ec4423ef5f797fd",
+      "rev": "6b027d4bbc877fc596e8f9b7b51d2624c51cf292",
       "src": "https://github.com/esmuellert/codediff.nvim"
     },
     "conform.nvim": {
@@ -22,7 +22,7 @@
       "src": "https://github.com/jinh0/eyeliner.nvim"
     },
     "fff.nvim": {
-      "rev": "fbee146c44c99b02fc00ad1d5d32f44e53e2aeec",
+      "rev": "84a9cd556f560bbb6e51336eceaa99a125ccbf53",
       "src": "https://github.com/dmtrKovalenko/fff.nvim"
     },
     "fidget.nvim": {
