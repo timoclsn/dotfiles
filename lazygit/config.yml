@@ -1,7 +1,7 @@
 git:
   autoForwardBranches: none
-  pagers:
-    - pager: delta --dark --syntax-theme=tokyonight_night --paging=never --line-numbers
+  diffRenderers:
+    - command: delta --dark --syntax-theme=tokyonight_night --paging=never --line-numbers
       colorArg: always
 gui:
   nerdFontsVersion: "3"
