@@ -46,8 +46,9 @@
     "dev-toolkit@taxfix-plugins-marketplace": false,
     "vercel@claude-plugins-official": true,
     "security-guidance@claude-plugins-official": true,
-    "deployment-toolkit@taxfix-plugins-marketplace": true,
-    "oncall@taxfix-plugins-marketplace": true
+    "deployment-toolkit@taxfix-plugins-marketplace": false,
+    "oncall@taxfix-plugins-marketplace": false,
+    "architecture-guidance@taxfix-plugins-marketplace": false
   },
   "spinnerTipsEnabled": false,
   "effortLevel": "high",
