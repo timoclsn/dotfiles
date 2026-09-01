@@ -38,9 +38,16 @@ vim.api.nvim_create_autocmd('FileType', {
     local lang = vim.treesitter.language.get_lang(event.match) or event.match
     local buf = event.buf
 
-    pcall(vim.treesitter.start, buf, lang)
+    if not pcall(vim.treesitter.start, buf, lang) then
+      return
+    end
 
-    vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+    -- Without an indents query the treesitter indentexpr returns 0 for every
+    -- line, which would override Neovim's own indent plugin (breaking e.g. the
+    -- mandatory tabs in Makefile recipes).
+    if vim.treesitter.query.get(lang, 'indents') then
+      vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+    end
   end,
 })
 
