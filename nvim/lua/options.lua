@@ -11,7 +11,6 @@ vim.g.have_nerd_font = true
 vim.o.number = true
 vim.o.relativenumber = true
 vim.o.showmode = false
-vim.o.termguicolors = true
 vim.o.signcolumn = 'yes'
 vim.o.cursorline = true
 vim.o.colorcolumn = '120'
@@ -32,7 +31,6 @@ vim.o.softtabstop = 2
 vim.o.expandtab = true
 vim.o.smartindent = true
 vim.o.updatetime = 250
-vim.o.inccommand = 'nosplit'
 
 -- ============================================================================
 -- Clipboard
