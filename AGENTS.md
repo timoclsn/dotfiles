@@ -20,10 +20,12 @@ The script symlinks configs to `~/.config/` and `~/` as appropriate. Scripts are
 ```
 dotfiles/
 ├── ai/AGENTS.md          # Shared coding instructions (symlinked to Claude, OpenCode, Codex)
-├── nvim/                 # Neovim config (Lua, lazy.nvim)
-│   └── lua/
-│       ├── config/       # Core: options, keymaps, lazy loader
-│       └── plugins/      # One file per plugin/feature
+├── nvim/                 # Neovim config (Lua, vim.pack)
+│   ├── init.lua          # Options/keymaps entry point + vim.pack plugin list
+│   ├── plugin/           # One file per plugin, auto-sourced at startup
+│   ├── ftplugin/         # Per-filetype settings
+│   ├── lua/              # options, keymaps, commands + shared helpers
+│   └── snippets/         # VSCode-format snippets, loaded by blink.cmp
 ├── tmux/tmux.conf        # Tmux config (prefix: Ctrl+Space)
 ├── ghostty/config        # Terminal emulator
 ├── zsh/zshrc             # Shell config
@@ -76,13 +78,25 @@ Located in `claude/hooks/`:
 
 ### Neovim Plugin Organization
 
-Each plugin/feature has its own file in `nvim/lua/plugins/`:
+Plugins are installed with `vim.pack`, Neovim's built-in manager (requires 0.12).
+The whole list lives in one `vim.pack.add` call in `nvim/init.lua`, and pinned
+revisions are committed in `nvim/nvim-pack-lock.json`. Plugins that need a build
+step (nvim-treesitter, fff.nvim) are handled by the `PackChanged` autocmd there.
 
-- `lsp.lua` - LSP with Mason
-- `completion.lua` - Blink.cmp
-- `format.lua` - Conform.nvim
-- `lint.lua` - nvim-lint
-- `git.lua` - Gitsigns, Diffview
+Each plugin is then configured in its own file in `nvim/plugin/`, which Neovim
+sources automatically at startup - there is no plugin-manager spec and no lazy
+loading, so keep these files cheap and defer heavy `require`s to the point of
+use. Examples:
+
+- `lsp.lua` - Native LSP config, servers installed via Mason
+- `blink-cmp.lua` - Completion
+- `conform.lua` - Formatting
+- `nvim-lint.lua` - Linting
+- `gitsigns.lua` / `codediff.lua` - Git signs and diff review
+- `fff.lua` / `telescope.lua` - File picker and everything-else picker
+
+Useful commands: `:U`/`:Update` updates plugins, `:R`/`:Restart` restarts Neovim
+and restores the session.
 
 ## Theme
 
