@@ -1,4 +1,7 @@
-require('codediff').setup {
+-- codediff's own plugin file registers :CodeDiff, highlights and the virtual
+-- file scheme lazily, so only the config is applied here. Going through
+-- codediff.setup would pull in the whole diff UI at startup.
+require('codediff.config').setup {
   diff = {
     layout = 'inline',
   },
