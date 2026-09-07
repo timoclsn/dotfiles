@@ -25,8 +25,6 @@ require('mini.ai').setup {
   },
 }
 
-require('mini.comment').setup()
-
 require('mini.move').setup {
   mappings = {
     -- Move current line in Normal mode
