@@ -106,6 +106,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
     map('<leader>wi', function()
       vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
     end, '[w]orkspace [i]nlay hints')
-    map('<leader>tr', '<cmd>LspRestart tsc<CR>', '[t]ypescript language server [r]estart')
+    map('<leader>tr', '<cmd>lsp restart tsc<CR>', '[t]ypescript language server [r]estart')
   end,
 })
