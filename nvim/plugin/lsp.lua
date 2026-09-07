@@ -70,6 +70,8 @@ require('mason-tool-installer').setup {
 
 vim.lsp.document_color.enable(true, nil, { style = 'virtual' })
 
+vim.lsp.linked_editing_range.enable()
+
 vim.lsp.inline_completion.enable()
 vim.keymap.set('i', '<Tab>', function()
   if not vim.lsp.inline_completion.get() then
