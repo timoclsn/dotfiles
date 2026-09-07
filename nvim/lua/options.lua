@@ -91,7 +91,13 @@ vim.diagnostic.config {
 -- ============================================================================
 -- Diff Options
 -- ============================================================================
+-- Assigning the whole list replaces the defaults, so the ones worth keeping
+-- (filler, closeoff, indent-heuristic) are repeated here.
 vim.opt.diffopt = {
+  'internal',
+  'filler',
+  'closeoff',
+  'indent-heuristic',
   'vertical',
   'context:12',
   'algorithm:histogram',
