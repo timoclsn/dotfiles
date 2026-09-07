@@ -40,7 +40,7 @@ vim.pack.add {
   { src = 'https://github.com/NMAC427/guess-indent.nvim' },
   { src = 'https://github.com/folke/lazydev.nvim' },
   { src = 'https://github.com/onsails/lspkind.nvim' }, -- dependency of blink.cmp
-  { src = 'https://github.com/mason-org/mason-lspconfig.nvim' },
+  { src = 'https://github.com/mason-org/mason-lspconfig.nvim' }, -- maps lspconfig server names to mason packages for mason-tool-installer
   { src = 'https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim' },
   { src = 'https://github.com/mason-org/mason.nvim' },
   { src = 'https://github.com/nvim-mini/mini.nvim' },

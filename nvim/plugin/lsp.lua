@@ -56,7 +56,6 @@ vim.list_extend(ensure_installed, {
   'golangci-lint',
   'jsonlint',
   'markdownlint',
-  'oxlint',
 
   -- Formatters
   'black',
