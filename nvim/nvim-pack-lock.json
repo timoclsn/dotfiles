@@ -108,10 +108,6 @@
       "rev": "882c996cf28183f4d63640de0b4c02ec886d01f2",
       "src": "https://github.com/folke/snacks.nvim"
     },
-    "telescope-luasnip.nvim": {
-      "rev": "07a2a2936a7557404c782dba021ac0a03165b343",
-      "src": "https://github.com/benfowler/telescope-luasnip.nvim"
-    },
     "telescope-ui-select.nvim": {
       "rev": "6e51d7da30bd139a6950adf2a47fda6df9fa06d2",
       "src": "https://github.com/nvim-telescope/telescope-ui-select.nvim"

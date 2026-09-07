@@ -54,13 +54,11 @@ require('telescope').setup {
     ['ui-select'] = {
       require('telescope.themes').get_dropdown(),
     },
-    ['luasnip'] = {},
   },
 }
 
-pcall(require('telescope').load_extension 'zf-native')
+pcall(require('telescope').load_extension, 'zf-native')
 pcall(require('telescope').load_extension, 'ui-select')
-pcall(require('telescope').load_extension 'luasnip')
 
 local builtin = require 'telescope.builtin'
 
@@ -78,7 +76,6 @@ end, { desc = 'Show [d]ocument [d]iagnostics' })
 vim.keymap.set('n', '<leader>so', builtin.oldfiles, { desc = '[s]earch [o]ld files' })
 vim.keymap.set('n', '<leader>sq', builtin.quickfixhistory, { desc = '[s]earch [q]uickfix history' })
 vim.keymap.set('n', '<leader>sp', require 'telescope.packages', { desc = '[s]earch node [p]ackages' })
-vim.keymap.set('n', '<leader>sl', '<cmd>:Telescope luasnip<CR>', { desc = '[s]earch [l]uasnip' })
 
 vim.keymap.set('n', '<leader>/', function()
   builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {

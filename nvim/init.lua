@@ -55,7 +55,6 @@ vim.pack.add {
   { src = 'https://github.com/nvim-lua/plenary.nvim' }, -- dependency of telescope
   { src = 'https://github.com/MeanderingProgrammer/render-markdown.nvim' },
   { src = 'https://github.com/folke/snacks.nvim' },
-  { src = 'https://github.com/benfowler/telescope-luasnip.nvim' },
   { src = 'https://github.com/nvim-telescope/telescope-ui-select.nvim' },
   { src = 'https://github.com/natecraddock/telescope-zf-native.nvim' },
   { src = 'https://github.com/nvim-telescope/telescope.nvim' },
