@@ -82,6 +82,11 @@
 
 - When creating skills, document the process/steps to follow, not the specific commands to run. Let the model figure out the exact commands itself. Only hardcode commands when they are genuinely project-specific.
 
+## Starting Claude sessions
+
+- Launch new Claude Code sessions through my zsh aliases, not bare `claude` — `cc` is the default, `ccs`/`cch` for smaller models, `*w` variants (`ccw`, `ccsw`, `cchw`) for a worktree.
+- The aliases only exist in my interactive shell, so go through one (e.g. `zsh -ic`).
+
 ## Notifications
 
 - When I ask you to "ping me", "notify me", "let me know", or similar, send BOTH a local notification and a push to my phone.
