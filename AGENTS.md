@@ -65,9 +65,15 @@ dotfiles/
 When creating a new project session, 4 windows are created:
 
 1. **code** - Neovim
-2. **git** - Lazygit
-3. **agent** - Split pane with AI agent (left) + terminal (right)
-4. **term** - General terminal
+2. **source** - Lazygit
+3. **agents** - Split pane with AI agent (left) + terminal (right)
+4. **cmd** - General terminal
+
+Called with no argument it opens an fzf project picker; with a directory it
+targets that project directly. `--detach` sets the session up without attaching
+or switching the client to it, and prints the session name — this is how the
+`worktree` skill prepares a session for a new worktree without pulling the user
+out of their current one.
 
 ### Claude Code Hooks
 
