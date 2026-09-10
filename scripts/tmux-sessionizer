@@ -8,9 +8,25 @@ dirs=(
     ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents
 )
 
-if [[ $# -eq 1 ]]; then
-    selected=$1
-else
+# --detach sets the session up without attaching or switching the client to it,
+# so a script (or an agent) can prepare a session without stealing the user's view.
+detach=""
+selected=""
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        -d | --detach)
+            detach=1
+            shift
+            ;;
+        *)
+            selected=$1
+            shift
+            ;;
+    esac
+done
+
+if [[ -z $selected ]]; then
     result=$(find "${dirs[@]}" -mindepth 1 -maxdepth 1 -type d | fzf --border-label " Select Project " --expect=ctrl-y)
     { read -r key; read -r selected; } <<< "$result"
 fi
@@ -27,7 +43,7 @@ fi
 selected_name=$(basename "$selected" | tr . _)
 tmux_running=$(pgrep tmux)
 
-if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
+if [[ -z $detach ]] && [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
     tmux new-session -s "$selected_name" -c "$selected"
     exit 0
 fi
@@ -55,6 +71,11 @@ if ! tmux has-session -t="$selected_name" 2> /dev/null; then
 
     # Select the first window
     tmux select-window -t "$selected_name:code"
+fi
+
+if [[ -n $detach ]]; then
+    printf '%s\n' "$selected_name"
+    exit 0
 fi
 
 if [[ -z $TMUX ]]; then

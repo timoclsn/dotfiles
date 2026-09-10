@@ -1,12 +1,14 @@
 ---
 name: worktree
-description: Create and set up a new git worktree as a sibling of the current repo, branched off the default branch (main/master) by default — or off a given branch, tag, or PR. Names it after the repo plus a semantic extension derived from whatever content you give it. Use when the user invokes `/worktree`, or asks to spin up / create a worktree to work on something in isolation, on a specific branch, or to check out a PR.
-argument-hint: "[content to name the worktree/branch from, and/or a base branch/tag/PR (optional)]"
+description: Create and set up a new git worktree as a sibling of the current repo, branched off the default branch (main/master) by default — or off a given branch, tag, or PR. Names it after the repo plus a semantic extension derived from whatever content you give it, opens a detached tmux session on it via tmux-sessionizer, and hands the task to the Claude session in that session's agents pane. Use when the user invokes `/worktree`, or asks to spin up / create a worktree to work on something in isolation, on a specific branch, or to check out a PR.
+argument-hint: "[the task to work on (also used to name the worktree/branch), and/or a base branch/tag/PR (optional)]"
 ---
 
 # Create a worktree
 
-Create and set up a fresh git worktree as a **sibling** of the current repo (one level up, not nested inside it), on a **new branch off the default branch**. The argument is used only to **name** the worktree/branch and to pick the **base** — derive the semantic extension from whatever content is given (free text, a task description, a PR, etc.). Do **not** carry out any task inside the worktree; just create and set it up.
+Create and set up a fresh git worktree as a **sibling** of the current repo (one level up, not nested inside it), on a **new branch off the default branch**, then open a detached tmux session on it and hand the task to the Claude session running in that session's `agents` pane.
+
+The argument serves two purposes: it **names** the worktree/branch and picks the **base**, and its task content becomes the **prompt** for the new Claude session. Never carry out the task in *this* session — the new session owns the work.
 
 ## Steps
 
@@ -44,6 +46,22 @@ Create and set up a fresh git worktree as a **sibling** of the current repo (one
 
 8. **Install dependencies** if the worktree contains a dependency manifest. Detect the package manager from its lockfile (e.g. `pnpm-lock.yaml`, `yarn.lock`, `bun.lockb`, `package-lock.json`) and run the matching install (e.g. `pnpm --dir <worktree-path> install`, or `cd` into the worktree for the install command). Skip silently if there's no manifest.
 
-9. **Report the result** — print the absolute worktree path so the user knows where the work lives.
+9. **Open a detached tmux session on the worktree** with the sessionizer, which builds the standard four-window layout and starts an agent in the `agents` window's left pane:
+   ```sh
+   tmux-sessionizer --detach <worktree-path>
+   ```
+   `--detach` is essential: without it the script would `switch-client` and yank the user out of the session they invoked this from. It prints the tmux session name (the worktree directory name with dots turned into underscores) — keep it for the report.
 
-The skill ends here — the worktree is created and set up, but **don't start working on any task inside it**.
+10. **Wait for the new Claude session to register, and get its name.** Every running session writes `~/.claude/sessions/<pid>.json` with its `cwd`, `tmux` location and `name`. Poll for the entry whose `cwd` is the worktree path until it appears (it usually takes a second or two; give up after ~40s):
+    ```sh
+    jq -r --arg cwd <worktree-path> 'select(.cwd==$cwd and .kind=="interactive") | .name' ~/.claude/sessions/*.json
+    ```
+    Poll with a bounded loop rather than a bare wait, and don't use `ListAgents` for this — the registry keys off the worktree path, so it identifies the right session unambiguously, while a listing only shows the tmux pane.
+
+11. **Send the task to that session** with `SendMessage`, addressing it by the name from step 10. Pass the user's task through as they phrased it — don't restate it as an instruction to create a worktree (the worktree already exists and that session is sitting in it), and drop the base-selection noise (“based on staging”, “for PR 123”) that only steered this skill. Mention the branch it's on if that isn't obvious from the task.
+
+    Skip this step when the argument carries no actual task — a bare `/worktree`, or a PR checkout with nothing asked of it. The session is then just sitting there ready for the user.
+
+12. **Report the result** — the absolute worktree path, the branch name, the tmux session name, and whether a task was handed off. Remind the user they can jump to it with `prefix + f` (or `tmux switch-client -t <session-name>`).
+
+The skill ends here. The new session does the work; **don't start working on the task in this session**, and don't wait around for the other session to finish unless the user asks you to.
