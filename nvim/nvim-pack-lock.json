@@ -46,7 +46,7 @@
       "src": "https://github.com/onsails/lspkind.nvim"
     },
     "mason-lspconfig.nvim": {
-      "rev": "b5576cd62899a1a478d0e67ef3d378ee55dba82d",
+      "rev": "0c5d026dcd39bc3433be16a01395699cabbd1019",
       "src": "https://github.com/mason-org/mason-lspconfig.nvim"
     },
     "mason-tool-installer.nvim": {
@@ -79,7 +79,7 @@
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-treesitter": {
-      "rev": "d4d59cb369da46b95699bd2200efbcffc6dadb3b",
+      "rev": "de9f0f3dbdab1952f136dc7bd67ff3bafdf994da",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
       "version": "'main'"
     },
