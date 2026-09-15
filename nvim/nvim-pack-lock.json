@@ -30,7 +30,7 @@
       "src": "https://github.com/j-hui/fidget.nvim"
     },
     "gitsigns.nvim": {
-      "rev": "fd36f038e52ad8409fbf9926ae4a0a514cca04d8",
+      "rev": "5eb287fdbd523c3a1b3d01f304f43570e73e259b",
       "src": "https://github.com/lewis6991/gitsigns.nvim"
     },
     "guess-indent.nvim": {
