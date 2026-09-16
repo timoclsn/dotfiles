@@ -9,10 +9,13 @@ echo "Updating OpenCode…"
 opencode upgrade
 
 echo ""
+echo "Updating pnpm…"
+pnpm self-update -y
+
+echo ""
 
 PACKAGES=(
   "npm"
-  "pnpm"
   "@antfu/ni"
   "npm-check-updates"
   "vercel"

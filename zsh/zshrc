@@ -44,7 +44,7 @@ source $ZSH/oh-my-zsh.sh
 # =============================================================================
 # pnpm
 export PNPM_HOME="$HOME/Library/pnpm"
-export PATH="$PNPM_HOME:$PATH"
+export PATH="$PNPM_HOME/bin:$PATH"
 
 # fnm
 eval "`fnm env`"
