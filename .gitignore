@@ -5,3 +5,8 @@
 node_modules
 tmp/
 .ignore
+
+# Claude Code writes account-synced skills and its trash into ai/skills,
+# which is symlinked to ~/.claude/skills by setup.sh
+ai/skills/synced/
+ai/skills/.trash/
