@@ -45,6 +45,7 @@ dotfiles/
 | ------------- | ----------------------------------------- |
 | `prefix + f`  | Fuzzy project selector (tmux-sessionizer) |
 | `prefix + '`  | Jump to dotfiles                          |
+| `prefix + A`  | Jump to most recently created session     |
 | `prefix + \|` | Split pane horizontally                   |
 | `prefix + -`  | Split pane vertically                     |
 | `prefix + r`  | Reload tmux config                        |
