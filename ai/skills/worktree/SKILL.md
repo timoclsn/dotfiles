@@ -60,6 +60,8 @@ The argument serves two purposes: it **names** the worktree/branch and picks the
 
 11. **Send the task to that session** with `SendMessage`, addressing it by the name from step 10. Pass the user's task through as they phrased it — don't restate it as an instruction to create a worktree (the worktree already exists and that session is sitting in it), and drop the base-selection noise (“based on staging”, “for PR 123”) that only steered this skill. Mention the branch it's on if that isn't obvious from the task.
 
+    Also tell it to stop once the work is done: implement the task and leave the changes in the working tree, but don't commit, push, or open a PR. The user reviews the result first and asks for those separately. Only carry this instruction over if the user's own task didn't already ask for a commit or PR.
+
     Skip this step when the argument carries no actual task — a bare `/worktree`, or a PR checkout with nothing asked of it. The session is then just sitting there ready for the user.
 
 12. **Report the result** — the absolute worktree path, the branch name, the tmux session name, and whether a task was handed off. Remind the user they can jump to it with `prefix + f` (or `tmux switch-client -t <session-name>`).
