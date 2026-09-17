@@ -10,6 +10,7 @@ dirs=(
 
 # --detach sets the session up without attaching or switching the client to it,
 # so a script (or an agent) can prepare a session without stealing the user's view.
+# A session it creates is also left on the 'agents' window instead of 'code'.
 detach=""
 selected=""
 
@@ -69,8 +70,13 @@ if ! tmux has-session -t="$selected_name" 2> /dev/null; then
     # Create a fourth window named 'cmd'
     tmux new-window -t "$selected_name:" -n cmd -c "$selected"
 
-    # Select the first window
-    tmux select-window -t "$selected_name:code"
+    # A session remembers its current window even while nobody is attached, so a
+    # detached setup lands the user on the agent right where the work happens.
+    if [[ -n $detach ]]; then
+        tmux select-window -t "$selected_name:agents"
+    else
+        tmux select-window -t "$selected_name:code"
+    fi
 fi
 
 if [[ -n $detach ]]; then

@@ -50,7 +50,7 @@ The argument serves two purposes: it **names** the worktree/branch and picks the
    ```sh
    tmux-sessionizer --detach <worktree-path>
    ```
-   `--detach` is essential: without it the script would `switch-client` and yank the user out of the session they invoked this from. It prints the tmux session name (the worktree directory name with dots turned into underscores) — keep it for the report.
+   `--detach` is essential: without it the script would `switch-client` and yank the user out of the session they invoked this from. For a session it creates, it also leaves it on the `agents` window, so switching to it later lands on the Claude session instead of `code` (a session that already existed keeps whatever window it was on). It prints the tmux session name (the worktree directory name with dots turned into underscores) — keep it for the report.
 
 10. **Wait for the new Claude session to register, and get its name.** Every running session writes `~/.claude/sessions/<pid>.json` with its `cwd`, `tmux` location and `name`. Poll for the entry whose `cwd` is the worktree path until it appears (it usually takes a second or two; give up after ~40s):
     ```sh
