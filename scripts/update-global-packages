@@ -13,6 +13,14 @@ echo "Updating pnpm…"
 pnpm self-update -y
 
 echo ""
+echo "Updating Bun…"
+bun upgrade
+
+echo ""
+echo "Updating GitHub CLI extensions…"
+gh extension upgrade --all
+
+echo ""
 
 PACKAGES=(
   "npm"
