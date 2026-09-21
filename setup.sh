@@ -77,6 +77,10 @@ rm "$HOME/.codex/skills" 2>/dev/null || true
 ln -sf "$DOTFILES/ai/skills" "$HOME/.codex/skills"
 
 
+# docker
+mkdir -p "$HOME/.docker"
+ln -sf "$DOTFILES/docker/config.json" "$HOME/.docker/config.json"
+
 # Scripts
 mkdir -p "$HOME/.local/bin"
 ln -sf "$DOTFILES/scripts/tmux-sessionizer" "$HOME/.local/bin/tmux-sessionizer"
