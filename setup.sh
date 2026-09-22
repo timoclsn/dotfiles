@@ -76,6 +76,13 @@ ln -sf "$DOTFILES/codex/hooks" "$HOME/.codex/hooks"
 rm "$HOME/.codex/skills" 2>/dev/null || true
 ln -sf "$DOTFILES/ai/skills" "$HOME/.codex/skills"
 
+# agents / pi
+mkdir -p "$HOME/.agents"
+rm -rf "$HOME/.agents/skills" 2>/dev/null || true
+ln -sf "$DOTFILES/ai/skills" "$HOME/.agents/skills"
+mkdir -p "$HOME/.pi/agent"
+ln -sf "$HOME/.agents/AGENTS.md" "$HOME/.pi/agent/AGENTS.md"
+
 
 # docker
 mkdir -p "$HOME/.docker"
