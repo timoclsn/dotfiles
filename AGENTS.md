@@ -32,6 +32,7 @@ dotfiles/
 ├── claude/               # Claude Code settings, hooks, commands
 ├── opencode/             # OpenCode IDE config
 ├── codex/                # Codex CLI config
+├── pi/                   # Pi coding agent extensions
 ├── cursor/rules/         # Cursor IDE rules (14 TypeScript patterns)
 ├── scripts/              # Utility scripts (tmux-sessionizer, ai-commit, etc.)
 └── setup.sh              # Symlink installer
@@ -58,7 +59,7 @@ dotfiles/
 ### Configuration Sharing
 
 - `ai/AGENTS.md` contains shared coding style guidelines
-- Symlinked to `~/.claude/CLAUDE.md`, `~/.config/opencode/AGENTS.md`, and `~/.codex/AGENTS.md`
+- Symlinked to `~/.claude/CLAUDE.md`, `~/.config/opencode/AGENTS.md`, `~/.codex/AGENTS.md`, and `~/.pi/agent/AGENTS.md`
 - Changes to this file affect all AI tools
 
 ### Tmux Session Setup (tmux-sessionizer)

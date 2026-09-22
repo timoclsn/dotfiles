@@ -9,7 +9,7 @@ export const sendPushover = async ({
   title,
   message,
 }: PushoverParams) => {
-  const user = process.env.PUSHOVER_USER_KEY;
+  const user = process.env.PUSHOVER_USER_KEY || process.env.PUSHOVER_USER;
   if (!user) return;
 
   await fetch("https://api.pushover.net/1/messages.json", {

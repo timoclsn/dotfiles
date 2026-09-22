@@ -82,6 +82,8 @@ rm -rf "$HOME/.agents/skills" 2>/dev/null || true
 ln -sf "$DOTFILES/ai/skills" "$HOME/.agents/skills"
 mkdir -p "$HOME/.pi/agent"
 ln -sf "$HOME/.agents/AGENTS.md" "$HOME/.pi/agent/AGENTS.md"
+rm -rf "$HOME/.pi/agent/extensions" 2>/dev/null || true
+ln -sf "$DOTFILES/pi/extensions" "$HOME/.pi/agent/extensions"
 
 
 # docker
