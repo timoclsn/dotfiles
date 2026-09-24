@@ -12,7 +12,7 @@ The argument serves two purposes: it **names** the worktree/branch and picks the
 
 ## Delegate the whole thing to a subagent
 
-Don't run the steps below directly in this session — spawn a `fork` subagent (via the `Agent` tool) and have it execute all of them. A fork inherits this conversation's full context, which it needs anyway (e.g. deriving the semantic extension from the conversation when the argument alone doesn't give enough). Give it the argument verbatim plus a directive to carry out every step in this skill exactly as written, including reporting back per step 12. This keeps the current session free while the (often slow: fetches, installs, tmux, polling) setup work happens in the background — only pull the fork's report back into the conversation once it finishes, don't narrate its intermediate tool output.
+Don't run the steps below directly in this session — spawn a subagent (via the `Agent` tool) and have it execute all of them. It starts with no context, so write it a self-contained prompt: the argument verbatim, the current working directory, and (only if the argument's content alone doesn't yield a good semantic extension) whatever you can infer from the conversation to help name it. Also tell it to carry out every step in this skill exactly as written, including reporting back per step 12. This keeps the current session free while the (often slow: fetches, installs, tmux, polling) setup work happens in the background — only pull the subagent's report back into the conversation once it finishes, don't narrate its intermediate tool output.
 
 ## Steps
 
