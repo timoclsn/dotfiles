@@ -1,4 +1,7 @@
 {
+  "env": {
+    "CLAUDE_CODE_SUBAGENT_MODEL": "sonnet"
+  },
   "attribution": {
     "commit": "",
     "pr": ""
@@ -7,9 +10,6 @@
     "defaultMode": "auto"
   },
   "model": "opus[1m]",
-  "env": {
-    "CLAUDE_CODE_SUBAGENT_MODEL": "sonnet"
-  },
   "hooks": {
     "Stop": [
       {
@@ -51,7 +51,9 @@
     "security-guidance@claude-plugins-official": true,
     "deployment-toolkit@taxfix-plugins-marketplace": false,
     "oncall@taxfix-plugins-marketplace": false,
-    "architecture-guidance@taxfix-plugins-marketplace": false
+    "architecture-guidance@taxfix-plugins-marketplace": false,
+    "testing-principles@synced": false,
+    "architecture-guidance@synced": false
   },
   "spinnerTipsEnabled": false,
   "effortLevel": "high",
