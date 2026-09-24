@@ -10,6 +10,10 @@ Create and set up a fresh git worktree as a **sibling** of the current repo (one
 
 The argument serves two purposes: it **names** the worktree/branch and picks the **base**, and its task content becomes the **prompt** for the new Claude session. Never carry out the task in *this* session — the new session owns the work.
 
+## Delegate the whole thing to a subagent
+
+Don't run the steps below directly in this session — spawn a `fork` subagent (via the `Agent` tool) and have it execute all of them. A fork inherits this conversation's full context, which it needs anyway (e.g. deriving the semantic extension from the conversation when the argument alone doesn't give enough). Give it the argument verbatim plus a directive to carry out every step in this skill exactly as written, including reporting back per step 12. This keeps the current session free while the (often slow: fetches, installs, tmux, polling) setup work happens in the background — only pull the fork's report back into the conversation once it finishes, don't narrate its intermediate tool output.
+
 ## Steps
 
 1. **Gather context.** Always anchor on the **main worktree** (the original repo), never the current checkout — otherwise running this from inside an existing worktree would name the new one after the worktree folder (e.g. `dotfiles-w-auth-w-feature` instead of `dotfiles-w-feature`).
