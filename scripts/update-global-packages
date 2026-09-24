@@ -36,6 +36,7 @@ PACKAGES=(
   "@googleworkspace/cli"
   "hunkdiff"
   "@taxfix/altitudo-cli"
+  "ccusage"
 )
 
 echo "Updating global npm packages (${#PACKAGES[@]} total)…"
