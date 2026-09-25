@@ -78,11 +78,11 @@ export const getHealth = (budget: Budget) => {
 const dollars = (cents: number) => `$${Math.round(cents / 100)}`;
 
 // Month spend as a bar with a marker between the cells where spend should be
-// right now: "▓▓▓▓▓▓▓▓░│░" is under pace, "▓▓▓▓▓│▓░░░░" is over it
+// right now: "▒▒▒▒▒▒▒▒░│░" is under pace, "▒▒▒▒▒│▒░░░░" is over it
 export const formatMonthBar = (budget: Budget) => {
   const toCells = (cents: number) => Math.round((cents / budget.limitCents) * BAR_CELLS);
   const filledCells = Math.min(toCells(budget.usedCents), BAR_CELLS);
-  const cells = "▓".repeat(filledCells) + "░".repeat(BAR_CELLS - filledCells);
+  const cells = "▒".repeat(filledCells) + "░".repeat(BAR_CELLS - filledCells);
   const paceCell = toCells(budget.currentPaceCents);
 
   return `${cells.slice(0, paceCell)}│${cells.slice(paceCell)}`;
