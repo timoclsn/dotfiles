@@ -102,6 +102,8 @@ const main = async () => {
   const gitBranch = await getGitBranch();
   const contextUsage = getContextUsage(input);
   const linesChanged = `+${input.cost.total_lines_added}/-${input.cost.total_lines_removed}`;
+  // Claude Code's own list-price estimate; the official total is in the tmux bar
+  const sessionCost = `$${input.cost.total_cost_usd.toFixed(2)}`;
 
   const maxProjectLen = 46;
   const project = `${dir}${gitBranch}`;
@@ -113,7 +115,7 @@ const main = async () => {
     truncatedProject = truncateMiddle(project, maxProjectLen);
   }
 
-  const parts = [model, contextUsage, linesChanged, truncatedProject];
+  const parts = [model, contextUsage, sessionCost, linesChanged, truncatedProject];
   if (session) parts.push(session);
 
   console.log(parts.join(" | "));
