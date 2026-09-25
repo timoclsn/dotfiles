@@ -1,3 +1,4 @@
+import { fetchSpend, formatWarning, getBudget } from "../../scripts/claude-budget";
 import { getIdleTime, IDLE_THRESHOLD } from "../../scripts/idle-time";
 import { sendPushover } from "../../scripts/pushover";
 import { getLastAssistantMessage, getSessionName } from "./utils";
@@ -65,6 +66,13 @@ const main = async () => {
   });
 };
 
+// Adds a line to notifications while near or over the Claude budget. A failed
+// lookup must not block the notification itself, so it just adds nothing.
+const getBudgetWarning = () =>
+  fetchSpend()
+    .then((spend) => formatWarning(getBudget(spend, new Date())))
+    .catch(() => null);
+
 interface NotificationOptions {
   subtitle: string;
   message: string;
@@ -80,6 +88,9 @@ const sendNotification = async ({
   projectName,
   sessionId,
 }: NotificationOptions) => {
+  const budgetWarning = await getBudgetWarning();
+  const fullMessage = budgetWarning ? `${message}\n${budgetWarning}` : message;
+
   const onClick = `osascript \
     -e 'tell application "Ghostty" to activate' \
     -e 'tell application "System Events" to key code 49 using control down' \
@@ -95,7 +106,7 @@ const sendNotification = async ({
     "-subtitle",
     subtitle,
     "-message",
-    message,
+    fullMessage,
     "-group",
     `claude-${projectName}-${sessionId}`,
     "-execute",
@@ -110,8 +121,8 @@ const sendNotification = async ({
   await Bun.sleep(1000);
   const lastMessage = getLastAssistantMessage(transcriptPath);
   const pushMessage = lastMessage
-    ? `[${subtitle}] ${message}\n\n${lastMessage}`
-    : `[${subtitle}] ${message}`;
+    ? `[${subtitle}] ${fullMessage}\n\n${lastMessage}`
+    : `[${subtitle}] ${fullMessage}`;
   sendPushover({
     token: pushToken,
     title: "Claude Code",

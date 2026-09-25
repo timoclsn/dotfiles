@@ -90,6 +90,10 @@ ln -sf "$DOTFILES/pi/extensions" "$HOME/.pi/agent/extensions"
 mkdir -p "$HOME/.docker"
 ln -sf "$DOTFILES/docker/config.json" "$HOME/.docker/config.json"
 
+# tmux-powerkit only loads plugins from its own folder (installed by TPM, so re-run after the first TPM install)
+POWERKIT_PLUGINS="$HOME/.tmux/plugins/tmux-powerkit/src/plugins"
+[ -d "$POWERKIT_PLUGINS" ] && ln -sf "$DOTFILES/tmux/powerkit/claude_budget.sh" "$POWERKIT_PLUGINS/claude_budget.sh"
+
 # Scripts
 mkdir -p "$HOME/.local/bin"
 ln -sf "$DOTFILES/scripts/tmux-sessionizer" "$HOME/.local/bin/tmux-sessionizer"
@@ -100,4 +104,6 @@ ln -sf "$DOTFILES/scripts/ai-commit" "$HOME/.local/bin/ai-commit"
 chmod +x "$HOME/.local/bin/ai-commit"
 ln -sf "$DOTFILES/scripts/update-global-packages" "$HOME/.local/bin/update-global-packages"
 chmod +x "$HOME/.local/bin/update-global-packages"
+ln -sf "$DOTFILES/scripts/claude-budget.ts" "$HOME/.local/bin/claude-budget"
+chmod +x "$HOME/.local/bin/claude-budget"
 echo "Symlinks created successfully!"
