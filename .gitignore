@@ -10,3 +10,6 @@ tmp/
 # which is symlinked to ~/.claude/skills by setup.sh
 ai/skills/synced/
 ai/skills/.trash/
+
+# Work-only skills that must stay out of this public repo
+ai/skills/xapp-author/
