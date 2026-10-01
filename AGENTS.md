@@ -74,8 +74,10 @@ When creating a new project session, 4 windows are created:
 Called with no argument it opens an fzf project picker; with a directory it
 targets that project directly. `--detach` sets the session up without attaching
 or switching the client to it, leaves a freshly created session on the `agents`
-window, and prints the session name — this is how the `worktree` skill prepares
-a session for a new worktree without pulling the user out of their current one.
+window, and prints the session name. `--prompt <text>` starts the agent in a
+newly created session with that text as its first message. Together they're how
+the `worktree` skill prepares a session for a new worktree and hands it the task
+without pulling the user out of their current one.
 
 ### Claude Code Hooks
 
