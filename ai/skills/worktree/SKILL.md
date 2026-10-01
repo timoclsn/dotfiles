@@ -1,73 +1,52 @@
 ---
 name: worktree
-description: Create and set up a new git worktree as a sibling of the current repo, branched off the default branch (main/master) by default — or off a given branch, tag, or PR. Names it after the repo plus a semantic extension derived from whatever content you give it, opens a detached tmux session on it via tmux-sessionizer, and hands the task to the Claude session in that session's agents pane. Use when the user invokes `/worktree`, or asks to spin up / create a worktree to work on something in isolation, on a specific branch, or to check out a PR.
+description: Create and set up a new git worktree as a sibling of the current repo, branched off the default branch (main/master) by default — or off a given branch, tag, or PR. Names it after the repo plus a semantic extension derived from whatever content you give it, opens a detached tmux session on it via tmux-sessionizer, and starts a Claude session in its agents pane on the task. Use when the user invokes `/worktree`, or asks to spin up / create a worktree to work on something in isolation, on a specific branch, or to check out a PR.
 argument-hint: "[the task to work on (also used to name the worktree/branch), and/or a base branch/tag/PR (optional)]"
 ---
 
 # Create a worktree
 
-Create and set up a fresh git worktree as a **sibling** of the current repo (one level up, not nested inside it), on a **new branch off the default branch**, then open a detached tmux session on it and hand the task to the Claude session running in that session's `agents` pane.
+Create and set up a fresh git worktree as a **sibling** of the current repo (one level up, not nested inside it), on a **new branch off the default branch**, then open a detached tmux session on it whose `agents` pane starts a Claude session on the task.
 
 The argument serves two purposes: it **names** the worktree/branch and picks the **base**, and its task content becomes the **prompt** for the new Claude session. Never carry out the task in *this* session — the new session owns the work.
 
+The mechanical part (creating the worktree, carrying over gitignored files, installing dependencies, opening tmux and starting Claude on the task) is done by the bundled script `${CLAUDE_SKILL_DIR}/scripts/worktree-create.ts` (`scripts/worktree-create.ts` in this skill's directory). The judgment around it — naming, picking the base, writing the task prompt — is done by a subagent.
+
 ## Delegate the whole thing to a subagent
 
-Don't run the steps below directly in this session — spawn a subagent (via the `Agent` tool) and have it execute all of them. It starts with no context, so write it a self-contained prompt: the argument verbatim, the current working directory, and (only if the argument's content alone doesn't yield a good semantic extension) whatever you can infer from the conversation to help name it. Also tell it to carry out every step in this skill exactly as written, including reporting back per step 12. This keeps the current session free while the (often slow: fetches, installs, tmux, polling) setup work happens in the background — only pull the subagent's report back into the conversation once it finishes, don't narrate its intermediate tool output.
+Don't run the steps below in this session — spawn a subagent (via the `Agent` tool) and have it execute all of them, so their tool output doesn't clutter this conversation. It starts with no context, so write it a self-contained prompt: the argument verbatim, the current working directory, the script's absolute path, and (only if the argument's content alone doesn't yield a good semantic extension) whatever you can infer from the conversation to help name it. Tell it to carry out every step in this skill exactly as written and to reply with nothing but the result from step 6.
+
+Once it finishes, relay that result to the user in one or two lines. Don't narrate its intermediate work.
 
 ## Steps
 
-1. **Gather context.** Always anchor on the **main worktree** (the original repo), never the current checkout — otherwise running this from inside an existing worktree would name the new one after the worktree folder (e.g. `dotfiles-w-auth-w-feature` instead of `dotfiles-w-feature`).
-   - Main repo root: the first entry of `git worktree list` is always the main checkout. Equivalently, take the parent of `git rev-parse --git-common-dir` (resolved to an absolute path), which points at the original repo regardless of which worktree you're in. Do **not** use `git rev-parse --show-toplevel` — that returns the current worktree.
-   - Repo name: basename of the main repo root
-   - Parent dir: the directory containing the main repo root — worktrees go here as siblings
-   - Default branch: read `git symbolic-ref refs/remotes/origin/HEAD` and strip to the branch name; if that fails, use `main` if it exists, otherwise `master`
+1. **Pick a semantic extension** — a short kebab-case slug describing the work (e.g. `auth-refactor`, `login-fix`, `docs`). Derive it from the argument's content or the current conversation. Only ask the user if there's genuinely nothing to infer it from. The worktree will live at `<parent of the main checkout>/<repo-name>-w-<extension>`.
 
-2. **Pick a semantic extension** — a short kebab-case slug describing the work (e.g. `auth-refactor`, `login-fix`, `docs`). Derive it from the argument's content or the current conversation. Only ask the user if there's genuinely nothing to infer it from.
-   - Worktree path: `<parent-dir>/<repo-name>-w-<extension>` (the `-w-` infix marks it as a worktree and groups it next to the repo; directory name never contains a `/`)
+   For a PR, derive it from the **PR's title/content** instead (`gh pr view <pr> --json title`) — e.g. "Add OAuth login flow" → `oauth-login`. Never use a bare `pr-<number>` slug; only fall back to the PR's branch name if the title yields nothing meaningful.
 
-3. **Derive the branch name from the project's convention.** Inspect existing branches (`git branch -a`, including remotes) and match their style:
-   - If they follow conventional-commit style (`feat/…`, `fix/…`, `chore/…`, `docs/…`, etc.), pick the type that fits the work and name the branch `<type>/<extension>`.
-   - Mirror whatever separator/casing the existing branches actually use (e.g. `feature/…`, or a Jira-key prefix like `ABC-123-…`) rather than forcing a style the project doesn't use.
-   - If there's no discernible convention, the branch name is just `<extension>`.
+2. **Derive the branch name from the project's convention** (skip for a PR — it keeps its own branch). Inspect existing branches, including remotes, and match their style:
+   - Conventional-commit style (`feat/…`, `fix/…`, `chore/…`, …): pick the type that fits and name it `<type>/<extension>`.
+   - Otherwise mirror whatever the branches actually use (e.g. `feature/…`, a Jira-key prefix like `ABC-123-…`).
+   - No discernible convention: just `<extension>`.
 
-4. **Determine the base.** Default to the latest default branch, but honor an explicit base named in the instruction:
-   - **No base given:** if the repo has a remote, `git fetch` the default branch and base off `origin/<default>`; otherwise the local default branch. Never branch off the current HEAD.
-   - **A branch or tag given** (e.g. "based on `staging`"): `git fetch` it and base the new branch off that ref instead.
-   - **A PR given** (e.g. "for PR 123", a `#123`, or a PR URL): resolve and check out the PR's actual head branch rather than creating a new branch off it — checking out a PR means working on *that* branch. Use the GitHub CLI (`gh pr checkout`/`gh pr view`) to get the PR's branch into a worktree; this also handles fork PRs. In this case skip the new-branch creation in step 6 and the convention naming in step 3, and derive the directory extension from the **PR's title/content** — `gh pr view <pr> --json title,headRefName` and distill a short kebab-case slug describing what the PR does (e.g. PR titled "Add OAuth login flow" → `oauth-login`). Never use a bare `pr-<number>` slug. Only fall back to the PR's branch slug if the title yields nothing meaningful.
+3. **Determine the base.** By default the script bases off the freshly fetched default branch — pass nothing. Only pass a base when the instruction names one (e.g. "based on `staging`", a tag). For a PR ("for PR 123", `#123`, a PR URL), pass the PR instead: it checks out the PR's own branch rather than creating a new one.
 
-5. **Guard before creating.** Abort and propose a different extension if the target path already exists or the branch name is already taken.
+4. **Write the task prompt** for the new Claude session, which starts on it as its first message. Pass the user's task through as they phrased it — don't restate it as an instruction to create a worktree (the session will already be sitting in it), and drop the base-selection noise ("based on staging", "for PR 123") that only steered this skill. Mention the branch if that isn't obvious from the task.
 
-6. **Create the worktree.** For new work, create it with the new branch off the base from step 4 — directory uses the plain extension, branch uses the convention-aware name from step 3:
+   Also tell it to stop once the work is done: implement the task and leave the changes in the working tree, but don't commit, push, or open a PR. The user reviews the result first and asks for those separately. Only add this if the user's own task didn't already ask for a commit or PR.
+
+   Write no prompt when the argument carries no actual task — a bare `/worktree`, or a PR checkout with nothing asked of it. The session then just starts empty, ready for the user.
+
+5. **Run the script** from the current repo (any of its worktrees works — it anchors on the main checkout), passing the prompt as `--task` if there is one:
    ```sh
-   git worktree add -b <branch-name> <parent-dir>/<repo-name>-w-<extension> <base-ref>
+   <skill-dir>/scripts/worktree-create.ts --name <extension> --branch <branch-name> [--base <ref>] [--task <prompt>]
+   <skill-dir>/scripts/worktree-create.ts --name <extension> --pr <number-or-url> [--task <prompt>]
    ```
-   For a PR (step 4), instead create a worktree that checks out the PR's existing branch (no `-b`) — e.g. `git worktree add <path> <pr-branch>`, or let `gh pr checkout` populate it.
-   Don't use the built-in `EnterWorktree` to *create* it — that tool nests worktrees under `.claude/worktrees/`, which violates the sibling-placement requirement. Create it with `git worktree add` so you control the location and name.
+   It refuses if the path or branch already exists — pick a different extension and rerun. It prints progress to stderr and a JSON summary to stdout with the worktree `path`, `branch`, `tmuxSession` and what it carried over. Don't redo any of its work by hand. For context, it:
+   - carries over gitignored files matching its allowlist from the checkout of the base branch (the main checkout if the base isn't checked out anywhere): `.env*`, `config/local*.json` and `.claude/settings.local.json` are symlinked, `node_modules` folders are cloned copy-on-write; everything else that's ignored is left behind
+   - only installs dependencies where a lockfile differs from the copied node_modules' origin
+   - opens the tmux session with `tmux-sessionizer --detach`, so the user isn't pulled out of their current session, and starts Claude in its `agents` pane on the task
 
-   The session stays in the main repo — don't switch into the worktree, just operate on its path for the remaining setup steps.
-
-7. **Link local env files from the main worktree.** Fresh worktrees don't get gitignored local files (e.g. `.env`, `.env.local`, `.env.dev`, `.env.*.local`), but most projects need them to build or run. Find such files in the main repo root (and obvious app subdirectories) that are git-ignored and absent from the new worktree, and symlink each into the matching path in the worktree (`ln -s <main-worktree-file> <worktree-file>`) so they stay in sync with the original. Skip silently if there are none.
-
-8. **Install dependencies** if the worktree contains a dependency manifest. Detect the package manager from its lockfile (e.g. `pnpm-lock.yaml`, `yarn.lock`, `bun.lockb`, `package-lock.json`) and run the matching install (e.g. `pnpm --dir <worktree-path> install`, or `cd` into the worktree for the install command). Skip silently if there's no manifest.
-
-9. **Open a detached tmux session on the worktree** with the sessionizer, which builds the standard four-window layout and starts an agent in the `agents` window's left pane:
-   ```sh
-   tmux-sessionizer --detach <worktree-path>
-   ```
-   `--detach` is essential: without it the script would `switch-client` and yank the user out of the session they invoked this from. For a session it creates, it also leaves it on the `agents` window, so switching to it later lands on the Claude session instead of `code` (a session that already existed keeps whatever window it was on). It prints the tmux session name (the worktree directory name with dots turned into underscores) — keep it for the report.
-
-10. **Wait for the new Claude session to register, and get its name.** Every running session writes `~/.claude/sessions/<pid>.json` with its `cwd`, `tmux` location and `name`. Poll for the entry whose `cwd` is the worktree path until it appears (it usually takes a second or two; give up after ~40s):
-    ```sh
-    jq -r --arg cwd <worktree-path> 'select(.cwd==$cwd and .kind=="interactive") | .name' ~/.claude/sessions/*.json
-    ```
-    Poll with a bounded loop rather than a bare wait, and don't use `ListAgents` for this — the registry keys off the worktree path, so it identifies the right session unambiguously, while a listing only shows the tmux pane.
-
-11. **Send the task to that session** with `SendMessage`, addressing it by the name from step 10. Pass the user's task through as they phrased it — don't restate it as an instruction to create a worktree (the worktree already exists and that session is sitting in it), and drop the base-selection noise (“based on staging”, “for PR 123”) that only steered this skill. Mention the branch it's on if that isn't obvious from the task.
-
-    Also tell it to stop once the work is done: implement the task and leave the changes in the working tree, but don't commit, push, or open a PR. The user reviews the result first and asks for those separately. Only carry this instruction over if the user's own task didn't already ask for a commit or PR.
-
-    Skip this step when the argument carries no actual task — a bare `/worktree`, or a PR checkout with nothing asked of it. The session is then just sitting there ready for the user.
-
-12. **Report the result** — the absolute worktree path, the branch name, the tmux session name, and whether a task was handed off. Remind the user they can jump to it with `prefix + f` (or `tmux switch-client -t <session-name>`).
+6. **Report the result** — keep it minimal: only the worktree directory name, the branch, and the tmux session name. Add a single extra line only if something went wrong (e.g. the script failed). The user jumps to it with `prefix + f` (or `tmux switch-client -t <session-name>`).
 
 The skill ends here. The new session does the work; **don't start working on the task in this session**, and don't wait around for the other session to finish unless the user asks you to.
