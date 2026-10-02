@@ -83,7 +83,7 @@ without pulling the user out of their current one.
 
 Located in `claude/hooks/`:
 
-- `statusline.ts` - Custom status line showing model, tokens, changes
+- `statusline.ts` - Custom status line showing model, tokens, cost
 - `notify.ts` - macOS notifications on completion
 
 ### Neovim Plugin Organization
