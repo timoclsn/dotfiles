@@ -92,7 +92,11 @@ ln -sf "$DOTFILES/docker/config.json" "$HOME/.docker/config.json"
 
 # tmux-powerkit only loads plugins from its own folder (installed by TPM, so re-run after the first TPM install)
 POWERKIT_PLUGINS="$HOME/.tmux/plugins/tmux-powerkit/src/plugins"
-[ -d "$POWERKIT_PLUGINS" ] && ln -sf "$DOTFILES/tmux/powerkit/claude_budget.sh" "$POWERKIT_PLUGINS/claude_budget.sh"
+if [ -d "$POWERKIT_PLUGINS" ]; then
+  for plugin in "$DOTFILES"/tmux/powerkit/*.sh; do
+    ln -sf "$plugin" "$POWERKIT_PLUGINS/$(basename "$plugin")"
+  done
+fi
 
 # Scripts
 mkdir -p "$HOME/.local/bin"
