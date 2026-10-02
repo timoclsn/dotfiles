@@ -49,9 +49,16 @@ const getFirstPrompt = (transcriptContent: string) => {
   return null;
 };
 
-export const getSessionName = (transcriptPath: string) => {
+export const readTranscript = (transcriptPath: string) => {
   try {
-    const transcriptContent = readFileSync(transcriptPath, "utf-8");
+    return readFileSync(transcriptPath, "utf-8");
+  } catch {
+    return "";
+  }
+};
+
+export const getSessionName = (transcriptContent: string) => {
+  try {
     const title =
       getSessionTitle(transcriptContent) ?? getFirstPrompt(transcriptContent);
     if (!title) return null;
@@ -62,16 +69,35 @@ export const getSessionName = (transcriptPath: string) => {
   }
 };
 
-export const getLastAssistantMessage = (transcriptPath: string) => {
-  try {
-    const lines = readFileSync(transcriptPath, "utf-8").split("\n");
-    for (let i = lines.length - 1; i >= 0; i--) {
-      if (!lines[i].trim()) continue;
-      const entry = JSON.parse(lines[i]);
-      if (entry.type !== "assistant") continue;
-      const text = extractText(entry.message?.content);
-      if (text) return text;
+// Walks the transcript backwards, parsing only lines that look like assistant
+// entries, so the cost depends on how far back the match is, not file size.
+export function* assistantEntriesNewestFirst(transcriptContent: string) {
+  let searchFrom = transcriptContent.length;
+  while (searchFrom >= 0) {
+    const index = transcriptContent.lastIndexOf(
+      '"type":"assistant"',
+      searchFrom,
+    );
+    if (index === -1) return;
+    const start = transcriptContent.lastIndexOf("\n", index) + 1;
+    const end = transcriptContent.indexOf("\n", index);
+    searchFrom = start - 1;
+    let entry;
+    try {
+      entry = JSON.parse(
+        transcriptContent.slice(start, end === -1 ? undefined : end),
+      );
+    } catch {
+      continue;
     }
-  } catch {}
+    if (entry.type === "assistant") yield entry;
+  }
+}
+
+export const getLastAssistantMessage = (transcriptContent: string) => {
+  for (const entry of assistantEntriesNewestFirst(transcriptContent)) {
+    const text = extractText(entry.message?.content);
+    if (text) return text;
+  }
   return null;
 };

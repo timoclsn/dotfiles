@@ -1,7 +1,11 @@
 import { fetchSpend, formatWarning, getBudget } from "../../scripts/claude-budget";
 import { getIdleTime, IDLE_THRESHOLD } from "../../scripts/idle-time";
 import { sendPushover } from "../../scripts/pushover";
-import { getLastAssistantMessage, getSessionName } from "./utils";
+import {
+  getLastAssistantMessage,
+  getSessionName,
+  readTranscript,
+} from "./utils";
 
 const pushToken = process.env.PUSHOVER_CLAUDE_CODE;
 const pushUser = process.env.PUSHOVER_USER_KEY;
@@ -47,7 +51,7 @@ const main = async () => {
     return;
   }
 
-  const sessionTitle = getSessionName(transcriptPath);
+  const sessionTitle = getSessionName(readTranscript(transcriptPath));
 
   if (sessionTitle === "ai-commit") return;
 
@@ -115,7 +119,7 @@ const sendNotification = async ({
   if (idleSeconds < IDLE_THRESHOLD) return;
 
   await Bun.sleep(1000);
-  const lastMessage = getLastAssistantMessage(transcriptPath);
+  const lastMessage = getLastAssistantMessage(readTranscript(transcriptPath));
   const pushMessage = lastMessage
     ? `[${subtitle}] ${fullMessage}\n\n${lastMessage}`
     : `[${subtitle}] ${fullMessage}`;
