@@ -79,5 +79,6 @@
   "inputNeededNotifEnabled": false,
   "agentPushNotifEnabled": false,
   "skipAutoPermissionPrompt": true,
-  "tipsEnabled": false
+  "tipsEnabled": false,
+  "awaySummaryEnabled": false
 }
