@@ -47,11 +47,7 @@ const main = async () => {
     return;
   }
 
-  const sessionTitle = getSessionName({
-    projectDir,
-    sessionId,
-    transcriptPath,
-  });
+  const sessionTitle = getSessionName(transcriptPath);
 
   if (sessionTitle === "ai-commit") return;
 

@@ -1,27 +1,21 @@
-import { homedir } from "os";
 import { readFileSync } from "fs";
 
-interface SessionEntry {
-  sessionId: string;
-  customTitle?: string;
-  summary?: string;
-}
-
-interface SessionsIndex {
-  entries: SessionEntry[];
-}
-
-const getSessionTitle = (projectDir: string, sessionId: string) => {
-  try {
-    const encodedPath = "-" + projectDir.split("/").slice(1).join("-");
-    const indexPath = `${homedir()}/.claude/projects/${encodedPath}/sessions-index.json`;
-    const index: SessionsIndex = JSON.parse(readFileSync(indexPath, "utf-8"));
-    const entry = index.entries.find((e) => e.sessionId === sessionId);
-    return entry?.customTitle ?? entry?.summary ?? null;
-  } catch {
-    return null;
-  }
+const findLastEntry = (transcriptContent: string, type: string) => {
+  const index = transcriptContent.lastIndexOf(`"type":"${type}"`);
+  if (index === -1) return null;
+  const start = transcriptContent.lastIndexOf("\n", index) + 1;
+  const end = transcriptContent.indexOf("\n", index);
+  return JSON.parse(
+    transcriptContent.slice(start, end === -1 ? undefined : end),
+  );
 };
+
+// Title entries get re-appended over time, so the newest one wins.
+// A /rename (custom-title) beats the generated ai-title.
+const getSessionTitle = (transcriptContent: string) =>
+  findLastEntry(transcriptContent, "custom-title")?.customTitle ??
+  findLastEntry(transcriptContent, "ai-title")?.aiTitle ??
+  null;
 
 const extractFromXml = (text: string) => {
   const afterXml = text.replace(/<[^>]+>[^<]*<\/[^>]+>/g, "").trim();
@@ -55,23 +49,17 @@ const getFirstPrompt = (transcriptContent: string) => {
   return null;
 };
 
-interface GetSessionNameOptions {
-  projectDir: string;
-  sessionId: string;
-  transcriptPath: string;
-}
-
-export const getSessionName = ({
-  projectDir,
-  sessionId,
-  transcriptPath,
-}: GetSessionNameOptions) => {
-  const title =
-    getSessionTitle(projectDir, sessionId) ??
-    getFirstPrompt(readFileSync(transcriptPath, "utf-8"));
-  if (!title) return null;
-  const name = title.trim().slice(0, 50).replace(/\n/g, " ");
-  return name.length < title.length ? `${name.trimEnd()}…` : name;
+export const getSessionName = (transcriptPath: string) => {
+  try {
+    const transcriptContent = readFileSync(transcriptPath, "utf-8");
+    const title =
+      getSessionTitle(transcriptContent) ?? getFirstPrompt(transcriptContent);
+    if (!title) return null;
+    const name = title.trim().slice(0, 50).replace(/\n/g, " ");
+    return name.length < title.length ? `${name.trimEnd()}…` : name;
+  } catch {
+    return null;
+  }
 };
 
 export const getLastAssistantMessage = (transcriptPath: string) => {

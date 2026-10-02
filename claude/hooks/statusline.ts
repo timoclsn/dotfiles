@@ -90,11 +90,7 @@ const main = async () => {
   const model = input.effort
     ? `${modelName} (${input.effort.level})`
     : modelName;
-  const session = getSessionName({
-    projectDir: input.workspace.project_dir,
-    sessionId: input.session_id,
-    transcriptPath: input.transcript_path,
-  });
+  const session = getSessionName(input.transcript_path);
   const dir = truncateMiddle(
     input.workspace.current_dir.split("/").at(-1) ?? "",
     15,
