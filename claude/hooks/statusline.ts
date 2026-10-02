@@ -41,9 +41,9 @@ interface StatusLineInput {
   };
 }
 
-const getGitBranch = async () => {
+const getGitBranch = async (dir: string) => {
   try {
-    const result = await $`git branch --show-current`.quiet();
+    const result = await $`git -C ${dir} branch --show-current`.quiet();
     const branch = result.text().trim();
     return branch ? `:${branch}` : "";
   } catch {
@@ -92,10 +92,10 @@ const main = async () => {
     : modelName;
   const session = getSessionName(input.transcript_path);
   const dir = truncateMiddle(
-    input.workspace.current_dir.split("/").at(-1) ?? "",
+    input.workspace.project_dir.split("/").at(-1) ?? "",
     15,
   );
-  const gitBranch = await getGitBranch();
+  const gitBranch = await getGitBranch(input.workspace.project_dir);
   const contextUsage = getContextUsage(input);
   // Claude Code's own list-price estimate; the official total is in the tmux bar
   const sessionCost = `$${input.cost.total_cost_usd.toFixed(2)}`;
