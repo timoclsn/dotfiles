@@ -32,7 +32,6 @@ PACKAGES=(
   "@google/gemini-cli"
   "@github/copilot"
   "@earendil-works/pi-coding-agent"
-  "playwriter"
   "@googleworkspace/cli"
   "hunkdiff"
   "@taxfix/altitudo-cli"
