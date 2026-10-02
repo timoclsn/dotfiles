@@ -26,7 +26,6 @@ interface UsageResponse {
 
 // Warn when less than this share of an average workday's budget is left today
 const LOW_BUDGET_SHARE = 0.2;
-const BAR_CELLS = 10;
 // Nerd Font icons: md-calendar_today and md-calendar_month
 const TODAY_ICON = "\u{F00F6}";
 const MONTH_ICON = "\u{F0E17}";
@@ -49,18 +48,13 @@ export const getBudget = ({ usedCents, limitCents }: Spend, now: Date) => {
   const workdays = workdaysInMonth(now);
   const today = toDateKey(now);
   const workdaysThroughToday = workdays.filter((day) => toDateKey(day) <= today).length;
-  const workdaysBeforeToday = workdaysThroughToday - (isWorkday(now) ? 1 : 0);
-  const msSinceMidnight = now.getTime() - new Date(`${today}T00:00:00Z`).getTime();
-  const todayDone = isWorkday(now) ? msSinceMidnight / (24 * 60 * 60 * 1000) : 0;
   // The limit spread evenly over the month's workdays: where spend should be by
-  // the end of today, and where it should be right now
+  // the end of today
   const endOfTodayPaceCents = (limitCents * workdaysThroughToday) / workdays.length;
-  const currentPaceCents = (limitCents * (workdaysBeforeToday + todayDone)) / workdays.length;
 
   return {
     usedCents,
     limitCents,
-    currentPaceCents,
     // What can still be spent today while staying on pace; negative when over
     leftTodayCents: endOfTodayPaceCents - usedCents,
     workdayShareCents: limitCents / workdays.length,
@@ -77,24 +71,13 @@ export const getHealth = (budget: Budget) => {
 
 const dollars = (cents: number) => `$${Math.round(cents / 100)}`;
 
-// Month spend as a bar with a marker between the cells where spend should be
-// right now: "▒▒▒▒▒▒▒▒░│░" is under pace, "▒▒▒▒▒│▒░░░░" is over it
-export const formatMonthBar = (budget: Budget) => {
-  const toCells = (cents: number) => Math.round((cents / budget.limitCents) * BAR_CELLS);
-  const filledCells = Math.min(toCells(budget.usedCents), BAR_CELLS);
-  const cells = "▒".repeat(filledCells) + "░".repeat(BAR_CELLS - filledCells);
-  const paceCell = toCells(budget.currentPaceCents);
-
-  return `${cells.slice(0, paceCell)}│${cells.slice(paceCell)}`;
-};
-
 // What's left today, e.g. "$83", or "-$12" when over
 const formatToday = (budget: Budget) =>
   budget.leftTodayCents < 0 ? `-${dollars(-budget.leftTodayCents)}` : dollars(budget.leftTodayCents);
 
 export const formatSummary = (budget: Budget) => {
   const month = `${dollars(budget.usedCents)}/${Math.round(budget.limitCents / 100)}`;
-  const summary = `${TODAY_ICON} ${formatToday(budget)}  ${MONTH_ICON} ${formatMonthBar(budget)} ${month}`;
+  const summary = `${TODAY_ICON} ${formatToday(budget)}  ${MONTH_ICON} ${month}`;
   // A text marker as well as the colour, so the state is readable without colour
   return getHealth(budget) === "ok" ? summary : `⚠ ${summary}`;
 };
