@@ -64,9 +64,9 @@
 - When asked about PRs or GitHub in general use the GitHub CLI (gh).
 - When using the GitHub CLI ensure you are using the "timoclsn" account `gh auth switch --user timoclsn`. Stop if you are not.
 - When creating PRs, if not otherwise instructed, make them drafts and assign them to myself.
-- When writing PR descriptions don't add a test plan.
 - On push, update the PR description so it always reflects the full set of changes in the branch compared to the parent branch.
 - PR descriptions should only describe the net changes of the branch compared to the base branch, not the intermediate steps taken along the way.
+- Keep PR descriptions concise and scale them to the PR. A small fix gets a sentence or two and only the sections that add something. A large change gets more detail, but stays easy to skim.
 
 ## Vercel
 
