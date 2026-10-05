@@ -1,6 +1,7 @@
 {
   "env": {
-    "CLAUDE_CODE_SUBAGENT_MODEL": "sonnet"
+    "CLAUDE_CODE_SUBAGENT_MODEL": "sonnet",
+    "DISABLE_AUTOUPDATER": "1"
   },
   "attribution": {
     "commit": "",
