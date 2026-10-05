@@ -64,9 +64,11 @@
       }
     }
   },
+  "feedbackDrafts": "notify",
   "spinnerTipsEnabled": false,
   "effortLevel": "high",
   "promptSuggestionEnabled": false,
+  "awaySummaryEnabled": false,
   "pluginConfigs": {},
   "tui": "fullscreen",
   "autoMemoryEnabled": false,
@@ -75,11 +77,11 @@
   "theme": "dark",
   "editorMode": "vim",
   "preferredNotifChannel": "notifications_disabled",
+  "fileCheckpointingEnabled": true,
   "terminalProgressBarEnabled": false,
   "remoteControlAtStartup": true,
   "inputNeededNotifEnabled": false,
   "agentPushNotifEnabled": false,
   "skipAutoPermissionPrompt": true,
-  "tipsEnabled": false,
-  "awaySummaryEnabled": false
+  "tipsEnabled": false
 }
