@@ -5,9 +5,9 @@
 #
 # Lives in the dotfiles and is symlinked into tmux-powerkit's plugin folder by
 # setup.sh, because powerkit only loads plugins from there. The segment colour
-# shows the PR state the way gh does (open green, draft grey, closed red) except
-# merged, which is dark blue because powerkit has no purple for plugins. The
-# glyphs follow the agents-dashboard: CI ✓ passing, ✗ failing, • pending; review
+# shows the PR state: draft, the most common, looks like the other segments;
+# open is green, closed red, and merged yellow as a nudge to leave the branch.
+# The glyphs follow the agents-dashboard: CI ✓ passing, ✗ failing, • pending; review
 # ✓ approved (a single ✓ when CI passes too), ! changes requested, ? review
 # required. Hidden when the branch has no PR.
 # =============================================================================
@@ -33,8 +33,6 @@ plugin_declare_options() {
     declare_option "cache_ttl" "number" "30" "Cache duration in seconds"
 }
 
-plugin_get_content_type() { printf 'dynamic'; }
-
 # Checked on every render, so leaving a repo hides the segment right away
 # instead of after the next collect
 plugin_should_be_active() {
@@ -43,21 +41,14 @@ plugin_should_be_active() {
     [[ -n "$path" ]] && git -C "$path" rev-parse --is-inside-work-tree &>/dev/null
 }
 
-# Powerkit hides a "conditional" plugin whose state is inactive. Only report
-# "conditional" when there is no PR, so drafts can use inactive for their grey.
-plugin_get_presence() {
-    [[ -n "$(plugin_data_get "number")" ]] && printf 'always' || printf 'conditional'
-}
-
 plugin_get_state() {
-    local state
-    state=$(plugin_data_get "state")
-    [[ -z "$state" || "$state" == "draft" ]] && printf 'inactive' || printf 'active'
+    [[ -n "$(plugin_data_get "number")" ]] && printf 'active' || printf 'inactive'
 }
 
 plugin_get_health() {
     case "$(plugin_data_get "state")" in
         open) printf 'good' ;;
+        merged) printf 'warning' ;;
         closed) printf 'error' ;;
         *) printf 'ok' ;;
     esac
