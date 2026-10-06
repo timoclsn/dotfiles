@@ -1,6 +1,6 @@
 ---
-name: quality
-description: Run `/simplify`, then `/code-review --fix` on the current changes. Use when the user invokes `/quality`.
+name: polish
+description: Run `/simplify`, then `/code-review --fix` on the current changes. Use when the user invokes `/polish`.
 ---
 
 1. Invoke `simplify` with the user's target, if any.
