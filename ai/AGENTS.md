@@ -67,7 +67,7 @@
 - On push, update the PR description so it always reflects the full set of changes in the branch compared to the parent branch.
 - PR descriptions should only describe the net changes of the branch compared to the base branch, not the intermediate steps taken along the way.
 - Keep PR descriptions concise and scale them to the PR. A small fix gets a sentence or two and only the sections that add something. A large change gets more detail, but stays easy to skim.
-- When the change is visual, add screenshots to the PR description, or a recording if it's a flow. For a feature, show the result. For a fix, show before and after.
+- When the change is visual, add screenshots to the PR description, or a recording if it's a flow. For a feature, show the result. For a fix, show before and after. Upload them with `gh pr create`/`gh pr edit --attach` and give them alt text. Keep the media files out of the repo.
 
 ## Vercel
 
