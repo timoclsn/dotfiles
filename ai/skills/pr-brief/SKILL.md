@@ -1,6 +1,6 @@
 ---
 name: pr-brief
-description: Brief the user on a complex PR/branch they've pulled locally before they review and test it — what it claims to do, what it actually changes, which parts deserve close attention, and how to run it locally to exercise the change. Read-only. Use when the user invokes `/pr-brief` (optionally with a PR number or branch name) while about to do or in the middle of code review on something checked out locally.
+description: Brief the user on a complex PR/branch they've pulled locally before they review and test it — what it claims to do, what it actually changes, which parts deserve close attention, how risky it is to ship, and how to run it locally to exercise the change. Read-only. Use when the user invokes `/pr-brief` (optionally with a PR number or branch name) while about to do or in the middle of code review on something checked out locally.
 argument-hint: "[PR number or branch (optional)]"
 ---
 
@@ -27,8 +27,15 @@ $ARGUMENTS
    - Changed behavior with no or weak test coverage
    Mechanical, low-risk changes (renames, formatting, generated files, version bumps) can be mentioned in passing, not dwelt on.
 
-4. **Explain how to run it locally to test the change.** Work out how this project actually runs — check for scripts, a README, a Makefile, or established conventions for this repo/stack. Give concrete steps: how to start it, which flow/route/command exercises the changed behavior specifically (not just "start the app"), any env vars/seed data/fixtures the change depends on, and which existing tests are most relevant to run.
+4. **Assess the risk of shipping it.** Step 3 is about where to look in the code; this is about what could go wrong once it's merged and deployed. Give an overall rating (low / medium / high) with a one-line reason, then cover only what applies:
+   - Blast radius: who or what is affected if it breaks (all users, one feature, internal tooling only)
+   - Failure modes: the most likely ways it breaks in production, including edge cases the tests don't exercise
+   - Deploy and rollback: ordering dependencies, migrations, config/env changes, feature flags, and whether a plain revert is safe
+   - Compatibility: effects on other services, clients, or consumers of changed APIs, data formats, or shared code
+   Base each risk on something concrete in the diff, not generic worries. If the change is genuinely low-risk, say so in a line and move on.
+
+5. **Explain how to run it locally to test the change.** Work out how this project actually runs — check for scripts, a README, a Makefile, or established conventions for this repo/stack. Give concrete steps: how to start it, which flow/route/command exercises the changed behavior specifically (not just "start the app"), any env vars/seed data/fixtures the change depends on, and which existing tests are most relevant to run.
 
 ## Output
 
-Present all four as a single walkthrough directly in the terminal. Keep it proportional to the change — a small PR gets a short brief, a genuinely complex one gets more depth in step 3. End with a one-line summary of what you'd personally look at first.
+Present all five as a single walkthrough directly in the terminal. Keep it proportional to the change — a small PR gets a short brief, a genuinely complex one gets more depth in step 3. End with a one-line summary of what you'd personally look at first.
