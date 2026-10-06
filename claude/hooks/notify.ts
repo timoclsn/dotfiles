@@ -17,15 +17,15 @@ interface HookInput {
   notification_type?: string;
   cwd?: string;
   message?: string;
-  workspace?: {
-    project_dir: string;
-  };
 }
 
 const main = async () => {
   const input: HookInput = await Bun.stdin.json();
   const { session_id: sessionId, transcript_path: transcriptPath } = input;
-  const projectDir = input.workspace?.project_dir ?? input.cwd ?? process.cwd();
+  // `cwd` follows the session into subdirectories (e.g. packages/frontend),
+  // while CLAUDE_PROJECT_DIR stays at the directory the session was started in.
+  const projectDir =
+    process.env.CLAUDE_PROJECT_DIR ?? input.cwd ?? process.cwd();
 
   const pathParts = projectDir.split("/").filter(Boolean);
   const projectName = pathParts[pathParts.length - 1] ?? "";
