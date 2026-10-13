@@ -1,9 +1,9 @@
 ---
-name: decisions
-description: Surface open decisions that are the user's to make and ask them with the AskUserQuestion tool instead of guessing or burying them in prose. Use when the user invokes `/decisions`, or asks where their input is needed, which decisions are open, or to be asked rather than assumed.
+name: decide
+description: Surface open decisions that are the user's to make and ask them with the AskUserQuestion tool instead of guessing or burying them in prose. Use when the user invokes `/decide`, or asks where their input is needed, which decisions are open, or to be asked rather than assumed.
 ---
 
-# Decisions
+# Decide
 
 Identify where you need a decision from the user and ask with the `AskUserQuestion` tool.
 
