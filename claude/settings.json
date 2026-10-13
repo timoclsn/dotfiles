@@ -8,7 +8,10 @@
     "pr": ""
   },
   "permissions": {
-    "defaultMode": "auto"
+    "defaultMode": "auto",
+    "allow": [
+      "mcp__claude_ai_Snowflake__sql_exec_tool"
+    ]
   },
   "model": "opus[1m]",
   "hooks": {
