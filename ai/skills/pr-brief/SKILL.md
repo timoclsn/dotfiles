@@ -1,6 +1,6 @@
 ---
 name: pr-brief
-description: Brief the user on a complex PR/branch they've pulled locally before they review and test it — what it claims to do, what it actually changes, which parts deserve close attention, how risky it is to ship, and how to run it locally to exercise the change. Read-only. Pass `--artifact` to also build an interactive Artifact that guides the user through the review step by step. Use when the user invokes `/pr-brief` (optionally with a PR number or branch name) while about to do or in the middle of code review on something checked out locally.
+description: Brief the user on a complex PR/branch they've pulled locally before they review and test it — what it claims to do, what it actually changes, which parts deserve close attention, how risky it is to ship, and how to test it — split into what the agent can verify itself and what the user must test by hand. Read-only. Pass `--artifact` to also build an interactive Artifact that guides the user through the review step by step. Use when the user invokes `/pr-brief` (optionally with a PR number or branch name) while about to do or in the middle of code review on something checked out locally.
 argument-hint: "[PR number or branch (optional)] [--artifact]"
 ---
 
@@ -35,7 +35,10 @@ $ARGUMENTS
    - Compatibility: effects on other services, clients, or consumers of changed APIs, data formats, or shared code
    Base each risk on something concrete in the diff, not generic worries. If the change is genuinely low-risk, say so in a line and move on.
 
-5. **Explain how to run it locally to test the change.** Work out how this project actually runs — check for scripts, a README, a Makefile, or established conventions for this repo/stack. Give concrete steps: how to start it, which flow/route/command exercises the changed behavior specifically (not just "start the app"), any env vars/seed data/fixtures the change depends on, and which existing tests are most relevant to run.
+5. **Explain how to test the change, split by who does it.** Work out how this project actually runs — check for scripts, a README, a Makefile, or established conventions for this repo/stack. Give concrete steps: how to start it, which flow/route/command exercises the changed behavior specifically (not just "start the app"), any env vars/seed data/fixtures the change depends on, and which existing tests are most relevant to run. Then sort every check into one of two groups:
+   - **Agent can test itself** — anything you could verify without the user: running the relevant unit/integration tests, type-check and lint, starting the app or CLI and exercising the changed flow, hitting endpoints, driving the UI in a browser, inspecting logs or output. List each check with how you'd do it.
+   - **User has to test by hand** — anything you can't verify: real devices or hardware, visual/UX judgment, production-like data or third-party accounts, credentials or services you don't have access to, flows behind auth/2FA, timing- or feel-dependent behavior. List each with *why* it needs a human and exactly what to look for.
+   Base the split on what's actually available in this environment (tools, access, credentials), not on what's possible in theory. If a check could be automated but isn't covered by existing tests, say so — it's a candidate for the agent to run now.
 
 ## Output
 
@@ -52,7 +55,7 @@ Design it around the order you'd actually review in, not the order of the diff:
 - **Progress** — let the user tick off each step and each question as they go, with an overall progress indicator. Keep this in per-viewer browser storage; it's a personal convenience, not shared state.
 - **Notes** — a place per step to jot down review comments as they go, so they can be copied out into the PR afterwards. Also per-viewer browser storage.
 - **Risk** — the shipping risks from step 4, each tied back to the review step where it's visible in the code.
-- **Test it** — the run-locally steps from step 5 as a checklist, with commands in copyable code blocks.
+- **Test it** — the testing steps from step 5 as a checklist with commands in copyable code blocks, in two clearly labeled groups: what the agent can test itself and what the user has to test by hand. Only the by-hand group needs ticking off; make the distinction obvious without relying on color alone.
 
 Keep it proportional: a small PR gets a few steps, not a dashboard. Make it keyboard-navigable and accessible, and keep it readable in both light and dark mode.
 
