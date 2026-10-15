@@ -1,7 +1,6 @@
 ---
 name: proof
 description: Test the current changes fully end to end in this environment and deliver irrefutable proof that the change works and nothing else broke. Use when the user invokes `/proof`, or asks to prove a change works, test it end to end, or show it hasn't broken anything.
-disable-model-invocation: true
 argument-hint: "[optional: what to focus on]"
 ---
 
@@ -9,4 +8,4 @@ Test this fully end to end in here and provide irrefutable proof that it works a
 
 $ARGUMENTS
 
-Passing checks alone are not proof — run the real thing and show what you observed. If something can't be tested here, say so.
+Passing checks alone are not proof — run the real thing and show what you observed. For visible changes, capture visual evidence (e.g. screenshots or a recording). If something can't be tested here, say so.

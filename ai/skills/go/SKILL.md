@@ -21,7 +21,7 @@ $ARGUMENTS
 
    Detect available checks from `package.json` scripts, `Makefile`, or project conventions. Skip a check only if no tooling exists for it.
 
-   Then: **Give me irrefutable proof that this is now fixed / done.** Run the project yourself (e.g. via the `run` skill — start the app, call the CLI, hit the endpoint, open it in the browser) and exercise the new behavior by hand. Passing checks are not proof. When the change is visible, capture screenshots or a screen recording that show it working, for the PR. If running it isn't possible, say why in the final report.
+   Then invoke the `proof` skill.
 
    Fix any failures before continuing.
 
