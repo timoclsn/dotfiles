@@ -58,7 +58,7 @@
       "src": "https://github.com/mason-org/mason.nvim"
     },
     "mini.nvim": {
-      "rev": "8831fa150fa26492cfe135801fa498132f1491d2",
+      "rev": "e3f2349a65143ff062f0b70ee9d68d8ce35c7059",
       "src": "https://github.com/nvim-mini/mini.nvim"
     },
     "neo-tree.nvim": {
