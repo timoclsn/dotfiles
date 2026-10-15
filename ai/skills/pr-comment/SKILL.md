@@ -1,6 +1,6 @@
 ---
-name: pr-comments
-description: Post selected issues from an earlier list of possible PR problems as concise inline comments on a pending PR review. Use when the user invokes `/pr-comments` with issue numbers like `1,3,4 and 6`.
+name: pr-comment
+description: Post selected issues from an earlier list of possible PR problems as concise inline comments on a pending PR review. Use when the user invokes `/pr-comment` with issue numbers like `1,3,4 and 6`.
 argument-hint: "<issue numbers, e.g. 1,3,4 and 6>"
 ---
 
