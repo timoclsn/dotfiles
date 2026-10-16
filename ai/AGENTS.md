@@ -5,6 +5,8 @@
 - Always make your solutions accessible.
 - Try to separate presentational and business logic when possible.
 - Model state with distinct modes (e.g. idle/loading/success/error) as a finite state machine instead of independent flags, so impossible states can't occur.
+- Prefer deep modules: a lot of functionality behind a simple interface. Avoid shallow modules whose interface is nearly as complex as what they hide.
+- For new features, use tracer bullets: first build a thin slice that works end to end through all layers, then flesh it out, instead of finishing one layer at a time.
 - After making changes, check if related tests need to be updated as well.
 - When done with a task, review the modules you touched: check whether the new code landed in the right place and whether names/scope still make sense. Flag larger refactors rather than doing them inline.
 - When a step doesn't need my input, keep going. Put status notes in the same message as your next action.
