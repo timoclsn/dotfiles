@@ -4,6 +4,7 @@
 - Focus on the most performant solutions.
 - Always make your solutions accessible.
 - Try to separate presentational and business logic when possible.
+- Model state with distinct modes (e.g. idle/loading/success/error) as a finite state machine instead of independent flags, so impossible states can't occur.
 - After making changes, check if related tests need to be updated as well.
 - When done with a task, review the modules you touched: check whether the new code landed in the right place and whether names/scope still make sense. Flag larger refactors rather than doing them inline.
 - When a step doesn't need my input, keep going. Put status notes in the same message as your next action.
