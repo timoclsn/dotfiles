@@ -1,16 +1,21 @@
 ## General
 
 - Apply these rules to new code you write, and to existing code only where the task already requires you to change it. Don't make unrelated changes — in particular, don't "fix" existing code just to satisfy these rules (e.g. rewriting a React default import in a file you're editing for another reason). Keep diffs minimal.
-- Focus on the most performant solutions.
 - Always make your solutions accessible.
-- Try to separate presentational and business logic when possible.
-- Model state with distinct modes (e.g. idle/loading/success/error) as a finite state machine instead of independent flags, so impossible states can't occur.
-- Prefer deep modules: a lot of functionality behind a simple interface. Avoid shallow modules whose interface is nearly as complex as what they hide.
-- For new features, use tracer bullets: first build a thin slice that works end to end through all layers, then flesh it out, instead of finishing one layer at a time.
-- After making changes, check if related tests need to be updated as well.
 - When done with a task, review the modules you touched: check whether the new code landed in the right place and whether names/scope still make sense. Flag larger refactors rather than doing them inline.
 - When a step doesn't need my input, keep going. Put status notes in the same message as your next action.
 - Stop and ask only when you can't continue without me, or before anything destructive: deleting data, force-pushing, or changing anything outside this repository.
+
+## Design
+
+- Separate presentational and business logic: keep business logic in pure functions and push side effects (I/O, network, DOM) to the edges.
+- Model state with distinct modes (e.g. idle/loading/success/error) as a finite state machine instead of independent flags, so impossible states can't occur.
+- Derive values from one source of truth instead of storing and syncing copies.
+- Validate external data once at the boundary and turn it into precise types, instead of re-checking it throughout the code.
+- Prefer deep modules: a lot of functionality behind a simple interface. Avoid shallow modules whose interface is nearly as complex as what they hide.
+- Prefer designs where an error case can't happen over adding handling for it.
+- Colocate code that changes together.
+- For larger features, use tracer bullets: first get a thin slice working end to end and verify it runs, then build out the rest. Don't leave stubs or hardcoded values behind.
 
 ## Posting on my behalf
 
@@ -20,46 +25,45 @@
 ## Typescript
 
 - Always prefer arrow functions.
-- Infer as much types as possible only add explicit types when needed.
-- Don't add return types to functions when not needed. Let them be infered.
+- Infer as many types as possible; only add explicit types when needed.
+- Don't add return types to functions when not needed. Let them be inferred.
 - Prefer functional coding style.
 - Don't put types in their own files if not necessary. Put them in the files where they are used.
-- Don't use default exports use named exports if possible.
-- Prefer interfaces over types
-- Avoid enums
-- Only create an abstraction if it’s actually needed
-- Prefer clear function/variable names over inline comments
-- If a workaround needs a paragraph-long comment to justify why it's OK, the code is wrong — fix the code, not the comment
-- When you do write comments, write them for a reader new to the codebase but familiar with the project's goal — explain intent plainly, avoid jargon
-- Don’t unnecessarily add `try`/`catch`
-- Don’t cast to `any`
-- Don’t fix type errors by premature type casting, fix the underlying issue instead
-- Avoid helper functions when a simple inline expression would suffice
+- Don't use default exports; use named exports if possible.
+- Prefer interfaces over types for object shapes.
+- Avoid enums.
+- Only create an abstraction if it's actually needed.
+- Prefer clear function/variable names over inline comments.
+- If a workaround needs a paragraph-long comment to justify why it's OK, the code is wrong — fix the code, not the comment.
+- When you do write comments, write them for a reader new to the codebase but familiar with the project's goal — explain intent plainly, avoid jargon.
+- Don't unnecessarily add `try`/`catch`.
+- Don't cast to `any`.
+- Don't fix type errors by premature type casting; fix the underlying issue instead.
+- Avoid helper functions when a simple inline expression would suffice.
 - When a function takes 3 or more arguments, accept a single object argument instead of positional params.
 - Use early returns, avoid nested "if" and avoid "else" if possible.
 - Don't test what the type system already guarantees.
 
 ## React
 
-- Don't use React as a default import (if not needed), import all react functions and types explicitly (useEffect, etc.)
-- Prefer function components don't use class components if not necessary.
+- Don't use React as a default import (if not needed); import all React functions and types explicitly (useEffect, etc.).
+- Prefer function components; don't use class components if not necessary.
 - Type components with a "Props" interface and destructure its props: { prop }: Props.
-- Name Components in PascalCase (in code and the files).
-- If the project has a design system or ui components use these whenever possible.
-- Avoid massive JSX blocks and compose smaller components
-- Colocate code that changes together
-- Avoid `useEffect` unless absolutely needed
-- Try to find solutions with css if possible only use React / JavaScript if necessary.
+- Name components in PascalCase (in code and the files).
+- If the project has a design system or UI components, use these whenever possible.
+- Avoid massive JSX blocks and compose smaller components.
+- Avoid `useEffect` unless absolutely needed.
+- Try to find solutions with CSS if possible; only use React/JavaScript if necessary.
 
 ## Tailwind
 
-- Mostly use built-in values, occasionally allow dynamic values, rarely globals
-- Always use v4 + global CSS file format
+- Mostly use built-in values, occasionally allow dynamic values, rarely globals.
+- Always use v4 + global CSS file format.
 
 ## Tmux
 
-- Use `tmux capture-pane -p` to capture current pane content before sending keys to preserve context
-- A pattern like `dotfiles:4.4` refers to a tmux pane (format: `session:window.pane`)
+- Use `tmux capture-pane -p` to capture current pane content before sending keys to preserve context.
+- A pattern like `dotfiles:4.4` refers to a tmux pane (format: `session:window.pane`).
 
 ## Git / GitHub
 
