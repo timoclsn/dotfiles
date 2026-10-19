@@ -20,29 +20,35 @@ $ARGUMENTS
 
 2. **Independently summarize the actual diff.** Diff the branch against its base (detect the base from the PR, or the repo's default branch if there's no PR) — don't rely on the PR description here. Read enough of the changed files to understand the shape of the change, then summarize what actually changed, grouped by file or area. Doing this independently of step 1 is the point: it's how you catch a description that's stale, incomplete, or oversells/undersells the change.
 
-3. **Call out where to focus review.** Don't just list every changed file — rank or flag what actually needs scrutiny:
+3. **Map the critical surfaces.** Always show a table with exactly these four rows, in this order, so the user can see at a glance which surfaces the change touches:
+   - **API / contracts** — endpoints, request/response shapes, status codes, exported types of shared packages, and anything else another system consumes (events, webhooks, queue messages)
+   - **Data / persistence** — migrations, schema or index changes, the shape of stored documents, backfills, cache key formats. Schemaless stores often have no migration file, so also check model/type changes and write paths
+   - **Auth / permissions** — authentication or authorization checks, roles, tokens/sessions, CORS, secrets handling
+   - **Sensitive data** — personal or otherwise sensitive data newly stored, logged, or sent to third parties
+
+   Columns: surface, touched (yes/no), what changed, compatibility (additive / breaking / one-way), and `path:line`. Every row appears in every brief, and a "no" must come from actually checking the diff for that surface, not from not noticing it. Give the most detail to API and data.
+
+4. **Call out where to focus review.** Don't just list every changed file — rank or flag what actually needs scrutiny. Surfaces marked as touched in step 3 always belong here; beyond those, look for:
    - Non-obvious or intricate logic
-   - Changed public APIs, contracts, or shared/critical paths
-   - Migrations or anything touching persisted data
-   - Auth/permission-sensitive changes
+   - Changed shared or critical code paths
    - Changed behavior with no or weak test coverage
    Mechanical, low-risk changes (renames, formatting, generated files, version bumps) can be mentioned in passing, not dwelt on.
 
-4. **Assess the risk of shipping it.** Step 3 is about where to look in the code; this is about what could go wrong once it's merged and deployed. Give an overall rating (low / medium / high) with a one-line reason, then cover only what applies:
+5. **Assess the risk of shipping it.** Step 4 is about where to look in the code; this is about what could go wrong once it's merged and deployed. Give an overall rating (low / medium / high) with a one-line reason, then cover only what applies:
    - Blast radius: who or what is affected if it breaks (all users, one feature, internal tooling only)
    - Failure modes: the most likely ways it breaks in production, including edge cases the tests don't exercise
    - Deploy and rollback: ordering dependencies, migrations, config/env changes, feature flags, and whether a plain revert is safe
-   - Compatibility: effects on other services, clients, or consumers of changed APIs, data formats, or shared code
+   - Compatibility: effects on other services, clients, or consumers of the surfaces from step 3, or of shared code
    Base each risk on something concrete in the diff, not generic worries. If the change is genuinely low-risk, say so in a line and move on.
 
-5. **Explain how to test the change, split by who does it.** Work out how this project actually runs — check for scripts, a README, a Makefile, or established conventions for this repo/stack. Give concrete steps: how to start it, which flow/route/command exercises the changed behavior specifically (not just "start the app"), any env vars/seed data/fixtures the change depends on, and which existing tests are most relevant to run. Then sort every check into one of two groups:
+6. **Explain how to test the change, split by who does it.** Work out how this project actually runs — check for scripts, a README, a Makefile, or established conventions for this repo/stack. Give concrete steps: how to start it, which flow/route/command exercises the changed behavior specifically (not just "start the app"), any env vars/seed data/fixtures the change depends on, and which existing tests are most relevant to run. Then sort every check into one of two groups:
    - **Agent can test itself** — anything you could verify without the user: running the relevant unit/integration tests, type-check and lint, starting the app or CLI and exercising the changed flow, hitting endpoints, driving the UI in a browser, inspecting logs or output. List each check with how you'd do it.
    - **User has to test by hand** — anything you can't verify: real devices or hardware, visual/UX judgment, production-like data or third-party accounts, credentials or services you don't have access to, flows behind auth/2FA, timing- or feel-dependent behavior. List each with *why* it needs a human and exactly what to look for.
    Base the split on what's actually available in this environment (tools, access, credentials), not on what's possible in theory. If a check could be automated but isn't covered by existing tests, say so — it's a candidate for the agent to run now.
 
 ## Output
 
-Present all five as a single walkthrough directly in the terminal. Keep it proportional to the change — a small PR gets a short brief, a genuinely complex one gets more depth in step 3. End with a one-line summary of what you'd personally look at first.
+Present all six as a single walkthrough directly in the terminal. Keep it proportional to the change — a small PR gets a short brief, a genuinely complex one gets more depth in step 4. End with a one-line summary of what you'd personally look at first.
 
 ## Interactive review guide (`--artifact`)
 
@@ -50,12 +56,12 @@ If `--artifact` was passed, after the terminal walkthrough also publish an Artif
 
 Design it around the order you'd actually review in, not the order of the diff:
 
-- **Header** — PR title/link, branch and base, overall risk rating with its one-line reason, and a short "what this PR does" from steps 1–2. Flag any mismatch between the description and the actual diff here.
+- **Header** — PR title/link, branch and base, overall risk rating with its one-line reason, and a short "what this PR does" from steps 1–2. Flag any mismatch between the description and the actual diff here, and show the surfaces table from step 3.
 - **Review path** — the core of the page. An ordered list of steps, starting with what to read first to understand the change (usually the entry point or the core logic, not the tests) and ending with the mechanical bits. Each step names the files or areas involved with `path:line` references, explains in a sentence or two why it matters and how it connects to the previous step, and lists the concrete questions to answer there (edge cases, contracts, missing tests). Include short, relevant diff excerpts where they save the reader a jump to the editor, but don't paste the whole diff. Group low-risk, mechanical changes into one final "skim" step.
 - **Progress** — let the user tick off each step and each question as they go, with an overall progress indicator. Keep this in per-viewer browser storage; it's a personal convenience, not shared state.
 - **Notes** — a place per step to jot down review comments as they go, so they can be copied out into the PR afterwards. Also per-viewer browser storage.
-- **Risk** — the shipping risks from step 4, each tied back to the review step where it's visible in the code.
-- **Test it** — the testing steps from step 5 as a checklist with commands in copyable code blocks, in two clearly labeled groups: what the agent can test itself and what the user has to test by hand. Only the by-hand group needs ticking off; make the distinction obvious without relying on color alone.
+- **Risk** — the shipping risks from step 5, each tied back to the review step where it's visible in the code.
+- **Test it** — the testing steps from step 6 as a checklist with commands in copyable code blocks, in two clearly labeled groups: what the agent can test itself and what the user has to test by hand. Only the by-hand group needs ticking off; make the distinction obvious without relying on color alone.
 
 Keep it proportional: a small PR gets a few steps, not a dashboard. Make it keyboard-navigable and accessible, and keep it readable in both light and dark mode.
 
