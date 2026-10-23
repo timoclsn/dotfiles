@@ -105,6 +105,13 @@ alias t="tmux"
 alias ta="tmux attach"
 alias tk="tmux kill-server"
 alias oc="OPENCODE_ENABLE_EXA=1 OPENCODE_EXPERIMENTAL_PLAN_MODE=1 opencode"
+# Personal projects use the personal Claude login, everything else the work one.
+claude() {
+  if [[ $PWD == $HOME/Developer/(personal|codeatelier)(|/*) ]]; then
+    local -x CLAUDE_CONFIG_DIR="${CLAUDE_CONFIG_DIR:-$HOME/.claude-personal}"
+  fi
+  command claude "$@"
+}
 alias cc="claude --model claude-opus-5-5 --effort medium"
 alias ccw="cc --worktree"
 alias ccs="cc --model claude-sonnet-5-5 --effort medium"

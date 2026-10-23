@@ -42,18 +42,21 @@ ln -sf "$DOTFILES/opencode/tool" "$HOME/.config/opencode/tool"
 rm "$HOME/.config/opencode/skills" 2>/dev/null || true
 ln -sf "$DOTFILES/ai/skills" "$HOME/.config/opencode/skills"
 
-# claude code
-ln -sf "$DOTFILES/claude/settings.json" "$HOME/.claude/settings.json"
-ln -sf "$DOTFILES/claude/keybindings.json" "$HOME/.claude/keybindings.json"
-ln -sf "$DOTFILES/ai/AGENTS.md" "$HOME/.claude/CLAUDE.md"
-rm "$HOME/.claude/agents" 2>/dev/null || true
-ln -sf "$DOTFILES/claude/agents" "$HOME/.claude/agents"
-rm "$HOME/.claude/commands" 2>/dev/null || true
-ln -sf "$DOTFILES/claude/commands" "$HOME/.claude/commands"
-rm "$HOME/.claude/hooks" 2>/dev/null || true
-ln -sf "$DOTFILES/claude/hooks" "$HOME/.claude/hooks"
-rm "$HOME/.claude/skills" 2>/dev/null || true
-ln -sf "$DOTFILES/ai/skills" "$HOME/.claude/skills"
+# claude code (work login in ~/.claude, personal login in ~/.claude-personal; same config)
+for claude_dir in "$HOME/.claude" "$HOME/.claude-personal"; do
+  mkdir -p "$claude_dir"
+  ln -sf "$DOTFILES/claude/settings.json" "$claude_dir/settings.json"
+  ln -sf "$DOTFILES/claude/keybindings.json" "$claude_dir/keybindings.json"
+  ln -sf "$DOTFILES/ai/AGENTS.md" "$claude_dir/CLAUDE.md"
+  rm "$claude_dir/agents" 2>/dev/null || true
+  ln -sf "$DOTFILES/claude/agents" "$claude_dir/agents"
+  rm "$claude_dir/commands" 2>/dev/null || true
+  ln -sf "$DOTFILES/claude/commands" "$claude_dir/commands"
+  rm "$claude_dir/hooks" 2>/dev/null || true
+  ln -sf "$DOTFILES/claude/hooks" "$claude_dir/hooks"
+  rm "$claude_dir/skills" 2>/dev/null || true
+  ln -sf "$DOTFILES/ai/skills" "$claude_dir/skills"
+done
 
 # Home directory symlinks
 ln -sf "$DOTFILES/aider/.aider.conf.yml" "$HOME/.aider.conf.yml"
