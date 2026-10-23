@@ -1,28 +1,48 @@
 #!/usr/bin/env bun
-// Tracks the official Claude Enterprise spend against the monthly spend limit.
+// Tracks Claude usage for the tmux status bar and notifications, for the
+// account Claude Code uses: the login for CLAUDE_CONFIG_DIR, or the default
+// login when that's unset or empty.
 //
 //   claude-budget status  print "<ok|warning|error><TAB><summary>" for the tmux status bar
-//   claude-budget json    print the budget numbers
+//   claude-budget json    print the usage numbers
 //
-// The spend comes from the same endpoint Claude Code's `/usage` screen reads,
-// authenticated with the login Claude Code keeps in the macOS keychain. Nothing
-// is stored: callers decide how often to ask (tmux-powerkit caches the output).
-// The limit resets on the 1st of the month at 00:00 UTC, so all day and month
-// boundaries here are in UTC.
+// The work (Enterprise) account has a monthly spend limit, tracked in dollars
+// against an even pace over the month's workdays. The personal (Pro/Max)
+// account only has the subscription's 5-hour and weekly limits, shown as
+// percentages. The usage comes from the same endpoint Claude Code's `/usage`
+// screen reads. The spend limit resets on the 1st of the month at 00:00 UTC,
+// so all day and month boundaries here are in UTC.
 
 interface Spend {
+  kind: "spend";
   usedCents: number;
   limitCents: number;
 }
 
-interface UsageResponse {
-  spend?: {
-    used: { amount_minor: number; exponent: number };
-    limit: { amount_minor: number; exponent: number };
-  };
+interface Subscription {
+  kind: "subscription";
+  sessionPercent: number;
+  weeklyPercent: number;
 }
 
-// --- Budget math (pure) -----------------------------------------------------
+type Usage = Spend | Subscription;
+
+interface Money {
+  amount_minor: number;
+  exponent: number;
+}
+
+interface UsageWindow {
+  utilization?: number | null;
+}
+
+interface UsageResponse {
+  five_hour?: UsageWindow | null;
+  seven_day?: UsageWindow | null;
+  spend?: { used: Money; limit: Money | null } | null;
+}
+
+// --- Spend budget math (pure) -----------------------------------------------
 
 // Warn when less than this share of an average workday's budget is left today
 const LOW_BUDGET_SHARE = 0.2;
@@ -44,7 +64,7 @@ const workdaysInMonth = (date: Date) => {
   ).filter(isWorkday);
 };
 
-export const getBudget = ({ usedCents, limitCents }: Spend, now: Date) => {
+const getBudget = ({ usedCents, limitCents }: Spend, now: Date) => {
   const workdays = workdaysInMonth(now);
   const today = toDateKey(now);
   const workdaysThroughToday = workdays.filter((day) => toDateKey(day) <= today).length;
@@ -63,7 +83,7 @@ export const getBudget = ({ usedCents, limitCents }: Spend, now: Date) => {
 
 type Budget = ReturnType<typeof getBudget>;
 
-export const getHealth = (budget: Budget) => {
+const getBudgetHealth = (budget: Budget) => {
   if (budget.usedCents >= budget.limitCents || budget.leftTodayCents < 0) return "error";
   if (budget.leftTodayCents < budget.workdayShareCents * LOW_BUDGET_SHARE) return "warning";
   return "ok";
@@ -75,16 +95,12 @@ const dollars = (cents: number) => `$${Math.round(cents / 100)}`;
 const formatToday = (budget: Budget) =>
   budget.leftTodayCents < 0 ? `-${dollars(-budget.leftTodayCents)}` : dollars(budget.leftTodayCents);
 
-export const formatSummary = (budget: Budget) => {
+const formatBudgetSummary = (budget: Budget) => {
   const month = `${dollars(budget.usedCents)}/${Math.round(budget.limitCents / 100)}`;
-  const summary = `${TODAY_ICON} ${formatToday(budget)}  ${MONTH_ICON} ${month}`;
-  // A text marker as well as the colour, so the state is readable without colour
-  return getHealth(budget) === "ok" ? summary : `⚠ ${summary}`;
+  return `${TODAY_ICON} ${formatToday(budget)}  ${MONTH_ICON} ${month}`;
 };
 
-// One line for notifications, or null while the budget is fine
-export const formatWarning = (budget: Budget) => {
-  if (getHealth(budget) === "ok") return null;
+const formatBudgetWarning = (budget: Budget) => {
   if (budget.usedCents >= budget.limitCents) {
     return `⚠ Monthly Claude limit reached (${dollars(budget.usedCents)} of ${dollars(budget.limitCents)})`;
   }
@@ -93,10 +109,70 @@ export const formatWarning = (budget: Budget) => {
     : `⚠ Claude budget: only ${dollars(budget.leftTodayCents)} left for today`;
 };
 
+// --- Subscription usage math (pure) -----------------------------------------
+
+// Share of a usage limit used at which to warn, and at which to show an error
+const WARNING_PERCENT = 75;
+const ERROR_PERCENT = 90;
+
+const getSubscriptionHealth = ({ sessionPercent, weeklyPercent }: Subscription) => {
+  const highestPercent = Math.max(sessionPercent, weeklyPercent);
+  if (highestPercent >= ERROR_PERCENT) return "error";
+  if (highestPercent >= WARNING_PERCENT) return "warning";
+  return "ok";
+};
+
+const formatSubscriptionSummary = ({ sessionPercent, weeklyPercent }: Subscription) =>
+  `5h ${sessionPercent}%  7d ${weeklyPercent}%`;
+
+const formatSubscriptionWarning = ({ sessionPercent, weeklyPercent }: Subscription) =>
+  sessionPercent >= weeklyPercent
+    ? `⚠ Claude usage: ${sessionPercent}% of the 5-hour limit used`
+    : `⚠ Claude usage: ${weeklyPercent}% of the weekly limit used`;
+
+// --- Report (pure) ----------------------------------------------------------
+
+const reportBudget = (spend: Spend, now: Date) => {
+  const budget = getBudget(spend, now);
+  return {
+    numbers: budget,
+    health: getBudgetHealth(budget),
+    summary: formatBudgetSummary(budget),
+    warning: formatBudgetWarning(budget),
+  };
+};
+
+const reportSubscription = (subscription: Subscription) => ({
+  numbers: subscription,
+  health: getSubscriptionHealth(subscription),
+  summary: formatSubscriptionSummary(subscription),
+  warning: formatSubscriptionWarning(subscription),
+});
+
+// The usage numbers, health, the status bar summary, and a line for
+// notifications (null while usage is fine), for either kind of account
+export const getReport = (usage: Usage, now: Date) => {
+  const { numbers, health, summary, warning } =
+    usage.kind === "spend" ? reportBudget(usage, now) : reportSubscription(usage);
+
+  if (health === "ok") return { numbers, health, summary, warning: null };
+  // A text marker as well as the colour, so the state is readable without colour
+  return { numbers, health, summary: `⚠ ${summary}`, warning };
+};
+
 // --- I/O --------------------------------------------------------------------
 
+// Claude Code names the keychain entry after the config dir when
+// CLAUDE_CONFIG_DIR is set: the first 8 hex digits of its SHA-256
+const getKeychainService = () => {
+  const configDir = process.env.CLAUDE_CONFIG_DIR;
+  if (!configDir) return "Claude Code-credentials";
+  const hash = new Bun.CryptoHasher("sha256").update(configDir).digest("hex");
+  return `Claude Code-credentials-${hash.slice(0, 8)}`;
+};
+
 const readAccessToken = async () => {
-  const result = await Bun.$`security find-generic-password -s ${"Claude Code-credentials"} -w`
+  const result = await Bun.$`security find-generic-password -s ${getKeychainService()} -w`
     .quiet()
     .nothrow();
   if (result.exitCode !== 0) return null;
@@ -104,7 +180,26 @@ const readAccessToken = async () => {
   return credentials.claudeAiOauth?.accessToken ?? null;
 };
 
-export const fetchSpend = async (): Promise<Spend> => {
+// Amounts come in minor units with a given exponent; normalise to cents
+const toCents = ({ amount_minor, exponent }: Money) => amount_minor / 10 ** (exponent - 2);
+
+const toUsage = ({ spend, five_hour, seven_day }: UsageResponse): Usage => {
+  if (spend?.limit) {
+    return { kind: "spend", usedCents: toCents(spend.used), limitCents: toCents(spend.limit) };
+  }
+  // A window without usage data counts as unused
+  const toPercent = (window?: UsageWindow | null) => Math.round(window?.utilization ?? 0);
+  if (five_hour || seven_day) {
+    return {
+      kind: "subscription",
+      sessionPercent: toPercent(five_hour),
+      weeklyPercent: toPercent(seven_day),
+    };
+  }
+  throw new Error("Usage response has neither a spend limit nor subscription limits");
+};
+
+export const fetchUsage = async () => {
   const token = await readAccessToken();
   if (!token) throw new Error("No Claude Code login found in the keychain");
 
@@ -115,13 +210,7 @@ export const fetchSpend = async (): Promise<Spend> => {
   });
   if (!response.ok) throw new Error(`Usage request failed with ${response.status}`);
 
-  const { spend } = (await response.json()) as UsageResponse;
-  if (!spend) throw new Error("Usage response has no spend data");
-
-  // Amounts come in minor units with a given exponent; normalise to cents
-  const toCents = ({ amount_minor, exponent }: { amount_minor: number; exponent: number }) =>
-    amount_minor / 10 ** (exponent - 2);
-  return { usedCents: toCents(spend.used), limitCents: toCents(spend.limit) };
+  return toUsage((await response.json()) as UsageResponse);
 };
 
 const main = async () => {
@@ -133,13 +222,13 @@ const main = async () => {
 
   // A failed fetch exits non-zero, so tmux-powerkit keeps showing the last
   // output and marks it as stale
-  const budget = getBudget(await fetchSpend(), new Date());
+  const { numbers, health, summary } = getReport(await fetchUsage(), new Date());
 
   if (command === "json") {
-    console.log(JSON.stringify(budget, null, 2));
+    console.log(JSON.stringify(numbers, null, 2));
     return;
   }
-  console.log(`${getHealth(budget)}\t${formatSummary(budget)}`);
+  console.log(`${health}\t${summary}`);
 };
 
 if (import.meta.main) main();

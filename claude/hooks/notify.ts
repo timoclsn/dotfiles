@@ -1,4 +1,4 @@
-import { fetchSpend, formatWarning, getBudget } from "../../scripts/claude-budget";
+import { fetchUsage, getReport } from "../../scripts/claude-budget";
 import { getIdleTime, IDLE_THRESHOLD } from "../../scripts/idle-time";
 import { sendPushover } from "../../scripts/pushover";
 import {
@@ -66,11 +66,12 @@ const main = async () => {
   });
 };
 
-// Adds a line to notifications while near or over the Claude budget. A failed
-// lookup must not block the notification itself, so it just adds nothing.
+// Adds a line to notifications while near or over the Claude budget, for this
+// session's account (hooks inherit CLAUDE_CONFIG_DIR). A failed lookup must
+// not block the notification itself, so it just adds nothing.
 const getBudgetWarning = () =>
-  fetchSpend()
-    .then((spend) => formatWarning(getBudget(spend, new Date())))
+  fetchUsage()
+    .then((usage) => getReport(usage, new Date()).warning)
     .catch(() => null);
 
 interface NotificationOptions {
