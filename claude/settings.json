@@ -8,10 +8,10 @@
     "pr": ""
   },
   "permissions": {
-    "defaultMode": "auto",
     "allow": [
       "mcp__claude_ai_Snowflake__sql_exec_tool"
-    ]
+    ],
+    "defaultMode": "auto"
   },
   "model": "opus[1m]",
   "hooks": {
@@ -75,6 +75,7 @@
   "awaySummaryEnabled": false,
   "pluginConfigs": {},
   "tui": "fullscreen",
+  "timeFormat": "24-hour",
   "autoMemoryEnabled": false,
   "skipDangerousModePermissionPrompt": true,
   "skipWorkflowUsageWarning": true,
@@ -87,6 +88,5 @@
   "inputNeededNotifEnabled": false,
   "agentPushNotifEnabled": false,
   "skipAutoPermissionPrompt": true,
-  "tipsEnabled": false,
-  "timeFormat": "24-hour"
+  "tipsEnabled": false
 }
