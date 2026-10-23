@@ -104,7 +104,6 @@ alias m="run_nx_target"
 alias t="tmux"
 alias ta="tmux attach"
 alias tk="tmux kill-server"
-alias oc="OPENCODE_ENABLE_EXA=1 OPENCODE_EXPERIMENTAL_PLAN_MODE=1 opencode"
 # Personal projects use the personal Claude login, everything else the work one.
 # Pass --work or --personal (also through the cc* aliases) to pick the login
 # regardless of the project.
