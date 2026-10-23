@@ -93,6 +93,10 @@ ln -sf "$DOTFILES/pi/extensions" "$HOME/.pi/agent/extensions"
 mkdir -p "$HOME/.docker"
 ln -sf "$DOTFILES/docker/config.json" "$HOME/.docker/config.json"
 
+# colima
+mkdir -p "$HOME/.config/colima/default"
+ln -sf "$DOTFILES/colima/colima.yaml" "$HOME/.config/colima/default/colima.yaml"
+
 # tmux-powerkit only loads plugins from its own folder (installed by TPM, so re-run after the first TPM install)
 POWERKIT_PLUGINS="$HOME/.tmux/plugins/tmux-powerkit/src/plugins"
 if [ -d "$POWERKIT_PLUGINS" ]; then
