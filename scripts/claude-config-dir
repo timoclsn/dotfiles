@@ -1,0 +1,18 @@
+#!/bin/sh
+# Prints the Claude Code config dir to use: the personal login's dir or nothing
+# for the work login (it uses the default ~/.claude). Takes a project path, or
+# --personal/--work to pick the login directly. The one place that decides which
+# projects are personal, used by the `claude` wrapper in zshrc and the tmux
+# claude_budget plugin.
+personal_dir="$HOME/.claude-personal"
+case "$1" in
+--personal) echo "$personal_dir" ;;
+--work) ;;
+# The dotfiles (and their worktrees, created as dotfiles-<name> siblings) use
+# the work login, even though they live with the personal projects
+"$HOME"/Developer/personal/dotfiles | "$HOME"/Developer/personal/dotfiles[/-]*) ;;
+"$HOME"/Developer/personal | "$HOME"/Developer/personal/* | \
+    "$HOME"/Developer/codeatelier | "$HOME"/Developer/codeatelier/*)
+    echo "$personal_dir"
+    ;;
+esac

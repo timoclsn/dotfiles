@@ -113,4 +113,6 @@ ln -sf "$DOTFILES/scripts/update-global-packages" "$HOME/.local/bin/update-globa
 chmod +x "$HOME/.local/bin/update-global-packages"
 ln -sf "$DOTFILES/scripts/claude-budget.ts" "$HOME/.local/bin/claude-budget"
 chmod +x "$HOME/.local/bin/claude-budget"
+ln -sf "$DOTFILES/scripts/claude-config-dir" "$HOME/.local/bin/claude-config-dir"
+chmod +x "$HOME/.local/bin/claude-config-dir"
 echo "Symlinks created successfully!"
