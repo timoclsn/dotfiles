@@ -115,6 +115,10 @@ const formatCacheTimer = (expiresAt: number | null) => {
   return remainingMs > 0 ? `${Math.ceil(remainingMs / 60_000)}m` : "EXPIRED";
 };
 
+// The zsh `claude` wrapper sets CLAUDE_CONFIG_DIR only for the personal login
+// and leaves it unset for the work login (see claude-config-dir)
+const getAccount = () => (process.env.CLAUDE_CONFIG_DIR ? "p" : "w");
+
 const main = async () => {
   const input: StatusLineInput = await Bun.stdin.json();
 
@@ -144,7 +148,7 @@ const main = async () => {
   }
 
   const parts = [
-    model,
+    `[${getAccount()}] ${model}`,
     contextUsage,
     cacheTimer,
     sessionCost,
