@@ -69,10 +69,12 @@ const main = async () => {
 // Adds a line to notifications while near or over the Claude budget, for this
 // session's account (hooks inherit CLAUDE_CONFIG_DIR). A failed lookup must
 // not block the notification itself, so it just adds nothing.
-const getBudgetWarning = () =>
-  fetchUsage()
-    .then((usage) => getReport(usage, new Date()).warning)
+const getBudgetWarning = () => {
+  const now = new Date();
+  return fetchUsage(now)
+    .then((usage) => getReport(usage, now).warning)
     .catch(() => null);
+};
 
 interface NotificationOptions {
   subtitle: string;

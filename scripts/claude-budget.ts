@@ -1,4 +1,6 @@
 #!/usr/bin/env bun
+import { homedir } from "node:os";
+
 // Tracks Claude usage for the tmux status bar and notifications, for the
 // account Claude Code uses: the login for CLAUDE_CONFIG_DIR, or the default
 // login when that's unset or empty.
@@ -6,16 +8,21 @@
 //   claude-budget status  print "<ok|warning|error><TAB><summary>" for the tmux status bar
 //   claude-budget json    print the usage numbers
 //
-// The work (Enterprise) account has a monthly spend limit, tracked in dollars
-// against an even pace over the month's workdays. The personal (Pro/Max)
-// account only has the subscription's 5-hour and weekly limits, shown as
-// percentages. The usage comes from the same endpoint Claude Code's `/usage`
-// screen reads. The spend limit resets on the 1st of the month at 00:00 UTC,
-// so all day and month boundaries here are in UTC.
+// The work (Enterprise) account has a monthly spend limit, tracked in dollars:
+// what's left of it is spread evenly over the month's remaining workdays. The
+// personal (Pro/Max) account only has the subscription's 5-hour and weekly
+// limits, shown as percentages. The usage comes from the same endpoint Claude
+// Code's `/usage` screen reads. It only has the month-to-date spend, so the
+// last spend seen is cached locally to know where each day started. The spend
+// limit resets on the 1st of the month at 00:00 UTC, so all day and month
+// boundaries here are in UTC.
 
 interface Spend {
   kind: "spend";
   usedCents: number;
+  // Month-to-date spend at the start of today, so today's own spend doesn't
+  // shrink today's share
+  usedBeforeTodayCents: number;
   limitCents: number;
 }
 
@@ -44,7 +51,7 @@ interface UsageResponse {
 
 // --- Spend budget math (pure) -----------------------------------------------
 
-// Warn when less than this share of an average workday's budget is left today
+// Warn when less than this share of today's budget is left
 const LOW_BUDGET_SHARE = 0.2;
 // Nerd Font icons: md-calendar_today and md-calendar_month
 const TODAY_ICON = "\u{F00F6}";
@@ -64,20 +71,20 @@ const workdaysInMonth = (date: Date) => {
   ).filter(isWorkday);
 };
 
-const getBudget = ({ usedCents, limitCents }: Spend, now: Date) => {
-  const workdays = workdaysInMonth(now);
-  const today = toDateKey(now);
-  const workdaysThroughToday = workdays.filter((day) => toDateKey(day) <= today).length;
-  // The limit spread evenly over the month's workdays: where spend should be by
-  // the end of today
-  const endOfTodayPaceCents = (limitCents * workdaysThroughToday) / workdays.length;
+const getBudget = ({ usedCents, usedBeforeTodayCents, limitCents }: Spend, now: Date) => {
+  // Today always counts, so weekend work gets a share too and the month never
+  // runs out of days to spread the rest over. Each workday is at 00:00 UTC, so
+  // only the ones after today are later than now.
+  const daysLeft = workdaysInMonth(now).filter((day) => day > now).length + 1;
+  // What was left at the start of today, spread evenly over the days left
+  const todayShareCents = (limitCents - usedBeforeTodayCents) / daysLeft;
 
   return {
     usedCents,
     limitCents,
-    // What can still be spent today while staying on pace; negative when over
-    leftTodayCents: endOfTodayPaceCents - usedCents,
-    workdayShareCents: limitCents / workdays.length,
+    todayShareCents,
+    // What can still be spent today; negative when over
+    leftTodayCents: todayShareCents - (usedCents - usedBeforeTodayCents),
   };
 };
 
@@ -85,7 +92,7 @@ type Budget = ReturnType<typeof getBudget>;
 
 const getBudgetHealth = (budget: Budget) => {
   if (budget.usedCents >= budget.limitCents || budget.leftTodayCents < 0) return "error";
-  if (budget.leftTodayCents < budget.workdayShareCents * LOW_BUDGET_SHARE) return "warning";
+  if (budget.leftTodayCents < budget.todayShareCents * LOW_BUDGET_SHARE) return "warning";
   return "ok";
 };
 
@@ -162,6 +169,8 @@ export const getReport = (usage: Usage, now: Date) => {
 
 // --- I/O --------------------------------------------------------------------
 
+const CACHE_DIR = `${homedir()}/.cache/claude-budget`;
+
 // Claude Code names the keychain entry after the config dir when
 // CLAUDE_CONFIG_DIR is set: the first 8 hex digits of its SHA-256
 const getKeychainService = () => {
@@ -180,18 +189,60 @@ const readAccessToken = async () => {
   return credentials.claudeAiOauth?.accessToken ?? null;
 };
 
+interface SpendCache {
+  day: string;
+  usedCents: number;
+  usedBeforeTodayCents: number;
+}
+
+// A missing, half-written or outdated cache file counts as no cache
+const toSpendCache = (value: unknown): SpendCache | null => {
+  if (typeof value !== "object" || value === null) return null;
+  const { day, usedCents, usedBeforeTodayCents } = value as Record<keyof SpendCache, unknown>;
+  if (typeof day !== "string") return null;
+  if (typeof usedCents !== "number" || typeof usedBeforeTodayCents !== "number") return null;
+  return { day, usedCents, usedBeforeTodayCents };
+};
+
+// Where today started, from the last lookup's cache. On the first lookup of a
+// day that's the last spend seen before it, so spend before that lookup still
+// counts as today's; the month's spend starts again at 0 on the 1st.
+const startOfTodayCents = (cached: SpendCache | null, usedCents: number, today: string) => {
+  // Nothing to go on yet, so count all spend so far as before today
+  if (!cached) return usedCents;
+  if (cached.day === today) return cached.usedBeforeTodayCents;
+  if (cached.day.slice(0, 7) === today.slice(0, 7)) return cached.usedCents;
+  return 0;
+};
+
+// The month-to-date spend at the start of today, per account. Every lookup
+// records the spend it saw.
+const getUsedBeforeTodayCents = async (usedCents: number, now: Date) => {
+  const file = Bun.file(`${CACHE_DIR}/${getKeychainService()}.json`);
+  const today = toDateKey(now);
+  const cached = toSpendCache(await file.json().catch(() => null));
+  const usedBeforeTodayCents = startOfTodayCents(cached, usedCents, today);
+
+  await Bun.write(file, JSON.stringify({ day: today, usedCents, usedBeforeTodayCents }));
+  return usedBeforeTodayCents;
+};
+
 // Amounts come in minor units with a given exponent; normalise to cents
 const toCents = ({ amount_minor, exponent }: Money) => amount_minor / 10 ** (exponent - 2);
 
-const toUsage = ({ spend, five_hour, seven_day }: UsageResponse): Usage => {
+const toUsage = ({ spend, five_hour, seven_day }: UsageResponse) => {
   if (spend?.limit) {
-    return { kind: "spend", usedCents: toCents(spend.used), limitCents: toCents(spend.limit) };
+    return {
+      kind: "spend" as const,
+      usedCents: toCents(spend.used),
+      limitCents: toCents(spend.limit),
+    };
   }
   // A window without usage data counts as unused
   const toPercent = (window?: UsageWindow | null) => Math.round(window?.utilization ?? 0);
   if (five_hour || seven_day) {
     return {
-      kind: "subscription",
+      kind: "subscription" as const,
       sessionPercent: toPercent(five_hour),
       weeklyPercent: toPercent(seven_day),
     };
@@ -199,7 +250,7 @@ const toUsage = ({ spend, five_hour, seven_day }: UsageResponse): Usage => {
   throw new Error("Usage response has neither a spend limit nor subscription limits");
 };
 
-export const fetchUsage = async () => {
+export const fetchUsage = async (now: Date) => {
   const token = await readAccessToken();
   if (!token) throw new Error("No Claude Code login found in the keychain");
 
@@ -210,7 +261,12 @@ export const fetchUsage = async () => {
   });
   if (!response.ok) throw new Error(`Usage request failed with ${response.status}`);
 
-  return toUsage((await response.json()) as UsageResponse);
+  const usage = toUsage((await response.json()) as UsageResponse);
+  if (usage.kind === "subscription") return usage;
+  return {
+    ...usage,
+    usedBeforeTodayCents: await getUsedBeforeTodayCents(usage.usedCents, now),
+  } satisfies Spend;
 };
 
 const main = async () => {
@@ -222,7 +278,8 @@ const main = async () => {
 
   // A failed fetch exits non-zero, so tmux-powerkit keeps showing the last
   // output and marks it as stale
-  const { numbers, health, summary } = getReport(await fetchUsage(), new Date());
+  const now = new Date();
+  const { numbers, health, summary } = getReport(await fetchUsage(now), now);
 
   if (command === "json") {
     console.log(JSON.stringify(numbers, null, 2));
