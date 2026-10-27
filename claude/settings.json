@@ -41,7 +41,6 @@
   "worktree": {
     "baseRef": "fresh"
   },
-  "enableWorkflows": false,
   "workflowKeywordTriggerEnabled": false,
   "statusLine": {
     "type": "command",
