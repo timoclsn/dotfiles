@@ -1,4 +1,4 @@
-import { fetchUsage, getReport } from "../../scripts/claude-budget";
+import { getCachedReport } from "../../scripts/claude-budget";
 import { getIdleTime, IDLE_THRESHOLD } from "../../scripts/idle-time";
 import { sendPushover } from "../../scripts/pushover";
 import {
@@ -69,12 +69,11 @@ const main = async () => {
 // Adds a line to notifications while near or over the Claude budget, for this
 // session's account (hooks inherit CLAUDE_CONFIG_DIR). A failed lookup must
 // not block the notification itself, so it just adds nothing.
-const getBudgetWarning = () => {
-  const now = new Date();
-  return fetchUsage(now)
-    .then((usage) => getReport(usage, now).warning)
+const getBudgetWarning = () =>
+  getCachedReport()
+    // An outdated warning would be wrong, so only a fresh one is added
+    .then((budget) => (budget.lastFetch === "ok" ? budget.report.warning : null))
     .catch(() => null);
-};
 
 interface NotificationOptions {
   subtitle: string;

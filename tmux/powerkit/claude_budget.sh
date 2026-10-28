@@ -5,11 +5,10 @@
 #
 # Lives in the dotfiles and is symlinked into tmux-powerkit's plugin folder by
 # setup.sh, because powerkit only loads plugins from there. The numbers come
-# from the `claude-budget` script, which fetches the official usage each time
-# powerkit collects (see cache_ttl). `claude-config-dir` picks the account the
-# same way the `claude` wrapper does: work projects show the spend vs. the
-# Enterprise spend limit, personal projects the subscription's 5-hour and
-# weekly usage.
+# from the `claude-budget` script, which caches the official usage and limits
+# how often it's fetched. `claude-config-dir` picks the account the same way
+# the `claude` wrapper does: work projects show the spend vs. the Enterprise
+# spend limit, personal projects the subscription's 5-hour and weekly usage.
 # =============================================================================
 
 POWERKIT_ROOT="${POWERKIT_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
@@ -23,10 +22,11 @@ plugin_get_metadata() {
 
 plugin_declare_options() {
     declare_option "icon" "icon" "✽" "Plugin icon"
-    # Each collect asks the API, so this is also how often the usage is fetched.
-    # It's one cache for all sessions, so after switching between a work and a
-    # personal session the segment can show the other account for up to this long.
-    declare_option "cache_ttl" "number" "300" "Cache duration in seconds"
+    # Collecting only reads claude-budget's cache, which does the rate limiting,
+    # so this can be short. It's one powerkit cache for all sessions, so after
+    # switching between a work and a personal session the segment can show the
+    # other account for up to this long.
+    declare_option "cache_ttl" "number" "60" "Cache duration in seconds"
 }
 
 plugin_get_content_type() { printf 'dynamic'; }

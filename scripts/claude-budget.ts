@@ -1,8 +1,8 @@
 #!/usr/bin/env bun
 import { homedir } from "node:os";
 
-// Tracks Claude usage for the tmux status bar and notifications, for the
-// account Claude Code uses: the login for CLAUDE_CONFIG_DIR, or the default
+// Tracks Claude usage for the tmux status bar, the Claude Code status line and
+// notifications, for the account Claude Code uses: the login for CLAUDE_CONFIG_DIR, or the default
 // login when that's unset or empty.
 //
 //   claude-budget status  print "<ok|warning|error><TAB><summary>" for the tmux status bar
@@ -12,7 +12,8 @@ import { homedir } from "node:os";
 // what's left of it is spread evenly over the month's remaining workdays. The
 // personal (Pro/Max) account only has the subscription's 5-hour and weekly
 // limits, shown as percentages. The usage comes from the same endpoint Claude
-// Code's `/usage` screen reads. It only has the month-to-date spend, so the
+// Code's `/usage` screen reads, which is rate-limited, so all callers share one
+// cache of it. It only has the month-to-date spend, so the
 // last spend seen is cached locally to know where each day started. The spend
 // limit resets on the 1st of the month at 00:00 UTC, so all day and month
 // boundaries here are in UTC.
@@ -189,16 +190,29 @@ const readAccessToken = async () => {
   return credentials.claudeAiOauth?.accessToken ?? null;
 };
 
+// One cache file per account. A missing, half-written or outdated file counts
+// as no cache.
+const cacheFile = (suffix: string) => Bun.file(`${CACHE_DIR}/${getKeychainService()}${suffix}.json`);
+
+const readCache = async <T>(suffix: string, parse: (value: unknown) => T | null) =>
+  parse(await cacheFile(suffix).json().catch(() => null));
+
+const writeCache = (suffix: string, value: unknown) =>
+  Bun.write(cacheFile(suffix), JSON.stringify(value));
+
+const asRecord = (value: unknown) =>
+  typeof value === "object" && value !== null ? (value as Record<string, unknown>) : null;
+
 interface SpendCache {
   day: string;
   usedCents: number;
   usedBeforeTodayCents: number;
 }
 
-// A missing, half-written or outdated cache file counts as no cache
 const toSpendCache = (value: unknown): SpendCache | null => {
-  if (typeof value !== "object" || value === null) return null;
-  const { day, usedCents, usedBeforeTodayCents } = value as Record<keyof SpendCache, unknown>;
+  const record = asRecord(value);
+  if (!record) return null;
+  const { day, usedCents, usedBeforeTodayCents } = record;
   if (typeof day !== "string") return null;
   if (typeof usedCents !== "number" || typeof usedBeforeTodayCents !== "number") return null;
   return { day, usedCents, usedBeforeTodayCents };
@@ -218,12 +232,11 @@ const startOfTodayCents = (cached: SpendCache | null, usedCents: number, today: 
 // The month-to-date spend at the start of today, per account. Every lookup
 // records the spend it saw.
 const getUsedBeforeTodayCents = async (usedCents: number, now: Date) => {
-  const file = Bun.file(`${CACHE_DIR}/${getKeychainService()}.json`);
   const today = toDateKey(now);
-  const cached = toSpendCache(await file.json().catch(() => null));
+  const cached = await readCache("", toSpendCache);
   const usedBeforeTodayCents = startOfTodayCents(cached, usedCents, today);
 
-  await Bun.write(file, JSON.stringify({ day: today, usedCents, usedBeforeTodayCents }));
+  await writeCache("", { day: today, usedCents, usedBeforeTodayCents });
   return usedBeforeTodayCents;
 };
 
@@ -250,7 +263,7 @@ const toUsage = ({ spend, five_hour, seven_day }: UsageResponse) => {
   throw new Error("Usage response has neither a spend limit nor subscription limits");
 };
 
-export const fetchUsage = async (now: Date) => {
+const fetchUsage = async (now: Date) => {
   const token = await readAccessToken();
   if (!token) throw new Error("No Claude Code login found in the keychain");
 
@@ -269,6 +282,73 @@ export const fetchUsage = async (now: Date) => {
   } satisfies Spend;
 };
 
+// Each fetch asks the rate-limited API, so it happens at most this often per
+// account, however many callers ask
+const USAGE_MAX_AGE_MS = 5 * 60_000;
+
+// After a failed fetch, usage is the last one seen, if any
+type UsageCache =
+  | { checkedAt: number; lastFetch: "ok"; usage: Usage }
+  | { checkedAt: number; lastFetch: "failed"; usage: Usage | null };
+
+const toCachedUsage = (value: unknown): Usage | null => {
+  const record = asRecord(value);
+  if (record?.kind === "spend") {
+    const { usedCents, usedBeforeTodayCents, limitCents } = record;
+    if (typeof usedCents !== "number" || typeof usedBeforeTodayCents !== "number") return null;
+    if (typeof limitCents !== "number") return null;
+    return { kind: "spend", usedCents, usedBeforeTodayCents, limitCents };
+  }
+  if (record?.kind === "subscription") {
+    const { sessionPercent, weeklyPercent } = record;
+    if (typeof sessionPercent !== "number" || typeof weeklyPercent !== "number") return null;
+    return { kind: "subscription", sessionPercent, weeklyPercent };
+  }
+  return null;
+};
+
+const toUsageCache = (value: unknown): UsageCache | null => {
+  const record = asRecord(value);
+  if (!record) return null;
+  const { checkedAt, lastFetch } = record;
+  if (typeof checkedAt !== "number") return null;
+  const usage = toCachedUsage(record.usage);
+  if (lastFetch === "ok" && usage) return { checkedAt, lastFetch, usage };
+  if (lastFetch === "failed") return { checkedAt, lastFetch, usage };
+  return null;
+};
+
+const isFresh = (cached: UsageCache, now: Date) =>
+  now.getTime() - cached.checkedAt < USAGE_MAX_AGE_MS &&
+  // The budget's day starts at 00:00 UTC, so usage from before then is outdated
+  toDateKey(new Date(cached.checkedAt)) === toDateKey(now);
+
+const getCachedUsage = async (now: Date) => {
+  const cached = await readCache("-usage", toUsageCache);
+  if (cached && isFresh(cached, now)) return cached;
+
+  // Recorded as failed until the fetch succeeds, so callers that arrive during
+  // the fetch, and the next ones after a fetch that fails or never finishes,
+  // wait the full max age instead of asking the rate-limited API again
+  const failed = { checkedAt: now.getTime(), lastFetch: "failed" as const, usage: cached?.usage ?? null };
+  await writeCache("-usage", failed);
+
+  const usage = await fetchUsage(now).catch(() => null);
+  if (!usage) return failed;
+  const result = { checkedAt: now.getTime(), lastFetch: "ok" as const, usage };
+  await writeCache("-usage", result);
+  return result;
+};
+
+// The report for the cached usage. After a failed fetch it's for the last usage
+// seen, or null when there's none yet.
+export const getCachedReport = async () => {
+  const now = new Date();
+  const cached = await getCachedUsage(now);
+  if (cached.lastFetch === "ok") return { lastFetch: cached.lastFetch, report: getReport(cached.usage, now) };
+  return { lastFetch: cached.lastFetch, report: cached.usage && getReport(cached.usage, now) };
+};
+
 const main = async () => {
   const command = process.argv[2] ?? "status";
   if (command !== "status" && command !== "json") {
@@ -278,14 +358,14 @@ const main = async () => {
 
   // A failed fetch exits non-zero, so tmux-powerkit keeps showing the last
   // output and marks it as stale
-  const now = new Date();
-  const { numbers, health, summary } = getReport(await fetchUsage(now), now);
+  const { lastFetch, report } = await getCachedReport();
+  if (lastFetch === "failed") process.exit(1);
 
   if (command === "json") {
-    console.log(JSON.stringify(numbers, null, 2));
+    console.log(JSON.stringify(report.numbers, null, 2));
     return;
   }
-  console.log(`${health}\t${summary}`);
+  console.log(`${report.health}\t${report.summary}`);
 };
 
 if (import.meta.main) main();
