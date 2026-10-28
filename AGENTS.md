@@ -27,6 +27,7 @@ dotfiles/
 │   ├── lua/              # options, keymaps, commands + shared helpers
 │   └── snippets/         # VSCode-format snippets, loaded by blink.cmp
 ├── tmux/tmux.conf        # Tmux config (prefix: Ctrl+Space)
+├── rex/                  # Rex config (Lua), incl. a project sessionizer
 ├── ghostty/config        # Terminal emulator
 ├── zsh/zshrc             # Shell config
 ├── claude/               # Claude Code settings, hooks, commands

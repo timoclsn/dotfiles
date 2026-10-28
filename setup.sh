@@ -24,6 +24,10 @@ ln -sf "$DOTFILES/lazygit" "$HOME/.config/lazygit"
 rm "$HOME/.config/nvim" 2>/dev/null || true
 ln -sf "$DOTFILES/nvim" "$HOME/.config/nvim"
 
+# rex
+rm "$HOME/.config/rex" 2>/dev/null || true
+ln -sf "$DOTFILES/rex" "$HOME/.config/rex"
+
 # bat
 rm "$HOME/.config/bat" 2>/dev/null || true
 ln -sf "$DOTFILES/bat" "$HOME/.config/bat"
