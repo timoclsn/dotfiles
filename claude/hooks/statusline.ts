@@ -1,4 +1,5 @@
 import { $ } from "bun";
+import { getCachedReport } from "../../scripts/claude-budget";
 import {
   assistantEntriesNewestFirst,
   getSessionName,
@@ -128,13 +129,22 @@ const main = async () => {
     : modelName;
   const projectDir = input.workspace.project_dir;
   const gitBranchPromise = getGitBranch(projectDir);
+  // The budget is an extra, so failing to get it must not break the status line
+  const budgetPromise = getCachedReport().catch(() => null);
   const transcriptContent = readTranscript(input.transcript_path);
   const session = getSessionName(transcriptContent);
   const cacheTimer = formatCacheTimer(getCacheExpiresAt(transcriptContent));
   const dir = truncateMiddle(projectDir.split("/").at(-1) ?? "", 15);
   const contextUsage = getContextUsage(input);
-  // Claude Code's own list-price estimate; the official total is in the tmux bar
-  const sessionCost = `$${input.cost.total_cost_usd.toFixed(2)}`;
+  // Claude Code's own list-price estimate for this session, next to the
+  // account's official usage
+  const budget = await budgetPromise;
+  const cost = `$${input.cost.total_cost_usd.toFixed(2)}`;
+  // Marked when the last fetch failed, as the numbers can then be days old
+  const budgetSummary =
+    budget?.report &&
+    (budget.lastFetch === "ok" ? budget.report.summary : `${budget.report.summary} (stale)`);
+  const sessionCost = budgetSummary ? `${cost} · ${budgetSummary}` : cost;
 
   const gitBranch = await gitBranchPromise;
   const maxProjectLen = 46;
