@@ -20,6 +20,10 @@ ln -sf "$DOTFILES/ghostty" "$HOME/.config/ghostty"
 rm "$HOME/.config/lazygit" 2>/dev/null || true
 ln -sf "$DOTFILES/lazygit" "$HOME/.config/lazygit"
 
+# fzf
+rm "$HOME/.config/fzf" 2>/dev/null || true
+ln -sf "$DOTFILES/fzf" "$HOME/.config/fzf"
+
 # nvim
 rm "$HOME/.config/nvim" 2>/dev/null || true
 ln -sf "$DOTFILES/nvim" "$HOME/.config/nvim"
