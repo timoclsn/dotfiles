@@ -12,8 +12,8 @@
 // they stay in sync; node_modules is cloned with APFS copy-on-write, which takes
 // seconds and uses no extra disk space until a file changes. Dependencies are
 // only installed where a lockfile differs from the one the copied node_modules
-// came from. It finally opens a detached tmux session whose Claude session
-// starts on `--task`, and prints a JSON summary to stdout (progress goes to
+// came from. It finally opens a tmux or Rex session, matching the terminal it
+// runs in, without switching to it, whose Claude session starts on `--task`, and prints a JSON summary to stdout (progress goes to
 // stderr).
 
 import { $ } from "bun";
@@ -213,10 +213,14 @@ for (const lockfile of lockfiles.filter((path) => !isLockfileUnchanged(path))) {
   installedIn.push(directory);
 }
 
-// --- Open the tmux session ---------------------------------------------------
+// --- Open the session --------------------------------------------------------
 
-const tmuxSession = (
-  await $`tmux-sessionizer --detach ${args.task ? ["--prompt", args.task] : []} ${worktreePath}`.text()
+// tmux sets TMUX in its panes and Rex sets REX_SESSION in its terminals. tmux
+// wins when both are set, since it then runs inside a Rex terminal.
+const sessionizer = !process.env.TMUX && process.env.REX_SESSION ? "rex-sessionizer" : "tmux-sessionizer";
+
+const session = (
+  await $`${sessionizer} --detach ${args.task ? ["--prompt", args.task] : []} ${worktreePath}`.text()
 ).trim();
 
 console.log(
@@ -226,7 +230,7 @@ console.log(
       branch,
       base: baseRef,
       source: sourceRoot,
-      tmuxSession,
+      session,
       linked: carriedOver.linked,
       cloned: carriedOver.cloned,
       installedIn,

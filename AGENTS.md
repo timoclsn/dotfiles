@@ -35,7 +35,7 @@ dotfiles/
 ├── codex/                # Codex CLI config
 ├── pi/                   # Pi coding agent extensions
 ├── cursor/rules/         # Cursor IDE rules (14 TypeScript patterns)
-├── scripts/              # Utility scripts (tmux-sessionizer, ai-commit, etc.)
+├── scripts/              # Utility scripts (tmux-/rex-sessionizer, ai-commit, etc.)
 └── setup.sh              # Symlink installer
 ```
 
@@ -79,6 +79,20 @@ window, and prints the session name. `--prompt <text>` starts the agent in a
 newly created session with that text as its first message. Together they're how
 the `worktree` skill prepares a session for a new worktree and hands it the task
 without pulling the user out of their current one.
+
+### Rex Session Setup (rex-sessionizer)
+
+`rex/init.lua` ports the tmux setup to Rex: the same `ctrl+space` prefix and
+key bindings (written for a German keyboard layout), and a `sessionizer` action
+on `prefix + f` that opens `scripts/rex-sessionizer` (the fzf picker) in a
+floating popup.
+
+A new project session has a single window running the AI agent, and
+sessions are kept sorted alphabetically in the sidebar. `rex-sessionizer` takes
+the same arguments as tmux-sessionizer (a directory, `--detach`, `--prompt`);
+the `worktree` skill uses rex-sessionizer instead of tmux-sessionizer when it
+runs in a Rex terminal outside tmux. Switching the app to the picked session from the popup needs
+Remote Control turned on in Rex's settings.
 
 ### Claude Code Hooks
 

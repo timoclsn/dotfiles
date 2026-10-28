@@ -1,16 +1,16 @@
 ---
 name: worktree
-description: Create and set up a new git worktree as a sibling of the current repo, branched off the default branch (main/master) by default — or off a given branch, tag, or PR. Names it after the repo plus a semantic extension derived from whatever content you give it, opens a detached tmux session on it via tmux-sessionizer, and starts a Claude session in its agents pane on the task. Use when the user invokes `/worktree`, or asks to spin up / create a worktree to work on something in isolation, on a specific branch, or to check out a PR.
+description: Create and set up a new git worktree as a sibling of the current repo, branched off the default branch (main/master) by default — or off a given branch, tag, or PR. Names it after the repo plus a semantic extension derived from whatever content you give it, opens a session on it without switching to it — in tmux via tmux-sessionizer, or in Rex via rex-sessionizer, whichever the current terminal runs in — and starts a Claude session in it on the task. Use when the user invokes `/worktree`, or asks to spin up / create a worktree to work on something in isolation, on a specific branch, or to check out a PR.
 argument-hint: "[the task to work on (also used to name the worktree/branch), and/or a base branch/tag/PR (optional)]"
 ---
 
 # Create a worktree
 
-Create and set up a fresh git worktree as a **sibling** of the current repo (one level up, not nested inside it), on a **new branch off the default branch**, then open a detached tmux session on it whose `agents` pane starts a Claude session on the task.
+Create and set up a fresh git worktree as a **sibling** of the current repo (one level up, not nested inside it), on a **new branch off the default branch**, then open a tmux or Rex session on it, without switching to it, that starts a Claude session on the task.
 
 The argument serves two purposes: it **names** the worktree/branch and picks the **base**, and its task content becomes the **prompt** for the new Claude session. Never carry out the task in *this* session — the new session owns the work.
 
-The mechanical part (creating the worktree, carrying over gitignored files, installing dependencies, opening tmux and starting Claude on the task) is done by the bundled script `${CLAUDE_SKILL_DIR}/scripts/worktree-create.ts` (`scripts/worktree-create.ts` in this skill's directory). The judgment around it — naming, picking the base, writing the task prompt — is done by a subagent.
+The mechanical part (creating the worktree, carrying over gitignored files, installing dependencies, opening the session and starting Claude on the task) is done by the bundled script `${CLAUDE_SKILL_DIR}/scripts/worktree-create.ts` (`scripts/worktree-create.ts` in this skill's directory). The judgment around it — naming, picking the base, writing the task prompt — is done by a subagent.
 
 ## Delegate the whole thing to a subagent
 
@@ -42,11 +42,11 @@ Once it finishes, relay that result to the user in one or two lines. Don't narra
    <skill-dir>/scripts/worktree-create.ts --name <extension> --branch <branch-name> [--base <ref>] [--task <prompt>]
    <skill-dir>/scripts/worktree-create.ts --name <extension> --pr <number-or-url> [--task <prompt>]
    ```
-   It refuses if the path or branch already exists — pick a different extension and rerun. It prints progress to stderr and a JSON summary to stdout with the worktree `path`, `branch`, `tmuxSession` and what it carried over. Don't redo any of its work by hand. For context, it:
+   It refuses if the path or branch already exists — pick a different extension and rerun. It prints progress to stderr and a JSON summary to stdout with the worktree `path`, `branch`, `session` and what it carried over. Don't redo any of its work by hand. For context, it:
    - carries over gitignored files matching its allowlist from the checkout of the base branch (the main checkout if the base isn't checked out anywhere): `.env*`, `config/local*.json` and `.claude/settings.local.json` are symlinked, `node_modules` folders are cloned copy-on-write; everything else that's ignored is left behind
    - only installs dependencies where a lockfile differs from the copied node_modules' origin
-   - opens the tmux session with `tmux-sessionizer --detach`, so the user isn't pulled out of their current session, and starts Claude in its `agents` pane on the task
+   - opens the session with `tmux-sessionizer --detach`, or `rex-sessionizer --detach` when it runs in a Rex terminal outside tmux, so the user isn't pulled out of their current session, and starts Claude in it on the task
 
-6. **Report the result** — keep it minimal: only the worktree directory name, the branch, and the tmux session name. Add a single extra line only if something went wrong (e.g. the script failed). The user jumps to it with `prefix + f` (or `tmux switch-client -t <session-name>`).
+6. **Report the result** — keep it minimal: only the worktree directory name, the branch, and the session name. Add a single extra line only if something went wrong (e.g. the script failed). The user jumps to it with `prefix + f` (in Rex also from the sidebar).
 
 The skill ends here. The new session does the work; **don't start working on the task in this session**, and don't wait around for the other session to finish unless the user asks you to.
