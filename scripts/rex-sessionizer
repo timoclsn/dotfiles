@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+
+# Rex counterpart of tmux-sessionizer. The session setup lives in the
+# `sessionizer` action in rex/init.lua; this script picks the project.
+
+# The popup doesn't load zshrc, so point fzf at the shared theme directly.
+export FZF_DEFAULT_OPTS_FILE=$HOME/.config/fzf/fzfrc
+
+dirs=(
+    ~/Developer/personal
+    ~/Developer/steuerbot
+    ~/Developer/taxfix
+    ~/Developer/codeatelier
+    ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents
+)
+
+# --detach sets the session up without switching the app to it and prints the
+# session name.
+# --prompt starts the agent in a newly created session with that text as its
+# first message.
+detach=""
+prompt=""
+selected=""
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        -d | --detach)
+            detach=1
+            shift
+            ;;
+        -p | --prompt)
+            prompt=$2
+            shift 2 || { echo "$1 needs a value" >&2; exit 1; }
+            ;;
+        *)
+            selected=$1
+            shift
+            ;;
+    esac
+done
+
+picked=""
+if [[ -z $selected ]]; then
+    picked=1
+    result=$(find "${dirs[@]}" -mindepth 1 -maxdepth 1 -type d | fzf --border-label " Select Project " --expect=ctrl-y)
+    { read -r key; read -r selected; } <<< "$result"
+fi
+
+if [[ -z $selected ]]; then
+    exit 0
+fi
+
+if [[ $key == "ctrl-y" ]]; then
+    printf '%s' "$selected" | sed "s|^$HOME|~|" | pbcopy
+    exit 0
+fi
+
+# Rex resolves paths from its own working directory, not this shell's.
+selected=$(cd "$selected" && pwd) || exit 1
+
+args=("dir=$selected")
+[[ -n $prompt ]] && args+=("prompt=$prompt")
+
+if [[ -n $detach ]]; then
+    # Fail when rex fails, not only when jq does, so callers notice.
+    set -o pipefail
+    rex do sessionizer "${args[@]}" detach=true --json | jq -r .session
+else
+    # The picker runs in a popup that closes when this script exits, so keep
+    # it open on failure to show the error.
+    if ! rex do sessionizer "${args[@]}" > /dev/null && [[ -n $picked ]]; then
+        read -rsn1 -p "Press any key to close"
+        exit 1
+    fi
+fi

@@ -117,6 +117,8 @@ fi
 mkdir -p "$HOME/.local/bin"
 ln -sf "$DOTFILES/scripts/tmux-sessionizer" "$HOME/.local/bin/tmux-sessionizer"
 chmod +x "$HOME/.local/bin/tmux-sessionizer"
+ln -sf "$DOTFILES/scripts/rex-sessionizer" "$HOME/.local/bin/rex-sessionizer"
+chmod +x "$HOME/.local/bin/rex-sessionizer"
 ln -sf "$DOTFILES/scripts/tmux-open-repo" "$HOME/.local/bin/tmux-open-repo"
 chmod +x "$HOME/.local/bin/tmux-open-repo"
 ln -sf "$DOTFILES/scripts/ai-commit" "$HOME/.local/bin/ai-commit"
