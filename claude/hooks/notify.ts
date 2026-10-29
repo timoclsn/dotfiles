@@ -1,6 +1,7 @@
 import { getCachedReport } from "../../scripts/claude-budget";
 import { getIdleTime, IDLE_THRESHOLD } from "../../scripts/idle-time";
 import { sendPushover } from "../../scripts/pushover";
+import { runsInRex } from "../../scripts/rex";
 import {
   getLastAssistantMessage,
   getSessionName,
@@ -20,6 +21,8 @@ interface HookInput {
 }
 
 const main = async () => {
+  if (runsInRex()) return;
+
   const input: HookInput = await Bun.stdin.json();
   const { session_id: sessionId, transcript_path: transcriptPath } = input;
   // `cwd` follows the session into subdirectories (e.g. packages/frontend),

@@ -1,11 +1,14 @@
 import type { Plugin } from "@opencode-ai/plugin";
 import { getIdleTime, IDLE_THRESHOLD } from "../../scripts/idle-time";
 import { sendPushover } from "../../scripts/pushover";
+import { runsInRex } from "../../scripts/rex";
 
 const pushToken = process.env.PUSHOVER_OPENCODE;
 const pushUser = process.env.PUSHOVER_USER_KEY;
 
 export const Notify: Plugin = async ({ directory, client }) => {
+  if (runsInRex()) return {};
+
   return {
     async event({ event }) {
       if (event.type === "session.idle") {

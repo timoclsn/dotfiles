@@ -1,5 +1,6 @@
 import { getIdleTime, IDLE_THRESHOLD } from "../../scripts/idle-time";
 import { sendPushover } from "../../scripts/pushover";
+import { runsInRex } from "../../scripts/rex";
 
 const pushToken = process.env.PUSHOVER_CODEX;
 const pushUser = process.env.PUSHOVER_USER_KEY;
@@ -45,6 +46,8 @@ const getTitle = (notification: CodexNotification) => {
 };
 
 const main = async () => {
+  if (runsInRex()) return;
+
   const notification = readNotification();
   if (!notification) return;
 

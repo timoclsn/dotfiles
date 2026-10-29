@@ -109,6 +109,9 @@ const getLastAssistantMessage = (entries: SessionEntry[]) => {
 
 export default async (pi: ExtensionAPI) => {
   const realDir = dirname(realpathSync(fileURLToPath(import.meta.url)));
+  const { runsInRex } = await import(join(realDir, "../../scripts/rex.ts"));
+  if (runsInRex()) return;
+
   const { getIdleTime, IDLE_THRESHOLD } = await import(
     join(realDir, "../../scripts/idle-time.ts")
   );
