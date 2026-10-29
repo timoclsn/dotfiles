@@ -16,6 +16,10 @@ ln -sf "$DOTFILES/btop" "$HOME/.config/btop"
 rm "$HOME/.config/ghostty" 2>/dev/null || true
 ln -sf "$DOTFILES/ghostty" "$HOME/.config/ghostty"
 
+# fish
+rm "$HOME/.config/fish" 2>/dev/null || true
+ln -sf "$DOTFILES/fish" "$HOME/.config/fish"
+
 # lazygit
 rm "$HOME/.config/lazygit" 2>/dev/null || true
 ln -sf "$DOTFILES/lazygit" "$HOME/.config/lazygit"

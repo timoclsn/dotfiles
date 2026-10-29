@@ -58,11 +58,11 @@ local function pane_dir(ctx)
   return program.cwd
 end
 
--- Runs cc through an interactive zsh (cc is an alias) and keeps a shell
+-- Runs cc through an interactive zsh (cc is an alias) and keeps a fish shell
 -- open once it exits. The prompt is passed as an argument, so quotes,
 -- newlines and '!' reach cc without any shell quoting.
 local function agent_command(prompt)
-  return { "zsh", "-ic", 'cc "$@"; exec zsh', "zsh", prompt }
+  return { "zsh", "-ic", 'cc "$@"; exec fish', "zsh", prompt }
 end
 
 local function find_session(label)

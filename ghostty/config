@@ -23,6 +23,9 @@ palette-generate = false
 # Shift+Enter sends ESC+CR so apps like Claude Code can distinguish it from Enter (for newlines without submit)
 keybind = shift+enter=text:\x1b\r
 
+# Start fish instead of the login shell (zsh)
+command = /opt/homebrew/bin/fish
+
 # Misc
 macos-icon = xray
 mouse-hide-while-typing = true

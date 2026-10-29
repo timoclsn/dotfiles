@@ -14,3 +14,6 @@ ai/skills/.trash/
 # Work-only skills that must stay out of this public repo
 ai/skills/xapp-author/
 ai/skills/pr-showcase/
+
+# fish writes its universal variables into its config dir, symlinked to fish/
+fish/fish_variables

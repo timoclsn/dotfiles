@@ -29,7 +29,8 @@ dotfiles/
 ├── tmux/tmux.conf        # Tmux config (prefix: Ctrl+Space)
 ├── rex/                  # Rex config (Lua), incl. a project sessionizer
 ├── ghostty/config        # Terminal emulator
-├── zsh/zshrc             # Shell config
+├── zsh/zshrc             # Shell config (login shell, used by scripts and agents)
+├── fish/                 # Interactive shell config (on trial next to zsh)
 ├── claude/               # Claude Code settings, hooks, commands
 ├── opencode/             # OpenCode IDE config
 ├── codex/                # Codex CLI config
@@ -93,6 +94,19 @@ the same arguments as tmux-sessionizer (a directory, `--detach`, `--prompt`);
 the `worktree` skill uses rex-sessionizer instead of tmux-sessionizer when it
 runs in a Rex terminal outside tmux. Switching the app to the picked session from the popup needs
 Remote Control turned on in Rex's settings.
+
+### Shells (zsh and fish side by side)
+
+fish is on trial as the interactive shell. Ghostty (`command`), tmux
+(`default-command`), Rex (Startup Command in its Terminal settings) and the
+Rex agent pane once `cc` exits (`exec fish` in `rex/init.lua`) start fish,
+while zsh stays the login shell. So `zsh -ic`, the agents and scripts
+keep using zsh, and `zsh/zshrc` stays complete. Removing
+those settings switches back.
+
+`fish/config.fish` mirrors `zsh/zshrc`, and each zsh helper function is a file
+in `fish/functions/`. New aliases, PATH entries or functions go into both until
+the trial ends. Don't commit `fish/fish_variables`; fish writes it at runtime.
 
 ### Claude Code Hooks
 
