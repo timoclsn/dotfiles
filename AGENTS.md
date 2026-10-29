@@ -95,6 +95,13 @@ the `worktree` skill uses rex-sessionizer instead of tmux-sessionizer when it
 runs in a Rex terminal outside tmux. Switching the app to the picked session from the popup needs
 Remote Control turned on in Rex's settings.
 
+Rex has no focus history, so `rex/init.lua` keeps its own for `prefix + l` (last
+tab of the session) and `prefix + L` (last session). Every action there that
+switches tabs or sessions records where you came from, and `track_switch` wraps
+built-in ones (`s`, `w`, `(`, `)`, `c`, `!`) to do the same. The history lives in
+memory and in `~/.local/state/rex-history`. A switch made another way, like
+clicking, is noticed the next time one of those keys runs.
+
 ### Shells (zsh and fish side by side)
 
 fish is on trial as the interactive shell. Ghostty (`command`), tmux

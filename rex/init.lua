@@ -65,6 +65,68 @@ local function agent_command(prompt)
   return { "zsh", "-ic", 'cc "$@"; exec fish', "zsh", prompt }
 end
 
+-- Rex has no focus history, so remember what these actions switch between: the
+-- sessions, and the tabs of each session. A switch made another way, like
+-- clicking, is noticed the next time one of these actions runs.
+local history_file = home .. "/.local/state/rex-history"
+
+-- Read from disk once and then kept in memory, since the config keeps running
+-- between key presses. The file lets the history outlive a server restart.
+local history
+
+local function read_history()
+  local entries = {}
+  local file = io.open(history_file)
+  if not file then
+    return entries
+  end
+  for line in file:lines() do
+    local scope, current, previous = line:match("^(%S+) (%S+) ?(%S*)$")
+    if scope then
+      entries[scope] = { current = current, previous = previous ~= "" and previous or nil }
+    end
+  end
+  file:close()
+  return entries
+end
+
+-- Keeping the history on disk is optional, so a failed write never stops a switch.
+local function write_history()
+  local file = io.open(history_file, "w")
+  if not file then
+    return
+  end
+  for scope, entry in pairs(history) do
+    file:write(scope, " ", entry.current, " ", entry.previous or "", "\n")
+  end
+  file:close()
+end
+
+-- Visits the items in order, each one becoming the scope's current item and the
+-- one before it the previous. Returns the scope's current and previous item.
+local function remember(scope, ...)
+  history = history or read_history()
+  local entry = history[scope] or {}
+  local changed = false
+  for index = 1, select("#", ...) do
+    local item = select(index, ...)
+    if entry.current ~= item then
+      entry = { current = item, previous = entry.current }
+      changed = true
+    end
+  end
+  if changed then
+    history[scope] = entry
+    write_history()
+  end
+  return entry
+end
+
+local function select_session(ctx, session_id)
+  rex.client.queue("session.select", { session_id = session_id })
+  remember("sessions", ctx.session_id, session_id)
+end
+
 local function find_session(label)
   for _, session in ipairs(call("session.list", {}).sessions or {}) do
     if session.label == label then
@@ -98,7 +160,7 @@ local function create_session(label, dir, prompt)
   return session_id
 end
 
-local function open_project(args)
+local function open_project(ctx, args)
   local dir = args.dir:gsub("^~/", home .. "/"):gsub("/$", "")
   local label = dir:match("[^/]+$")
   local session_id = find_session(label) or create_session(label, dir, args.prompt)
@@ -106,7 +168,7 @@ local function open_project(args)
   if args.detach then
     return { session = label }
   end
-  rex.client.queue("session.select", { session_id = session_id })
+  select_session(ctx, session_id)
 end
 
 -- Without a dir it opens the fzf project picker in a floating layer, which
@@ -117,9 +179,9 @@ rex.action({
   category = "Projects",
   keywords = "project session sessionizer switch",
   args = { dir = "string?", detach = "boolean?", prompt = "string?" },
-  run = function(_, args)
+  run = function(ctx, args)
     if args.dir then
-      return open_project(args)
+      return open_project(ctx, args)
     end
     popup("Projects", { home .. "/.local/bin/rex-sessionizer" }, { 0.2, 0.15, 0.6, 0.7 })
   end,
@@ -139,9 +201,10 @@ local function session_windows(ctx)
 end
 
 -- The app tracks which tab it shows itself, so ask it to switch.
-local function focus_window(ctx, window)
+local function focus_window(ctx, current, window)
   if window then
     rex.client.queue("session.select", { session_id = ctx.session_id, window_id = window.window_id })
+    remember(ctx.session_id, current.window_id, window.window_id)
   end
 end
 
@@ -151,8 +214,8 @@ rex.action({
   category = "Tabs",
   args = { index = "integer" },
   run = function(ctx, args)
-    local windows = session_windows(ctx)
-    focus_window(ctx, windows[args.index])
+    local windows, active = session_windows(ctx)
+    focus_window(ctx, windows[active], windows[args.index])
   end,
 })
 
@@ -163,7 +226,24 @@ rex.action({
   args = { step = "integer" },
   run = function(ctx, args)
     local windows, active = session_windows(ctx)
-    focus_window(ctx, windows[(active - 1 + args.step) % #windows + 1])
+    focus_window(ctx, windows[active], windows[(active - 1 + args.step) % #windows + 1])
+  end,
+})
+
+rex.action({
+  name = "last_tab",
+  title = "Go to Last Tab in Session",
+  category = "Tabs",
+  run = function(ctx)
+    local windows, active = session_windows(ctx)
+    local current = windows[active]
+    local previous = remember(ctx.session_id, current.window_id).previous
+    for _, window in ipairs(windows) do
+      if window.window_id == previous then
+        return focus_window(ctx, current, window)
+      end
+    end
+    error("No last tab", 0)
   end,
 })
 
@@ -189,7 +269,39 @@ rex.action({
     if newest.session_id == ctx.session_id then
       error("Already in newest session: " .. newest.label, 0)
     end
-    rex.client.queue("session.select", { session_id = newest.session_id })
+    select_session(ctx, newest.session_id)
+  end,
+})
+
+-- For built-in actions that switch somewhere unknown: note where you are first.
+-- Looking up the current tab costs a call to the server, so it is only done for
+-- actions that change tabs.
+rex.action({
+  name = "track_switch",
+  title = "Run Action and Remember Where You Were",
+  category = "Sessions",
+  args = { action = "string", tabs = "boolean?" },
+  run = function(ctx, args)
+    local scope, current = "sessions", ctx.session_id
+    if args.tabs then
+      local windows, active = session_windows(ctx)
+      scope, current = ctx.session_id, windows[active].window_id
+    end
+    rex.client.queue(args.action)
+    remember(scope, current)
+  end,
+})
+
+rex.action({
+  name = "last_session",
+  title = "Go to Last Session",
+  category = "Sessions",
+  run = function(ctx)
+    local previous = remember("sessions", ctx.session_id).previous
+    if not previous then
+      error("No last session", 0)
+    end
+    select_session(ctx, previous)
   end,
 })
 
@@ -314,7 +426,8 @@ local function bind(key, action, args)
 end
 
 -- Tabs (tmux windows)
-bind("c", "client.tab.new")
+bind("c", "track_switch", { action = "client.tab.new", tabs = true })
+bind("l", "last_tab")
 bind("n", "tab_step", { step = 1 })
 bind("p", "tab_step", { step = -1 })
 for index = 1, 9 do
@@ -330,10 +443,11 @@ bind("shift+d", "diff")
 bind("f", "sessionizer")
 bind("shift+[Backslash]", "sessionizer", { dir = "~/Developer/personal/dotfiles" }) -- '
 bind("shift+n", "sessionizer", { dir = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes" })
-bind("s", "session.switch")
-bind("w", "session.switch")
-bind("shift+8", "session.previous") -- (
-bind("shift+9", "session.next") -- )
+bind("s", "track_switch", { action = "session.switch" })
+bind("w", "track_switch", { action = "session.switch" })
+bind("shift+8", "track_switch", { action = "session.previous" }) -- (
+bind("shift+9", "track_switch", { action = "session.next" }) -- )
+bind("shift+l", "last_session") -- L
 bind("shift+4", "session.rename") -- $
 bind("shift+a", "newest_session")
 bind("shift+s", "sort_sessions")
@@ -352,7 +466,7 @@ bind("shift+z", "cycle_width")
 bind("x", "pane.close")
 bind("alt+8", "pane.move.left") -- {
 bind("alt+9", "pane.move.right") -- }
-bind("shift+1", "pane.move_to_new_tab") -- !
+bind("shift+1", "track_switch", { action = "pane.move_to_new_tab", tabs = true }) -- !
 for _, direction in ipairs({ "left", "right", "up", "down" }) do
   bind("ctrl+" .. direction, "pane.resize", { direction = direction })
 end
