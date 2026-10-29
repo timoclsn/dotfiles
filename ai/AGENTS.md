@@ -65,6 +65,12 @@
 - Use `tmux capture-pane -p` to capture current pane content before sending keys to preserve context.
 - A pattern like `dotfiles:4.4` refers to a tmux pane (format: `session:window.pane`).
 
+## Rex
+
+- I mostly work in Rex now. If `$REX_SESSION` / `$REX_BLOCK` are set, you're in Rex; use the `rex` CLI (see the `rex` skill) instead of tmux.
+- A pane ID like `block:01a1881f-320f-7dcf-86ff-1c20c4cf470d` refers to a Rex pane (a "block"). Sessions are `session:<uuid>`. In Rex terms a tab is a window and a pane is a block.
+- Use `rex capture -s "$REX_SESSION" -b <block> --trim` to read a pane's content before sending input with `rex send` / `rex send-key`.
+
 ## Git / GitHub
 
 - When committing, if the working tree contains multiple unrelated changes, split them into separate commits grouped by topic/intent (semantic commits) rather than lumping everything into one commit.
