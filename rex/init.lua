@@ -243,7 +243,6 @@ rex.action({
         return focus_window(ctx, current, window)
       end
     end
-    error("No last tab", 0)
   end,
 })
 
@@ -266,10 +265,9 @@ rex.action({
         newest = session
       end
     end
-    if newest.session_id == ctx.session_id then
-      error("Already in newest session: " .. newest.label, 0)
+    if newest.session_id ~= ctx.session_id then
+      select_session(ctx, newest.session_id)
     end
-    select_session(ctx, newest.session_id)
   end,
 })
 
@@ -298,10 +296,9 @@ rex.action({
   category = "Sessions",
   run = function(ctx)
     local previous = remember("sessions", ctx.session_id).previous
-    if not previous then
-      error("No last session", 0)
+    if previous then
+      select_session(ctx, previous)
     end
-    select_session(ctx, previous)
   end,
 })
 
