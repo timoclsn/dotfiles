@@ -116,6 +116,9 @@ const formatCacheTimer = (expiresAt: number | null) => {
   return remainingMs > 0 ? `${Math.ceil(remainingMs / 60_000)}m` : "EXPIRED";
 };
 
+// Nerd Font icon: md-robot, alongside the budget's calendar icons
+const SESSION_COST_ICON = "\u{F06A9}";
+
 // The zsh `claude` wrapper sets CLAUDE_CONFIG_DIR only for the personal login
 // and leaves it unset for the work login (see claude-config-dir)
 const getAccount = () => (process.env.CLAUDE_CONFIG_DIR ? "p" : "w");
@@ -139,12 +142,13 @@ const main = async () => {
   // Claude Code's own list-price estimate for this session, next to the
   // account's official usage
   const budget = await budgetPromise;
-  const cost = `$${input.cost.total_cost_usd.toFixed(2)}`;
+  const cost = `${SESSION_COST_ICON} $${input.cost.total_cost_usd.toFixed(2)}`;
   // Marked when the last fetch failed, as the numbers can then be days old
   const budgetSummary =
     budget?.report &&
     (budget.lastFetch === "ok" ? budget.report.summary : `${budget.report.summary} (stale)`);
-  const sessionCost = budgetSummary ? `${cost} · ${budgetSummary}` : cost;
+  // Two spaces apart, like the budget's own parts
+  const sessionCost = budgetSummary ? `${cost}  ${budgetSummary}` : cost;
 
   const gitBranch = await gitBranchPromise;
   const maxProjectLen = 46;
