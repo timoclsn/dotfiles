@@ -66,6 +66,8 @@ for claude_dir in "$HOME/.claude" "$HOME/.claude-personal"; do
   ln -sf "$DOTFILES/claude/commands" "$claude_dir/commands"
   rm "$claude_dir/hooks" 2>/dev/null || true
   ln -sf "$DOTFILES/claude/hooks" "$claude_dir/hooks"
+  rm "$claude_dir/themes" 2>/dev/null || true
+  ln -sf "$DOTFILES/claude/themes" "$claude_dir/themes"
   rm "$claude_dir/skills" 2>/dev/null || true
   ln -sf "$DOTFILES/ai/skills" "$claude_dir/skills"
 done
