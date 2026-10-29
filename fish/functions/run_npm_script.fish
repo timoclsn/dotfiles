@@ -28,6 +28,6 @@ function run_npm_script
             --border-label=" Run npm script ")
     test -n "$script"; or return
 
-    history append -- "nr $script"
+    history append -- "nr "(string escape -- $script)
     nr $script
 end

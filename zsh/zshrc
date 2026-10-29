@@ -216,9 +216,8 @@ run_npm_script() {
             --prompt="Select script to run: " \
             --border-label=" Run npm script ") && \
     if [ -n "$script" ]; then
-        local cmd="nr $script"
-        print -s "$cmd"  # Add to zsh history
-        eval "$cmd"
+        print -s "nr ${(q)script}"  # Add to zsh history
+        nr "$script"
     fi
 }
 
