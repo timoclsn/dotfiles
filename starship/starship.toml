@@ -8,3 +8,12 @@ disabled = false
 
 [package]
 disabled = true
+
+[docker_context]
+disabled = true
+
+[deno]
+disabled = true
+
+[git_branch]
+truncation_length = 30
