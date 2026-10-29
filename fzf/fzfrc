@@ -1,5 +1,3 @@
-# Default fzf options and the Tokyo Night theme. Read by fzf through
-# FZF_DEFAULT_OPTS_FILE, which zshrc and scripts/rex-sessionizer point here.
 --highlight-line
 --info=inline-right
 --ansi

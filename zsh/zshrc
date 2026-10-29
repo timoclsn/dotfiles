@@ -570,7 +570,8 @@ function yazy-shell() {
 # FZF Configuration
 # =============================================================================
 # fzf tokyonight theme and default options, kept in a file so scripts that
-# don't load this shell config can use them too
+# don't load this shell config can use them too. No comments in that file:
+# fish's fzf integration joins it into one line.
 export FZF_DEFAULT_OPTS_FILE="$HOME/.config/fzf/fzfrc"
 # Enable fzf keybindings
 source <(fzf --zsh)
