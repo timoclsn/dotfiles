@@ -325,6 +325,19 @@ rex.action({
   end,
 })
 
+-- Like tmux's kill-pane: closing the only pane of a tab closes the tab.
+rex.action({
+  name = "close_pane",
+  title = "Close Pane or Tab",
+  category = "Panes",
+  run = function(ctx)
+    local windows, active = session_windows(ctx)
+    local layers = windows[active].layers
+    local only_pane = #layers == 1 and layers[1].layout.block_id
+    rex.client.queue(only_pane and "client.tab.close" or "pane.close")
+  end,
+})
+
 -- The splits from the layout's root down to a block, each with the side
 -- the block is on.
 local function path_to(node, block_id)
@@ -471,7 +484,7 @@ bind("down", "pane.focus.down")
 bind("o", "pane.focus_next")
 bind("z", "pane.zoom")
 bind("shift+z", "cycle_width")
-bind("x", "pane.close")
+bind("x", "close_pane")
 bind("alt+8", "pane.move.left") -- {
 bind("alt+9", "pane.move.right") -- }
 bind("shift+1", "track_switch", { action = "pane.move_to_new_tab", tabs = true }) -- !
