@@ -34,6 +34,7 @@ Related, shipped in preview.23: sessions now survive server restarts. That is no
 | `track_switch` wrapper around built-in `client.tab.new`, `session.switch`, `session.previous/next`, `pane.move_to_new_tab` | Built-ins don't record where you came from, so the history above misses them. Clicking is only noticed on the next key | The same history feature as above |
 | `newest_session` (`prefix+A`) | No "most recently created session" action; relies on session IDs starting with the creation time | Such an action |
 | `sort_sessions` + sorting on `create_session` (attach and `session.move` each one) | No alphabetical sidebar order, only manual moves | A sidebar sort setting |
+| `expand_sessions` action (`prefix+E`) | Rex has Expand Session for one session only, no expand-all | An expand-all sessions action |
 | `grid` action (`prefix++`) | No 2x2 split. Queues five pane actions | A grid / layout action |
 | `cycle_width` action (`prefix+Z`) | No 1/3, 1/2, 2/3 cycle. Walks the layout tree and calls `resize_pane` | A pane size preset or cycle action |
 | German layout key names: `alt+7` for `\|`, `shift+8` for `(`, `[Backquote]`, `[Backslash]` … | Keys without a Rex name need physical key codes or the modifier combo | Layout-aware key names |

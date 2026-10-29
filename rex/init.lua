@@ -253,6 +253,17 @@ rex.action({
   run = sort_sessions,
 })
 
+rex.action({
+  name = "expand_sessions",
+  title = "Expand All Sessions",
+  category = "Sessions",
+  run = function()
+    for _, session in ipairs(call("session.list", {}).sessions) do
+      rex.client.queue("session.expand", { session_id = session.session_id })
+    end
+  end,
+})
+
 -- Session IDs start with their creation time, so the highest one is the newest.
 rex.action({
   name = "newest_session",
@@ -475,6 +486,8 @@ bind("shift+o", "open_repo")
 bind("a", "agents_dashboard")
 bind("r", "client.config.reload")
 bind("e", "client.sidebar.toggle")
+bind("shift+e", "expand_sessions")
+bind("shift+c", "session.collapse_others")
 
 -- ctrl+h/j/k/l move between panes, except in programs that use them
 -- themselves: vim moves between its own splits, fzf moves its selection.
