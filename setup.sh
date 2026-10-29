@@ -81,6 +81,8 @@ ln -sf "$DOTFILES/starship/starship.toml" "$HOME/.config/starship.toml"
 ln -sf "$DOTFILES/tmux/tmux.conf" "$HOME/.tmux.conf"
 ln -sf "$DOTFILES/wezterm/wezterm.lua" "$HOME/.wezterm.lua"
 ln -sf "$DOTFILES/zsh/zshrc" "$HOME/.zshrc"
+# Stops macOS `login` from printing "Last login: ..." in every new terminal
+touch "$HOME/.hushlogin"
 
 # codex
 ln -sf "$DOTFILES/codex/config.toml" "$HOME/.codex/config.toml"
