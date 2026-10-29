@@ -90,12 +90,12 @@
   "skipWorkflowUsageWarning": true,
   "theme": "dark",
   "editorMode": "vim",
-  "preferredNotifChannel": "notifications_disabled",
+  "preferredNotifChannel": "auto",
   "fileCheckpointingEnabled": true,
-  "terminalProgressBarEnabled": false,
+  "terminalProgressBarEnabled": true,
   "remoteControlAtStartup": true,
-  "inputNeededNotifEnabled": false,
-  "agentPushNotifEnabled": false,
+  "inputNeededNotifEnabled": true,
+  "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
   "tipsEnabled": false
 }
