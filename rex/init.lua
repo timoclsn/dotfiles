@@ -32,14 +32,14 @@ local function terminal(cwd, command)
 end
 
 -- A floating layer running a command, closed when the command exits.
-local function popup(label, command, bounds)
+local function popup(label, command, bounds, cwd)
   in_session("new_layer", {
     bounds = bounds,
     focus = true,
     layout = rex.layout.block({
       flavor = shell,
       label = label,
-      options = { command = command, exit = { on_completion = true, quick_exit_threshold_ms = 0 } },
+      options = { cwd = cwd, command = command, exit = { on_completion = true, quick_exit_threshold_ms = 0 } },
     }),
   })
 end
@@ -438,6 +438,16 @@ rex.action({
   end,
 })
 
+rex.action({
+  name = "lazygit",
+  title = "Lazygit",
+  category = "Git",
+  keywords = "git lazygit",
+  run = function(ctx)
+    popup("Lazygit", { "/opt/homebrew/bin/fish", "-c", "lazygit" }, { 0.05, 0.05, 0.9, 0.9 }, pane_dir(ctx))
+  end,
+})
+
 -- Same prefix and keys as tmux. Keys are written as pressed on a German
 -- layout, e.g. "|" is alt+7 and "(" is shift+8. Keys Rex has no name for
 -- use their physical key code: [Backquote] is "<", [Backslash] is "#".
@@ -459,6 +469,7 @@ bind("shift+6", "client.tab.close") -- &
 bind("[Backquote]", "client.tab.move.backward") -- <
 bind("shift+[Backquote]", "client.tab.move.forward") -- >
 bind("shift+d", "diff")
+bind("g", "lazygit")
 
 -- Sessions
 bind("f", "sessionizer")
