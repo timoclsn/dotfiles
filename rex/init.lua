@@ -61,7 +61,7 @@ end
 -- Runs cc and keeps a fish shell open once it exits. The prompt is passed as
 -- an argument, so quotes, newlines and '!' reach cc without any shell quoting.
 local function agent_command(prompt)
-  return { "fish", "-c", "cc $argv; exec fish", "--", prompt }
+  return { "fish", "-ic", "cc $argv; exec fish", "--", prompt }
 end
 
 -- Rex has no focus history, so remember what these actions switch between: the
