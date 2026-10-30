@@ -44,7 +44,7 @@ Related, shipped in preview.23: sessions now survive server restarts. That is no
 | `rex.client.queue("session.select", …)` to switch tabs and sessions | The app tracks the visible tab itself, so the server-side API can't switch it. Needs Remote Control on in Rex settings | Server-side session/tab selection that works without Remote Control |
 | `open_repo`, `copy_path`, `diff` use `foreground(ctx).cwd` | No `#{pane_current_path}` for key bindings | A pane cwd in the action context (`ctx`) |
 | `PATH` rebuilt in `run()` | Rex server starts with a minimal PATH | The server inheriting the user's shell PATH |
-| `agent_command`: `zsh -ic 'cc "$@"; exec fish'` | `cc` is a zsh alias. The pane should stay open after the agent exits | Per-session startup command or an exit-behaviour setting that makes this unneeded |
+| `agent_command`: `fish -c 'cc $argv; exec fish'` | The pane should stay open after the agent exits | Per-session startup command or an exit-behaviour setting that makes this unneeded |
 
 ## Around the config
 

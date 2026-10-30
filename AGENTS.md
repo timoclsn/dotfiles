@@ -107,8 +107,8 @@ clicking, is noticed the next time one of those keys runs.
 fish is on trial as the interactive shell. Ghostty (`command`), tmux
 (`default-command`), Rex (Startup Command in its Terminal settings) and the
 Rex agent pane once `cc` exits (`exec fish` in `rex/init.lua`) start fish,
-while zsh stays the login shell. So `zsh -ic`, the agents and scripts
-keep using zsh, and `zsh/zshrc` stays complete. Removing
+while zsh stays the login shell. So the agents and scripts keep using zsh,
+and `zsh/zshrc` stays complete. Removing
 those settings switches back.
 
 `fish/config.fish` mirrors `zsh/zshrc`, and each zsh helper function is a file

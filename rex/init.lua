@@ -58,11 +58,10 @@ local function pane_dir(ctx)
   return program.cwd
 end
 
--- Runs cc through an interactive zsh (cc is an alias) and keeps a fish shell
--- open once it exits. The prompt is passed as an argument, so quotes,
--- newlines and '!' reach cc without any shell quoting.
+-- Runs cc and keeps a fish shell open once it exits. The prompt is passed as
+-- an argument, so quotes, newlines and '!' reach cc without any shell quoting.
 local function agent_command(prompt)
-  return { "zsh", "-ic", 'cc "$@"; exec fish', "zsh", prompt }
+  return { "fish", "-c", "cc $argv; exec fish", "--", prompt }
 end
 
 -- Rex has no focus history, so remember what these actions switch between: the
