@@ -108,12 +108,13 @@ fish is on trial as the interactive shell. Ghostty (`command`), tmux
 (`default-command`), Rex (Startup Command in its Terminal settings) and the
 Rex agent pane once `cc` exits (`exec fish` in `rex/init.lua`) start fish,
 while zsh stays the login shell. So the agents and scripts keep using zsh,
-and `zsh/zshrc` stays complete. Removing
-those settings switches back.
+and `zsh/zshrc` is stripped down to what they need (environment, PATH, the
+`claude` wrapper, `cc*` and comview aliases) to start in ~30ms. No Oh My Zsh,
+prompt, completion or fzf/zoxide.
 
-`fish/config.fish` mirrors `zsh/zshrc`, and each zsh helper function is a file
-in `fish/functions/`. New aliases, PATH entries or functions go into both until
-the trial ends. Don't commit `fish/fish_variables`; fish writes it at runtime.
+`fish/config.fish` holds the full interactive setup, and each helper function is
+a file in `fish/functions/`. New PATH entries and env vars go into both shells;
+aliases and functions only into zsh if agents or scripts need them. Don't commit `fish/fish_variables`; fish writes it at runtime.
 
 ### Claude Code Hooks
 

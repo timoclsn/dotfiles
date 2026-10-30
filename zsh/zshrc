@@ -1,9 +1,6 @@
-# =============================================================================
-# Powerlevel10k Instant Prompt
-# =============================================================================
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
+# Kept minimal on purpose: terminals start fish, and zsh is only what agents and
+# scripts run (`zsh -ic`). It needs the environment, PATH and the aliases and
+# functions those callers use. Anything for typing at a prompt lives in fish.
 
 # Keep PATH entries unique automatically
 typeset -U path PATH
@@ -11,99 +8,47 @@ typeset -U path PATH
 # =============================================================================
 # Environment Variables
 # =============================================================================
-export ZSH="$HOME/.oh-my-zsh"
 export XDG_CONFIG_HOME="$HOME/.config"
-
-# Android SDK
-export ANDROID_SDK_ROOT=$HOME/Library/Android/sdk
-export PATH=$PATH:$ANDROID_SDK_ROOT/emulator
-export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
-
-# Local bin
-export PATH="$HOME/.local/bin:$PATH"
 export EDITOR='nvim'
+export GOPRIVATE=github.com/steuerbot/*,github.com/taxfix/*
+export FZF_DEFAULT_OPTS_FILE="$HOME/.config/fzf/fzfrc"
 
 # Load env vars from .env file
 [ -f "$HOME/.env" ] && source "$HOME/.env"
 
-# Ruby
-export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
-
-# Go
-export GOPRIVATE=github.com/steuerbot/*,github.com/taxfix/*
-
 # =============================================================================
-# Oh My Zsh Configuration
+# PATH
 # =============================================================================
-ZSH_THEME="powerlevel10k/powerlevel10k"
-plugins=(git)
-source $ZSH/oh-my-zsh.sh
-
-# =============================================================================
-# Package Manager Paths
-# =============================================================================
-# pnpm
+export ANDROID_SDK_ROOT=$HOME/Library/Android/sdk
 export PNPM_HOME="$HOME/Library/pnpm"
-export PATH="$PNPM_HOME/bin:$PATH"
-
-# fnm
-eval "`fnm env`"
-
-# Node global packages
-export PATH=~/.npm-global/bin:$PATH
-
-# bun
 export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
+export PYENV_ROOT="$HOME/.pyenv"
+
+path+=(
+  $ANDROID_SDK_ROOT/emulator
+  $ANDROID_SDK_ROOT/platform-tools
+  $HOME/.lmstudio/bin
+)
+# Shims instead of `rbenv init`/`pyenv init` (~130ms per start)
+path=(
+  $HOME/.local/bin
+  $HOME/.opencode/bin
+  $HOME/.rbenv/shims
+  $PYENV_ROOT/shims
+  $PYENV_ROOT/bin
+  $HOME/.turso
+  $BUN_INSTALL/bin
+  $HOME/.npm-global/bin
+  $PNPM_HOME/bin
+  /opt/homebrew/opt/ruby/bin
+  $path
+)
+
+eval "$(fnm env)"
 
 # =============================================================================
-# CLI Tools
+# Aliases and functions used by agents and scripts
 # =============================================================================
-# Turso CLI
-export PATH="$HOME/.turso:$PATH"
-
-# =============================================================================
-# Aliases
-# =============================================================================
-# Shell
-alias src="source ~/.zshrc"
-alias s="src"
-# hard clear: visible screen + scrollback (and tmux history if in tmux)
-c() {
-  printf "\033c"
-  [ -n "$TMUX" ] && command tmux clear-history
-}
-alias e="exit"
-
-# Navigation
-# alias cd="z"
-alias ..="cd .."
-alias ...="cd ../.."
-alias ....="cd ../../.."
-alias .....="cd ../../../.."
-alias h="cd ~"
-alias b="cd -"
-alias d="cd ~/Developer"
-alias sbf="cd ~/Developer/steuerbot/frontend"
-alias sbw="cd ~/Developer/steuerbot/website"
-
-# File Operations
-alias l='eza -l --icons'
-alias la='eza -la --icons'
-alias lt='eza --tree --icons'
-alias lf='eza | fzf --icons'
-alias link="ln -sf"
-
-# Applications
-alias vim="nvim"
-alias v="vim"
-alias lg="lazygit"
-alias g="git"
-alias r="run_npm_script"
-alias m="run_nx_target"
-alias t="tmux"
-alias ta="tmux attach"
-alias tk="tmux kill-server"
 # Personal projects use the personal Claude login, everything else the work one.
 # Pass --work or --personal (also through the cc* aliases) to pick the login
 # regardless of the project.
@@ -139,17 +84,6 @@ alias cch="cc --model claude-haiku-5-5 --effort medium"
 alias cchw="cch --worktree"
 alias cx="codex --dangerously-bypass-approvals-and-sandbox"
 alias ca="cursor-agent"
-alias ts="tailscale"
-alias tsti="ts switch timonet"
-alias tsta="ts switch taxfix.de"
-alias ai="oc"
-alias ad="agents-dashboard"
-alias u="update-global-packages"
-alias y="yazy-shell"
-alias i="fastfetch"
-alias n='manage_node_version'
-alias o='manage_ollama'
-alias x='manage_xcode_version'
 
 # comview
 alias cv="git diff | comview"
@@ -160,440 +94,3 @@ cvpr() {
   git diff "$(git merge-base HEAD "$base")"...HEAD | comview
 }
 cvgh() { gh pr diff "$@" | comview; }
-
-# =============================================================================
-# Key Bindings
-# =============================================================================
-bindkey -s ^f "tmux-sessionizer\n"
-bindkey '^G' fzf-cd-widget
-
-# =============================================================================
-# Functions
-# =============================================================================
-# run npm script requires jq fzf and nr
-run_npm_script() {
-  # Check for required dependencies
-  local missing_deps=()
-  
-  if ! command -v jq >/dev/null 2>&1; then
-    missing_deps+=("jq")
-  fi
-  
-  if ! command -v fzf >/dev/null 2>&1; then
-    missing_deps+=("fzf")
-  fi
-  
-  if ! command -v nr >/dev/null 2>&1; then
-    missing_deps+=("nr")
-  fi
-  
-  if [ ${#missing_deps[@]} -ne 0 ]; then
-    echo "Error: Missing required dependencies: ${missing_deps[*]}"
-    echo "Please install them before running this script."
-    return 1
-  fi
-  
-  # Check if package.json exists
-  if [ ! -f "package.json" ]; then
-    echo "Error: package.json not found in current directory"
-    return 1
-  fi
-  
-  # Check if scripts exist in package.json
-  local scripts_count
-  scripts_count=$(jq -r '.scripts | length' package.json)
-  
-  if [ "$scripts_count" -eq 0 ]; then
-    echo "Error: No scripts found in package.json"
-    return 1
-  fi
-  
-  # Run the script selector
-  local script
-  script=$(jq -r '.scripts | keys[]' package.json | sort | \
-        fzf --height 15 \
-            --cycle \
-            --prompt="Select script to run: " \
-            --border-label=" Run npm script ") && \
-    if [ -n "$script" ]; then
-        print -s "nr ${(q)script}"  # Add to zsh history
-        nr "$script"
-    fi
-}
-
-run_nx_target() {
-  local missing_deps=()
-  
-  if ! command -v jq >/dev/null 2>&1; then
-    missing_deps+=("jq")
-  fi
-  
-  if ! command -v fzf >/dev/null 2>&1; then
-    missing_deps+=("fzf")
-  fi
-  
-  if [ ${#missing_deps[@]} -ne 0 ]; then
-    echo "Error: Missing required dependencies: ${missing_deps[*]}"
-    echo "Please install them before running this script."
-    return 1
-  fi
-  
-  if [ ! -f "nx.json" ]; then
-    echo "Error: nx.json not found in current directory"
-    return 1
-  fi
-  
-  local project
-  project=$(npx nx show projects --json 2>/dev/null | jq -r '.[]' | sort | \
-    fzf --height 15 \
-        --cycle \
-        --prompt="Select project: " \
-        --border-label=" Select Nx project ")
-  
-  if [ -z "$project" ]; then
-    return 0
-  fi
-  
-  local target
-  target=$(npx nx show project "$project" --json 2>/dev/null | \
-    jq -r '.targets | keys[]' | sort | \
-    fzf --height 15 \
-        --cycle \
-        --prompt="Select target to run: " \
-        --border-label=" Run target for $project ")
-  
-  if [ -n "$target" ]; then
-    local cmd="npx nx run $project:$target"
-    print -s "$cmd"
-    eval "$cmd"
-  fi
-}
-
-manage_node_version() {
-    # Check if fnm is installed
-    if ! command -v fnm >/dev/null 2>&1; then
-        echo "fnm is not installed. Please install it first."
-        return 1
-    fi
-
-    # Check if fzf is installed
-    if ! command -v fzf >/dev/null 2>&1; then
-        echo "fzf is not installed. Please install it first."
-        return 1
-    fi
-
-    # Get current Node.js version
-    local current_version=$(node --version 2>/dev/null || echo "none")
-    local current_version_string="(current: $current_version)"
-
-    # Function to list installed versions
-    list_installed() {
-        fnm list
-    }
-
-    # Function to list remote versions
-    list_remote() {
-        fnm list-remote
-    }
-
-    # Helper function to extract clean version number from fnm list output
-    extract_version() {
-        sed 's/^\* //'
-    }
-
-    # Main menu options
-    action=$(echo -e "1. Use installed version\n2. Set default version\n3. Install new version\n4. Uninstall version" | \
-        fzf --height 15 \
-            --cycle \
-            --no-clear \
-            --prompt="Select fnm action: " \
-            --border-label " Manage Node.js $current_version_string")
-
-    case "$action" in
-        "1. Use installed version")
-            version=$(list_installed | \
-                fzf --height 15 \
-                    --cycle \
-                    --tac \
-                    --prompt="Select version to use: " \
-                    --border-label " Manage Node.js $current_version_string" | \
-                extract_version)
-            if [ ! -z "$version" ]; then
-                fnm use "$version"
-            fi
-            ;;
-    
-        "2. Set default version")
-            version=$(list_installed | \
-                fzf --height 15 \
-                    --cycle \
-                    --tac \
-                    --prompt="Select version to set as default: " \
-                    --border-label " Set Default Node.js Version $current_version_string" | \
-                extract_version)
-            if [ ! -z "$version" ]; then
-                fnm default "$version"
-            fi
-            ;;
-
-        "3. Install new version")
-            version=$(list_remote | \
-                fzf --height 15 \
-                    --tac \
-                    --prompt="Select version to install: " \
-                    --border-label " Install Node.js $current_version_string")
-            if [ ! -z "$version" ]; then
-                fnm install "$version"
-                echo -n "Do you want to set this version as default? (y/N) "
-                read answer
-                if [[ $answer =~ ^[Yy]$ ]]; then
-                    fnm default "$version"
-                    fnm use "$version"
-                fi
-            fi
-            ;;
-
-        "4. Uninstall version")
-            version=$(list_installed | \
-                fzf --height 15 \
-                    --cycle \
-                    --tac \
-                    --prompt="Select version to uninstall: " \
-                    --border-label " Uninstall Node.js Version $current_version_string" | \
-                extract_version)
-            if [ ! -z "$version" ]; then
-                echo -n "Are you sure you want to uninstall Node.js $version? (y/N) "
-                read answer
-                if [[ $answer =~ ^[Yy]$ ]]; then
-                    fnm uninstall "$version"
-                fi
-            fi
-            ;;
-    esac
-}
-
-manage_ollama() {
-    # Check if ollama is installed
-    if ! command -v ollama >/dev/null 2>&1; then
-        echo "ollama is not installed. Please install it first."
-        return 1
-    fi
-
-    # Check if fzf is installed
-    if ! command -v fzf >/dev/null 2>&1; then
-        echo "fzf is not installed. Please install it first."
-        return 1
-    fi
-
-    # Check if ollama service is running
-    if ! pgrep -f "ollama serve" >/dev/null; then
-        echo "Ollama service is not running. Starting it now..."
-        ollama serve >/dev/null 2>&1 &
-        # Wait a moment for the service to start
-        sleep 2
-    fi
-
-    # Function to list installed models
-    list_installed() {
-        ollama list
-    }
-
-    # Helper function to extract model name from ollama list output
-    extract_model() {
-        awk '{print $1}'
-    }
-
-    # Main menu options
-    action=$(echo -e "1. Run installed model\n2. Remove model\n3. Stop Ollama service" | \
-        fzf --height 15 \
-            --cycle \
-            --no-clear \
-            --prompt="Select ollama action: " \
-            --border-label " Manage Ollama ")
-
-    case "$action" in
-        "1. Run installed model")
-            model=$(list_installed | \
-                fzf --height 15 \
-                    --cycle \
-                    --tac \
-                    --prompt="Select model to run: " \
-                    --border-label " Run Ollama Model " | \
-                extract_model)
-            if [ ! -z "$model" ]; then
-                ollama run "$model"
-            fi
-            ;;
-    
-        "2. Remove model")
-            model=$(list_installed | \
-                fzf --height 15 \
-                    --cycle \
-                    --tac \
-                    --prompt="Select model to remove: " \
-                    --border-label " Remove Ollama Model " | \
-                extract_model)
-            if [ ! -z "$model" ]; then
-                echo -n "Are you sure you want to remove $model? (y/N) "
-                read answer
-                if [[ $answer =~ ^[Yy]$ ]]; then
-                    ollama rm "$model"
-                fi
-            fi
-            ;;
-
-        "3. Stop Ollama service")
-            echo -n "Are you sure you want to stop the Ollama service? (y/N) "
-            read answer
-            if [[ $answer =~ ^[Yy]$ ]]; then
-                pkill -f "ollama serve"
-                echo "Ollama service stopped."
-            fi
-            ;;
-    esac
-}
-
-manage_xcode_version() {
-    # Check if fzf is installed
-    if ! command -v fzf >/dev/null 2>&1; then
-        echo "fzf is not installed. Please install it first."
-        return 1
-    fi
-
-    # Get current Xcode path
-    local current_xcode=$(xcode-select -p 2>/dev/null | sed 's|/Contents/Developer||')
-    local current_xcode_name=$(basename "$current_xcode" 2>/dev/null || echo "none")
-    local current_xcode_string="(current: $current_xcode_name)"
-
-    # Find all Xcode applications
-    local xcode_apps=()
-    while IFS= read -r app; do
-        xcode_apps+=("$app")
-    done < <(find /Applications -maxdepth 1 -name "Xcode*.app" -type d 2>/dev/null | sort)
-
-    if [ ${#xcode_apps[@]} -eq 0 ]; then
-        echo "No Xcode applications found in /Applications"
-        return 1
-    fi
-
-    # Select Xcode version
-    local selected_xcode=$(printf '%s\n' "${xcode_apps[@]}" | \
-        sed 's|/Applications/||' | \
-        fzf --height 15 \
-            --cycle \
-            --prompt="Select Xcode version: " \
-            --border-label " Manage Xcode $current_xcode_string")
-
-    if [ -z "$selected_xcode" ]; then
-        return 0
-    fi
-
-    local xcode_path="/Applications/$selected_xcode"
-    
-    sudo xcode-select -s "$xcode_path"
-    
-    if [ $? -eq 0 ]; then
-        echo "Successfully switched to:"
-        xcodebuild -version
-    else
-        echo "Failed to switch Xcode version"
-        return 1
-    fi
-}
-# =============================================================================
-# Brew Package Management Functions
-# =============================================================================
-# Install (one or multiple) selected application(s)
-# using "brew search" as source input
-# mnemonic [B]rew [I]nstall [P]ackage
-bip() {
-  local inst=$(brew search "$@" | \
-        fzf -m \
-            --height 15 \
-            --cycle \
-            --prompt="Select packages to install: " \
-            --border-label=" Brew Install ")
-
-  if [[ $inst ]]; then
-    for prog in $(echo $inst);
-    do; brew install $prog; done;
-  fi
-}
-
-# Update (one or multiple) selected application(s)
-# mnemonic [B]rew [U]pdate [P]ackage
-bup() {
-  local upd=$(brew leaves | \
-        fzf -m \
-            --height 15 \
-            --cycle \
-            --prompt="Select packages to update: " \
-            --border-label=" Brew Update ")
-
-  if [[ $upd ]]; then
-    for prog in $(echo $upd);
-    do; brew upgrade $prog; done;
-  fi
-}
-
-# Delete (one or multiple) selected application(s)
-# mnemonic [B]rew [C]lean [P]ackage (e.g. uninstall)
-bcp() {
-  local uninst=$(brew leaves | \
-        fzf -m \
-            --height 15 \
-            --cycle \
-            --prompt="Select packages to remove: " \
-            --border-label=" Brew Uninstall ")
-
-  if [[ $uninst ]]; then
-    for prog in $(echo $uninst);
-    do; brew uninstall $prog; done;
-  fi
-}
-
-# =============================================================================
-# Shell Wrappers
-# =============================================================================
-# We suggest using this y shell wrapper that provides the ability to change the current working directory when exiting Yazi.
-function yazy-shell() {
-  local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
-  yazi "$@" --cwd-file="$tmp"
-  if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-    builtin cd -- "$cwd"
-  fi
-  rm -f -- "$tmp"
-}
-
-# =============================================================================
-# FZF Configuration
-# =============================================================================
-# fzf tokyonight theme and default options, kept in a file so scripts that
-# don't load this shell config can use them too. No comments in that file:
-# fish's fzf integration joins it into one line.
-export FZF_DEFAULT_OPTS_FILE="$HOME/.config/fzf/fzfrc"
-# Enable fzf keybindings
-source <(fzf --zsh)
-
-# =============================================================================
-# Additional Tools
-# =============================================================================
-eval "$(zoxide init zsh)"
-
-# bun completions
-[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:$HOME/.lmstudio/bin"
-# End of LM Studio CLI section
-
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
-eval "$(rbenv init - zsh)"
-
-# opencode
-export PATH="$HOME/.opencode/bin:$PATH"
