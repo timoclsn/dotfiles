@@ -48,7 +48,7 @@ Related, shipped in preview.23: sessions now survive server restarts. That is no
 
 ## Around the config
 
-- `scripts/rex-sessionizer` and the `sessionizer` action: Rex version of `tmux-sessionizer` (`--detach`, `--prompt`). The `worktree` and `worktree-remove` skills branch on Rex vs tmux. Drop when Rex has a built-in project picker.
+- `scripts/rex-sessionizer` and the `sessionizer` action: Rex version of `tmux-sessionizer` (`--detach`, `--prompt`). The `session` and `session-remove` skills branch on Rex vs tmux. Drop when Rex has a built-in project picker.
 - `nvim/plugin/rex-navigator.lua`: ctrl-hjkl hands over from Neovim splits to Rex via `rex focus`. Drop together with the `ctrl+h/j/k/l` binding when Rex handles pass-through to programs natively.
 - `scripts/rex.ts` `runsInRex()` and the early return in the Claude, Codex, OpenCode and Pi notify hooks: Rex does its own agent notifications. Drop if Rex notifications become configurable or stop duplicating ours.
 - Fish trial: Rex's Startup Command setting plus `exec fish` in `agent_command`. Not Rex-specific, ends with the shell trial.

@@ -1,5 +1,5 @@
 #!/usr/bin/env bun
-// Removes a worktree made by the `worktree` skill: the worktree folder, its
+// Removes a worktree made by the `session` skill: the worktree folder, its
 // local branch, and the tmux and Rex sessions opened on it.
 //
 //   worktree-remove.ts [--target <slug|folder name|branch|path>] [--discard]
@@ -108,7 +108,7 @@ const listMergedPrHeads = async () => {
 };
 
 const [uncommitted, ownCommits] = await Promise.all([
-  // Ignored files are left out: the worktree skill only symlinks or clones them
+  // Ignored files are left out: the session skill only symlinks or clones them
   // from another checkout, so they exist elsewhere too.
   $`git -C ${worktree.path} status --porcelain`.text().then(lines),
   listOwnCommits(),

@@ -1,10 +1,10 @@
 ---
-name: worktree
-description: Create and set up a new git worktree as a sibling of the current repo, branched off the default branch (main/master) by default — or off a given branch, tag, or PR. Names it after the repo plus a semantic extension derived from whatever content you give it, opens a session on it without switching to it — in tmux via tmux-sessionizer, or in Rex via rex-sessionizer, whichever the current terminal runs in — and starts a Claude session in it on the task. Use when the user invokes `/worktree`, or asks to spin up / create a worktree to work on something in isolation, on a specific branch, or to check out a PR.
+name: session
+description: Spin up a new, separate session for a task, without touching the current one — creates a git worktree as a sibling of the current repo (new branch off the default branch by default, or off a given branch, tag, or PR), names it after the repo plus a semantic extension derived from whatever content you give it, opens a tmux session (via tmux-sessionizer) or a Rex session (via rex-sessionizer), whichever the current terminal runs in, without switching to it, and starts a Claude session in it on the task. Use when the user invokes `/session`, or asks for a new / separate session for a task, or to spin up a worktree to work on something in isolation, on a specific branch, or to check out a PR. Not for working in the current session.
 argument-hint: "[the task to work on (also used to name the worktree/branch), and/or a base branch/tag/PR (optional)]"
 ---
 
-# Create a worktree
+# Create a session
 
 Create and set up a fresh git worktree as a **sibling** of the current repo (one level up, not nested inside it), on a **new branch off the default branch**, then open a tmux or Rex session on it, without switching to it, that starts a Claude session on the task.
 
@@ -35,7 +35,7 @@ Once it finishes, relay that result to the user in one or two lines. Don't narra
 
    Also tell it to stop once the work is done: implement the task and leave the changes in the working tree, but don't commit, push, or open a PR. The user reviews the result first and asks for those separately. Only add this if the user's own task didn't already ask for a commit or PR.
 
-   Write no prompt when the argument carries no actual task — a bare `/worktree`, or a PR checkout with nothing asked of it. The session then just starts empty, ready for the user.
+   Write no prompt when the argument carries no actual task — a bare `/session`, or a PR checkout with nothing asked of it. The session then just starts empty, ready for the user.
 
 5. **Run the script** from the current repo (any of its worktrees works — it anchors on the main checkout), passing the prompt as `--task` if there is one:
    ```sh

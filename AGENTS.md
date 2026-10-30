@@ -78,7 +78,7 @@ targets that project directly. `--detach` sets the session up without attaching
 or switching the client to it, leaves a freshly created session on the `agents`
 window, and prints the session name. `--prompt <text>` starts the agent in a
 newly created session with that text as its first message. Together they're how
-the `worktree` skill prepares a session for a new worktree and hands it the task
+the `session` skill prepares a session for a new worktree and hands it the task
 without pulling the user out of their current one.
 
 ### Rex Session Setup (rex-sessionizer)
@@ -91,7 +91,7 @@ floating popup.
 A new project session has a single window running the AI agent, and
 sessions are kept sorted alphabetically in the sidebar. `rex-sessionizer` takes
 the same arguments as tmux-sessionizer (a directory, `--detach`, `--prompt`);
-the `worktree` skill uses rex-sessionizer instead of tmux-sessionizer when it
+the `session` skill uses rex-sessionizer instead of tmux-sessionizer when it
 runs in a Rex terminal outside tmux. Switching the app to the picked session from the popup needs
 Remote Control turned on in Rex's settings.
 

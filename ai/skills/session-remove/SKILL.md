@@ -1,12 +1,12 @@
 ---
-name: worktree-remove
-description: Undo the `worktree` skill — delete a git worktree, its local branch, and the tmux/Rex session opened on it. Refuses and asks the user first when uncommitted changes or unpushed commits would be lost. Works from inside the worktree's own session (removes that one) or from elsewhere given a name. Use when the user invokes `/worktree-remove`, or says they're done with a worktree, or asks to delete, remove, clean up, or close a worktree or its session.
+name: session-remove
+description: Undo the `session` skill — delete a git worktree, its local branch, and the tmux/Rex session opened on it. Refuses and asks the user first when uncommitted changes or unpushed commits would be lost. Works from inside the session's own worktree (removes that one) or from elsewhere given a name. Use when the user invokes `/session-remove`, or says they're done with a session spawned by `/session`, or asks to delete, remove, clean up, or close that session or its worktree.
 argument-hint: "[worktree to remove: slug, folder name, branch, or path (optional; defaults to the current worktree)]"
 ---
 
-# Remove a worktree
+# Remove a session
 
-Undo what the `worktree` skill set up: the sibling worktree folder, its local branch, and the tmux and Rex sessions opened on it. The remote branch and any PR are left alone.
+Undo what the `session` skill set up: the sibling worktree folder, its local branch, and the tmux and Rex sessions opened on it. The remote branch and any PR are left alone.
 
 The bundled script `${CLAUDE_SKILL_DIR}/scripts/worktree-remove.ts` (`scripts/worktree-remove.ts` in this skill's directory) does the removal. It checks for work that would be lost before it deletes anything. Run it directly in this session; don't delegate to a subagent.
 
@@ -37,6 +37,6 @@ The bundled script `${CLAUDE_SKILL_DIR}/scripts/worktree-remove.ts` (`scripts/wo
 
 ## Notes
 
-- Ignored files (`node_modules`, `.env*`) don't count as lost work. The `worktree` skill only cloned or symlinked them from another checkout.
+- Ignored files (`node_modules`, `.env*`) don't count as lost work. The `session` skill only cloned or symlinked them from another checkout.
 - The branch is deleted with `-D`. That's safe here, since the check above already covers unmerged commits, and it also deletes branches whose PR was squash-merged. Commits made after the PR merged still count as unpushed.
 - Sessions are matched by name. Both sessionizers name a session after the worktree folder (tmux replaces `.` with `_`). The script closes whichever sessions exist, in tmux, Rex, or both.

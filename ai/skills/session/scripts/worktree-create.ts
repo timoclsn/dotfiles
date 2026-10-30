@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 // Creates a sibling git worktree and makes it ready to work in, so the
-// `worktree` skill only has to pick names and hand over the task.
+// `session` skill only has to pick names and hand over the task.
 //
 //   worktree-create.ts --name <slug> --branch <branch> [--base <ref>] [--task <prompt>]
 //   worktree-create.ts --name <slug> --pr <number|url> [--task <prompt>]
