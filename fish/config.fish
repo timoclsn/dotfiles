@@ -101,7 +101,7 @@ abbr -a tsti 'tailscale switch timonet'
 abbr -a tsta 'tailscale switch taxfix.de'
 abbr -a ai oc
 abbr -a ad agents-dashboard
-abbr -a u update-global-packages
+abbr -a u update-tools
 abbr -a i fastfetch
 abbr -a cv 'git diff | comview'
 
