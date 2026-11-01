@@ -53,8 +53,18 @@ echo "Updating Neovim Mason tools…"
 nvim --headless "+MasonToolsUpdateSync" +qa
 
 echo ""
+echo "Updating Neovim Treesitter parsers…"
+nvim --headless "+lua require('nvim-treesitter').update():wait(300000)" +qa
+
+echo ""
+echo "Updating Claude Code plugins…"
+claude plugin marketplace update
+claude plugin list --json | jq -r '.[] | select(.id | endswith("@synced") | not) | .id' | xargs -n1 claude plugin update
+
+echo ""
 echo "Updating Homebrew packages…"
 brew upgrade --no-ask
+brew cleanup
 
 echo ""
 echo "All updates complete!"
