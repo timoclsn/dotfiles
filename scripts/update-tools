@@ -1,26 +1,5 @@
 #!/bin/bash
-set -e
-
-echo "Updating Claude Code…"
-claude update
-
-echo ""
-echo "Updating OpenCode…"
-opencode upgrade
-
-echo ""
-echo "Updating pnpm…"
-pnpm self-update -y
-
-echo ""
-echo "Updating Bun…"
-bun upgrade
-
-echo ""
-echo "Updating GitHub CLI extensions…"
-gh extension upgrade --all
-
-echo ""
+set -o pipefail
 
 PACKAGES=(
   "npm"
@@ -38,33 +17,104 @@ PACKAGES=(
   "ccusage"
 )
 
-echo "Updating global npm packages (${#PACKAGES[@]} total)…"
+update_claude() {
+  echo "Updating Claude Code…"
+  claude update
+  echo "Updating Claude Code plugins…"
+  claude plugin marketplace update
+  claude plugin list --json | jq -r '.[] | select(.id | endswith("@synced") | not) | .id' | xargs -n1 claude plugin update
+}
 
-npm i -g "${PACKAGES[@]}"
+update_opencode() {
+  echo "Updating OpenCode…"
+  opencode upgrade
+}
+
+update_pnpm() {
+  echo "Updating pnpm…"
+  pnpm self-update -y
+}
+
+update_bun() {
+  echo "Updating Bun…"
+  bun upgrade
+}
+
+update_npm_packages() {
+  echo "Updating global npm packages (${#PACKAGES[@]} total)…"
+  npm i -g "${PACKAGES[@]}"
+  echo ""
+  echo "Installed global packages:"
+  npm list -g --depth=0
+}
+
+update_homebrew() {
+  local status=0
+  echo "Updating GitHub CLI extensions…"
+  gh extension upgrade --all || status=1
+  echo "Updating Homebrew packages…"
+  brew upgrade --no-ask || status=1
+  brew cleanup || status=1
+  return $status
+}
+
+# Headless nvim exits 0 even when a command errors, so turn errors into an exit code.
+run_in_nvim() {
+  nvim --headless "+lua local ok, err = pcall(function() $1 end) if not ok then print(err) vim.cmd.cquit() end" +qa
+}
+
+# Runs after Homebrew and the npm update finish: Homebrew replaces nvim, and
+# Mason installs many of its tools with npm.
+update_neovim() {
+  local status=0
+  echo "Updating Neovim Mason tools…"
+  run_in_nvim "vim.cmd.MasonToolsUpdateSync()" || status=1
+  echo "Updating Neovim Treesitter parsers…"
+  run_in_nvim "assert(require('nvim-treesitter').update():wait(300000))" || status=1
+  return $status
+}
+
+logs=$(mktemp -d)
+trap 'rm -rf "$logs"' EXIT
+background_groups=(claude opencode pnpm bun npm_packages)
+pids=()
+
+# These groups run in the background with their output buffered in a log file,
+# so parallel output doesn't interleave. The logs are printed once they finish.
+for group in "${background_groups[@]}"; do
+  (
+    started=$SECONDS
+    (set -e; "update_$group") >"$logs/$group.log" 2>&1
+    status=$?
+    if [ "$status" -eq 0 ]; then mark="✔"; else mark="✘"; fi
+    echo "$mark $group ($((SECONDS - started))s)"
+    exit "$status"
+  ) &
+  pids+=($!)
+done
+
+# Homebrew runs in the foreground because it often asks for the sudo password,
+# which a background job can't be prompted for.
+failed=()
+echo "Running ${#background_groups[@]} update groups in the background…"
+echo ""
+update_homebrew || failed+=(homebrew)
+
+for i in "${!background_groups[@]}"; do
+  group=${background_groups[$i]}
+  echo ""
+  echo "━━ $group ━━"
+  wait "${pids[$i]}" || failed+=("$group")
+  cat "$logs/$group.log"
+done
 
 echo ""
-echo "Installed global packages:"
-echo ""
-
-npm list -g --depth=0
+update_neovim || failed+=(neovim)
 
 echo ""
-echo "Updating Neovim Mason tools…"
-nvim --headless "+MasonToolsUpdateSync" +qa
-
-echo ""
-echo "Updating Neovim Treesitter parsers…"
-nvim --headless "+lua require('nvim-treesitter').update():wait(300000)" +qa
-
-echo ""
-echo "Updating Claude Code plugins…"
-claude plugin marketplace update
-claude plugin list --json | jq -r '.[] | select(.id | endswith("@synced") | not) | .id' | xargs -n1 claude plugin update
-
-echo ""
-echo "Updating Homebrew packages…"
-brew upgrade --no-ask
-brew cleanup
-
-echo ""
-echo "All updates complete!"
+if [ ${#failed[@]} -eq 0 ]; then
+  echo "All updates complete!"
+  exit 0
+fi
+echo "Failed: ${failed[*]}"
+exit 1
