@@ -49,6 +49,10 @@ echo ""
 npm list -g --depth=0
 
 echo ""
+echo "Updating Neovim Mason tools…"
+nvim --headless "+MasonToolsUpdateSync" +qa
+
+echo ""
 echo "Updating Homebrew packages…"
 brew upgrade --no-ask
 

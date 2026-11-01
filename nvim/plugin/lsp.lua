@@ -65,7 +65,7 @@ vim.list_extend(ensure_installed, {
 
 require('mason-tool-installer').setup {
   ensure_installed = ensure_installed,
-  auto_update = true,
+  auto_update = false,
 }
 
 vim.lsp.document_color.enable(true, nil, { style = 'virtual' })
