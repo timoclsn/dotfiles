@@ -42,8 +42,16 @@ done
 picked=""
 if [[ -z $selected ]]; then
     picked=1
-    result=$(find "${dirs[@]}" -mindepth 1 -maxdepth 1 -type d | fzf --border-label " Select Project " --expect=ctrl-y)
-    { read -r key; read -r selected; } <<< "$result"
+    projects=$(find "${dirs[@]}" -mindepth 1 -maxdepth 1 -type d)
+    # With job control fzf runs in the foreground of the terminal, so Rex sees
+    # it and leaves ctrl+j/k to it. That only works for a plain command, not
+    # for a pipeline or $(...), hence the temp file.
+    result_file=$(mktemp)
+    set -m
+    fzf --border-label " Select Project " --expect=ctrl-y <<< "$projects" > "$result_file"
+    set +m
+    { read -r key; read -r selected; } < "$result_file"
+    rm -f "$result_file"
 fi
 
 if [[ -z $selected ]]; then

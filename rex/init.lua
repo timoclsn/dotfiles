@@ -60,8 +60,10 @@ end
 
 -- Runs cc and keeps a fish shell open once it exits. The prompt is passed as
 -- an argument, so quotes, newlines and '!' reach cc without any shell quoting.
+-- fish -c has no job control, which would keep cc in fish's own process group.
+-- Rex would then see fish as the foreground program and not recognise the agent.
 local function agent_command(prompt)
-  return { "fish", "-ic", "cc $argv; exec fish", "--", prompt }
+  return { "fish", "-ic", "status job-control full; cc $argv; exec fish", "--", prompt }
 end
 
 -- Rex has no focus history, so remember what these actions switch between: the
@@ -443,7 +445,7 @@ rex.action({
   category = "Git",
   keywords = "git lazygit",
   run = function(ctx)
-    popup("Lazygit", { "/opt/homebrew/bin/fish", "-c", "lazygit" }, { 0.05, 0.05, 0.9, 0.9 }, pane_dir(ctx))
+    popup("Lazygit", { "/opt/homebrew/bin/fish", "-c", "status job-control full; lazygit" }, { 0.05, 0.05, 0.9, 0.9 }, pane_dir(ctx))
   end,
 })
 
