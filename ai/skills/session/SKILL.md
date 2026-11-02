@@ -47,6 +47,6 @@ Once it finishes, relay that result to the user in one or two lines. Don't narra
    - only installs dependencies where a lockfile differs from the copied node_modules' origin
    - opens the session with `tmux-sessionizer --detach`, or `rex-sessionizer --detach` when it runs in a Rex terminal outside tmux, so the user isn't pulled out of their current session, and starts Claude in it on the task
 
-6. **Report the result** — keep it minimal: only the worktree directory name, the branch, and the session name. Add a single extra line only if something went wrong (e.g. the script failed). The user jumps to it with `prefix + f` (in Rex also from the sidebar).
+6. **Report the result** — keep it minimal: only the worktree directory name, the branch, and the session name. Add a single extra line only if something went wrong (e.g. the script failed, or its `installFailures` is non-empty — then the session is open but dependencies aren't installed there). The user jumps to it with `prefix + f` (in Rex also from the sidebar).
 
 The skill ends here. The new session does the work; **don't start working on the task in this session**, and don't wait around for the other session to finish unless the user asks you to.

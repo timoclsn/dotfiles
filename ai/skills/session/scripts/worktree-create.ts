@@ -46,6 +46,14 @@ const INSTALL_COMMANDS: Record<string, string[]> = {
   "bun.lockb": ["bun", "install"],
 };
 
+// Yarn and pnpm often only exist as Corepack shims that aren't on the PATH of
+// scripts and agents, so run them through Corepack when they aren't installed.
+const installCommand = (lockfile: string) => {
+  const [manager = "", ...rest] = INSTALL_COMMANDS[basename(lockfile)] ?? [];
+  const needsCorepack = ["yarn", "pnpm"].includes(manager) && !Bun.which(manager) && Bun.which("corepack");
+  return needsCorepack ? ["corepack", manager, ...rest] : [manager, ...rest];
+};
+
 const log = (message: string) => console.error(`worktree-create: ${message}`);
 
 const fail = (message: string): never => {
@@ -218,7 +226,7 @@ const sessionizer = !process.env.TMUX && process.env.REX_SESSION ? "rex-sessioni
 const isSettingUpDependencies = carriedOver.cloned.length > 0 || staleLockfiles.length > 0;
 const task =
   args.task && isSettingUpDependencies
-    ? `${args.task}\n\n(Dependencies are still being set up in the background. If a command fails because of missing modules, wait a moment and retry.)`
+    ? `${args.task}\n\n(Dependencies are still being set up in the background. If a command fails because of missing modules, wait a moment and retry. If it keeps failing, the install may have failed, so run it yourself.)`
     : args.task;
 
 // One clonefile call clones a whole directory tree, several times faster than
@@ -244,12 +252,17 @@ const setUpDependencies = async () => {
     await cloneInto(join(sourceRoot, relativePath), to);
   }
 
+  // A failed install shouldn't abort the run: the worktree and session are
+  // fine, and the failure is reported in the summary instead.
   return Promise.all(
     staleLockfiles.map(async (lockfile) => {
       const directory = dirname(lockfile);
       log(`${lockfile} differs from ${sourceRoot}, installing`);
-      await $`${INSTALL_COMMANDS[basename(lockfile)]}`.cwd(join(worktreePath, directory)).quiet();
-      return directory;
+      const install = await $`${installCommand(lockfile)}`.cwd(join(worktreePath, directory)).nothrow().quiet();
+      if (install.exitCode === 0) return { directory };
+      const error = install.stderr.toString().trim() || `exited with ${install.exitCode}`;
+      log(`install in ${directory} failed: ${error}`);
+      return { directory, error };
     }),
   );
 };
@@ -273,7 +286,7 @@ const outcomes = await Promise.allSettled([sessionOpened, dependenciesReady]);
 const failure = outcomes.find((outcome) => outcome.status === "rejected");
 if (failure) throw failure.reason;
 
-const [session, installedIn] = await Promise.all([sessionOpened, dependenciesReady]);
+const [session, installs] = await Promise.all([sessionOpened, dependenciesReady]);
 
 console.log(
   JSON.stringify(
@@ -285,7 +298,8 @@ console.log(
       session,
       linked: carriedOver.linked,
       cloned: carriedOver.cloned,
-      installedIn,
+      installedIn: installs.filter(({ error }) => !error).map(({ directory }) => directory),
+      installFailures: installs.filter(({ error }) => error),
     },
     null,
     2,
