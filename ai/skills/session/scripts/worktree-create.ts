@@ -85,7 +85,12 @@ const mainRoot = dirname(commonDir);
 const repoName = basename(mainRoot);
 const worktreePath = join(dirname(mainRoot), `${repoName}-w-${name}`);
 
+// The local origin/HEAD is only written at clone time and goes stale when the
+// default branch is changed on the remote, so ask the remote first.
 const readDefaultBranch = async () => {
+  const remote = await $`git -C ${mainRoot} ls-remote --symref origin HEAD`.nothrow().quiet();
+  const remoteBranch = remote.text().match(/^ref: refs\/heads\/(\S+)\s+HEAD$/m)?.[1];
+  if (remoteBranch) return remoteBranch;
   const head = await $`git -C ${mainRoot} symbolic-ref --short refs/remotes/origin/HEAD`.nothrow().quiet();
   if (head.exitCode === 0) return head.text().trim().replace(/^origin\//, "");
   return (await succeeds($`git -C ${mainRoot} show-ref --verify refs/heads/main`)) ? "main" : "master";
