@@ -5,21 +5,23 @@ Rex release notes now and then (the `superlogical` MCP has `list_changelog` /
 `search_changelog`, and `search_feedback` shows what the team accepted). When a
 release covers one, delete the workaround and its note here.
 
-Last checked: 2026-10-29 against Mac preview.23 (nothing droppable yet, see below).
+Last checked: 2026-11-03 against Mac preview.25 and CLI d018d2d (nothing droppable yet, see below).
 The `superlogical` MCP's search only matches single keywords, and `read_changelog`
 by id returned the latest post every time, so use `list_changelog` and read the posts
 on Discord if a link matters.
 
-## Status of upstream requests (as of 2026-10-29)
+## Status of upstream requests (as of 2026-11-03)
 
 | Workaround | Feedback status |
 | --- | --- |
-| `last_tab`, `last_session`, history | "Focus last pane" is **accepted** and mentions `client.tab.last` and `session.last` as the same idea. "Switch back to the previous session" is **deferred**. Not shipped. |
+| `last_tab`, `last_session`, history | "Focus last pane" is **accepted** and mentions `client.tab.last` and `session.last` as the same idea. "Switch back to the previous session" is **deferred**. "Go to previously active tab" and "Keybind to toggle back to the previously active tab, across sessions" are **active**. Not shipped. |
 | `ctrl+h/j/k/l` and `rex-navigator.lua` | "Seamless ctrl-hjkl navigation (vim-tmux-navigator equivalent)" is **deferred** |
-| `popup()` | "add tmux-style popups" is **active** |
+| `popup()` | "add tmux-style popups" is now **accepted**. Not shipped. |
 | Key names and a tmux-style prefix | "Keybindings for tmux/herdr folk" is **active**. The team says they're working toward a tmux default and have a key-sequences docs page |
 | Session metadata, selected session | "session metadata and selected-session visibility for tools built on Rex" is **active** |
-| `session.select` through `rex.client.queue` | Bug "`session.select` errors with remote hosts" is **active**. Check it if we ever use remote hosts |
+| `session.select` through `rex.client.queue` | Bug "`session.select` errors with remote hosts" is **active**. Check it if we ever use remote hosts. "Queued session.select for a window created in the same action is dropped" is **active** too |
+| Startup Command ignored after a server restart (fish trial) | Bug "Rex doesn't use configured startup command on server restart" is **active**. Updates restart the server, so the panes Rex reopens start zsh; new tabs start fish |
+| `PATH` rebuilt in `run()` | "Rex does not export path to its binary" is **active**, but that is about the `rex` binary, not the server's PATH |
 
 Nothing on tabs per session, sidebar sort, `grid`, `cycle_width`, the server PATH, or the pane cwd in `ctx` was found, in either the changelog or the feedback. Search again with other words before concluding they don't exist.
 
@@ -52,5 +54,5 @@ Related, shipped in preview.23: sessions now survive server restarts. That is no
 - `scripts/rex-sessionizer` and the `sessionizer` action: Rex version of `tmux-sessionizer` (`--detach`, `--prompt`). The `session` and `session-remove` skills branch on Rex vs tmux. Drop when Rex has a built-in project picker.
 - `nvim/plugin/rex-navigator.lua`: ctrl-hjkl hands over from Neovim splits to Rex via `rex focus`. Drop together with the `ctrl+h/j/k/l` binding when Rex handles pass-through to programs natively.
 - `scripts/rex.ts` `runsInRex()` and the early return in the Claude, Codex, OpenCode and Pi notify hooks: Rex does its own agent notifications. Drop if Rex notifications become configurable or stop duplicating ours.
-- Fish trial: Rex's Startup Command setting plus `exec fish` in `agent_command`. Not Rex-specific, ends with the shell trial.
+- Fish trial: Rex's Startup Command setting plus `exec fish` in `agent_command`. Not Rex-specific, ends with the shell trial. Until the server-restart bug above is fixed, panes that Rex reopens after an update start zsh; open a new tab to get fish.
 - `rex-sessionizer` sets `FZF_DEFAULT_OPTS_FILE` because the popup doesn't load zshrc. Drop when popups run in the user's shell environment.
