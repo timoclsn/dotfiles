@@ -1,6 +1,8 @@
 #!/bin/bash
 set -o pipefail
 
+BREWFILE="$(dirname "$(realpath "$0")")/../homebrew/Brewfile"
+
 PACKAGES=(
   "npm"
   "@antfu/ni"
@@ -58,6 +60,16 @@ update_homebrew() {
   return $status
 }
 
+# Only reports: packages that are listed but missing, then ones that are
+# installed but not listed. Whether to add or uninstall them is up to the user.
+# Cleanup is limited to taps, formulae and casks because its go and uv checks
+# fail on mise shims that have no global version.
+report_brewfile_drift() {
+  echo "Checking Homebrew against the Brewfile…"
+  brew bundle check --verbose --no-upgrade --file="$BREWFILE"
+  brew bundle cleanup --tap --formula --cask --file="$BREWFILE"
+}
+
 # Headless nvim exits 0 even when a command errors, so turn errors into an exit code.
 run_in_nvim() {
   nvim --headless "+lua local ok, err = pcall(function() $1 end) if not ok then print(err) vim.cmd.cquit() end" +qa
@@ -99,6 +111,8 @@ failed=()
 echo "Running ${#background_groups[@]} update groups in the background…"
 echo ""
 update_homebrew || failed+=(homebrew)
+echo ""
+report_brewfile_drift
 
 for i in "${!background_groups[@]}"; do
   group=${background_groups[$i]}

@@ -1,62 +1,83 @@
-tap "facebook/fb"
-tap "homebrew/bundle"
-tap "homebrew/cask-versions"
-tap "jesseduffield/lazygit"
-tap "julien-cpsn/atac"
-tap "libsql/sqld"
-tap "lusingander/tap"
-tap "nikitabobko/tap"
-tap "planetscale/tap"
+# Only what I installed on purpose; Homebrew pulls in the dependencies itself.
+# Edit by hand, then run `brew bundle`. `update-tools` reports packages that are
+# installed but missing here (or the other way around).
+
+# Taps (only for packages that are not in Homebrew core). Homebrew refuses to
+# load third-party taps unless they are trusted, and `brew bundle cleanup`
+# resets the trust store to what is declared here. So trust is declared per
+# package with `trusted:`, including dependencies that come from the same tap.
+tap "atlassian/acli"
+tap "mongodb/brew", trusted: { formula: "mongodb-database-tools" }
 tap "tursodatabase/tap"
-brew "atac"
+tap "libsql/sqld", trusted: { formula: "sqld" }
+
+# Shell and terminal
 brew "bash"
-brew "bat"
-brew "btop"
-brew "cbonsai"
-brew "cloc"
-brew "difftastic"
-brew "eza"
-brew "fastfetch"
-brew "fd"
-brew "ffmpegthumbnailer"
-brew "fnm"
-brew "fx"
-brew "fzf"
-brew "gh"
-brew "glab"
-brew "glow"
-brew "httpstat"
-brew "imagemagick"
-brew "jq"
-brew "lsd"
-brew "mysql"
-brew "neovim"
-brew "pipx"
-brew "poppler"
-brew "python@3.9"
-brew "ripgrep"
-brew "ruby"
-brew "serpl"
-brew "sevenzip"
-brew "subfinder"
-brew "tmux"
-brew "uv"
-brew "watchman"
-brew "xh"
-brew "yazi"
-brew "yt-dlp"
-brew "zig"
+brew "fish"
+brew "starship"
 brew "zoxide"
-brew "facebook/fb/idb-companion"
-brew "jesseduffield/lazygit/lazygit"
-brew "lusingander/tap/serie"
-brew "planetscale/tap/pscale"
-brew "tursodatabase/tap/turso"
-cask "1password-cli"
-cask "aerospace"
-cask "font-symbols-only-nerd-font"
-cask "jordanbaird-ice"
+brew "fzf"
+brew "tmux"
+brew "terminal-notifier"
+
+# Language and version managers
+brew "mise"
+brew "fnm"
+brew "rbenv"
+brew "pyenv"
+brew "ruby"
+brew "uv"
+brew "zig"
+
+# Editor and file tools
+brew "neovim"
+brew "tree-sitter-cli"
+brew "ripgrep"
+brew "fd"
+brew "bat"
+brew "eza"
+brew "jq"
+brew "fx"
+brew "watchman"
+
+# Media and documents
+brew "yt-dlp"
+brew "ffmpeg"
+
+# Git
+brew "gh"
+brew "lazygit"
+brew "git-delta"
+brew "atlassian/acli/acli", trusted: true
+
+# Containers and infrastructure
+brew "colima"
+brew "docker"
+brew "docker-buildx"
+brew "docker-compose"
+brew "docker-credential-helper"
+brew "argocd"
+brew "tailscale"
+
+# Network and API tools
+brew "xh"
+
+# Databases
+brew "mysql"
+brew "mongodb/brew/mongodb-community", trusted: true
+brew "tursodatabase/tap/turso", trusted: true
+
+# System
+brew "btop"
+brew "fastfetch"
+brew "mole"
+
+# Apps and CLIs installed as casks
 cask "scroll-reverser"
 cask "wezterm"
-cask "zulu@11"
+cask "1password-cli"
+cask "gcloud-cli"
+cask "font-symbols-only-nerd-font"
+
+# JDKs
 cask "zulu@17"

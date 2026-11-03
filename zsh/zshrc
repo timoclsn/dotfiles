@@ -12,6 +12,7 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export EDITOR='nvim'
 export GOPRIVATE=github.com/steuerbot/*,github.com/taxfix/*
 export FZF_DEFAULT_OPTS_FILE="$HOME/.config/fzf/fzfrc"
+export HOMEBREW_BUNDLE_FILE="$HOME/Developer/personal/dotfiles/homebrew/Brewfile"
 
 # Load env vars from .env file
 [ -f "$HOME/.env" ] && source "$HOME/.env"

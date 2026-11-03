@@ -29,6 +29,7 @@ fish_add_path -P $HOME/.cargo/bin
 set -gx HOMEBREW_PREFIX /opt/homebrew
 set -gx HOMEBREW_CELLAR $HOMEBREW_PREFIX/Cellar
 set -gx HOMEBREW_REPOSITORY $HOMEBREW_PREFIX
+set -gx HOMEBREW_BUNDLE_FILE $HOME/Developer/personal/dotfiles/homebrew/Brewfile
 contains -- $HOMEBREW_PREFIX/share/info $INFOPATH
 or set -gx INFOPATH $HOMEBREW_PREFIX/share/info $INFOPATH
 fish_add_path -P --move $HOMEBREW_PREFIX/bin $HOMEBREW_PREFIX/sbin

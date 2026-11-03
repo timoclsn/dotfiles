@@ -29,6 +29,7 @@ dotfiles/
 ├── tmux/tmux.conf        # Tmux config (prefix: Ctrl+Space)
 ├── rex/                  # Rex config (Lua), incl. a project sessionizer
 ├── ghostty/config        # Terminal emulator
+├── homebrew/Brewfile     # Hand-curated list of Homebrew packages (see Homebrew below)
 ├── zsh/zshrc             # Shell config (login shell, used by scripts and agents)
 ├── fish/                 # Interactive shell config (on trial next to zsh)
 ├── claude/               # Claude Code settings, hooks, commands
@@ -117,6 +118,28 @@ prompt, completion or fzf/zoxide.
 `fish/config.fish` holds the full interactive setup, and each helper function is
 a file in `fish/functions/`. New PATH entries and env vars go into both shells;
 aliases and functions only into zsh if agents or scripts need them. Don't commit `fish/fish_variables`; fish writes it at runtime.
+
+### Homebrew
+
+`homebrew/Brewfile` lists only the packages installed on purpose, grouped by
+topic; Homebrew resolves dependencies itself. Edit it by hand rather than
+re-dumping (a dump loses the grouping and comments). `HOMEBREW_BUNDLE_FILE`
+points `brew bundle` at it in both shells, `setup.sh` installs what's missing,
+and `scripts/update-tools` reports drift (installed but not listed, or listed
+but not installed) without changing anything.
+
+Two Homebrew quirks to know about:
+
+- `brew bundle cleanup` and `dump` need `--tap --formula --cask`; otherwise they
+  also check Go and uv packages, which fails on mise shims that have no global
+  version.
+- Homebrew refuses to load third-party taps until they are trusted, so `check`,
+  `cleanup` and `dump` silently skip those packages or fail with "untrusted
+  tap". `brew bundle cleanup` resets the trust store to what the Brewfile
+  declares, so trust lives in the Brewfile as `trusted: true` on the package
+  (or `trusted: { formula: ... }` on the tap line for dependencies from the same
+  tap), never via a manual `brew trust`. Prefer trusting single packages over
+  whole taps. When adding a package from a new tap, add its trust there too.
 
 ### Claude Code Hooks
 

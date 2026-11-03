@@ -137,3 +137,8 @@ chmod +x "$HOME/.local/bin/claude-budget"
 ln -sf "$DOTFILES/scripts/claude-config-dir" "$HOME/.local/bin/claude-config-dir"
 chmod +x "$HOME/.local/bin/claude-config-dir"
 echo "Symlinks created successfully!"
+
+# Homebrew packages (only installs what's missing; update-tools handles upgrades)
+if command -v brew >/dev/null; then
+  brew bundle --no-upgrade --file="$DOTFILES/homebrew/Brewfile"
+fi
