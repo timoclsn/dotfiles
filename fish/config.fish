@@ -120,7 +120,6 @@ alias m run_nx_target
 alias n manage_node_version
 alias o manage_ollama
 alias x manage_xcode_version
-alias y yazy-shell
 
 # =============================================================================
 # Key Bindings
