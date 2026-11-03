@@ -8,7 +8,8 @@
 // it checks for work that would be lost: uncommitted or untracked changes, and
 // commits that are on no other branch and not in a merged PR. If it finds any,
 // it deletes nothing, prints them as JSON with `"removed": false` and exits 2.
-// --discard skips that check. The sessions are closed last, since this script
+// --discard skips that check. Processes still running in the worktree are
+// stopped before it is deleted. The sessions are closed last, since this script
 // may run inside one of them; the JSON summary is printed before that.
 
 import { $ } from "bun";
@@ -143,9 +144,62 @@ const [hasTmuxSession, rexSession] = await Promise.all([
   findRexSession(),
 ]);
 
+// A dev server (`next dev`, `vite`) still running in the worktree would
+// recreate its cache folder right after the worktree is deleted, leaving a
+// stray directory behind. Stop those first.
+const listAncestorPids = async () => {
+  const pids = new Set<number>();
+  let pid = process.pid;
+  while (pid > 1 && !pids.has(pid)) {
+    pids.add(pid);
+    pid = Number((await $`ps -o ppid= -p ${pid}`.nothrow().quiet().text()).trim()) || 0;
+  }
+  return pids;
+};
+
+// lsof prints "p<pid>" and "n<cwd>" lines per process.
+const findProcessesInWorktree = async () => {
+  const output = await $`lsof -d cwd -Fpn`.nothrow().quiet().text();
+  const ancestors = await listAncestorPids();
+  const inside: { pid: number; command: string }[] = [];
+  let pid = 0;
+  for (const line of lines(output)) {
+    if (line.startsWith("p")) pid = Number(line.slice(1));
+    const cwd = line.startsWith("n") ? line.slice(1) : undefined;
+    const isInside = cwd !== undefined && (cwd === worktree.path || cwd.startsWith(`${worktree.path}/`));
+    // Never stop this script or the shell and agent it runs under; the session
+    // is closed separately, last.
+    if (isInside && !ancestors.has(pid)) inside.push({ pid, command: "" });
+  }
+  return Promise.all(
+    inside.map(async ({ pid }) => ({
+      pid,
+      command: (await $`ps -o command= -p ${pid}`.nothrow().quiet().text()).trim(),
+    })),
+  );
+};
+
+const stopProcesses = async (processes: { pid: number }[]) => {
+  for (const { pid } of processes) process.kill(pid, "SIGTERM");
+  await Bun.sleep(1000);
+  for (const { pid } of processes) {
+    try {
+      process.kill(pid, "SIGKILL");
+    } catch {
+      // Already exited after SIGTERM.
+    }
+  }
+};
+
 // This script may run inside the worktree; commands can't start from a deleted
 // directory.
 process.chdir(mainRoot);
+
+const stoppedProcesses = await findProcessesInWorktree();
+if (stoppedProcesses.length > 0) {
+  log(`stopping ${stoppedProcesses.length} process(es) running in the worktree`);
+  await stopProcesses(stoppedProcesses);
+}
 
 log(`removing ${worktree.path}`);
 await $`git worktree remove --force ${worktree.path}`.quiet();
@@ -158,6 +212,7 @@ print({
   removed: true,
   ...location,
   discarded: { uncommitted, unpushed },
+  stoppedProcesses,
   closedSessions: { tmux: hasTmuxSession ? tmuxSession : undefined, rex: rexSession?.label },
 });
 
