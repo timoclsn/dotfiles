@@ -175,9 +175,37 @@ local function from_app(ctx)
   return false
 end
 
+-- Worktrees made by the `session` skill are named <repo>-w-<name>. They show
+-- up as "<repo> <branch icon> <name>". The `session_label` action exposes this
+-- mapping, so scripts like worktree-remove.ts never duplicate it.
+local branch_icon = "\243\176\152\172" -- nf-md-source_branch, U+F062C
+
+local function expand_dir(dir)
+  return (dir:gsub("^~/", home .. "/"):gsub("/$", ""))
+end
+
+local function session_label(dir)
+  local folder = expand_dir(dir):match("[^/]+$")
+  local repo, name = folder:match("^(.-)%-w%-(.+)$")
+  if not repo then
+    return folder
+  end
+  return repo .. " " .. branch_icon .. " " .. name
+end
+
+rex.action({
+  name = "session_label",
+  title = "Show Session Label for Project",
+  category = "Projects",
+  args = { dir = "string" },
+  run = function(_, args)
+    return { label = session_label(args.dir) }
+  end,
+})
+
 local function open_project(ctx, args)
-  local dir = args.dir:gsub("^~/", home .. "/"):gsub("/$", "")
-  local label = dir:match("[^/]+$")
+  local dir = expand_dir(args.dir)
+  local label = session_label(dir)
   local session_id = find_session(label) or create_session(label, dir, args.prompt)
 
   if args.detach then

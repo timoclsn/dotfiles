@@ -130,11 +130,16 @@ if (!args.discard && (uncommitted.length > 0 || unpushed.length > 0)) {
 const folderName = basename(worktree.path);
 const tmuxSession = folderName.replaceAll(".", "_");
 
+// The Rex config owns how a folder is turned into a session label.
 const findRexSession = async () => {
-  const result = await $`rex ls --json --autostart=false`.nothrow().quiet();
-  if (result.exitCode !== 0) return undefined;
-  const sessions: { session_id: string; label: string }[] = result.json().sessions ?? [];
-  return sessions.find((session) => session.label === folderName);
+  const [labelResult, listResult] = await Promise.all([
+    $`rex do session_label dir=${worktree.path} --json --autostart=false`.nothrow().quiet(),
+    $`rex ls --json --autostart=false`.nothrow().quiet(),
+  ]);
+  if (labelResult.exitCode !== 0 || listResult.exitCode !== 0) return undefined;
+  const { label } = labelResult.json();
+  const sessions: { session_id: string; label: string }[] = listResult.json().sessions ?? [];
+  return sessions.find((session) => session.label === label);
 };
 
 // Look the sessions up before deleting anything, so a failing lookup can't

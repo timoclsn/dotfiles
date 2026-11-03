@@ -89,7 +89,9 @@ on `prefix + f` that opens `scripts/rex-sessionizer` (the fzf picker) in a
 floating popup.
 
 A new project session has a single window running the AI agent, and
-sessions are kept sorted alphabetically in the sidebar. `rex-sessionizer` takes
+sessions are kept sorted alphabetically in the sidebar. A `<repo>-w-<name>`
+worktree gets the label `<repo> 󰘬 <name>` (`session_label` in `rex/init.lua`);
+`session-remove` asks the `session_label` action for it to find the session. `rex-sessionizer` takes
 the same arguments as tmux-sessionizer (a directory, `--detach`, `--prompt`);
 the `session` skill uses rex-sessionizer instead of tmux-sessionizer when it
 runs in a Rex terminal outside tmux. Switching the app to the picked session from the popup needs
