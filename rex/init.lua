@@ -161,6 +161,20 @@ local function create_session(label, dir, prompt)
   return session_id
 end
 
+-- Whether an app triggered the action. Otherwise it came from elsewhere, such
+-- as the CLI, whose connection is gone by the time the picker needs it.
+local function from_app(ctx)
+  if not ctx.client_id then
+    return false
+  end
+  for _, client in ipairs(call("client.list", { kinds = { "app" } }).clients) do
+    if client.client_id == ctx.client_id then
+      return true
+    end
+  end
+  return false
+end
+
 local function open_project(ctx, args)
   local dir = args.dir:gsub("^~/", home .. "/"):gsub("/$", "")
   local label = dir:match("[^/]+$")
@@ -184,7 +198,11 @@ rex.action({
     if args.dir then
       return open_project(ctx, args)
     end
-    popup("Projects", { home .. "/.local/bin/rex-sessionizer" }, { 0.2, 0.15, 0.6, 0.7 })
+    -- The picker runs this action again through the CLI, which only finds the
+    -- app on its own when exactly one is connected, so name the app that asked.
+    local script = home .. "/.local/bin/rex-sessionizer"
+    local command = from_app(ctx) and { "/usr/bin/env", "REX_CLIENT=" .. ctx.client_id, script } or { script }
+    popup("Projects", command, { 0.2, 0.15, 0.6, 0.7 })
   end,
 })
 
