@@ -74,7 +74,6 @@ done
 
 # Home directory symlinks
 ln -sf "$DOTFILES/aider/.aider.conf.yml" "$HOME/.aider.conf.yml"
-ln -sf "$DOTFILES/aerospace/aerospace.toml" "$HOME/.aerospace.toml"
 ln -sf "$DOTFILES/zsh/.env" "$HOME/.env"
 ln -sf "$DOTFILES/mcp/mcpservers.json" "$HOME/.mcpservers.json"
 ln -sf "$DOTFILES/ripgrep/.rgignore" "$HOME/.rgignore"
