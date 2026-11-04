@@ -1,9 +1,11 @@
 ---
 name: go
-description: "End-to-end task execution: implement, verify, simplify, review, then open a draft PR. Only use when the user explicitly asks for it, by typing `/go` or by telling you to use the go skill (e.g. in a `/session` prompt). Never pick it on your own for ordinary tasks."
+description: "End-to-end task execution: implement, verify with proof, polish, open a PR (draft unless `--ready`), then babysit CI to green. Only use when the user explicitly asks for it, by typing `/go` or by telling you to use the go skill (e.g. in a `/session` prompt). Never pick it on your own for ordinary tasks."
 ---
 
 Execute the task below end-to-end, running all steps in order without stopping for confirmation between them.
+
+Flags: if the task contains `--ready`, it isn't part of the task. Open the PR ready for review instead of as a draft.
 
 ## Task
 
@@ -24,12 +26,10 @@ $ARGUMENTS
 
    Fix any failures before continuing.
 
-3. **Simplify.** Invoke the `simplify` skill to clean up the changed code.
+3. **Polish.** Invoke the `polish` skill to simplify and review the changed code and fix what holds up. If it meaningfully affected behavior, re-run the relevant checks from step 2.
 
-4. **Review.** Invoke the `code-review` skill with the `--fix` flag on effort `high` to review changed code (including the simplify edits) and apply its fixes. If steps 3–4 meaningfully affected behavior, re-run the relevant checks from step 2.
+4. **Ship.** Create a branch if needed, commit, push, and open a PR. Write the description with the PR description/body skill if one is available. Include the proof from step 2 in it: attach screenshots/recordings with `gh pr edit --attach` (with alt text), or for non-visual changes, include the relevant command output. Keep media files out of the repo, and never upload them anywhere else.
 
-5. **Ship.** Invoke the `commit-commands:commit-push-pr` skill. The PR must be a **draft** and **assigned to the current user** (`@me`). Then add the proof from step 2 to the PR description: attach screenshots/recordings with `gh pr edit --attach` (with alt text), or for non-visual changes, include the relevant command output. Keep media files out of the repo, and never upload them anywhere else.
-
-6. **Babysit CI.** Invoke the `babysit-ci` skill to watch the PR's CI and shepherd it to green, automatically fixing and pushing any failures.
+5. **Babysit CI.** Invoke the `babysit-ci` skill to watch the PR's CI and shepherd it to green, automatically fixing and pushing any failures.
 
 Report briefly at the end: what shipped, which checks ran, the proof that it works, the final CI state, and the PR URL.
