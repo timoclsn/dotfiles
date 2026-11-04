@@ -1,7 +1,6 @@
 ---
 name: go
-description: "End-to-end task execution: implement, verify, simplify, review, then open a draft PR. Use when the user invokes `/go` with a task description and wants the full pipeline run without further prompts."
-disable-model-invocation: true
+description: "End-to-end task execution: implement, verify, simplify, review, then open a draft PR. Only use when the user explicitly asks for it, by typing `/go` or by telling you to use the go skill (e.g. in a `/session` prompt). Never pick it on your own for ordinary tasks."
 ---
 
 Execute the task below end-to-end, running all steps in order without stopping for confirmation between them.
