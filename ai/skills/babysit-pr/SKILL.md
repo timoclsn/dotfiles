@@ -25,7 +25,7 @@ The narrow case (waiting on an AI bot review you requested) is just this loop on
 
 4. **Fix CI** if any check failed or was cancelled:
    - Invoke the `ci-failure` skill with `--fix` to triage and apply confident fixes.
-   - If it produced working-tree changes, invoke `commit-commands:commit` to commit, then push.
+   - If it produced working-tree changes, commit, then push.
    - If it produced **no** changes (flake, infra/config, or pre-existing on the base branch), do not commit. Re-run the failed checks if they look like flakes; otherwise note it for the report — it needs the user's judgment.
 
 5. **Sync with base** if the branch is behind or conflicts with main/master:

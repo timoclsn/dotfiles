@@ -15,7 +15,7 @@ You are babysitting CI for the current branch's pull request: watch it, fix what
 
 4. **If any check failed or was cancelled**, fix and push:
    - Invoke the `ci-failure` skill with `--fix` to triage the failures and apply the fixes it is confident about.
-   - If that produced working-tree changes, invoke the `commit-commands:commit` skill to commit them, then push.
+   - If that produced working-tree changes, commit them, then push.
    - If it produced **no** changes (the failure is a flake, infra/config, or pre-existing on main and not fixable in the repo), do not commit. Re-run the failed checks if they look like flakes; otherwise stop and report — the failure needs the user's judgment.
 
 5. **Repeat from step 2**, watching the new run triggered by the push or rerun. Keep a round counter. After **5 rounds** without reaching green, stop and report — something is not converging and needs the user.
