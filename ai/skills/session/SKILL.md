@@ -1,7 +1,7 @@
 ---
 name: session
-description: Spin up a new, separate session for a task, without touching the current one — creates a git worktree as a sibling of the current repo (new branch off the default branch by default, or off a given branch, tag, or PR), names it after the repo plus a semantic extension derived from whatever content you give it, opens a tmux session (via tmux-sessionizer) or a Rex session (via rex-sessionizer), whichever the current terminal runs in, without switching to it, and starts a Claude session in it on the task. Use when the user invokes `/session`, or asks for a new / separate session for a task, or to spin up a worktree to work on something in isolation, on a specific branch, or to check out a PR. Not for working in the current session.
-argument-hint: "[the task to work on (also used to name the worktree/branch), and/or a base branch/tag/PR (optional)]"
+description: Spin up a new, separate session for a task, without touching the current one — creates a git worktree as a sibling of the current repo (new branch off the default branch by default, or off a given branch, tag, or PR), names it after the repo plus a semantic extension derived from whatever content you give it, opens a tmux session (via tmux-sessionizer) or a Rex session (via rex-sessionizer), whichever the current terminal runs in, without switching to it, and starts a Claude session in it on the task. Accepts `--go` (run the task through the go skill) or `--review` (run pr-brief on a PR). Use when the user invokes `/session`, or asks for a new / separate session for a task, or to spin up a worktree to work on something in isolation, on a specific branch, or to check out a PR. Not for working in the current session.
+argument-hint: "[--go | --review] [the task to work on (also used to name the worktree/branch), and/or a base branch/tag/PR (optional)]"
 ---
 
 # Create a session
@@ -10,11 +10,16 @@ Create and set up a fresh git worktree as a **sibling** of the current repo (one
 
 The argument serves two purposes: it **names** the worktree/branch and picks the **base**, and its task content becomes the **prompt** for the new Claude session. Never carry out the task in *this* session — the new session owns the work.
 
+Two optional flags (anywhere in the argument) change what the new session does. Neither is part of the task. They don't combine, and `--review` needs a PR number or URL to review; if the user gives both flags, or `--review` without a PR, ask before doing anything else.
+
+- `--go`: run the task through the `go` skill, which does the full pipeline including commit and draft PR.
+- `--review`: just run the read-only `pr-brief` skill on the checked-out PR (`/session --review 123`).
+
 The mechanical part (creating the worktree, carrying over gitignored files, installing dependencies, opening the session and starting Claude on the task) is done by the bundled script `${CLAUDE_SKILL_DIR}/scripts/worktree-create.ts` (`scripts/worktree-create.ts` in this skill's directory). The judgment around it — naming, picking the base, writing the task prompt — is done by a subagent.
 
 ## Delegate the whole thing to a subagent
 
-Don't run the steps below in this session — spawn a subagent (via the `Agent` tool) and have it execute all of them, so their tool output doesn't clutter this conversation. It starts with no context, so write it a self-contained prompt: the argument verbatim, the current working directory, the script's absolute path, and (only if the argument's content alone doesn't yield a good semantic extension) whatever you can infer from the conversation to help name it. Tell it to carry out every step in this skill exactly as written and to reply with nothing but the result from step 6.
+Don't run the steps below in this session — spawn a subagent (via the `Agent` tool) and have it execute all of them, so their tool output doesn't clutter this conversation. It starts with no context, so write it a self-contained prompt: the argument verbatim minus the flags (so a flag never ends up in the name or the base), which flag was set, the current working directory, the script's absolute path, and (only if the argument's content alone doesn't yield a good semantic extension) whatever you can infer from the conversation to help name it. Tell it to carry out every step in this skill exactly as written and to reply with nothing but the result from step 6.
 
 Once it finishes, relay that result to the user in one or two lines. Don't narrate its intermediate work.
 
@@ -33,9 +38,11 @@ Once it finishes, relay that result to the user in one or two lines. Don't narra
 
 4. **Write the task prompt** for the new Claude session, which starts on it as its first message. Pass the user's task through as they phrased it — don't restate it as an instruction to create a worktree (the session will already be sitting in it), and drop the base-selection noise ("based on staging", "for PR 123") that only steered this skill. Mention the branch if that isn't obvious from the task.
 
-   Also tell it to stop once the work is done: implement the task and leave the changes in the working tree, but don't commit, push, or open a PR. The user reviews the result first and asks for those separately. Only add this if the user's own task didn't already ask for a commit or PR.
+   With `--go` set, tell the new session to use the `go` skill for the task (e.g. "Use the go skill for this task: <task>"); with no task, ignore the flag. With `--review` set, make the prompt just an instruction to use the `pr-brief` skill (e.g. "Use the pr-brief skill to brief me on this branch"), plus any extra focus the user gave; this works without any other task text. In both cases skip the stop-instruction below: `go` commits and opens the PR itself, and `pr-brief` is read-only.
 
-   Write no prompt when the argument carries no actual task — a bare `/session`, or a PR checkout with nothing asked of it. The session then just starts empty, ready for the user.
+   Otherwise, also tell it to stop once the work is done: implement the task and leave the changes in the working tree, but don't commit, push, or open a PR. The user reviews the result first and asks for those separately. Only add this if the user's own task didn't already ask for a commit or PR.
+
+   Write no prompt when the argument carries no actual task — a bare `/session`, or a PR checkout with nothing asked of it (and no `--review`). The session then just starts empty, ready for the user.
 
 5. **Run the script** from the current repo (any of its worktrees works — it anchors on the main checkout), passing the prompt as `--task` if there is one:
    ```sh
