@@ -8,4 +8,4 @@ Test this fully end to end in here and provide irrefutable proof that it works a
 
 $ARGUMENTS
 
-Passing checks alone are not proof — run the real thing and show what you observed. For visible changes, capture visual evidence (e.g. screenshots or a recording). If something can't be tested here, say so.
+Passing checks alone are not proof — run the real thing and show what you observed. For visible changes, capture visual evidence (e.g. screenshots or a recording). Where possible, show the state before the change as well as after, so the difference is visible. If something can't be tested here, say so.
