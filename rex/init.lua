@@ -465,6 +465,15 @@ rex.action({
 })
 
 rex.action({
+  name = "reveal_in_finder",
+  title = "Open Pane Directory in Finder",
+  category = "Panes",
+  run = function(ctx)
+    run({ "open", pane_dir(ctx) })
+  end,
+})
+
+rex.action({
   name = "diff",
   title = "Open Git Diff",
   category = "Git",
@@ -551,6 +560,7 @@ for _, direction in ipairs({ "left", "right", "up", "down" }) do
 end
 bind("ctrl+y", "pane.copy_id")
 bind("shift+y", "copy_path")
+bind("shift+f", "reveal_in_finder")
 
 -- Other
 bind("shift+o", "open_repo")
