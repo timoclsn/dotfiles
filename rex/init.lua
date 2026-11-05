@@ -432,6 +432,43 @@ rex.action({
   end,
 })
 
+-- How many panes sit side by side (or stacked, for "vertical") in a node.
+-- A split across the other direction counts as its widest side.
+local function panes_along(node, direction)
+  if node.block_id then
+    return 1
+  end
+  local before, after = panes_along(node.split.before, direction), panes_along(node.split.after, direction)
+  return node.split.direction == direction and before + after or math.max(before, after)
+end
+
+-- Gives every pane in the window the same width and height, like tmux's
+-- select-layout tiled: each split gets space in proportion to the panes on its sides.
+rex.action({
+  name = "equalize",
+  title = "Equalize Pane Sizes",
+  category = "Panes",
+  run = function(ctx)
+    local windows, active = session_windows(ctx)
+    local function equalize(node)
+      if node.block_id then
+        return
+      end
+      local direction = node.split.direction
+      local before, after = panes_along(node.split.before, direction), panes_along(node.split.after, direction)
+      in_session("resize_pane", {
+        direction = direction,
+        before_block_id = first_block(node.split.before),
+        after_block_id = first_block(node.split.after),
+        ratio = before / (before + after),
+      })
+      equalize(node.split.before)
+      equalize(node.split.after)
+    end
+    equalize(windows[active].layers[1].layout)
+  end,
+})
+
 -- Opens the current branch's PR in the browser, or else the repository.
 rex.action({
   name = "open_repo",
@@ -474,27 +511,6 @@ rex.action({
 })
 
 rex.action({
-  name = "diff",
-  title = "Open Git Diff",
-  category = "Git",
-  run = function(ctx)
-    in_session("new_window", {
-      window_label = "diff",
-      layout = terminal(pane_dir(ctx), { "zsh", "-ic", "git diff | comview" }),
-    })
-  end,
-})
-
-rex.action({
-  name = "agents_dashboard",
-  title = "Agents Dashboard",
-  category = "Agents",
-  run = function()
-    popup("Agents Dashboard", { home .. "/.local/bin/agents-dashboard" }, { 0.1, 0.1, 0.8, 0.8 })
-  end,
-})
-
-rex.action({
   name = "lazygit",
   title = "Lazygit",
   category = "Git",
@@ -521,10 +537,6 @@ for index = 1, 9 do
   bind(tostring(index), "tab_goto", { index = index })
 end
 bind(",", "client.tab.rename")
-bind("shift+6", "client.tab.close") -- &
-bind("[Backquote]", "client.tab.move.backward") -- <
-bind("shift+[Backquote]", "client.tab.move.forward") -- >
-bind("shift+d", "diff")
 bind("g", "lazygit")
 
 -- Sessions
@@ -533,8 +545,6 @@ bind("shift+[Backslash]", "sessionizer", { dir = "~/Developer/personal/dotfiles"
 bind("shift+n", "sessionizer", { dir = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes" })
 bind("s", "track_switch", { action = "session.switch" })
 bind("w", "track_switch", { action = "session.switch" })
-bind("shift+8", "track_switch", { action = "session.previous" }) -- (
-bind("shift+9", "track_switch", { action = "session.next" }) -- )
 bind("shift+l", "last_session") -- L
 bind("shift+4", "session.rename") -- $
 bind("shift+a", "newest_session")
@@ -551,22 +561,18 @@ bind("down", "pane.focus.down")
 bind("o", "pane.focus_next")
 bind("z", "pane.zoom")
 bind("shift+z", "cycle_width")
+bind("shift+0", "equalize") -- =
 bind("x", "close_pane")
-bind("alt+8", "pane.move.left") -- {
-bind("alt+9", "pane.move.right") -- }
+bind("[Backquote]", "pane.move.left") -- <
+bind("shift+[Backquote]", "pane.move.right") -- >
 bind("shift+1", "track_switch", { action = "pane.move_to_new_tab", tabs = true }) -- !
-for _, direction in ipairs({ "left", "right", "up", "down" }) do
-  bind("ctrl+" .. direction, "pane.resize", { direction = direction })
-end
 bind("ctrl+y", "pane.copy_id")
 bind("shift+y", "copy_path")
 bind("shift+f", "reveal_in_finder")
 
 -- Other
 bind("shift+o", "open_repo")
-bind("a", "agents_dashboard")
 bind("r", "client.config.reload")
-bind("e", "client.sidebar.toggle")
 bind("shift+e", "expand_sessions")
 bind("shift+c", "session.collapse_others")
 

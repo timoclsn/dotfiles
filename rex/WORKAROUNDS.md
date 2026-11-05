@@ -35,19 +35,20 @@ Related, shipped in preview.23: sessions now survive server restarts. That is no
 | --- | --- | --- |
 | `tab_goto`, `tab_step` actions (`prefix+1-9`, `n`, `p`) | Built-in tab actions count tabs across all sessions, tmux counts per session | Per-session tab actions, or a setting for it |
 | `last_tab`, `last_session` actions, `remember()` history in memory + `~/.local/state/rex-history` | No focus history (tmux `prefix+l` / `prefix+L`) | A built-in last tab / last session action |
-| `track_switch` wrapper around built-in `client.tab.new`, `session.switch`, `session.previous/next`, `pane.move_to_new_tab` | Built-ins don't record where you came from, so the history above misses them. Clicking is only noticed on the next key | The same history feature as above |
+| `track_switch` wrapper around built-in `client.tab.new`, `session.switch`, `pane.move_to_new_tab` | Built-ins don't record where you came from, so the history above misses them. Clicking is only noticed on the next key | The same history feature as above |
 | `newest_session` (`prefix+A`) | No "most recently created session" action; relies on session IDs starting with the creation time | Such an action |
 | `sort_sessions` + sorting on `create_session` (attach and `session.move` each one) | No alphabetical sidebar order, only manual moves | A sidebar sort setting |
 | `expand_sessions` action (`prefix+E`) | Rex has Expand Session for one session only, no expand-all | An expand-all sessions action |
 | `close_pane` action (`prefix+x`) | Built-in `pane.close` does nothing on the only pane of a tab, tmux's kill-pane closes the window | `pane.close` closing the tab (or a setting for it) |
 | `grid` action (`prefix++`) | No 2x2 split. Queues five pane actions | A grid / layout action |
+| `equalize` action (`prefix+=`) | No even-sizes layout. Walks the layout tree and calls `resize_pane` per split | A pane size preset or equalize action |
 | `cycle_width` action (`prefix+Z`) | No 1/3, 1/2, 2/3 cycle. Walks the layout tree and calls `resize_pane` | A pane size preset or cycle action |
 | German layout key names: `alt+7` for `\|`, `shift+8` for `(`, `[Backquote]`, `[Backslash]` … | Keys without a Rex name need physical key codes or the modifier combo | Layout-aware key names |
 | `ctrl+h/j/k/l` binding that checks `foreground(ctx)` and returns `false` for nvim/vim/view/fzf | Replaces vim-tmux-navigator: pass the key through to some programs | A per-program or conditional keybinding option |
-| `popup()` helper using `new_layer` with `exit.on_completion` | No tmux `display-popup` equivalent for the fzf picker and agents dashboard | A first-class popup/command-palette API |
+| `popup()` helper using `new_layer` with `exit.on_completion` | No tmux `display-popup` equivalent for the fzf picker and lazygit | A first-class popup/command-palette API |
 | `sessionizer` passes `REX_CLIENT` of the app that pressed the key to the picker popup | The picker runs `rex do sessionizer dir=…` from the CLI, which only finds the app by itself when exactly one is connected ("no client is targeted" otherwise, e.g. with an iPhone attached or during an update relaunch) | Popups or CLI calls from a pane inheriting the client that opened them |
 | `rex.client.queue("session.select", …)` to switch tabs and sessions | The app tracks the visible tab itself, so the server-side API can't switch it. Needs Remote Control on in Rex settings | Server-side session/tab selection that works without Remote Control |
-| `open_repo`, `copy_path`, `diff` use `foreground(ctx).cwd` | No `#{pane_current_path}` for key bindings | A pane cwd in the action context (`ctx`) |
+| `open_repo`, `copy_path` use `foreground(ctx).cwd` | No `#{pane_current_path}` for key bindings | A pane cwd in the action context (`ctx`) |
 | `PATH` rebuilt in `run()` | Rex server starts with a minimal PATH | The server inheriting the user's shell PATH |
 | `agent_command`: `fish -ic 'status job-control full; cc $argv; exec fish'` | The pane should stay open after the agent exits. Job control is needed so `cc` is the pane's foreground process, otherwise Rex doesn't recognise the agent or name the tab | Per-session startup command or an exit-behaviour setting that makes this unneeded |
 
