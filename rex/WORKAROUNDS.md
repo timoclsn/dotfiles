@@ -5,12 +5,14 @@ Rex release notes now and then (the `superlogical` MCP has `list_changelog` /
 `search_changelog`, and `search_feedback` shows what the team accepted). When a
 release covers one, delete the workaround and its note here.
 
-Last checked: 2026-11-03 against Mac preview.25 and CLI d018d2d (nothing droppable yet, see below).
+Last checked: 2026-11-05 against Mac preview.26 and CLI af0c204 (nothing droppable yet, see below).
+preview.26 added `--interactive` for `rex run/split/new` (reads ~/.zshrc), but that is a CLI flag;
+our `PATH` rebuild is for `rex.exec` in Lua, which it doesn't cover.
 The `superlogical` MCP's search only matches single keywords, and `read_changelog`
 by id returned the latest post every time, so use `list_changelog` and read the posts
 on Discord if a link matters.
 
-## Status of upstream requests (as of 2026-11-03)
+## Status of upstream requests (as of 2026-11-05)
 
 | Workaround | Feedback status |
 | --- | --- |
