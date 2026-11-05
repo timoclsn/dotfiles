@@ -1,5 +1,9 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
+# Tool version lookups go through mise shims, which can take longer than the
+# default 500ms on a cold cache
+command_timeout = 1000
+
 [gcloud]
 disabled = true
 
