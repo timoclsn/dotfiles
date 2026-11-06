@@ -5,24 +5,27 @@ Rex release notes now and then (the `superlogical` MCP has `list_changelog` /
 `search_changelog`, and `search_feedback` shows what the team accepted). When a
 release covers one, delete the workaround and its note here.
 
-Last checked: 2026-11-05 against Mac preview.26 and CLI af0c204 (nothing droppable yet, see below).
+Last checked: 2026-11-06 against Mac preview.27 and CLI 01d6c4f (nothing droppable yet, see below).
 preview.26 added `--interactive` for `rex run/split/new` (reads ~/.zshrc), but that is a CLI flag;
 our `PATH` rebuild is for `rex.exec` in Lua, which it doesn't cover.
-The `superlogical` MCP's search only matches single keywords, and `read_changelog`
-by id returned the latest post every time, so use `list_changelog` and read the posts
-on Discord if a link matters.
+preview.27 has nothing on our list (remote uploads, Handoff, sidebar text size, `client.update.*`
+actions, pane rename, crash fixes). Its server crash fix on restoring many terminals needs one
+server restart. `client.update.*` is another Remote Control action, not a selection API.
+The `superlogical` MCP's search only matches single keywords. `read_changelog` takes a
+version only when it is the full string (`0.1.0-preview.27-1853-379536d`); the short
+`0.1.0-preview.27` finds nothing. The message id from `list_changelog` also works.
 
-## Status of upstream requests (as of 2026-11-05)
+## Status of upstream requests (as of 2026-11-06)
 
 | Workaround | Feedback status |
 | --- | --- |
-| `last_tab`, `last_session`, history | "Focus last pane" is **accepted** and mentions `client.tab.last` and `session.last` as the same idea. "Switch back to the previous session" is **deferred**. "Go to previously active tab" and "Keybind to toggle back to the previously active tab, across sessions" are **active**. Not shipped. |
+| `last_tab`, `last_session`, history | "Focus last pane" is **accepted** and mentions `client.tab.last` and `session.last` as the same idea. "Switch back to the previous session" is **deferred**. "Go to previously active tab" and "Keybind to toggle back to the previously active tab, across sessions" are **active**. "Last session shortcut" is **deferred**. "Expose session last-accessed time (for MRU session ordering)" is **active** (would also cover `newest_session`-style needs). Not shipped. |
 | `ctrl+h/j/k/l` and `rex-navigator.lua` | "Seamless ctrl-hjkl navigation (vim-tmux-navigator equivalent)" is **deferred** |
-| `popup()` | "add tmux-style popups" is now **accepted**. Not shipped. |
+| `popup()` | "add tmux-style popups" is **accepted**. Not shipped. Related and **active**: a floating layer that closes on program exit doesn't return focus; "Lua API to show a native picker with custom items". **Accepted**: focus moves to the wrong pane when a floating pane's program exits |
 | Key names and a tmux-style prefix | "Keybindings for tmux/herdr folk" is **active**. The team says they're working toward a tmux default and have a key-sequences docs page |
 | Session metadata, selected session | "session metadata and selected-session visibility for tools built on Rex" is **active** |
 | `session.select` through `rex.client.queue` | Bug "`session.select` errors with remote hosts" is **active**. Check it if we ever use remote hosts. "Queued session.select for a window created in the same action is dropped" is **active** too |
-| Startup Command ignored after a server restart (fish trial) | Bug "Rex doesn't use configured startup command on server restart" is **active**. Updates restart the server, so the panes Rex reopens start zsh; new tabs start fish |
+| Startup Command ignored after a server restart (fish trial) | Bug "Rex doesn't use configured startup command on server restart" is **active**. Updates restart the server, so the panes Rex reopens start zsh; new tabs start fish. More reports of the same, all still open: "Shell startup command not called after Rex Server restart" (**active**), "Terminals start default shell after upgrade" (**deferred**). Related: "Per-session startup command for new tabs" and "shell arg for client.tab.new" are **active** |
 | `PATH` rebuilt in `run()` | "Rex does not export path to its binary" is **active**, but that is about the `rex` binary, not the server's PATH |
 
 Nothing on tabs per session, sidebar sort, `grid`, `cycle_width`, the server PATH, or the pane cwd in `ctx` was found, in either the changelog or the feedback. Search again with other words before concluding they don't exist.
