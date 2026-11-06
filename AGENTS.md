@@ -15,6 +15,12 @@ This is a personal dotfiles repository managing development environment configur
 
 The script symlinks configs to `~/.config/` and `~/` as appropriate. Scripts are installed to `~/.local/bin/`.
 
+## Formatting
+
+When you are done editing Lua files, format them with stylua (config in
+`.stylua.toml`). It is installed by Mason at
+`~/.local/share/nvim/mason/bin/stylua`, not on `PATH`.
+
 ## Repository Structure
 
 ```
@@ -101,7 +107,7 @@ Remote Control turned on in Rex's settings.
 Rex has no focus history, so `rex/init.lua` keeps its own for `prefix + l` (last
 tab of the session) and `prefix + L` (last session). Every action there that
 switches tabs or sessions records where you came from, and `track_switch` wraps
-built-in ones (`s`, `w`, `c`, `!`) to do the same. The history lives in
+built-in ones (`s`, `c`) to do the same. The history lives in
 memory and in `~/.local/state/rex-history`. A switch made another way, like
 clicking, is noticed the next time one of those keys runs.
 
