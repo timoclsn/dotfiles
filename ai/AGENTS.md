@@ -60,16 +60,17 @@
 - Mostly use built-in values, occasionally allow dynamic values, rarely globals.
 - Always use v4 + global CSS file format.
 
-## Tmux
-
-- Use `tmux capture-pane -p` to capture current pane content before sending keys to preserve context.
-- A pattern like `dotfiles:4.4` refers to a tmux pane (format: `session:window.pane`).
-
 ## Rex
 
 - I mostly work in Rex now. If `$REX_SESSION` / `$REX_BLOCK` are set, you're in Rex; use the `rex` CLI (see the `rex` skill) instead of tmux.
 - A pane ID like `block:01a1881f-320f-7dcf-86ff-1c20c4cf470d` refers to a Rex pane (a "block"). Sessions are `session:<uuid>`. In Rex terms a tab is a window and a pane is a block.
 - Use `rex capture -s "$REX_SESSION" -b <block> --trim` to read a pane's content before sending input with `rex send` / `rex send-key`.
+
+## Tmux
+
+- Fallback for when `$REX_SESSION` is not set; otherwise use Rex (see above).
+- Use `tmux capture-pane -p` to capture current pane content before sending keys to preserve context.
+- A pattern like `dotfiles:4.4` refers to a tmux pane (format: `session:window.pane`).
 
 ## Git / GitHub
 
@@ -101,7 +102,7 @@
 ## Starting Claude sessions
 
 - Launch new Claude Code sessions through my zsh aliases, not bare `claude` — `cc` is the default, `ccs`/`cch` for smaller models, `*w` variants (`ccw`, `ccsw`, `cchw`) for a worktree.
-- The aliases only exist in my interactive shell, so go through one (e.g. `zsh -ic`).
+- The aliases only exist in interactive shells, so go through one with zsh (e.g. `zsh -ic`), not fish: zsh is the shell agents use.
 
 ## Notifications
 
