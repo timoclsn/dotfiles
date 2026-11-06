@@ -1,181 +1,42 @@
-# CLAUDE.md
+# AGENTS.md
 
-This file provides guidance to an AI coding agent when working with code in this repository.
+Personal macOS dotfiles. `setup.sh` symlinks each config from this repo to its place in `~/.config/`, `~/` and `~/.local/bin/`. Run it after adding a new config.
 
-## Repository Overview
-
-This is a personal dotfiles repository managing development environment configurations on macOS. Configurations are symlinked from this repo to their target locations via `setup.sh`.
-
-## Setup & Installation
-
-```bash
-# Run setup script to create all symlinks
-./setup.sh
-```
-
-The script symlinks configs to `~/.config/` and `~/` as appropriate. Scripts are installed to `~/.local/bin/`.
+Tokyo Night is the theme everywhere (Ghostty, Neovim, Tmux, OpenCode).
 
 ## Formatting
 
-When you are done editing Lua files, format them with stylua (config in
-`.stylua.toml`). It is installed by Mason at
-`~/.local/share/nvim/mason/bin/stylua`, not on `PATH`.
+After editing Lua files, format them with stylua (config in `.stylua.toml`). Mason installs it at `~/.local/share/nvim/mason/bin/stylua`; it is not on `PATH`.
 
-## Repository Structure
+## Shared AI config
 
-```
-dotfiles/
-├── ai/AGENTS.md          # Shared coding instructions (symlinked to Claude, OpenCode, Codex)
-├── nvim/                 # Neovim config (Lua, vim.pack)
-│   ├── init.lua          # Options/keymaps entry point + vim.pack plugin list
-│   ├── plugin/           # One file per plugin, auto-sourced at startup
-│   ├── ftplugin/         # Per-filetype settings
-│   ├── lua/              # options, keymaps, commands + shared helpers
-│   └── snippets/         # VSCode-format snippets, loaded by blink.cmp
-├── tmux/tmux.conf        # Tmux config (prefix: Ctrl+Space)
-├── rex/                  # Rex config (Lua), incl. a project sessionizer
-├── ghostty/config        # Terminal emulator
-├── homebrew/Brewfile     # Hand-curated list of Homebrew packages (see Homebrew below)
-├── zsh/zshrc             # Shell config (login shell, used by scripts and agents)
-├── fish/                 # Interactive shell config (on trial next to zsh)
-├── claude/               # Claude Code settings, hooks, commands
-├── opencode/             # OpenCode IDE config
-├── codex/                # Codex CLI config
-├── pi/                   # Pi coding agent extensions
-├── cursor/rules/         # Cursor IDE rules (14 TypeScript patterns)
-├── scripts/              # Utility scripts (tmux-/rex-sessionizer, ai-commit, etc.)
-└── setup.sh              # Symlink installer
-```
+`ai/AGENTS.md` is symlinked to `~/.claude/CLAUDE.md`, `~/.config/opencode/AGENTS.md`, `~/.codex/AGENTS.md` and `~/.pi/agent/AGENTS.md`. Editing it changes the instructions of every AI tool.
 
-## Key Commands
+## Sessions
 
-**Tmux prefix**: `Ctrl+Space`
+`scripts/tmux-sessionizer` and `scripts/rex-sessionizer` take the same arguments: a project directory (or none for the fzf picker), `--detach` and `--prompt <text>`. The `session` skill depends on this, so keep the two in sync. Switching the Rex app to the picked session from the popup needs Remote Control turned on in Rex's settings.
 
-| Binding       | Action                                    |
-| ------------- | ----------------------------------------- |
-| `prefix + f`  | Fuzzy project selector (tmux-sessionizer) |
-| `prefix + '`  | Jump to dotfiles                          |
-| `prefix + A`  | Jump to most recently created session     |
-| `prefix + \|` | Split pane horizontally                   |
-| `prefix + -`  | Split pane vertically                     |
-| `prefix + r`  | Reload tmux config                        |
-| `prefix + Z`  | Cycle pane width (1/3, 1/2, 2/3)          |
+## Shells
 
-**Neovim leader**: `Space`
+zsh is the login shell and what agents and scripts use. fish is the interactive shell on trial. `zsh/zshrc` stays minimal so it starts in ~30ms: no Oh My Zsh, prompt, completion or fzf/zoxide.
 
-## Architecture Notes
+- New PATH entries and env vars go into both shells.
+- Aliases and functions go only into zsh if agents or scripts need them; everything else is fish only (`fish/config.fish`, one file per function in `fish/functions/`).
+- Don't commit `fish/fish_variables`; fish writes it at runtime.
 
-### Configuration Sharing
+## Homebrew
 
-- `ai/AGENTS.md` contains shared coding style guidelines
-- Symlinked to `~/.claude/CLAUDE.md`, `~/.config/opencode/AGENTS.md`, `~/.codex/AGENTS.md`, and `~/.pi/agent/AGENTS.md`
-- Changes to this file affect all AI tools
+`homebrew/Brewfile` lists only packages installed on purpose, grouped by topic with comments. Edit it by hand; never re-dump it. `scripts/update-tools` reports drift without changing anything.
 
-### Tmux Session Setup (tmux-sessionizer)
+- `brew bundle cleanup` and `dump` need `--tap --formula --cask`. Without them they also check Go and uv packages, which fails on mise shims that have no global version.
+- Untrusted third-party taps make `check`, `cleanup` and `dump` silently skip packages or fail with "untrusted tap". Declare trust in the Brewfile (see its header), never via `brew trust`, and trust single packages rather than whole taps.
 
-When creating a new project session, 4 windows are created:
+## Neovim
 
-1. **code** - Neovim
-2. **source** - Lazygit
-3. **agents** - Split pane with AI agent (left) + terminal (right)
-4. **cmd** - General terminal
+Plugins use `vim.pack` (Neovim 0.12). To add one:
 
-Called with no argument it opens an fzf project picker; with a directory it
-targets that project directly. `--detach` sets the session up without attaching
-or switching the client to it, leaves a freshly created session on the `agents`
-window, and prints the session name. `--prompt <text>` starts the agent in a
-newly created session with that text as its first message. Together they're how
-the `session` skill prepares a session for a new worktree and hands it the task
-without pulling the user out of their current one.
+- Add it to the single `vim.pack.add` call in `nvim/init.lua`. Plugins with a build step are handled by the `PackChanged` autocmd there.
+- Configure it in its own file in `nvim/plugin/`, which Neovim sources at startup.
+- Commit the updated `nvim/nvim-pack-lock.json`.
 
-### Rex Session Setup (rex-sessionizer)
-
-`rex/init.lua` ports the tmux setup to Rex: the same `ctrl+space` prefix and
-key bindings (written for a German keyboard layout), and a `sessionizer` action
-on `prefix + f` that opens `scripts/rex-sessionizer` (the fzf picker) in a
-floating popup.
-
-A new project session has a single window running the AI agent, and
-sessions are kept sorted alphabetically in the sidebar. A `<repo>-w-<name>`
-worktree gets the label `<repo> 󰘬 <name>` (`session_label` in `rex/init.lua`);
-`session-remove` asks the `session_label` action for it to find the session. `rex-sessionizer` takes
-the same arguments as tmux-sessionizer (a directory, `--detach`, `--prompt`);
-the `session` skill uses rex-sessionizer instead of tmux-sessionizer when it
-runs in a Rex terminal outside tmux. Switching the app to the picked session from the popup needs
-Remote Control turned on in Rex's settings.
-
-Rex has no focus history, so `rex/init.lua` keeps its own for `prefix + l` (last
-tab of the session) and `prefix + L` (last session). Every action there that
-switches tabs or sessions records where you came from, and `track_switch` wraps
-built-in ones (`s`, `c`) to do the same. The history lives in
-memory and in `~/.local/state/rex-history`. A switch made another way, like
-clicking, is noticed the next time one of those keys runs.
-
-### Shells (zsh and fish side by side)
-
-fish is on trial as the interactive shell. Ghostty (`command`), tmux
-(`default-command`), Rex (Startup Command in its Terminal settings) and the
-Rex agent pane once `cc` exits (`exec fish` in `rex/init.lua`) start fish,
-while zsh stays the login shell. So the agents and scripts keep using zsh,
-and `zsh/zshrc` is stripped down to what they need (environment, PATH, the
-`claude` wrapper, `cc*` and comview aliases) to start in ~30ms. No Oh My Zsh,
-prompt, completion or fzf/zoxide.
-
-`fish/config.fish` holds the full interactive setup, and each helper function is
-a file in `fish/functions/`. New PATH entries and env vars go into both shells;
-aliases and functions only into zsh if agents or scripts need them. Don't commit `fish/fish_variables`; fish writes it at runtime.
-
-### Homebrew
-
-`homebrew/Brewfile` lists only the packages installed on purpose, grouped by
-topic; Homebrew resolves dependencies itself. Edit it by hand rather than
-re-dumping (a dump loses the grouping and comments). `HOMEBREW_BUNDLE_FILE`
-points `brew bundle` at it in both shells, `setup.sh` installs what's missing,
-and `scripts/update-tools` reports drift (installed but not listed, or listed
-but not installed) without changing anything.
-
-Two Homebrew quirks to know about:
-
-- `brew bundle cleanup` and `dump` need `--tap --formula --cask`; otherwise they
-  also check Go and uv packages, which fails on mise shims that have no global
-  version.
-- Homebrew refuses to load third-party taps until they are trusted, so `check`,
-  `cleanup` and `dump` silently skip those packages or fail with "untrusted
-  tap". `brew bundle cleanup` resets the trust store to what the Brewfile
-  declares, so trust lives in the Brewfile as `trusted: true` on the package
-  (or `trusted: { formula: ... }` on the tap line for dependencies from the same
-  tap), never via a manual `brew trust`. Prefer trusting single packages over
-  whole taps. When adding a package from a new tap, add its trust there too.
-
-### Claude Code Hooks
-
-Located in `claude/hooks/`:
-
-- `statusline.ts` - Custom status line showing model, tokens, cost
-- `notify.ts` - macOS notifications on completion
-
-### Neovim Plugin Organization
-
-Plugins are installed with `vim.pack`, Neovim's built-in manager (requires 0.12).
-The whole list lives in one `vim.pack.add` call in `nvim/init.lua`, and pinned
-revisions are committed in `nvim/nvim-pack-lock.json`. Plugins that need a build
-step (nvim-treesitter, fff.nvim) are handled by the `PackChanged` autocmd there.
-
-Each plugin is then configured in its own file in `nvim/plugin/`, which Neovim
-sources automatically at startup - there is no plugin-manager spec and no lazy
-loading, so keep these files cheap and defer heavy `require`s to the point of
-use. Examples:
-
-- `lsp.lua` - Native LSP config, servers installed via Mason
-- `blink-cmp.lua` - Completion
-- `conform.lua` - Formatting
-- `nvim-lint.lua` - Linting
-- `gitsigns.lua` / `codediff.lua` - Git signs and diff review
-- `fff.lua` / `telescope.lua` - File picker and everything-else picker
-
-Useful commands: `:U`/`:Update` updates plugins, `:R`/`:Restart` restarts Neovim
-and restores the session.
-
-## Theme
-
-Tokyo Night is used consistently across: Ghostty, Neovim, Tmux, OpenCode.
+There is no lazy loading, so keep `plugin/` files cheap and defer heavy `require`s to the point of use.
