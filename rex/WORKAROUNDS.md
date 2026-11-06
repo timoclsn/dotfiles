@@ -37,12 +37,12 @@ Related, shipped in preview.23: sessions now survive server restarts. That is no
 
 | Workaround | Why | Drop when Rex has |
 | --- | --- | --- |
-| `tab_goto`, `tab_step` actions (`prefix+1-9`, `n`, `p`) | Built-in tab actions count tabs across all sessions, tmux counts per session | Per-session tab actions, or a setting for it |
+| `tab_goto` action (`prefix+1-9`) | Built-in tab actions count tabs across all sessions, tmux counts per session | Per-session tab actions, or a setting for it |
 | `last_tab`, `last_session` actions, `remember()` history in memory + `~/.local/state/rex-history` | No focus history (tmux `prefix+l` / `prefix+L`) | A built-in last tab / last session action |
 | `track_switch` wrapper around built-in `client.tab.new`, `session.switch`, `pane.move_to_new_tab` | Built-ins don't record where you came from, so the history above misses them. Clicking is only noticed on the next key | The same history feature as above |
-| `newest_session` (`prefix+A`) | No "most recently created session" action; relies on session IDs starting with the creation time | Such an action |
+| `newest_session` (`prefix+n`) | No "most recently created session" action; relies on session IDs starting with the creation time | Such an action |
 | `sort_sessions` + sorting on `create_session` (attach and `session.move` each one) | No alphabetical sidebar order, only manual moves | A sidebar sort setting |
-| `expand_sessions` action (`prefix+E`) | Rex has Expand Session for one session only, no expand-all | An expand-all sessions action |
+| `expand_sessions` action (`prefix+e`) | Rex has Expand Session for one session only, no expand-all | An expand-all sessions action |
 | `close_pane` action (`prefix+x`) | Built-in `pane.close` does nothing on the only pane of a tab, tmux's kill-pane closes the window | `pane.close` closing the tab (or a setting for it) |
 | `grid` action (`prefix++`) | No 2x2 split. Queues five pane actions | A grid / layout action |
 | `equalize` action (`prefix+=`) | No even-sizes layout. Walks the layout tree and calls `resize_pane` per split | A pane size preset or equalize action |
