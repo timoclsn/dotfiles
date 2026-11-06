@@ -267,17 +267,6 @@ rex.action({
 })
 
 rex.action({
-  name = "tab_step",
-  title = "Step Through Tabs in Session",
-  category = "Tabs",
-  args = { step = "integer" },
-  run = function(ctx, args)
-    local windows, active = session_windows(ctx)
-    focus_window(ctx, windows[active], windows[(active - 1 + args.step) % #windows + 1])
-  end,
-})
-
-rex.action({
   name = "last_tab",
   title = "Go to Last Tab in Session",
   category = "Tabs",
@@ -540,51 +529,41 @@ end
 -- Tabs (tmux windows)
 bind("c", "track_switch", { action = "client.tab.new", tabs = true })
 bind("l", "last_tab")
-bind("n", "tab_step", { step = 1 })
-bind("p", "tab_step", { step = -1 })
 for index = 1, 9 do
   bind(tostring(index), "tab_goto", { index = index })
 end
-bind(",", "client.tab.rename")
-bind("g", "lazygit")
 
 -- Sessions
 bind("f", "sessionizer")
-bind("shift+[Backslash]", "sessionizer", { dir = "~/Developer/personal/dotfiles" }) -- '
-bind("shift+n", "sessionizer", { dir = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes" })
+bind(",", "sessionizer", { dir = "~/Developer/personal/dotfiles" })
 bind("s", "track_switch", { action = "session.switch" })
-bind("w", "track_switch", { action = "session.switch" })
 bind("shift+l", "last_session") -- L
-bind("shift+4", "session.rename") -- $
-bind("shift+a", "newest_session")
+bind("n", "newest_session")
 bind("shift+s", "sort_sessions")
+bind("e", "expand_sessions")
+bind("shift+e", "session.collapse_others")
 
 -- Panes
 bind("alt+7", "pane.split.right") -- |
 bind("-", "pane.split.down")
 bind("+", "grid")
-bind("left", "pane.focus.left")
-bind("right", "pane.focus.right")
-bind("up", "pane.focus.up")
-bind("down", "pane.focus.down")
-bind("o", "pane.focus_next")
 bind("z", "pane.zoom")
 bind("shift+z", "cycle_width")
 bind("shift+0", "equalize") -- =
 bind("x", "close_pane")
-bind("[Backquote]", "pane.move.left") -- <
-bind("shift+[Backquote]", "pane.move.right") -- >
-bind("shift+1", "track_switch", { action = "pane.move_to_new_tab", tabs = true }) -- !
+
+-- Copy
 bind("y", "pane.copy_id")
 bind("shift+y", "copy_session_id")
 bind("ctrl+y", "copy_path")
+
+-- Open
+bind("g", "lazygit")
+bind("o", "open_repo")
 bind("shift+f", "reveal_in_finder")
 
--- Other
-bind("shift+o", "open_repo")
+-- Config
 bind("r", "client.config.reload")
-bind("shift+e", "expand_sessions")
-bind("shift+c", "session.collapse_others")
 
 -- ctrl+h/j/k/l move between panes, except in programs that use them
 -- themselves: vim moves between its own splits, fzf moves its selection.
