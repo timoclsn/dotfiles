@@ -249,7 +249,7 @@ rex.action {
     -- app on its own when exactly one is connected, so name the app that asked.
     local script = home .. '/.local/bin/rex-sessionizer'
     local command = from_app(ctx) and { '/usr/bin/env', 'REX_CLIENT=' .. ctx.client_id, script } or { script }
-    popup { label = 'Projects', command = command, bounds = { 0.2, 0.15, 0.6, 0.7 }, ctx = ctx }
+    popup { label = 'Projects', command = command, bounds = { 0, 0, 1, 1 }, ctx = ctx }
   end,
 }
 
