@@ -1,0 +1,14 @@
+{
+  "lastChangelogVersion": "1.5.0",
+  "theme": "dark",
+  "defaultProvider": "google",
+  "defaultModel": "gemini-4-argon",
+  "defaultThinkingLevel": "xhigh",
+  "enabledModels": [
+    "google/gemini-3.8-flash",
+    "google/gemini-4-argon"
+  ],
+  "skills": [
+    "!**/synced/**"
+  ]
+}
