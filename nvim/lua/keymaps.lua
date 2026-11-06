@@ -41,11 +41,6 @@ vim.keymap.set('n', 'Ö', '{', { remap = true })
 vim.keymap.set('n', 'Ä', '}', { remap = true })
 
 -- ============================================================================
--- External Tools
--- ============================================================================
-vim.keymap.set('n', '<C-f>', '<cmd>silent !tmux neww tmux-sessionizer<CR>')
-
--- ============================================================================
 -- Diagnostics
 -- ============================================================================
 vim.keymap.set('n', '<leader>k', vim.diagnostic.open_float, { desc = 'Show diagnostic under cursor' })
