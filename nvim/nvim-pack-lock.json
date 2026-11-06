@@ -21,9 +21,9 @@
       "rev": "8f197eb30cecdf4c2cc9988a5eecc6bc34c0c7d6",
       "src": "https://github.com/jinh0/eyeliner.nvim"
     },
-    "fff.nvim": {
-      "rev": "d1c7dd47130ca670ab71e7466a1a3b4a57d5348d",
-      "src": "https://github.com/dmtrKovalenko/fff.nvim"
+    "fff": {
+      "rev": "b35b96ad065aea26aafb73eac69fd4866f173b76",
+      "src": "https://github.com/dmtrKovalenko/fff"
     },
     "fidget.nvim": {
       "rev": "9e0201673e08e997e7cf52afca5565c70bd117f3",

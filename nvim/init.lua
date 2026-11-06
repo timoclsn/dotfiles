@@ -19,9 +19,9 @@ vim.api.nvim_create_autocmd('PackChanged', {
         vim.cmd.packadd 'nvim-treesitter'
       end
       vim.cmd 'TSUpdate'
-    elseif name == 'fff.nvim' then
+    elseif name == 'fff' then
       if not ev.data.active then
-        vim.cmd.packadd 'fff.nvim'
+        vim.cmd.packadd 'fff'
       end
       require('fff.download').download_or_build_binary()
     end
@@ -34,7 +34,7 @@ vim.pack.add {
   { src = 'https://github.com/nat-418/boole.nvim' },
   { src = 'https://github.com/stevearc/conform.nvim' },
   { src = 'https://github.com/jinh0/eyeliner.nvim' },
-  { src = 'https://github.com/dmtrKovalenko/fff.nvim' },
+  { src = 'https://github.com/dmtrKovalenko/fff' },
   { src = 'https://github.com/j-hui/fidget.nvim' },
   { src = 'https://github.com/lewis6991/gitsigns.nvim' },
   { src = 'https://github.com/NMAC427/guess-indent.nvim' },
