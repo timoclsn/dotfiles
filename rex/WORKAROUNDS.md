@@ -39,7 +39,7 @@ Related, shipped in preview.23: sessions now survive server restarts. That is no
 | --- | --- | --- |
 | `tab_goto` action (`prefix+1-9`) | Built-in tab actions count tabs across all sessions, tmux counts per session | Per-session tab actions, or a setting for it |
 | `last_tab`, `last_session` actions, `remember()` history in memory + `~/.local/state/rex-history` | No focus history (tmux `prefix+l` / `prefix+L`) | A built-in last tab / last session action |
-| `track_switch` wrapper around built-in `client.tab.new`, `session.switch`, `pane.move_to_new_tab` | Built-ins don't record where you came from, so the history above misses them. Clicking is only noticed on the next key | The same history feature as above |
+| `track_switch` wrapper around built-in `client.tab.new`, `session.switch` | Built-ins don't record where you came from, so the history above misses them. Clicking is only noticed on the next key | The same history feature as above |
 | `newest_session` (`prefix+n`) | No "most recently created session" action; relies on session IDs starting with the creation time | Such an action |
 | `sort_sessions` + sorting on `create_session` (attach and `session.move` each one) | No alphabetical sidebar order, only manual moves | A sidebar sort setting |
 | `expand_sessions` action (`prefix+E`) | Rex has Expand Session for one session only, no expand-all | An expand-all sessions action |
@@ -54,7 +54,9 @@ Related, shipped in preview.23: sessions now survive server restarts. That is no
 | `rex.client.queue("session.select", …)` to switch tabs and sessions | The app tracks the visible tab itself, so the server-side API can't switch it. Needs Remote Control on in Rex settings | Server-side session/tab selection that works without Remote Control |
 | `open_repo`, `copy_path` use `foreground(ctx).cwd` | No `#{pane_current_path}` for key bindings | A pane cwd in the action context (`ctx`) |
 | `copy_path` (`prefix+ctrl+y`) and `copy_session_id` (`prefix+shift+y`) copy with `pbcopy` and show no notice; built-in `pane.copy_id` (`prefix+y`) does | No Lua call posts a notice, only `error(…, 0)` does, and no client action copies an arbitrary string | A notice call for custom actions, or a copy-to-clipboard client action. Then add the notice to both actions |
+| `restore-focus.lua`, started detached by `popup()` | When a popup's program exits, Rex focuses the last pane of the tab instead of the pane you were in (feedback: "Focus moves to the wrong pane when a floating pane's program exits", **accepted**). `rex.on`/`rex.wait` only work in scripts, not in `init.lua`, hence the separate script that waits for the popup's `block_closed` and calls `session.focus_block` | Rex returning focus to the previous pane itself |
 | `PATH` rebuilt in `run()` | Rex server starts with a minimal PATH | The server inheriting the user's shell PATH |
+| `rex_command`, the absolute path to the `rex` binary inside the Rex app | `popup()` needs `rex` to start `restore-focus.lua`, and the server's PATH has none. The path depends on Rex's install layout | The server exposing its own binary path ("Rex does not export path to its binary" is **active**) |
 | `agent_command`: `fish -ic 'status job-control full; cc $argv; exec fish'` | The pane should stay open after the agent exits. Job control is needed so `cc` is the pane's foreground process, otherwise Rex doesn't recognise the agent or name the tab | Per-session startup command or an exit-behaviour setting that makes this unneeded |
 
 ## Around the config

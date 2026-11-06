@@ -3,6 +3,8 @@ local shell = 'com.superlogical.terminal.shell'
 local terminal_block = 'com.superlogical.terminal'
 -- The Rex server runs with a minimal PATH, without Homebrew or ~/.local/bin.
 local path = home .. '/.local/bin:/opt/homebrew/bin:' .. os.getenv 'PATH'
+-- It does not have its own rex command on that PATH either.
+local rex_command = home .. '/Library/Application Support/com.superlogical.rex/RexServer/Versions/Current/Rex Server.app/Contents/MacOS/rex'
 
 -- Rex API calls return a result or nil and an error message.
 local function unwrap(result, err)
@@ -31,17 +33,34 @@ local function terminal(cwd, command)
   return rex.layout.block { flavor = shell, options = { cwd = cwd, command = command } }
 end
 
--- A floating layer running a command, closed when the command exits.
-local function popup(label, command, bounds, cwd)
-  in_session('new_layer', {
-    bounds = bounds,
+-- A floating layer running a command, closed when the command exits. Focus
+-- goes back to the pane the key was pressed in, which Rex doesn't do itself.
+local function popup(options)
+  local layer = in_session('new_layer', {
+    bounds = options.bounds,
     focus = true,
     layout = rex.layout.block {
       flavor = shell,
-      label = label,
-      options = { cwd = cwd, command = command, exit = { on_completion = true, quick_exit_threshold_ms = 0 } },
+      label = options.label,
+      options = {
+        cwd = options.cwd,
+        command = options.command,
+        exit = { on_completion = true, quick_exit_threshold_ms = 0 },
+      },
     },
   })
+  if not options.ctx.block_id then
+    return
+  end
+  unwrap(rex.exec.start({
+    rex_command,
+    'do',
+    '-s',
+    options.ctx.session_id,
+    home .. '/.config/rex/restore-focus.lua',
+    'popup=' .. layer.block_ids[1],
+    'origin=' .. options.ctx.block_id,
+  }, { detach = true }))
 end
 
 -- The program in the foreground of the focused pane, if Rex can tell.
@@ -230,7 +249,7 @@ rex.action {
     -- app on its own when exactly one is connected, so name the app that asked.
     local script = home .. '/.local/bin/rex-sessionizer'
     local command = from_app(ctx) and { '/usr/bin/env', 'REX_CLIENT=' .. ctx.client_id, script } or { script }
-    popup('Projects', command, { 0.2, 0.15, 0.6, 0.7 })
+    popup { label = 'Projects', command = command, bounds = { 0.2, 0.15, 0.6, 0.7 }, ctx = ctx }
   end,
 }
 
@@ -514,7 +533,13 @@ rex.action {
   category = 'Git',
   keywords = 'git lazygit',
   run = function(ctx)
-    popup('Lazygit', { '/opt/homebrew/bin/fish', '-c', 'status job-control full; lazygit' }, { 0.05, 0.05, 0.9, 0.9 }, pane_dir(ctx))
+    popup {
+      label = 'Lazygit',
+      command = { '/opt/homebrew/bin/fish', '-c', 'status job-control full; lazygit' },
+      bounds = { 0.05, 0.05, 0.9, 0.9 },
+      cwd = pane_dir(ctx),
+      ctx = ctx,
+    }
   end,
 }
 
