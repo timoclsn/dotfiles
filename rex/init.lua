@@ -502,6 +502,15 @@ rex.action({
 })
 
 rex.action({
+  name = "copy_session_id",
+  title = "Copy Session ID",
+  category = "Sessions",
+  run = function(ctx)
+    run({ "pbcopy" }, { stdin = ctx.session_id })
+  end,
+})
+
+rex.action({
   name = "reveal_in_finder",
   title = "Open Pane Directory in Finder",
   category = "Panes",
@@ -566,8 +575,9 @@ bind("x", "close_pane")
 bind("[Backquote]", "pane.move.left") -- <
 bind("shift+[Backquote]", "pane.move.right") -- >
 bind("shift+1", "track_switch", { action = "pane.move_to_new_tab", tabs = true }) -- !
-bind("ctrl+y", "pane.copy_id")
-bind("shift+y", "copy_path")
+bind("y", "pane.copy_id")
+bind("shift+y", "copy_session_id")
+bind("ctrl+y", "copy_path")
 bind("shift+f", "reveal_in_finder")
 
 -- Other
