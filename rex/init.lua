@@ -540,8 +540,8 @@ bind("s", "track_switch", { action = "session.switch" })
 bind("shift+l", "last_session") -- L
 bind("n", "newest_session")
 bind("shift+s", "sort_sessions")
-bind("e", "expand_sessions")
-bind("shift+e", "session.collapse_others")
+bind("e", "session.collapse_others")
+bind("shift+e", "expand_sessions")
 
 -- Panes
 bind("alt+7", "pane.split.right") -- |
