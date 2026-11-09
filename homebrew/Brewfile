@@ -48,6 +48,7 @@ brew "ffmpeg"
 brew "gh"
 brew "lazygit"
 brew "git-delta"
+brew "hunk"
 brew "atlassian/acli/acli", trusted: true
 
 # Containers and infrastructure

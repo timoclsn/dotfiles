@@ -40,6 +40,10 @@ ln -sf "$DOTFILES/rex" "$HOME/.config/rex"
 rm "$HOME/.config/bat" 2>/dev/null || true
 ln -sf "$DOTFILES/bat" "$HOME/.config/bat"
 
+# hunk (only the config file; the directory also holds runtime state)
+mkdir -p "$HOME/.config/hunk"
+ln -sf "$DOTFILES/hunk/config.toml" "$HOME/.config/hunk/config.toml"
+
 # opencode
 ln -sf "$DOTFILES/opencode/opencode.json" "$HOME/.config/opencode/opencode.json"
 ln -sf "$DOTFILES/ai/AGENTS.md" "$HOME/.config/opencode/AGENTS.md"
