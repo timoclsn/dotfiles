@@ -87,7 +87,6 @@ alias cx="codex --dangerously-bypass-approvals-and-sandbox"
 alias ca="cursor-agent"
 
 # comview
-alias cv="git diff | comview"
 cvpr() {
   local base
   base=$(git symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null) \

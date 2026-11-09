@@ -91,6 +91,10 @@ abbr -a link 'ln -sf'
 abbr -a vim nvim
 abbr -a v nvim
 abbr -a lg lazygit
+abbr -a hd 'hunk diff'
+abbr -a hw 'hunk diff --watch'
+abbr -a hds 'hunk diff --staged'
+abbr -a hs 'hunk show'
 abbr -a g git
 abbr -a t tmux
 abbr -a ta 'tmux attach'
@@ -104,7 +108,6 @@ abbr -a ai oc
 abbr -a ad agents-dashboard
 abbr -a u update-tools
 abbr -a i fastfetch
-abbr -a cv 'git diff | comview'
 
 # =============================================================================
 # Aliases (for shortcuts that scripts type into a pane, like `cc` from the
