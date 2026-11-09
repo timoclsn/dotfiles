@@ -1,6 +1,5 @@
 {
   "auths": {},
-  "currentContext": "colima",
   "credsStore": "osxkeychain",
   "credHelpers": {
     "eu.gcr.io": "gcloud"
