@@ -77,6 +77,14 @@ local function pane_dir(ctx)
   return program.cwd
 end
 
+local function repo_dir(ctx)
+  local dir = pane_dir(ctx)
+  if not run({ 'git', 'rev-parse', '--is-inside-work-tree' }, { cwd = dir }).ok then
+    error('Not in a git repository', 0)
+  end
+  return dir
+end
+
 -- Runs cc and keeps a fish shell open once it exits. The prompt is passed as
 -- an argument, so quotes, newlines and '!' reach cc without any shell quoting.
 -- fish -c has no job control, which would keep cc in fish's own process group.
@@ -483,10 +491,7 @@ rex.action {
   title = 'Open Repository in Browser',
   category = 'Git',
   run = function(ctx)
-    local dir = pane_dir(ctx)
-    if not run({ 'git', 'rev-parse', '--is-inside-work-tree' }, { cwd = dir }).ok then
-      error('Not in a git repository', 0)
-    end
+    local dir = repo_dir(ctx)
     if run({ 'gh', 'pr', 'view', '--web' }, { cwd = dir }).ok then
       return
     end
@@ -543,6 +548,38 @@ rex.action {
   end,
 }
 
+-- Shows the changes live next to an agent working in the pane. Only the CLI
+-- can split with a command, the built-in split action can't.
+rex.action {
+  name = 'diff',
+  title = 'Watch Diff in Split',
+  category = 'Git',
+  keywords = 'git diff hunk watch',
+  run = function(ctx)
+    local split = run {
+      rex_command,
+      'split',
+      '-s',
+      ctx.session_id,
+      '-b',
+      ctx.block_id,
+      '--split=right',
+      '--label',
+      'Diff',
+      '-c',
+      repo_dir(ctx),
+      '--',
+      'hunk',
+      'diff',
+      '--watch',
+      '--sidebar',
+    }
+    if not split.ok then
+      error("Couldn't open the diff split", 0)
+    end
+  end,
+}
+
 -- Same prefix and keys as tmux. Keys are written as pressed on a German
 -- layout, e.g. "|" is alt+7 and "(" is shift+8. Keys Rex has no name for
 -- use their physical key code: [Backquote] is "<", [Backslash] is "#".
@@ -584,6 +621,7 @@ bind('ctrl+y', 'copy_path')
 
 -- Open
 bind('g', 'lazygit')
+bind('d', 'diff')
 bind('o', 'open_repo')
 bind('shift+f', 'reveal_in_finder')
 
