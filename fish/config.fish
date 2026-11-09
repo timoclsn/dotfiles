@@ -10,7 +10,6 @@ set -g fish_greeting
 set -gx XDG_CONFIG_HOME $HOME/.config
 set -gx EDITOR nvim
 set -gx GOPRIVATE 'github.com/steuerbot/*,github.com/taxfix/*'
-set -gx DOCKER_CONTEXT colima
 set -gx ANDROID_SDK_ROOT $HOME/Library/Android/sdk
 set -gx PNPM_HOME $HOME/Library/pnpm
 set -gx BUN_INSTALL $HOME/.bun

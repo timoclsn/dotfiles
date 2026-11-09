@@ -105,10 +105,6 @@ rm -rf "$HOME/.pi/agent/extensions" 2>/dev/null || true
 ln -sf "$DOTFILES/pi/extensions" "$HOME/.pi/agent/extensions"
 
 
-# docker
-mkdir -p "$HOME/.docker"
-ln -sf "$DOTFILES/docker/config.json" "$HOME/.docker/config.json"
-
 # colima
 mkdir -p "$HOME/.config/colima/default"
 ln -sf "$DOTFILES/colima/colima.yaml" "$HOME/.config/colima/default/colima.yaml"
