@@ -578,19 +578,33 @@ rex.action {
   end,
 }
 
--- Opens a tab with Neovim in the pane's directory and keeps a fish shell open
--- once it exits. Job control is on so Rex sees nvim as the foreground program.
+-- Opens a tab running a fish command and keeps a fish shell open once it
+-- exits. Job control is on so Rex sees the command as the foreground program.
+local function open_tab_running(ctx, dir, fish_command)
+  local windows, active = session_windows(ctx)
+  local window = in_session('new_window', {
+    layout = terminal(dir, { 'fish', '-ic', 'status job-control full; ' .. fish_command .. '; exec fish' }),
+  })
+  focus_window(ctx, windows[active], window)
+end
+
 rex.action {
   name = 'neovim',
   title = 'Open Neovim in New Tab',
   category = 'Tabs',
   keywords = 'nvim vim editor',
   run = function(ctx)
-    local windows, active = session_windows(ctx)
-    local window = in_session('new_window', {
-      layout = terminal(pane_dir(ctx), { 'fish', '-ic', 'status job-control full; nvim; exec fish' }),
-    })
-    focus_window(ctx, windows[active], window)
+    open_tab_running(ctx, pane_dir(ctx), 'nvim')
+  end,
+}
+
+rex.action {
+  name = 'update_tools',
+  title = 'Run update-tools in New Tab',
+  category = 'Tabs',
+  keywords = 'update tools brew drift',
+  run = function(ctx)
+    open_tab_running(ctx, home, 'update-tools')
   end,
 }
 
@@ -672,6 +686,7 @@ bind('shift+f', 'reveal_in_finder')
 
 -- Config
 bind('r', 'client.config.reload')
+bind('u', 'update_tools')
 
 -- ctrl+h/j/k/l move between panes, except in programs that use them
 -- themselves: vim moves between its own splits, fzf moves its selection.
