@@ -9,7 +9,7 @@
 ## Design
 
 - Separate presentational and business logic: keep business logic in pure functions and push side effects (I/O, network, DOM) to the edges.
-- Model state with distinct modes (e.g. idle/loading/success/error) as a finite state machine instead of independent flags, so impossible states can't occur.
+- No implicit state machines: don't combine booleans or nullable fields (`isLoading` + `error` + `data`) to encode modes. Model them as an explicit finite state machine (e.g. a discriminated union) so impossible states can't occur.
 - Derive values from one source of truth instead of storing and syncing copies.
 - Validate external data once at the boundary and turn it into precise types, instead of re-checking it throughout the code.
 - Prefer deep modules: a lot of functionality behind a simple interface. Avoid shallow modules whose interface is nearly as complex as what they hide.
