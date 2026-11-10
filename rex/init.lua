@@ -532,19 +532,44 @@ rex.action {
   end,
 }
 
+local lazygit_label = 'Lazygit'
+
+-- The floating layer of this window that runs lazygit, if one is open.
+local function lazygit_layer(ctx)
+  local windows, active = session_windows(ctx)
+  for _, layer in ipairs(windows[active].layers) do
+    if layer.kind == 'floating' and layer.blocks[1].label == lazygit_label then
+      return layer
+    end
+  end
+end
+
+-- Opens lazygit in a popup. Pressing the key again minimizes the popup and
+-- keeps lazygit running, pressing it once more brings it back. Quitting
+-- lazygit closes the popup.
 rex.action {
   name = 'lazygit',
   title = 'Lazygit',
   category = 'Git',
   keywords = 'git lazygit',
   run = function(ctx)
-    popup {
-      label = 'Lazygit',
-      command = { '/opt/homebrew/bin/fish', '-c', 'status job-control full; lazygit' },
-      bounds = { 0.05, 0.05, 0.9, 0.9 },
-      cwd = pane_dir(ctx),
-      ctx = ctx,
-    }
+    local layer = lazygit_layer(ctx)
+    if not layer then
+      popup {
+        label = lazygit_label,
+        command = { '/opt/homebrew/bin/fish', '-c', 'status job-control full; lazygit' },
+        bounds = { 0.05, 0.05, 0.9, 0.9 },
+        cwd = pane_dir(ctx),
+        ctx = ctx,
+      }
+      return
+    end
+    local restoring = layer.state == 'minimized'
+    in_session('set_layer_state', {
+      layer_id = layer.layer_id,
+      state = restoring and 'normal' or 'minimized',
+      focus = restoring,
+    })
   end,
 }
 
