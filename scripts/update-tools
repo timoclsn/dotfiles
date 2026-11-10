@@ -14,7 +14,6 @@ PACKAGES=(
   "@github/copilot"
   "@earendil-works/pi-coding-agent"
   "@googleworkspace/cli"
-  "hunkdiff"
   "@taxfix/altitudo-cli"
   "ccusage"
 )
