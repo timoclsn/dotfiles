@@ -1,2 +1,3 @@
 theme = "tokyo-night"
 mode = "unified"
+wrap_lines = true
