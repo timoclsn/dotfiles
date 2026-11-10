@@ -564,8 +564,6 @@ rex.action {
       '-b',
       ctx.block_id,
       '--split=right',
-      '--label',
-      'Diff',
       '-c',
       repo_dir(ctx),
       '--',
