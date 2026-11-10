@@ -604,7 +604,7 @@ rex.action {
   category = 'Tabs',
   keywords = 'update tools brew drift',
   run = function(ctx)
-    open_tab_running(ctx, home, 'update-tools')
+    open_tab_running(ctx, pane_dir(ctx), 'update-tools')
   end,
 }
 
