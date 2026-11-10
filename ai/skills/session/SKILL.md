@@ -10,7 +10,7 @@ Create and set up a fresh git worktree as a **sibling** of the current repo (one
 
 The argument serves two purposes: it **names** the worktree/branch and picks the **base**, and its task content becomes the **prompt** for the new Claude session. Never carry out the task in *this* session — the new session owns the work.
 
-Two optional flags (anywhere in the argument) change what the new session does. Neither is part of the task. They don't combine, and `--review` needs a PR number or URL to review; if the user gives both flags, or `--review` without a PR, ask before doing anything else.
+Two optional flags (anywhere in the argument) change what the new session does. Neither is part of the task, and neither is an option of the script: they only shape the extension (`--review`) and the prompt, and are never passed to `worktree-create.ts`. They don't combine, and `--review` needs a PR number or URL to review; if the user gives both flags, or `--review` without a PR, ask before doing anything else.
 
 - `--go`: run the task through the `go` skill, which does the full pipeline including commit and draft PR. Add `--ready` to have it open the PR ready for review instead of as a draft. `--ready` only makes sense together with `--go`; if it's given without, ask before doing anything else.
 - `--review`: just run the read-only `pr-brief` skill on the checked-out PR (`/session --review 123`).
@@ -19,7 +19,7 @@ The mechanical part (creating the worktree, carrying over gitignored files, inst
 
 ## Delegate the whole thing to a subagent
 
-Don't run the steps below in this session — spawn a subagent (via the `Agent` tool) and have it execute all of them, so their tool output doesn't clutter this conversation. It starts with no context, so write it a self-contained prompt: the argument verbatim minus the flags (so a flag never ends up in the name or the base), which flag was set, the current working directory, the script's absolute path, and (only if the argument's content alone doesn't yield a good semantic extension) whatever you can infer from the conversation to help name it. Tell it to carry out every step in this skill exactly as written and to reply with nothing but the result from step 6.
+Don't run the steps below in this session — spawn a subagent (via the `Agent` tool) and have it execute all of them, so their tool output doesn't clutter this conversation. It starts with no context, so write it a self-contained prompt: the argument verbatim minus the flags (so a flag never ends up in the name or the base), which flag was set, the current working directory, the script's absolute path, and (only if the argument's content alone doesn't yield a good semantic extension) whatever you can infer from the conversation to help name it. Tell it the flag is not a script option, and to carry out every step in this skill exactly as written and to reply with nothing but the result from step 6.
 
 Once it finishes, relay that result to the user in one or two lines. Don't narrate its intermediate work.
 
