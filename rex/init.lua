@@ -608,32 +608,48 @@ rex.action {
   end,
 }
 
+local function trim(text)
+  return (text:gsub('%s+$', ''))
+end
+
 -- Shows the changes live next to an agent working in the pane. Only the CLI
 -- can split with a command, the built-in split action can't.
+local function watch_diff_in_split(ctx, dir, target)
+  local argv = { rex_command, 'split', '-s', ctx.session_id, '-b', ctx.block_id, '--split=right', '-c', dir, '--', 'hunk', 'diff', '--watch' }
+  table.insert(argv, target)
+  if not run(argv).ok then
+    error("Couldn't open the diff split", 0)
+  end
+end
+
 rex.action {
   name = 'diff',
   title = 'Watch Diff in Split',
   category = 'Git',
   keywords = 'git diff hunk watch',
   run = function(ctx)
-    local split = run {
-      rex_command,
-      'split',
-      '-s',
-      ctx.session_id,
-      '-b',
-      ctx.block_id,
-      '--split=right',
-      '-c',
-      repo_dir(ctx),
-      '--',
-      'hunk',
-      'diff',
-      '--watch',
-    }
-    if not split.ok then
-      error("Couldn't open the diff split", 0)
+    watch_diff_in_split(ctx, repo_dir(ctx))
+  end,
+}
+
+-- Diffs the working tree against where the branch left the PR's base branch,
+-- so it shows everything the PR changes, committed or not.
+rex.action {
+  name = 'pr_diff',
+  title = 'Watch Diff of Pull Request in Split',
+  category = 'Git',
+  keywords = 'git diff hunk watch pr pull request',
+  run = function(ctx)
+    local dir = repo_dir(ctx)
+    local base = run({ 'gh', 'pr', 'view', '--json', 'baseRefName', '--jq', '.baseRefName' }, { cwd = dir })
+    if not base.ok then
+      error('No pull request for this branch', 0)
     end
+    local fork_point = run({ 'git', 'merge-base', 'HEAD', 'origin/' .. trim(base.stdout) }, { cwd = dir })
+    if not fork_point.ok then
+      error("Can't find where the branch left the base branch", 0)
+    end
+    watch_diff_in_split(ctx, dir, trim(fork_point.stdout))
   end,
 }
 
@@ -680,6 +696,7 @@ bind('ctrl+y', 'copy_path')
 -- Open
 bind('g', 'lazygit')
 bind('d', 'diff')
+bind('shift+d', 'pr_diff')
 bind('o', 'open_repo')
 bind('shift+f', 'reveal_in_finder')
 
