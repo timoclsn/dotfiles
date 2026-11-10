@@ -548,6 +548,22 @@ rex.action {
   end,
 }
 
+-- Opens a tab with Neovim in the pane's directory and keeps a fish shell open
+-- once it exits. Job control is on so Rex sees nvim as the foreground program.
+rex.action {
+  name = 'neovim',
+  title = 'Open Neovim in New Tab',
+  category = 'Tabs',
+  keywords = 'nvim vim editor',
+  run = function(ctx)
+    local windows, active = session_windows(ctx)
+    local window = in_session('new_window', {
+      layout = terminal(pane_dir(ctx), { 'fish', '-ic', 'status job-control full; nvim; exec fish' }),
+    })
+    focus_window(ctx, windows[active], window)
+  end,
+}
+
 -- Shows the changes live next to an agent working in the pane. Only the CLI
 -- can split with a command, the built-in split action can't.
 rex.action {
@@ -589,6 +605,7 @@ end
 -- Tabs (tmux windows)
 bind('c', 'track_switch', { action = 'client.tab.new', tabs = true })
 bind('l', 'last_tab')
+bind('v', 'neovim')
 for index = 1, 9 do
   bind(tostring(index), 'tab_goto', { index = index })
 end
