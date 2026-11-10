@@ -10,6 +10,7 @@
 
 - Separate presentational and business logic: keep business logic in pure functions and push side effects (I/O, network, DOM) to the edges.
 - No implicit state machines: don't combine booleans or nullable fields (`isLoading` + `error` + `data`) to encode modes. Model them as an explicit finite state machine (e.g. a discriminated union) so impossible states can't occur.
+- No unenforced invariants: if code relies on something being true (non-empty list, value already validated, call order), enforce it in the types or at one explicit check instead of assuming it.
 - Derive values from one source of truth instead of storing and syncing copies.
 - Validate external data once at the boundary and turn it into precise types, instead of re-checking it throughout the code.
 - Prefer deep modules: a lot of functionality behind a simple interface. Avoid shallow modules whose interface is nearly as complex as what they hide.
