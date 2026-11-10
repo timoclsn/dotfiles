@@ -218,7 +218,9 @@ local function session_label(dir)
   if not repo then
     return folder
   end
-  return repo .. ' ' .. branch_icon .. ' ' .. name
+  -- "[" sorts before letters, so a repo's review sessions group together.
+  local label = name:gsub('^review%-', '[review] ')
+  return repo .. ' ' .. branch_icon .. ' ' .. label
 end
 
 rex.action {

@@ -29,6 +29,8 @@ Once it finishes, relay that result to the user in one or two lines. Don't narra
 
    For a PR, derive it from the **PR's title/content** instead (`gh pr view <pr> --json title`) — e.g. "Add OAuth login flow" → `oauth-login`. Never use a bare `pr-<number>` slug; only fall back to the PR's branch name if the title yields nothing meaningful.
 
+   With `--review`, prefix the extension with `review-` (e.g. `review-oauth-login`). Rex shows that prefix as `[review]` in the session name and sorts the review sessions together.
+
 2. **Derive the branch name from the project's convention** (skip for a PR — it keeps its own branch). Inspect existing branches, including remotes, and match their style:
    - Conventional-commit style (`feat/…`, `fix/…`, `chore/…`, …): pick the type that fits and name it `<type>/<extension>`.
    - Otherwise mirror whatever the branches actually use (e.g. `feature/…`, a Jira-key prefix like `ABC-123-…`).
