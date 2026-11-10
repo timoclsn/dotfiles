@@ -630,7 +630,6 @@ rex.action {
       'hunk',
       'diff',
       '--watch',
-      '--sidebar',
     }
     if not split.ok then
       error("Couldn't open the diff split", 0)
