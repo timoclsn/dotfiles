@@ -35,6 +35,7 @@ end
 
 -- A floating layer running a command, closed when the command exits. Focus
 -- goes back to the pane the key was pressed in, which Rex doesn't do itself.
+-- Returns the id of the new layer.
 local function popup(options)
   local layer = in_session('new_layer', {
     bounds = options.bounds,
@@ -49,18 +50,18 @@ local function popup(options)
       },
     },
   })
-  if not options.ctx.block_id then
-    return
+  if options.ctx.block_id then
+    unwrap(rex.exec.start({
+      rex_command,
+      'do',
+      '-s',
+      options.ctx.session_id,
+      home .. '/.config/rex/restore-focus.lua',
+      'popup=' .. layer.block_ids[1],
+      'origin=' .. options.ctx.block_id,
+    }, { detach = true }))
   end
-  unwrap(rex.exec.start({
-    rex_command,
-    'do',
-    '-s',
-    options.ctx.session_id,
-    home .. '/.config/rex/restore-focus.lua',
-    'popup=' .. layer.block_ids[1],
-    'origin=' .. options.ctx.block_id,
-  }, { detach = true }))
+  return layer.layer_id
 end
 
 -- The program in the foreground of the focused pane, if Rex can tell.
@@ -532,13 +533,15 @@ rex.action {
   end,
 }
 
-local lazygit_label = 'Lazygit'
+-- The layers this config opened for lazygit. A popup is recognised by its id,
+-- so the block keeps the name Rex gives it.
+local lazygit_layers = {}
 
--- The floating layer of this window that runs lazygit, if one is open.
+-- The lazygit popup of this window, if one is open.
 local function lazygit_layer(ctx)
   local windows, active = session_windows(ctx)
   for _, layer in ipairs(windows[active].layers) do
-    if layer.kind == 'floating' and layer.blocks[1].label == lazygit_label then
+    if lazygit_layers[layer.layer_id] then
       return layer
     end
   end
@@ -555,13 +558,13 @@ rex.action {
   run = function(ctx)
     local layer = lazygit_layer(ctx)
     if not layer then
-      popup {
-        label = lazygit_label,
+      local layer_id = popup {
         command = { '/opt/homebrew/bin/fish', '-c', 'status job-control full; lazygit' },
         bounds = { 0.05, 0.05, 0.9, 0.9 },
         cwd = pane_dir(ctx),
         ctx = ctx,
       }
+      lazygit_layers[layer_id] = true
       return
     end
     local restoring = layer.state == 'minimized'
