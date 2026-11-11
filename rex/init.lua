@@ -608,6 +608,25 @@ rex.action {
   end,
 }
 
+-- Install only acts on an update Rex already knows about, so wait for the
+-- check to finish before asking for the install.
+rex.action {
+  name = 'update_rex',
+  title = 'Check for Rex Update, Install and Relaunch',
+  category = 'App',
+  keywords = 'update rex app check download install relaunch upgrade',
+  run = function(ctx)
+    if not from_app(ctx) then
+      error('Run this from the Rex app, which is the one that updates', 0)
+    end
+    local check = call('client.perform', { client_id = ctx.client_id, action = 'client.update.check', timeout_ms = 30000 })
+    if check.result.result == 'up_to_date' then
+      return
+    end
+    rex.client.queue 'client.update.install'
+  end,
+}
+
 local function trim(text)
   return (text:gsub('%s+$', ''))
 end
@@ -703,6 +722,7 @@ bind('shift+f', 'reveal_in_finder')
 -- Config
 bind('r', 'client.config.reload')
 bind('u', 'update_tools')
+bind('shift+u', 'update_rex')
 
 -- ctrl+h/j/k/l move between panes, except in programs that use them
 -- themselves: vim moves between its own splits, fzf moves its selection.
