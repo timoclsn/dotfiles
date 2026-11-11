@@ -1,0 +1,3 @@
+[tools]
+# The first version is the default `java`; pin others per project with `mise use`.
+java = ["temurin-21", "temurin-17"]

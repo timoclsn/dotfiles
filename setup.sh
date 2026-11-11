@@ -36,6 +36,10 @@ ln -sf "$DOTFILES/nvim" "$HOME/.config/nvim"
 rm "$HOME/.config/rex" 2>/dev/null || true
 ln -sf "$DOTFILES/rex" "$HOME/.config/rex"
 
+# mise (only the config file; the directory may hold runtime state)
+mkdir -p "$HOME/.config/mise"
+ln -sf "$DOTFILES/mise/config.toml" "$HOME/.config/mise/config.toml"
+
 # bat
 rm "$HOME/.config/bat" 2>/dev/null || true
 ln -sf "$DOTFILES/bat" "$HOME/.config/bat"

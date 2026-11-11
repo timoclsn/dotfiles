@@ -79,6 +79,3 @@ cask "wezterm"
 cask "1password-cli"
 cask "gcloud-cli"
 cask "font-symbols-only-nerd-font"
-
-# JDKs
-cask "zulu@17"
