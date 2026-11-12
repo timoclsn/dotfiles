@@ -79,6 +79,14 @@
   "feedbackDrafts": "notify",
   "spinnerTipsEnabled": false,
   "effortLevel": "high",
+  "modelSettings": {
+    "claude-sonnet-5-5": {
+      "autoCompactWindow": 400000
+    },
+    "claude-opus-5-5": {
+      "autoCompactWindow": 400000
+    }
+  },
   "promptSuggestionEnabled": false,
   "awaySummaryEnabled": false,
   "pluginConfigs": {},
