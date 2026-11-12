@@ -5,9 +5,18 @@ Rex release notes now and then (the `superlogical` MCP has `list_changelog` /
 `search_changelog`, and `search_feedback` shows what the team accepted). When a
 release covers one, delete the workaround and its note here.
 
-Last checked: 2026-11-10 against Mac preview.28 (embedded server preview.14); no new CLI post since 01d6c4f. Nothing droppable yet.
-preview.28 has nothing on our list (toolbar/pane header hiding, Quick Look, AppleScript, Finder services,
-floating window edge drag, settings reorganisation, tiling-WM fixes). AppleScript can run actions and
+Last checked: 2026-11-12 against Mac preview.29 (embedded server preview.18) and Server & CLI preview.15 to 18. Nothing droppable yet.
+preview.29 has nothing on our list (remote Quick Look and file opening, ssh question prompts in the command palette,
+⌘-drag to move panes, ssh reconnect fixes). The Server & CLI posts since preview.14 are ssh sharing, Linux cgroups
+and Windows groundwork, nothing on Lua or startup commands.
+Near misses: `rex server start --env NAME[=VALUE]` (preview.17) only helps when we start the server ourselves, not when the
+app does it, so the `PATH` rebuild stays. Preview.16 says server restarts will be very rare, which hides the startup command
+bug but does not fix it. Settings => Integrations (preview.17, agent integrations and automatic session naming) might let
+us configure Rex's own agent notifications, not checked in the app yet. Jump to Previous/Next Prompt (preview.16) can be bound by us.
+Changelog gotcha: `read_changelog` with `0.1.0-preview.15` to `.18` returns the old Mac posts of the same number as well as the new
+Server & CLI posts, because the Server & CLI numbering now overlaps the Mac one. Pick by platform and date.
+Previously (2026-11-10, preview.28): toolbar/pane header hiding, Quick Look, AppleScript, Finder services,
+floating window edge drag, settings reorganisation, tiling-WM fixes. AppleScript can run actions and
 create sessions, but that is another outside-in control path, not a Lua API or a selection API.
 Its fix for tabs and panes keeping titles while a session reconnects does not touch the startup command bug.
 Previously (2026-11-06, preview.27 and CLI 01d6c4f):
@@ -20,19 +29,19 @@ The `superlogical` MCP's search only matches single keywords. `read_changelog` t
 version only when it is the full string (`0.1.0-preview.27-1853-379536d`); the short
 `0.1.0-preview.27` finds nothing. The message id from `list_changelog` also works.
 
-## Status of upstream requests (as of 2026-11-10)
+## Status of upstream requests (as of 2026-11-12)
 
 | Workaround | Feedback status |
 | --- | --- |
-| `last_tab`, `last_session`, history | "Focus last pane" is **accepted** and mentions `client.tab.last` and `session.last` as the same idea. "Switch back to the previous session" is **deferred**. "Go to previously active tab" and "Keybind to toggle back to the previously active tab, across sessions" are **active**. "Last session shortcut" is **deferred**. "Expose session last-accessed time (for MRU session ordering)" is **active** (would also cover `newest_session`-style needs). Also **accepted**: "Equivalent of Tmux's last-pane/last-window/last-session". New and **active**: "Jump to the last focused pane across sessions and hosts". Not shipped. |
+| `last_tab`, `last_session`, history | "Focus last pane" is **accepted** and mentions `client.tab.last` and `session.last` as the same idea. "Switch back to the previous session" is **deferred**. "Go to previously active tab" is **active**; "Keybind to toggle back to the previously active tab, across sessions" is now **deferred**; new and **active**: "Swap to previously-selected tab when clicking currently-selected tab". "Last session shortcut" is **deferred**. "Expose session last-accessed time (for MRU session ordering)" is **active** (would also cover `newest_session`-style needs). Also **accepted**: "Equivalent of Tmux's last-pane/last-window/last-session". New and **active**: "Jump to the last focused pane across sessions and hosts". Not shipped. |
 | `ctrl+h/j/k/l` and `rex-navigator.lua` | "Seamless ctrl-hjkl navigation (vim-tmux-navigator equivalent)" is **deferred** |
 | `popup()` | "add tmux-style popups" is **accepted**. Not shipped. Related and **active**: a floating layer that closes on program exit doesn't return focus; "Lua API to show a native picker with custom items". **Accepted**: focus moves to the wrong pane when a floating pane's program exits. "Closing a focused floating layer moves focus to a different pane" is **completed**, but that is closing via `session.close_layer`; the program-exit case is still open, so `restore-focus.lua` stays. Also **active**: "Focused floating layer clears pane zoom, and closing it doesn't restore it" |
 | Key names and a tmux-style prefix | "Keybindings for tmux/herdr folk" is **active**. The team says they're working toward a tmux default and have a key-sequences docs page |
-| Session metadata, selected session | "session metadata and selected-session visibility for tools built on Rex" is **active** |
+| Session metadata, selected session | "session metadata and selected-session visibility for tools built on Rex" is **active**; "Add key-value metadata to blocks, sessions and windows" is **deferred** |
 | `session.select` through `rex.client.queue` | Bug "`session.select` errors with remote hosts" is **active**. Check it if we ever use remote hosts. "Queued session.select for a window created in the same action is dropped" is **active** too |
-| Startup Command ignored after a server restart (fish trial) | Bug "Rex doesn't use configured startup command on server restart" is **active**. Updates restart the server, so the panes Rex reopens start zsh; new tabs start fish. More reports of the same, all still open: "Shell startup command not called after Rex Server restart" (**active**), "Terminals start default shell after upgrade" (**deferred**), "First session launches with login shell instead of selected shell" (**deferred**). Related: "Per-session startup command for new tabs" and "shell arg for client.tab.new" are **active** |
-| `PATH` rebuilt in `run()` | "Rex does not export path to its binary" is **active**, but that is about the `rex` binary, not the server's PATH |
-| `copy_path`, `copy_session_id` give no confirmation; `update_rex` (`prefix+U`) says nothing when Rex is already up to date | "Let custom actions show a success notice" is **active** (asks for a `rex.client.notice{ ... }` call or a notice in `run`'s return value). Not shipped. Searching for `toast` finds the existing notices; they only exist for errors and built-in actions |
+| Startup Command ignored after a server restart (fish trial) | Bug "Rex doesn't use configured startup command on server restart" is **active**. Updates restart the server, so the panes Rex reopens start zsh; new tabs start fish. More reports of the same, all still open: "Shell startup command not called after Rex Server restart" (**active**), "Terminals start default shell after upgrade" (**deferred**), "First session launches with login shell instead of selected shell" (**deferred**). New report "When Rex restarts, it doesn't honor Startup command" (**deferred**). Related: "Per-session startup command for new tabs" and "shell arg for client.tab.new" are **active** |
+| `PATH` rebuilt in `run()` | "Rex does not export path to its binary" is now **deferred**, and it is about the `rex` binary, not the server's PATH |
+| `copy_path`, `copy_session_id` give no confirmation; `update_rex` (`prefix+U`) says nothing when Rex is already up to date | "Let custom actions show a success notice" is **active**; "Lua/API: write to the client clipboard (OSC 52 path)" is **active** and would cover the copy half (asks for a `rex.client.notice{ ... }` call or a notice in `run`'s return value). Not shipped. Searching for `toast` finds the existing notices; they only exist for errors and built-in actions |
 
 Nothing on tabs per session, sidebar sort, `grid`, `cycle_width`, the server PATH, or the pane cwd in `ctx` was found, in either the changelog or the feedback. Search again with other words before concluding they don't exist.
 
