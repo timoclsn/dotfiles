@@ -10,7 +10,7 @@ You are investigating the failing CI checks on the current branch's pull request
 
 1. Find the PR for the current branch and identify every failing or cancelled check. If there is no PR, fall back to the latest CI runs for the branch.
 
-2. For each failing check, pull the logs and find the actual error — the assertion, stack trace, or non-zero exit. Skip setup noise.
+2. For each failing check, pull the logs and find the actual error — the assertion, stack trace, or non-zero exit. Skip setup noise. If the failing check is a SonarQube analysis or quality gate, its log only says the gate failed: use the `sonarqube-issues` skill to get the actual issues instead (if it can't run, report the gate failure from the log and why).
 
 3. Tie the failure back to the code. Read the relevant files at HEAD and judge whether it's caused by this branch, a flake, environmental (missing secret, cache, dependency), or pre-existing on main.
 
