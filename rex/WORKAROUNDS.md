@@ -5,11 +5,16 @@ Rex release notes now and then (the `superlogical` MCP has `list_changelog` /
 `search_changelog`, and `search_feedback` shows what the team accepted). When a
 release covers one, delete the workaround and its note here.
 
-Last checked: 2026-11-12 against Mac preview.29 (embedded server preview.18) and Server & CLI preview.15 to 18. Nothing droppable yet.
-preview.29 has nothing on our list (remote Quick Look and file opening, ssh question prompts in the command palette,
-⌘-drag to move panes, ssh reconnect fixes). The Server & CLI posts since preview.14 are ssh sharing, Linux cgroups
-and Windows groundwork, nothing on Lua or startup commands.
-Near misses: `rex server start --env NAME[=VALUE]` (preview.17) only helps when we start the server ourselves, not when the
+Last checked: 2026-11-14 against Mac preview.30 (embedded server preview.19) and Server & CLI preview.19. Nothing droppable yet.
+preview.30 has nothing on our list (SSH agent picker, cursor shaders out of experimental, Quick Look always on, cursor
+blinks only when the program asks for it, pane takeover fix). Server & CLI preview.19 adds `rex forward` (TCP port forwarding),
+installer fixes and server shutdown/save fixes; nothing on Lua or startup commands.
+Near misses: preview.19 makes a new server wait for the old one to finish saving (helps restarts, not the startup command bug);
+`REX_SERVER` now behaves exactly like `--server`, which does not touch the `REX_CLIENT` targeting in `sessionizer`;
+`rex wait` exits 1 when its block closes just before it starts watching (relevant only if `restore-focus.lua` ever uses it).
+Previously (2026-11-12, preview.29 and Server & CLI preview.15 to 18): remote Quick Look and file opening, ssh question prompts
+in the command palette, ⌘-drag to move panes, ssh reconnect fixes, ssh sharing, Linux cgroups and Windows groundwork.
+Near misses then: `rex server start --env NAME[=VALUE]` (preview.17) only helps when we start the server ourselves, not when the
 app does it, so the `PATH` rebuild stays. Preview.16 says server restarts will be very rare, which hides the startup command
 bug but does not fix it. Settings => Integrations (preview.17, agent integrations and automatic session naming) might let
 us configure Rex's own agent notifications, not checked in the app yet. Jump to Previous/Next Prompt (preview.16) can be bound by us.
@@ -29,7 +34,7 @@ The `superlogical` MCP's search only matches single keywords. `read_changelog` t
 version only when it is the full string (`0.1.0-preview.27-1853-379536d`); the short
 `0.1.0-preview.27` finds nothing. The message id from `list_changelog` also works.
 
-## Status of upstream requests (as of 2026-11-12)
+## Status of upstream requests (as of 2026-11-14)
 
 | Workaround | Feedback status |
 | --- | --- |
@@ -39,8 +44,8 @@ version only when it is the full string (`0.1.0-preview.27-1853-379536d`); the s
 | Key names and a tmux-style prefix | "Keybindings for tmux/herdr folk" is **active**. The team says they're working toward a tmux default and have a key-sequences docs page |
 | Session metadata, selected session | "session metadata and selected-session visibility for tools built on Rex" is **active**; "Add key-value metadata to blocks, sessions and windows" is **deferred** |
 | `session.select` through `rex.client.queue` | Bug "`session.select` errors with remote hosts" is **active**. Check it if we ever use remote hosts. "Queued session.select for a window created in the same action is dropped" is **active** too |
-| Startup Command ignored after a server restart (fish trial) | Bug "Rex doesn't use configured startup command on server restart" is **active**. Updates restart the server, so the panes Rex reopens start zsh; new tabs start fish. More reports of the same, all still open: "Shell startup command not called after Rex Server restart" (**active**), "Terminals start default shell after upgrade" (**deferred**), "First session launches with login shell instead of selected shell" (**deferred**). New report "When Rex restarts, it doesn't honor Startup command" (**deferred**). Related: "Per-session startup command for new tabs" and "shell arg for client.tab.new" are **active** |
-| `PATH` rebuilt in `run()` | "Rex does not export path to its binary" is now **deferred**, and it is about the `rex` binary, not the server's PATH |
+| Startup Command ignored after a server restart (fish trial) | Bug "Rex doesn't use configured startup command on server restart" is **active**. Updates restart the server, so the panes Rex reopens start zsh; new tabs start fish. More reports of the same, all still open: "Shell startup command not called after Rex Server restart" (**active**), "Terminals start default shell after upgrade" (**deferred**), "First session launches with login shell instead of selected shell" (**deferred**). New report "When Rex restarts, it doesn't honor Startup command" (**deferred**). Related: "Per-session startup command for new tabs" and "shell arg for client.tab.new" are **active**. New and **active** (2026-11-14): "Server restart drops the Terminal startup command and opens zsh", "`rex split` opens user's login shell, not the configured startup shell" |
+| `PATH` rebuilt in `run()` | "Rex does not export path to its binary" and "Rex cli not present in PATH" are **deferred**, and they are about the `rex` binary, not the server's PATH. Also **active**: "It would be nice to have rex cli available in the path outside rex terminals", "ssh:// host tunnel doesn't get the login PATH" |
 | `copy_path`, `copy_session_id` give no confirmation; `update_rex` (`prefix+U`) says nothing when Rex is already up to date | "Let custom actions show a success notice" is **active**; "Lua/API: write to the client clipboard (OSC 52 path)" is **active** and would cover the copy half (asks for a `rex.client.notice{ ... }` call or a notice in `run`'s return value). Not shipped. Searching for `toast` finds the existing notices; they only exist for errors and built-in actions |
 
 Nothing on tabs per session, sidebar sort, `grid`, `cycle_width`, the server PATH, or the pane cwd in `ctx` was found, in either the changelog or the feedback. Search again with other words before concluding they don't exist.
