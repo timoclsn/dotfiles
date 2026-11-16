@@ -45,7 +45,7 @@ path=(
   $path
 )
 
-eval "$(fnm env)"
+eval "$(fnm env --corepack-enabled)"
 
 # =============================================================================
 # Aliases and functions used by agents and scripts

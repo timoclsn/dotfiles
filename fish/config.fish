@@ -57,7 +57,7 @@ fish_add_path -P --append \
     $HOME/.lmstudio/bin \
     /Applications/Obsidian.app/Contents/MacOS
 
-fnm env --shell fish | source
+fnm env --shell fish --corepack-enabled | source
 
 if not status is-interactive
     return
