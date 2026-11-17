@@ -18,7 +18,7 @@
 - Colocate code that changes together.
 - For larger features, use tracer bullets: first get a thin slice working end to end and verify it runs, then build out the rest. Don't leave stubs or hardcoded values behind.
 
-## UI minimalism
+## UI
 
 - Default to less UI. Every element and word must earn its place. Leave out agent slop: eyebrow text, redundant headlines/subheads/labels, explanatory copy, extra status panels, obvious helper text.
 - Before finishing UI work, cut the excess like a designer would (often ~75%). Copy goes first.
