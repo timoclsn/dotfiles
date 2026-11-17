@@ -357,13 +357,12 @@ rex.action {
   category = 'Sessions',
   args = { action = 'string', tabs = 'boolean?' },
   run = function(ctx, args)
-    local scope, current = 'sessions', ctx.session_id
     if args.tabs then
       local windows, active = session_windows(ctx)
-      scope, current = ctx.session_id, windows[active].window_id
+      remember(ctx.session_id, windows[active].window_id)
     end
     rex.client.queue(args.action)
-    remember(scope, current)
+    remember('sessions', ctx.session_id)
   end,
 }
 
@@ -697,6 +696,11 @@ bind('n', 'newest_session')
 bind('shift+s', 'sort_sessions')
 bind('e', 'session.collapse_others')
 bind('shift+e', 'expand_sessions')
+
+-- The app's own switcher shortcuts, wrapped so they note where you leave from.
+rex.bind('cmd+k', 'track_switch', { action = 'session.switch' })
+rex.bind('cmd+shift+k', 'track_switch', { action = 'pane.view_activity', tabs = true })
+rex.bind('cmd+p', 'track_switch', { action = 'pane.go_to', tabs = true })
 
 -- Panes
 bind('alt+7', 'pane.split.right') -- |

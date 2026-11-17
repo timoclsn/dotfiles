@@ -66,7 +66,7 @@ Related, shipped in preview.23: sessions now survive server restarts. That is no
 | --- | --- | --- |
 | `tab_goto` action (`prefix+1-9`) | Built-in tab actions count tabs across all sessions, tmux counts per session | Per-session tab actions, or a setting for it |
 | `last_tab`, `last_session` actions, `remember()` history in memory + `~/.local/state/rex-history` | No focus history (tmux `prefix+l` / `prefix+L`) | A built-in last tab / last session action |
-| `track_switch` wrapper around built-in `client.tab.new`, `session.switch` | Built-ins don't record where you came from, so the history above misses them. Clicking is only noticed on the next key | The same history feature as above |
+| `track_switch` wrapper around built-in `client.tab.new`, `session.switch`, `pane.view_activity`, `pane.go_to` (also bound to `cmd+k`, `cmd+shift+k` and `cmd+p`, the quick switchers) | Built-ins don't record where you came from, so the history above misses them. Clicking is only noticed on the next key | The same history feature as above |
 | `update_rex` action (`prefix+U`) silently does nothing when Rex is up to date | Custom actions can't show a notice, and raising an error would show "Action failed". Replace the silent return with a "Rex is up to date" toast | A notice or toast call for custom actions |
 | `newest_session` (`prefix+n`) | No "most recently created session" action; relies on session IDs starting with the creation time | Such an action |
 | `sort_sessions` + sorting on `create_session` (attach and `session.move` each one) | No alphabetical sidebar order, only manual moves | A sidebar sort setting |
