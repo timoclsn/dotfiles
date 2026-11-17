@@ -8,4 +8,6 @@ Test this fully end to end in here and provide irrefutable proof that it works a
 
 $ARGUMENTS
 
+First check whether the project has its own skills or docs on how to verify, run or test changes (e.g. a project-local `verify` skill, or instructions in the project's AGENTS.md/CLAUDE.md). If so, follow them for choosing and running the checks, and use this skill's bar for what counts as proof.
+
 Passing checks alone are not proof — run the real thing and show what you observed. For visible changes, capture visual evidence (e.g. screenshots or a recording). Where possible, show the state before the change as well as after, so the difference is visible. If something can't be tested here, say so.
