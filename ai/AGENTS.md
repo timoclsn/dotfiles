@@ -18,6 +18,11 @@
 - Colocate code that changes together.
 - For larger features, use tracer bullets: first get a thin slice working end to end and verify it runs, then build out the rest. Don't leave stubs or hardcoded values behind.
 
+## UI minimalism
+
+- Default to less UI. Every element and word must earn its place. Leave out agent slop: eyebrow text, redundant headlines/subheads/labels, explanatory copy, extra status panels, obvious helper text.
+- Before finishing UI work, cut the excess like a designer would (often ~75%). Copy goes first.
+
 ## Posting on my behalf
 
 - When you post under my identity where it would otherwise look like it came from me personally (GitHub, Slack, Jira, Notion, email, etc.), end with a one-line disclosure that you wrote it on my behalf — identify yourself, e.g. `_— Written by Claude on behalf of Timo._` (adapt formatting to the platform).
