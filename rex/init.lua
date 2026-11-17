@@ -94,6 +94,11 @@ local function agent_command(prompt)
   return { 'fish', '-ic', 'status job-control full; cc $argv; exec fish', '--', prompt }
 end
 
+-- Runs a shell command and keeps a fish shell open once it exits.
+local function shell_command(command)
+  return { 'fish', '-ic', 'status job-control full; ' .. command .. '; exec fish' }
+end
+
 -- Rex has no focus history, so remember what these actions switch between: the
 -- sessions, and the tabs of each session. A switch made another way, like
 -- clicking, is noticed the next time one of these actions runs.
@@ -177,13 +182,17 @@ local function sort_sessions()
   end
 end
 
--- A new session has one window running cc.
-local function create_session(label, dir, prompt)
+-- A new session has one window running cc. With a right command, that window
+-- is split side by side and the command runs in the right pane.
+local function create_session(label, dir, prompt, right)
+  local agent = terminal(dir, agent_command(prompt))
+  local layout = agent
+  if right then
+    layout = { split = { direction = 'horizontal', before = agent, after = terminal(dir, shell_command(right)) } }
+  end
   local session_id = call('session.create', {
     label = label,
-    initial_windows = {
-      { layout = terminal(dir, agent_command(prompt)) },
-    },
+    initial_windows = { { layout = layout } },
   }).session_id
   sort_sessions()
   return session_id
@@ -236,7 +245,7 @@ rex.action {
 local function open_project(ctx, args)
   local dir = expand_dir(args.dir)
   local label = session_label(dir)
-  local session_id = find_session(label) or create_session(label, dir, args.prompt)
+  local session_id = find_session(label) or create_session(label, dir, args.prompt, args.right)
 
   if args.detach then
     return { session = label }
@@ -251,7 +260,7 @@ rex.action {
   title = 'Open Project…',
   category = 'Projects',
   keywords = 'project session sessionizer switch',
-  args = { dir = 'string?', detach = 'boolean?', prompt = 'string?' },
+  args = { dir = 'string?', detach = 'boolean?', prompt = 'string?', right = 'string?' },
   run = function(ctx, args)
     if args.dir then
       return open_project(ctx, args)
@@ -582,7 +591,7 @@ rex.action {
 local function open_tab_running(ctx, dir, fish_command)
   local windows, active = session_windows(ctx)
   local window = in_session('new_window', {
-    layout = terminal(dir, { 'fish', '-ic', 'status job-control full; ' .. fish_command .. '; exec fish' }),
+    layout = terminal(dir, shell_command(fish_command)),
   })
   focus_window(ctx, windows[active], window)
 end

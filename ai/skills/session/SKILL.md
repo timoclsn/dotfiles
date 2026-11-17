@@ -10,6 +10,11 @@ Create and set up a fresh git worktree as a **sibling** of the current repo (one
 
 The argument serves two purposes: it **names** the worktree/branch and picks the **base**, and its task content becomes the **prompt** for the new Claude session. Never carry out the task in *this* session — the new session owns the work.
 
+Every session is split into two panes, side by side. The left pane is the Claude session on the task. The right pane depends on the mode:
+
+- Normal (including `--go`): `hunk diff --watch`, so the changes show up live while the agent works.
+- `--review`: a second Claude session running the `code-review` skill, next to the `pr-brief` one on the left.
+
 Two optional flags (anywhere in the argument) change what the new session does. Neither is part of the task, and neither is an option of the script: they only shape the extension (`--review`) and the prompt, and are never passed to `worktree-create.ts`. They don't combine, and `--review` needs a PR number or URL to review; if the user gives both flags, or `--review` without a PR, ask before doing anything else.
 
 - `--go`: run the task through the `go` skill, which does the full pipeline including commit and draft PR. Add `--ready` to have it open the PR ready for review instead of as a draft. `--ready` only makes sense together with `--go`; if it's given without, ask before doing anything else.
@@ -46,15 +51,15 @@ Once it finishes, relay that result to the user in one or two lines. Don't narra
 
    Write no prompt when the argument carries no actual task — a bare `/session`, or a PR checkout with nothing asked of it (and no `--review`). The session then just starts empty, ready for the user.
 
-5. **Run the script** from the current repo (any of its worktrees works — it anchors on the main checkout), passing the prompt as `--task` if there is one:
+5. **Run the script** from the current repo (any of its worktrees works — it anchors on the main checkout), passing the prompt as `--task` if there is one, and the right pane's command as `--right`: `hunk diff --watch` normally, `cc /code-review` with `--review`. Always pass `--right`.
    ```sh
-   <skill-dir>/scripts/worktree-create.ts --name <extension> --branch <branch-name> [--base <ref>] [--task <prompt>]
-   <skill-dir>/scripts/worktree-create.ts --name <extension> --pr <number-or-url> [--task <prompt>]
+   <skill-dir>/scripts/worktree-create.ts --name <extension> --branch <branch-name> [--base <ref>] [--task <prompt>] --right <command>
+   <skill-dir>/scripts/worktree-create.ts --name <extension> --pr <number-or-url> [--task <prompt>] --right <command>
    ```
    It refuses if the path or branch already exists — pick a different extension and rerun. It prints progress to stderr and a JSON summary to stdout with the worktree `path`, `branch`, `session` and what it carried over. Don't redo any of its work by hand. For context, it:
    - carries over gitignored files matching its allowlist from the checkout of the base branch (the main checkout if the base isn't checked out anywhere): `.env*`, `config/local*.json` and `.claude/settings.local.json` are symlinked, `node_modules` folders are cloned copy-on-write; everything else that's ignored is left behind
    - only installs dependencies where a lockfile differs from the copied node_modules' origin
-   - opens the session with `tmux-sessionizer --detach`, or `rex-sessionizer --detach` when it runs in a Rex terminal outside tmux, so the user isn't pulled out of their current session, and starts Claude in it on the task
+   - opens the session with `tmux-sessionizer --detach`, or `rex-sessionizer --detach` when it runs in a Rex terminal outside tmux, so the user isn't pulled out of their current session, starts Claude in the left pane on the task, and runs the `--right` command in the right pane
 
 6. **Report the result** — keep it minimal: only the worktree directory name, the branch, and the session name. Add a single extra line only if something went wrong (e.g. the script failed, or its `installFailures` is non-empty — then the session is open but dependencies aren't installed there). The user jumps to it with `prefix + f` (in Rex also from the sidebar).
 

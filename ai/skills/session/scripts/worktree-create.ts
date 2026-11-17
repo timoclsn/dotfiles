@@ -2,8 +2,11 @@
 // Creates a sibling git worktree and makes it ready to work in, so the
 // `session` skill only has to pick names and hand over the task.
 //
-//   worktree-create.ts --name <slug> --branch <branch> [--base <ref>] [--task <prompt>]
-//   worktree-create.ts --name <slug> --pr <number|url> [--task <prompt>]
+//   worktree-create.ts --name <slug> --branch <branch> [--base <ref>] [--task <prompt>] [--right <command>]
+//   worktree-create.ts --name <slug> --pr <number|url> [--task <prompt>] [--right <command>]
+//
+// `--right` is a shell command that runs in a second pane next to the Claude
+// session (split left/right).
 //
 // Run it from anywhere inside the repo. It creates the worktree at
 // `<parent of main checkout>/<repo>-w-<slug>`, then carries over the gitignored
@@ -68,6 +71,7 @@ const { values: args } = parseArgs({
     base: { type: "string" },
     pr: { type: "string" },
     task: { type: "string" },
+    right: { type: "string" },
   },
 });
 
@@ -275,7 +279,13 @@ const setUpDependencies = async () => {
 // The body runs up to its first await right away, so the session is already
 // opening while the (blocking) clones below run.
 const sessionOpened = (async () => {
-  const child = Bun.spawn([sessionizer, "--detach", ...(task ? ["--prompt", task] : []), worktreePath], {
+  const sessionizerArgs = [
+    "--detach",
+    ...(task ? ["--prompt", task] : []),
+    ...(args.right ? ["--right", args.right] : []),
+    worktreePath,
+  ];
+  const child = Bun.spawn([sessionizer, ...sessionizerArgs], {
     stdout: "pipe",
     stderr: "inherit",
   });

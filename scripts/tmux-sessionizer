@@ -13,8 +13,10 @@ dirs=(
 # A session it creates is also left on the 'agents' window instead of 'code'.
 # --prompt starts the agent in a newly created session with that text as its
 # first message, so a script (or an agent) can hand over a task right away.
+# --right runs a shell command in the right pane of the agents window.
 detach=""
 prompt=""
+right=""
 selected=""
 
 while [[ $# -gt 0 ]]; do
@@ -25,6 +27,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         -p | --prompt)
             prompt=$2
+            shift 2
+            ;;
+        -r | --right)
+            right=$2
             shift 2
             ;;
         *)
@@ -68,7 +74,8 @@ if ! tmux has-session -t="$selected_name" 2> /dev/null; then
     # Create a third window named 'agents' with a vertical split
     tmux new-window -t "$selected_name:" -n agents -c "$selected"
     tmux split-window -t "$selected_name:agents" -h -c "$selected"
-    # Run 'cc' in the left pane, leave the right pane as a plain terminal.
+    # Run 'cc' in the left pane. The right pane stays a plain terminal unless
+    # --right gives it a command.
     # The prompt goes through a temp file the pane's shell reads (and deletes),
     # so quotes, newlines and '!' reach cc without any shell quoting.
     agent_command="cc"
@@ -80,6 +87,10 @@ if ! tmux has-session -t="$selected_name" 2> /dev/null; then
     sleep 0.2
     tmux send-keys -t "$selected_name:agents.1" -l "$agent_command"
     tmux send-keys -t "$selected_name:agents.1" Enter
+    if [[ -n $right ]]; then
+        tmux send-keys -t "$selected_name:agents.2" -l "$right"
+        tmux send-keys -t "$selected_name:agents.2" Enter
+    fi
     # Focus the left pane
     tmux select-pane -t "$selected_name:agents.left"
     

@@ -18,8 +18,10 @@ dirs=(
 # session name.
 # --prompt starts the agent in a newly created session with that text as its
 # first message.
+# --right runs a shell command in a second pane next to the agent.
 detach=""
 prompt=""
+right=""
 selected=""
 
 while [[ $# -gt 0 ]]; do
@@ -30,6 +32,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         -p | --prompt)
             prompt=$2
+            shift 2 || { echo "$1 needs a value" >&2; exit 1; }
+            ;;
+        -r | --right)
+            right=$2
             shift 2 || { echo "$1 needs a value" >&2; exit 1; }
             ;;
         *)
@@ -68,6 +74,7 @@ selected=$(cd "$selected" && pwd) || exit 1
 
 args=("dir=$selected")
 [[ -n $prompt ]] && args+=("prompt=$prompt")
+[[ -n $right ]] && args+=("right=$right")
 
 if [[ -n $detach ]]; then
     # Fail when rex fails, not only when jq does, so callers notice.
