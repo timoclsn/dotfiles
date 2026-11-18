@@ -33,7 +33,7 @@ update_opencode() {
 
 update_pnpm() {
   echo "Updating pnpm…"
-  pnpm self-update -y
+  "${PNPM_HOME:-$HOME/Library/pnpm}/bin/pnpm" self-update -y
 }
 
 update_bun() {
