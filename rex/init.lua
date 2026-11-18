@@ -199,7 +199,7 @@ local function create_session(label, dir, prompt, right)
 end
 
 -- Whether an app triggered the action. Otherwise it came from elsewhere, such
--- as the CLI, whose connection is gone by the time the picker needs it.
+-- as the CLI, which has no app to update.
 local function from_app(ctx)
   if not ctx.client_id then
     return false
@@ -216,6 +216,13 @@ end
 -- up as "<repo> <branch icon> <name>". The `session_label` action exposes this
 -- mapping, so scripts like worktree-remove.ts never duplicate it.
 local branch_icon = '\243\176\152\172' -- nf-md-source_branch, U+F062C
+
+local function tilde(dir)
+  if dir:sub(1, #home + 1) == home .. '/' then
+    return '~' .. dir:sub(#home + 1)
+  end
+  return dir
+end
 
 local function expand_dir(dir)
   return (dir:gsub('^~/', home .. '/'):gsub('/$', ''))
@@ -253,8 +260,59 @@ local function open_project(ctx, args)
   select_session(ctx, session_id)
 end
 
--- Without a dir it opens the fzf project picker in a floating layer, which
--- runs this action again with the picked dir.
+-- The folders that hold projects, with the name and icon shown for each project.
+local project_dirs = {
+  { path = home .. '/Developer/personal', name = 'personal' },
+  { path = home .. '/Developer/steuerbot', name = 'steuerbot' },
+  { path = home .. '/Developer/taxfix', name = 'taxfix' },
+  { path = home .. '/Developer/codeatelier', name = 'codeatelier' },
+  { path = home .. '/Library/Mobile Documents/iCloud~md~obsidian/Documents', name = 'personal', icon = 'document' },
+}
+
+-- Asks which project to use, from the folders directly inside project_dirs.
+-- Returns nil when the person cancels.
+local function pick_project(title)
+  if not rex.ui then
+    error('The project picker needs rex.ui, which is on the Bleeding Edge update channel', 0)
+  end
+  local argv = { 'find' }
+  local parents = {}
+  for _, project_dir in ipairs(project_dirs) do
+    table.insert(argv, project_dir.path)
+    parents[project_dir.path] = project_dir
+  end
+  for _, arg in ipairs { '-mindepth', '1', '-maxdepth', '1', '-type', 'd' } do
+    table.insert(argv, arg)
+  end
+  local open_labels = {}
+  for _, session in ipairs(call('session.list', {}).sessions or {}) do
+    open_labels[session.label] = true
+  end
+  local items = {}
+  local found = run(argv)
+  for dir in found.stdout:gmatch '[^\n]+' do
+    local parent = parents[dir:match '^(.*)/[^/]+$']
+    local label = session_label(dir)
+    local is_worktree = label:find(branch_icon, 1, true)
+    table.insert(items, {
+      id = dir,
+      title = label,
+      subtitle = parent.name,
+      detail = open_labels[label] and 'running' or nil,
+      icon = is_worktree and 'branch' or parent.icon or 'folder',
+    })
+  end
+  table.sort(items, function(a, b)
+    return a.title:lower() < b.title:lower()
+  end)
+  local dir, why = rex.ui.pick { title = title, placeholder = 'Filter projects', items = items }
+  if dir == nil and why ~= 'cancelled' then
+    error("Can't ask for a project: " .. why, 0)
+  end
+  return dir
+end
+
+-- Without a dir it asks which project to open.
 rex.action {
   name = 'sessionizer',
   title = 'Open Project…',
@@ -262,14 +320,26 @@ rex.action {
   keywords = 'project session sessionizer switch',
   args = { dir = 'string?', detach = 'boolean?', prompt = 'string?', right = 'string?' },
   run = function(ctx, args)
+    if args.detach and not args.dir then
+      error('detach needs a dir, there is no one to ask', 0)
+    end
+    args.dir = args.dir or pick_project 'Open project'
     if args.dir then
       return open_project(ctx, args)
     end
-    -- The picker runs this action again through the CLI, which only finds the
-    -- app on its own when exactly one is connected, so name the app that asked.
-    local script = home .. '/.local/bin/rex-sessionizer'
-    local command = from_app(ctx) and { '/usr/bin/env', 'REX_CLIENT=' .. ctx.client_id, script } or { script }
-    popup { label = 'Projects', command = command, bounds = { 0, 0, 1, 1 }, ctx = ctx }
+  end,
+}
+
+rex.action {
+  name = 'copy_project_path',
+  title = 'Copy Project Path…',
+  category = 'Projects',
+  keywords = 'project path copy',
+  run = function()
+    local dir = pick_project 'Copy project path'
+    if dir then
+      run({ 'pbcopy' }, { stdin = tilde(dir) })
+    end
   end,
 }
 
@@ -517,11 +587,7 @@ rex.action {
   title = 'Copy Pane Directory',
   category = 'Panes',
   run = function(ctx)
-    local dir = pane_dir(ctx)
-    if dir:sub(1, #home) == home then
-      dir = '~' .. dir:sub(#home + 1)
-    end
-    run({ 'pbcopy' }, { stdin = dir })
+    run({ 'pbcopy' }, { stdin = tilde(pane_dir(ctx)) })
   end,
 }
 
@@ -699,6 +765,7 @@ end
 -- Sessions
 bind('f', 'sessionizer')
 bind(',', 'sessionizer', { dir = '~/Developer/personal/dotfiles' })
+bind('shift+f', 'copy_project_path')
 bind('s', 'track_switch', { action = 'session.switch' })
 bind('shift+l', 'last_session') -- L
 bind('n', 'newest_session')
@@ -730,7 +797,7 @@ bind('g', 'lazygit')
 bind('d', 'diff')
 bind('shift+d', 'pr_diff')
 bind('o', 'open_repo')
-bind('shift+f', 'reveal_in_finder')
+bind('ctrl+f', 'reveal_in_finder')
 
 -- Config
 bind('r', 'client.config.reload')

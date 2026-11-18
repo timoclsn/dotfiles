@@ -1,21 +1,11 @@
 #!/usr/bin/env bash
 
-# Rex counterpart of tmux-sessionizer. The session setup lives in the
-# `sessionizer` action in rex/init.lua; this script picks the project.
-
-# The popup doesn't load zshrc, so point fzf at the shared theme directly.
-export FZF_DEFAULT_OPTS_FILE=$HOME/.config/fzf/fzfrc
-
-dirs=(
-    ~/Developer/personal
-    ~/Developer/steuerbot
-    ~/Developer/taxfix
-    ~/Developer/codeatelier
-    ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents
-)
+# Rex counterpart of tmux-sessionizer. The session setup and the project
+# picker live in the `sessionizer` action in rex/init.lua; this script passes
+# the arguments on to it.
 
 # --detach sets the session up without switching the app to it and prints the
-# session name.
+# session name. It needs a project directory, as there is no one to ask.
 # --prompt starts the agent in a newly created session with that text as its
 # first message.
 # --right runs a shell command in a second pane next to the agent.
@@ -45,34 +35,15 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-picked=""
-if [[ -z $selected ]]; then
-    picked=1
-    projects=$(find "${dirs[@]}" -mindepth 1 -maxdepth 1 -type d)
-    # With job control fzf runs in the foreground of the terminal, so Rex sees
-    # it and leaves ctrl+j/k to it. That only works for a plain command, not
-    # for a pipeline or $(...), hence the temp file.
-    result_file=$(mktemp)
-    set -m
-    fzf --border-label " Select Project " --expect=ctrl-y <<< "$projects" > "$result_file"
-    set +m
-    { read -r key; read -r selected; } < "$result_file"
-    rm -f "$result_file"
+args=()
+if [[ -n $selected ]]; then
+    # Rex resolves paths from its own working directory, not this shell's.
+    selected=$(cd "$selected" && pwd) || exit 1
+    args+=("dir=$selected")
+elif [[ -n $detach ]]; then
+    echo "--detach needs a project directory" >&2
+    exit 1
 fi
-
-if [[ -z $selected ]]; then
-    exit 0
-fi
-
-if [[ $key == "ctrl-y" ]]; then
-    printf '%s' "$selected" | sed "s|^$HOME|~|" | pbcopy
-    exit 0
-fi
-
-# Rex resolves paths from its own working directory, not this shell's.
-selected=$(cd "$selected" && pwd) || exit 1
-
-args=("dir=$selected")
 [[ -n $prompt ]] && args+=("prompt=$prompt")
 [[ -n $right ]] && args+=("right=$right")
 
@@ -81,10 +52,5 @@ if [[ -n $detach ]]; then
     set -o pipefail
     rex do sessionizer "${args[@]}" detach=true --json | jq -r .session
 else
-    # The picker runs in a popup that closes when this script exits, so keep
-    # it open on failure to show the error.
-    if ! rex do sessionizer "${args[@]}" > /dev/null && [[ -n $picked ]]; then
-        read -rsn1 -p "Press any key to close"
-        exit 1
-    fi
+    rex do sessionizer "${args[@]}" > /dev/null
 fi
