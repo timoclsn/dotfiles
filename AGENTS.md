@@ -4,6 +4,10 @@ Personal macOS dotfiles. `setup.sh` symlinks each config from this repo to its p
 
 Tokyo Night is the theme everywhere (Ghostty, Neovim, Tmux, OpenCode).
 
+## Git
+
+Unless told otherwise, commit and push straight to `main` here: no feature branches or PRs. This overrides the global draft-PR default.
+
 ## Formatting
 
 After editing Lua files, format them with stylua (config in `.stylua.toml`). Mason installs it at `~/.local/share/nvim/mason/bin/stylua`; it is not on `PATH`.
