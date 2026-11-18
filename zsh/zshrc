@@ -46,6 +46,8 @@ path=(
 )
 
 eval "$(fnm env --corepack-enabled)"
+# fnm puts corepack's pnpm shim first; the standalone pnpm must win
+path=($PNPM_HOME/bin $path)
 
 # =============================================================================
 # Aliases and functions used by agents and scripts

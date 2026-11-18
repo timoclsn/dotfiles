@@ -58,6 +58,8 @@ fish_add_path -P --append \
     /Applications/Obsidian.app/Contents/MacOS
 
 fnm env --shell fish --corepack-enabled | source
+# fnm puts corepack's pnpm shim first; the standalone pnpm must win
+fish_add_path -m -P $PNPM_HOME/bin
 
 if not status is-interactive
     return
