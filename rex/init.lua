@@ -272,9 +272,6 @@ local project_dirs = {
 -- Asks which project to use, from the folders directly inside project_dirs.
 -- Returns nil when the person cancels.
 local function pick_project(title)
-  if not rex.ui then
-    error('The project picker needs rex.ui, which is on the Bleeding Edge update channel', 0)
-  end
   local argv = { 'find' }
   local parents = {}
   for _, project_dir in ipairs(project_dirs) do

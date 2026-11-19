@@ -18,7 +18,7 @@ After editing Lua files, format them with stylua (config in `.stylua.toml`). Mas
 
 ## Sessions
 
-`scripts/tmux-sessionizer` and `scripts/rex-sessionizer` take the same arguments: a project directory (or none for the picker: fzf in tmux, Rex's `rex.ui.pick` palette in Rex), `--detach`, `--prompt <text>` and `--right <command>` (a shell command run in a second pane next to the agent). The `session` skill depends on this, so keep the two in sync. Switching the Rex app to the picked session needs Remote Control turned on in Rex's settings, and `rex.ui` needs the Bleeding Edge update channel until it reaches Preview.
+`scripts/tmux-sessionizer` and `scripts/rex-sessionizer` take the same arguments: a project directory (or none for the picker: fzf in tmux, Rex's `rex.ui.pick` palette in Rex), `--detach`, `--prompt <text>` and `--right <command>` (a shell command run in a second pane next to the agent). The `session` skill depends on this, so keep the two in sync. Switching the Rex app to the picked session needs Remote Control turned on in Rex's settings, and `rex.ui` needs Rex Mac preview.32 or newer.
 
 ## Shells
 
