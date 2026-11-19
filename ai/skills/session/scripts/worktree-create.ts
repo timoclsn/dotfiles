@@ -2,13 +2,15 @@
 // Creates a sibling git worktree and makes it ready to work in, so the
 // `session` skill only has to pick names and hand over the task.
 //
-//   worktree-create.ts --name <slug> --branch <branch> [--base <ref>] [--task <prompt>] [--right <command>]
-//   worktree-create.ts --name <slug> --pr <number|url> [--task <prompt>] [--right <command>]
+//   worktree-create.ts --name <slug> --branch <branch> [--base <ref>] [--repo <path>] [--add] [--task <prompt>] [--right <command>]
+//   worktree-create.ts --name <slug> --pr <number|url> [--repo <path>] [--add] [--task <prompt>] [--right <command>]
 //
 // `--right` is a shell command that runs in a second pane next to the Claude
-// session (split left/right).
+// session (split left/right). `--add` opens the worktree as a tab in the
+// current Rex session instead of in a session of its own (Rex only).
 //
-// Run it from anywhere inside the repo. It creates the worktree at
+// Run it from anywhere inside the repo, or point it at another repo with
+// `--repo`. It creates the worktree at
 // `<parent of main checkout>/<repo>-w-<slug>`, then carries over the gitignored
 // files matching an allowlist from the checkout of the base branch (the main
 // checkout if the base isn't checked out anywhere). Env files are symlinked so
@@ -29,8 +31,9 @@
 import { $ } from "bun";
 import { dlopen, FFIType, ptr } from "bun:ffi";
 import { existsSync, mkdirSync, readFileSync, realpathSync, symlinkSync } from "node:fs";
-import { basename, dirname, join, resolve } from "node:path";
+import { basename, dirname, join } from "node:path";
 import { parseArgs } from "node:util";
+import { runsInRex } from "../../../../scripts/rex";
 
 // Which gitignored paths are carried over into the new worktree, like VS Code's
 // `git.worktreeIncludeFiles`. A pattern without a `/` matches the file or folder
@@ -72,11 +75,15 @@ const { values: args } = parseArgs({
     pr: { type: "string" },
     task: { type: "string" },
     right: { type: "string" },
+    repo: { type: "string", default: "." },
+    add: { type: "boolean", default: false },
   },
 });
 
 const name = args.name ?? fail("--name is required");
 const newBranch = args.pr ? undefined : (args.branch ?? fail("--branch is required unless --pr is given"));
+// Checked before anything is created, so a misplaced --add leaves no worktree behind.
+if (args.add && !runsInRex()) fail("--add only works inside a Rex session");
 
 const succeeds = async (command: ReturnType<typeof $>) => (await command.nothrow().quiet()).exitCode === 0;
 
@@ -84,7 +91,7 @@ const succeeds = async (command: ReturnType<typeof $>) => (await command.nothrow
 
 // Anchor on the main checkout so running this from inside another worktree
 // still names the new one after the repo, not after that worktree.
-const commonDir = resolve((await $`git rev-parse --git-common-dir`.text()).trim());
+const commonDir = (await $`git -C ${args.repo} rev-parse --path-format=absolute --git-common-dir`.text()).trim();
 const mainRoot = dirname(commonDir);
 const repoName = basename(mainRoot);
 const worktreePath = join(dirname(mainRoot), `${repoName}-w-${name}`);
@@ -227,9 +234,7 @@ const staleLockfiles = lockfiles.filter((lockfile) => !isLockfileUnchanged(lockf
 
 // --- Open the session and set up dependencies at the same time ---------------
 
-// tmux sets TMUX in its panes and Rex sets REX_SESSION in its terminals. tmux
-// wins when both are set, since it then runs inside a Rex terminal.
-const sessionizer = !process.env.TMUX && process.env.REX_SESSION ? "rex-sessionizer" : "tmux-sessionizer";
+const sessionizer = runsInRex() ? "rex-sessionizer" : "tmux-sessionizer";
 
 // Claude can start working before node_modules is in place, so say so in its first message.
 const isSettingUpDependencies = carriedOver.cloned.length > 0 || staleLockfiles.length > 0;
@@ -280,7 +285,7 @@ const setUpDependencies = async () => {
 // opening while the (blocking) clones below run.
 const sessionOpened = (async () => {
   const sessionizerArgs = [
-    "--detach",
+    args.add ? "--add" : "--detach",
     ...(task ? ["--prompt", task] : []),
     ...(args.right ? ["--right", args.right] : []),
     worktreePath,
@@ -301,7 +306,7 @@ const outcomes = await Promise.allSettled([sessionOpened, dependenciesReady]);
 const failure = outcomes.find((outcome) => outcome.status === "rejected");
 if (failure) throw failure.reason;
 
-const [session, installs] = await Promise.all([sessionOpened, dependenciesReady]);
+const [opened, installs] = await Promise.all([sessionOpened, dependenciesReady]);
 
 console.log(
   JSON.stringify(
@@ -310,7 +315,8 @@ console.log(
       branch,
       base: baseRef,
       source: sourceRoot,
-      session,
+      // With --add the sessionizer prints the new tab's agent pane instead of a session.
+      [args.add ? "pane" : "session"]: opened,
       linked: carriedOver.linked,
       cloned: carriedOver.cloned,
       installedIn: installs.filter(({ error }) => !error).map(({ directory }) => directory),

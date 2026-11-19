@@ -1,7 +1,7 @@
 ---
 name: session
-description: Spin up a new, separate session for a task, without touching the current one — creates a git worktree as a sibling of the current repo (new branch off the default branch by default, or off a given branch, tag, or PR), names it after the repo plus a semantic extension derived from whatever content you give it, opens a tmux session (via tmux-sessionizer) or a Rex session (via rex-sessionizer), whichever the current terminal runs in, without switching to it, and starts a Claude session in it on the task. Accepts `--go` (run the task through the go skill, optionally with `--ready` to open the PR ready for review) or `--review` (run pr-brief on a PR). Use when the user invokes `/session`, or asks for a new / separate session for a task, or to spin up a worktree to work on something in isolation, on a specific branch, or to check out a PR. Not for working in the current session.
-argument-hint: "[--go [--ready] | --review] [the task to work on (also used to name the worktree/branch), and/or a base branch/tag/PR (optional)]"
+description: Spin up a new, separate session for a task, without touching the current one — creates a git worktree as a sibling of the current repo (new branch off the default branch by default, or off a given branch, tag, or PR), names it after the repo plus a semantic extension derived from whatever content you give it, opens a tmux session (via tmux-sessionizer) or a Rex session (via rex-sessionizer), whichever the current terminal runs in, without switching to it, and starts a Claude session in it on the task. Accepts `--go` (run the task through the go skill, optionally with `--ready` to open the PR ready for review), `--review` (run pr-brief on a PR), or `--add <repo>` (create the worktree in another repo and open it as a tab in the current Rex session, for tasks that span repos). Use when the user invokes `/session`, or asks for a new / separate session for a task, or to spin up a worktree to work on something in isolation, on a specific branch, or to check out a PR. Not for working in the current session.
+argument-hint: "[--add <repo>] [--go [--ready] | --review] [the task to work on (also used to name the worktree/branch), and/or a base branch/tag/PR (optional)]"
 ---
 
 # Create a session
@@ -15,16 +15,17 @@ Every session is split into two panes, side by side. The left pane is the Claude
 - Normal (including `--go`): `hunk diff --watch`, so the changes show up live while the agent works.
 - `--review`: a second Claude session running the `code-review` skill, next to the `pr-brief` one on the left.
 
-Two optional flags (anywhere in the argument) change what the new session does. Neither is part of the task, and neither is an option of the script: they only shape the extension (`--review`) and the prompt, and are never passed to `worktree-create.ts`. They don't combine, and `--review` needs a PR number or URL to review; if the user gives both flags, or `--review` without a PR, ask before doing anything else.
+Optional flags (anywhere in the argument) are never part of the task. `--go` and `--review` change what the new session does. They aren't options of the script: they only shape the extension (`--review`) and the prompt, and are never passed to `worktree-create.ts`. They don't combine, and `--review` needs a PR number or URL to review; if the user gives both flags, or `--review` without a PR, ask before doing anything else.
 
 - `--go`: run the task through the `go` skill, which does the full pipeline including commit and draft PR. Add `--ready` to have it open the PR ready for review instead of as a draft. `--ready` only makes sense together with `--go`; if it's given without, ask before doing anything else.
 - `--review`: just run the read-only `pr-brief` skill on the checked-out PR (`/session --review 123`).
+- `--add <repo>`: for a task that spans repos, and combines with the flags above. Create the worktree in `<repo>` instead of the current one, and open it as a tab in the current Rex session instead of a session of its own (`/session --add taxcore-monitor and do xyz there`). Resolve the repo name to the absolute path of a folder of that name directly inside one of the project folders the Rex picker lists (`project_dirs` in `~/.config/rex/init.lua`); ask if it matches none or several. A PR number given with it refers to a PR in that repo, so run `gh` there. Before delegating, look up this session's name with `ListAgents` (it names the current session at the top).
 
 The mechanical part (creating the worktree, carrying over gitignored files, installing dependencies, opening the session and starting Claude on the task) is done by the bundled script `${CLAUDE_SKILL_DIR}/scripts/worktree-create.ts` (`scripts/worktree-create.ts` in this skill's directory). The judgment around it — naming, picking the base, writing the task prompt — is done by a subagent.
 
 ## Delegate the whole thing to a subagent
 
-Don't run the steps below in this session — spawn a subagent (via the `Agent` tool) and have it execute all of them, so their tool output doesn't clutter this conversation. It starts with no context, so write it a self-contained prompt: the argument verbatim minus the flags (so a flag never ends up in the name or the base), which flag was set, the current working directory, the script's absolute path, and (only if the argument's content alone doesn't yield a good semantic extension) whatever you can infer from the conversation to help name it. Tell it the flag is not a script option, and to carry out every step in this skill exactly as written and to reply with nothing but the result from step 6.
+Don't run the steps below in this session — spawn a subagent (via the `Agent` tool) and have it execute all of them, so their tool output doesn't clutter this conversation. It starts with no context, so write it a self-contained prompt: the argument verbatim minus the flags (so a flag never ends up in the name or the base), which flag was set, with `--add` the target repo's path and this session's name, the current working directory, the script's absolute path, and (only if the argument's content alone doesn't yield a good semantic extension) whatever you can infer from the conversation to help name it. Tell it the flag is not a script option, and to carry out every step in this skill exactly as written and to reply with nothing but the result from step 6.
 
 Once it finishes, relay that result to the user in one or two lines. Don't narrate its intermediate work.
 
@@ -34,12 +35,16 @@ Once it finishes, relay that result to the user in one or two lines. Don't narra
 
    For a PR, derive it from the **PR's title/content** instead (`gh pr view <pr> --json title`) — e.g. "Add OAuth login flow" → `oauth-login`. Never use a bare `pr-<number>` slug; only fall back to the PR's branch name if the title yields nothing meaningful.
 
+   With `--add`, reuse the current worktree's extension (the part after `-w-` in its folder name) so the related worktrees match. Only derive a new one if the current directory isn't such a worktree.
+
    With `--review`, prefix the extension with `review-` (e.g. `review-oauth-login`). Rex shows that prefix as `[review]` in the session name and sorts the review sessions together.
 
 2. **Derive the branch name from the project's convention** (skip for a PR — it keeps its own branch). Inspect existing branches, including remotes, and match their style:
    - Conventional-commit style (`feat/…`, `fix/…`, `chore/…`, …): pick the type that fits and name it `<type>/<extension>`.
    - Otherwise mirror whatever the branches actually use (e.g. `feature/…`, a Jira-key prefix like `ABC-123-…`).
    - No discernible convention: just `<extension>`.
+
+   With `--add`, inspect the target repo's branches, not the current one's. If the current branch is a feature branch and the convention allows it, reuse its name, so the related PRs are easy to match up.
 
 3. **Determine the base.** By default the script bases off the freshly fetched default branch — pass nothing. Only pass a base when the instruction names one (e.g. "based on `staging`", a tag). For a PR ("for PR 123", `#123`, a PR URL), pass the PR instead: it checks out the PR's own branch rather than creating a new one.
 
@@ -49,18 +54,20 @@ Once it finishes, relay that result to the user in one or two lines. Don't narra
 
    Otherwise, also tell it to stop once the work is done: implement the task and leave the changes in the working tree, but don't commit, push, or open a PR. The user reviews the result first and asks for those separately. Only add this if the user's own task didn't already ask for a commit or PR.
 
+   With `--add`, also tell it which session started it (the name passed in) and that it can coordinate with that session via `SendMessage`, e.g. to agree on an API both repos use and to report back when done. The new session shows up in `ListAgents` under its worktree folder's name plus a short suffix.
+
    Write no prompt when the argument carries no actual task — a bare `/session`, or a PR checkout with nothing asked of it (and no `--review`). The session then just starts empty, ready for the user.
 
 5. **Run the script** from the current repo (any of its worktrees works — it anchors on the main checkout), passing the prompt as `--task` if there is one, and the right pane's command as `--right`: `hunk diff --watch` normally, `cc /code-review` with `--review`. Always pass `--right`.
    ```sh
-   <skill-dir>/scripts/worktree-create.ts --name <extension> --branch <branch-name> [--base <ref>] [--task <prompt>] --right <command>
-   <skill-dir>/scripts/worktree-create.ts --name <extension> --pr <number-or-url> [--task <prompt>] --right <command>
+   <skill-dir>/scripts/worktree-create.ts --name <extension> --branch <branch-name> [--base <ref>] [--repo <path> --add] [--task <prompt>] --right <command>
+   <skill-dir>/scripts/worktree-create.ts --name <extension> --pr <number-or-url> [--repo <path> --add] [--task <prompt>] --right <command>
    ```
-   It refuses if the path or branch already exists — pick a different extension and rerun. It prints progress to stderr and a JSON summary to stdout with the worktree `path`, `branch`, `session` and what it carried over. Don't redo any of its work by hand. For context, it:
+   It refuses if the path or branch already exists — pick a different extension and rerun. It prints progress to stderr and a JSON summary to stdout with the worktree `path`, `branch`, `session` (with `--add`: the new tab's agent `pane` instead) and what it carried over. Don't redo any of its work by hand. For context, it:
    - carries over gitignored files matching its allowlist from the checkout of the base branch (the main checkout if the base isn't checked out anywhere): `.env*`, `config/local*.json` and `.claude/settings.local.json` are symlinked, `node_modules` folders are cloned copy-on-write; everything else that's ignored is left behind
    - only installs dependencies where a lockfile differs from the copied node_modules' origin
    - opens the session with `tmux-sessionizer --detach`, or `rex-sessionizer --detach` when it runs in a Rex terminal outside tmux, so the user isn't pulled out of their current session, starts Claude in the left pane on the task, and runs the `--right` command in the right pane
 
-6. **Report the result** — keep it minimal: only the worktree directory name, the branch, and the session name. Add a single extra line only if something went wrong (e.g. the script failed, or its `installFailures` is non-empty — then the session is open but dependencies aren't installed there). The user jumps to it with `prefix + f` (in Rex also from the sidebar).
+6. **Report the result** — keep it minimal: only the worktree directory name, the branch, and the session name (with `--add`: the pane ID instead). Add a single extra line only if something went wrong (e.g. the script failed, or its `installFailures` is non-empty — then the session is open but dependencies aren't installed there). The user jumps to it with `prefix + f` (in Rex also from the sidebar).
 
-The skill ends here. The new session does the work; **don't start working on the task in this session**, and don't wait around for the other session to finish unless the user asks you to.
+The skill ends here. The new session does the work; **don't start working on the task in this session**, and don't wait around for the other session to finish unless the user asks you to. With `--add`, this session carries on with its own part of the task and answers the new session's messages.
