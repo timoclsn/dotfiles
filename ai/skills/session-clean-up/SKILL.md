@@ -7,7 +7,7 @@ description: Remove every worktree (and its session, if any) created by the `ses
 
 Bulk version of `session-remove`: delete every `<repo>-w-<slug>` worktree and session whose work has landed and that holds nothing worth keeping. Nothing is ever discarded; anything uncertain is left alone and reported.
 
-One bundled script does all of it: `${CLAUDE_SKILL_DIR}/scripts/clean-sessions.ts`. It finds the worktrees in all repos (the project roots come from the sessionizer script), checks each for a merged PR and uncommitted changes, and removes the clean ones through `session-remove`'s script, which also refuses when commits would be lost. Run it directly in this session.
+One bundled script does all of it: `${CLAUDE_SKILL_DIR}/scripts/clean-sessions.ts`. It finds the worktrees in all repos (the project roots are hardcoded in the script), checks each for a merged PR and uncommitted changes, and removes the clean ones through `session-remove`'s script, which also refuses when commits would be lost. Run it directly in this session.
 
 ## Steps
 

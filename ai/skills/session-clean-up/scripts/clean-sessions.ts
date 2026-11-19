@@ -12,7 +12,7 @@
 // that session-remove refused (commits made after the PR merged) get a reason.
 
 import { $ } from "bun";
-import { existsSync, readFileSync, readdirSync, realpathSync } from "node:fs";
+import { existsSync, readdirSync, realpathSync } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
 import { parseArgs } from "node:util";
@@ -21,15 +21,10 @@ const { values: args } = parseArgs({ options: { remove: { type: "boolean", defau
 
 const lines = (text: string) => text.split("\n").filter(Boolean);
 
-// The project roots live in the sessionizer script next to this skill's
-// directory in the dotfiles repo, so they are defined in one place only.
 const scriptDir = realpathSync(import.meta.dir);
-const sessionizer = join(scriptDir, "../../../../scripts/rex-sessionizer");
-const roots = (readFileSync(sessionizer, "utf8").match(/^dirs=\(\n([\s\S]*?)\n\)/m)?.[1] ?? "")
-  .split("\n")
-  .map((line) => line.trim().replace(/^~/, homedir()).replaceAll("\\ ", " "))
-  .filter(Boolean);
-if (roots.length === 0) throw new Error(`no project roots found in ${sessionizer}`);
+
+// Directories that hold the project repos; worktrees are siblings of their repo.
+const roots = ["personal", "steuerbot", "taxfix", "codeatelier"].map((dir) => join(homedir(), "Developer", dir));
 
 // PR lookups must run as the personal account; another account can't see these
 // repos' PRs and would report every worktree as unmerged.
