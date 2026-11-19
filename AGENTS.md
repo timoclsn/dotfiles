@@ -6,7 +6,7 @@ Tokyo Night is the theme everywhere (Ghostty, Neovim, Tmux, OpenCode).
 
 ## Git
 
-Unless told otherwise, commit and push straight to `main` here: no feature branches or PRs. This overrides the global draft-PR default.
+Work on `main` here: no feature branches or PRs. This overrides the global draft-PR default. Only commit and push when asked.
 
 ## Formatting
 
