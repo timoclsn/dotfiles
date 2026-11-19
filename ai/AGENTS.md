@@ -8,7 +8,7 @@
 
 ## Code review
 
-- Report only bugs real users can realistically run into. Skip purely theoretical ones (far-fetched inputs, impossible states, races that can't happen in practice), especially when the fix adds a lot of complexity without preventing actual failures.
+- Report only bugs real users can realistically run into. Skip theoretical ones, especially if the fix adds complexity.
 
 ## Design
 
