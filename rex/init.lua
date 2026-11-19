@@ -182,17 +182,19 @@ local function sort_sessions()
   end
 end
 
--- A new session has one window running cc. With a right command, that window
--- is split side by side and the command runs in the right pane.
-local function create_session(label, dir, prompt, right)
+-- cc, and with a right command, that command in a pane next to it.
+local function agent_layout(dir, prompt, right)
   local agent = terminal(dir, agent_command(prompt))
-  local layout = agent
-  if right then
-    layout = { split = { direction = 'horizontal', before = agent, after = terminal(dir, shell_command(right)) } }
+  if not right then
+    return agent
   end
+  return { split = { direction = 'horizontal', before = agent, after = terminal(dir, shell_command(right)) } }
+end
+
+local function create_session(label, dir, prompt, right)
   local session_id = call('session.create', {
     label = label,
-    initial_windows = { { layout = layout } },
+    initial_windows = { { layout = agent_layout(dir, prompt, right) } },
   }).session_id
   sort_sessions()
   return session_id
@@ -324,6 +326,24 @@ rex.action {
     if args.dir then
       return open_project(ctx, args)
     end
+  end,
+}
+
+-- Opens a project as a tab in the action's own session, without switching to
+-- it, for work that spans repos. Returns the agent's pane, so the caller can
+-- talk to it.
+rex.action {
+  name = 'add_project_tab',
+  title = 'Add Project Tab',
+  category = 'Projects',
+  args = { dir = 'string', prompt = 'string?', right = 'string?' },
+  run = function(_, args)
+    local dir = expand_dir(args.dir)
+    local window = in_session('new_window', {
+      focus = false,
+      layout = agent_layout(dir, args.prompt, args.right),
+    })
+    return { pane = window.block_ids[1] }
   end,
 }
 
