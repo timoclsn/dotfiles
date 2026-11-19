@@ -6,6 +6,10 @@
 - When a step doesn't need my input, keep going. Put status notes in the same message as your next action.
 - Stop and ask only when you can't continue without me, or before anything destructive: deleting data, force-pushing, or changing anything outside this repository.
 
+## Code review
+
+- Report only bugs real users can realistically run into. Skip purely theoretical ones (far-fetched inputs, impossible states, races that can't happen in practice), especially when the fix adds a lot of complexity without preventing actual failures.
+
 ## Design
 
 - Separate presentational and business logic: keep business logic in pure functions and push side effects (I/O, network, DOM) to the edges.
