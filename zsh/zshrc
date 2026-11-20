@@ -96,3 +96,6 @@ cvpr() {
   git diff "$(git merge-base HEAD "$base")"...HEAD | comview
 }
 cvgh() { gh pr diff "$@" | comview; }
+
+# bun completions
+[ -s "/Users/timo/.bun/_bun" ] && source "/Users/timo/.bun/_bun"
