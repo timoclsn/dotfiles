@@ -10,7 +10,7 @@ tap "atlassian/acli"
 tap "mongodb/brew", trusted: { formula: "mongodb-database-tools" }
 tap "tursodatabase/tap"
 tap "libsql/sqld", trusted: { formula: "sqld" }
-tap "facebook/fb"
+tap "meta/fb"
 
 # Shell and terminal
 brew "bash"
@@ -75,7 +75,7 @@ brew "fastfetch"
 brew "mole"
 
 # iOS Simulator automation. The idb CLI itself is a uv tool: `uv tool install fb-idb`
-brew "facebook/fb/idb-companion", trusted: true
+brew "meta/fb/idb-companion", trusted: true
 
 # Apps and CLIs installed as casks
 cask "scroll-reverser"
