@@ -20,13 +20,17 @@ $ARGUMENTS
 
 2. **Independently summarize the actual diff.** Diff the branch against its base (detect the base from the PR, or the repo's default branch if there's no PR) — don't rely on the PR description here. Read enough of the changed files to understand the shape of the change, then summarize what actually changed, grouped by file or area. Doing this independently of step 1 is the point: it's how you catch a description that's stale, incomplete, or oversells/undersells the change.
 
+   Show it visually, not as a list of sentences:
+   - **Change map** — a file tree in a code block, grouped by area, with a one-line gloss per area and the added/removed line counts per file (derive them from `git diff --numstat`; counts, not bars). Mark each file as added, modified, deleted or renamed. Collapse mechanical or generated files into one line.
+   - **Flow diagram** — when the change alters how pieces interact (request path, data flow, call order, state transitions), draw it as a small box-and-arrow diagram, marking new and changed parts. For behavior changes, show before → after side by side. Skip it for changes with no real flow, like config or a one-file fix.
+
 3. **Map the critical surfaces.** Always show a table with exactly these four rows, in this order, so the user can see at a glance which surfaces the change touches:
    - **API / contracts** — endpoints, request/response shapes, status codes, exported types of shared packages, and anything else another system consumes (events, webhooks, queue messages)
    - **Data / persistence** — migrations, schema or index changes, the shape of stored documents, backfills, cache key formats. Schemaless stores often have no migration file, so also check model/type changes and write paths
    - **Auth / permissions** — authentication or authorization checks, roles, tokens/sessions, CORS, secrets handling
    - **Sensitive data** — personal or otherwise sensitive data newly stored, logged, or sent to third parties
 
-   Columns: surface, touched (yes/no), what changed, compatibility (additive / breaking / one-way), and `path:line`. Every row appears in every brief, and a "no" must come from actually checking the diff for that surface, not from not noticing it. Give the most detail to API and data.
+   Columns: surface, touched (yes/no), what changed, compatibility (additive / breaking / one-way), and `path:line`. Every row appears in every brief, and a "no" must come from actually checking the diff for that surface, not from not noticing it. Give the most detail to API and data. Write cells concise but complete, with no word cap; the table may use up to ~120 columns. Use a symbol plus a word for touched and compatibility (e.g. `● yes`, `○ no`, `✚ additive`, `x breaking`, `! one-way`) so the table scans quickly and still reads without color.
 
 4. **Call out where to focus review.** Don't just list every changed file — rank or flag what actually needs scrutiny. Surfaces marked as touched in step 3 always belong here; beyond those, look for:
    - Non-obvious or intricate logic
@@ -34,7 +38,9 @@ $ARGUMENTS
    - Changed behavior with no or weak test coverage
    Mechanical, low-risk changes (renames, formatting, generated files, version bumps) can be mentioned in passing, not dwelt on.
 
-5. **Assess the risk of shipping it.** Step 4 is about where to look in the code; this is about what could go wrong once it's merged and deployed. Give an overall rating (low / medium / high) with a one-line reason, then cover only what applies:
+   Present this as a ranked list with an attention marker per item (`▮▮▮` close read, `▮▮▯` worth a look, `▮▯▯` skim), each with its `path:line` and a one-line reason. Number the items in the order you'd review them.
+
+5. **Assess the risk of shipping it.** Step 4 is about where to look in the code; this is about what could go wrong once it's merged and deployed. Give an overall rating (low / medium / high) with a one-line reason, drawn as a meter (e.g. `Risk  ▰▰▰▱▱  medium`), then cover only what applies. When the change sits behind a feature flag, show what the flag covers and what it doesn't as two short lists (`behind the flag` / `not behind the flag`), since what reaches production with the flag off is usually the real risk:
    - Blast radius: who or what is affected if it breaks (all users, one feature, internal tooling only)
    - Failure modes: the most likely ways it breaks in production, including edge cases the tests don't exercise
    - Deploy and rollback: ordering dependencies, migrations, config/env changes, feature flags, and whether a plain revert is safe
@@ -44,11 +50,19 @@ $ARGUMENTS
 6. **Explain how to test the change, split by who does it.** Work out how this project actually runs — check for scripts, a README, a Makefile, or established conventions for this repo/stack. Give concrete steps: how to start it, which flow/route/command exercises the changed behavior specifically (not just "start the app"), any env vars/seed data/fixtures the change depends on, and which existing tests are most relevant to run. Then sort every check into one of two groups:
    - **Agent can test itself** — anything you could verify without the user: running the relevant unit/integration tests, type-check and lint, starting the app or CLI and exercising the changed flow, hitting endpoints, driving the UI in a browser, inspecting logs or output. List each check with how you'd do it.
    - **User has to test by hand** — anything you can't verify: real devices or hardware, visual/UX judgment, production-like data or third-party accounts, credentials or services you don't have access to, flows behind auth/2FA, timing- or feel-dependent behavior. List each with *why* it needs a human and exactly what to look for.
+   Render each group as a checklist (`[ ]` for each check) with commands in code blocks, headed `Agent can test` and `You test`.
    Base the split on what's actually available in this environment (tools, access, credentials), not on what's possible in theory. If a check could be automated but isn't covered by existing tests, say so — it's a candidate for the agent to run now.
 
 ## Output
 
 Present all six as a single walkthrough directly in the terminal. Keep it proportional to the change — a small PR gets a short brief, a genuinely complex one gets more depth in step 4. End with a one-line summary of what you'd personally look at first.
+
+Make it visual so the change is easy to follow at a glance:
+- Give each step a short numbered heading, and prefer a diagram, tree, table, or checklist over prose wherever one fits. Prose is for the "why", not the "what".
+- Draw diagrams and trees in code blocks with box-drawing characters (`┌ ─ ┐ │ └ ┘ → ├── └──`) so alignment survives in monospace. Keep those lines under ~80 columns, so they survive narrow panes.
+- Leave a blank line between sections, and put a horizontal rule (`---`) before each numbered heading, so the steps are easy to tell apart when scrolling.
+- No emoji, since many terminals draw them as color pictures (`⚠` included; use `!`). Plain text symbols are fine: box-drawing characters, geometric shapes (`▰▱▮▯●○`) and ASCII, plus Nerd Font glyphs where one clearly helps. Use a small, consistent set (`✚` added, `~` modified, `-` removed, `x` breaking, `!` caution, `●`/`○` yes/no). Always pair a symbol with a word or position; never rely on a symbol or color alone, so it stays readable in screen readers and plain-text copies.
+- Skip any visual that would just restate a single line of text.
 
 ## Interactive review guide (`--artifact`)
 
