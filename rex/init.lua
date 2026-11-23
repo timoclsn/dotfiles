@@ -689,6 +689,100 @@ rex.action {
   end,
 }
 
+-- Paths in the text that look like files: something with an extension,
+-- optionally followed by :line. Later mentions come first. Whether they
+-- exist is checked by the caller.
+local function mentioned_paths(text)
+  local paths = {}
+  local mentions = {}
+  for token in text:gmatch '[%w_%.%-/~@+]+:?%d*' do
+    table.insert(mentions, token)
+  end
+  for index = #mentions, 1, -1 do
+    local path, line = mentions[index]:match '^(.-):(%d+)$'
+    path = (path or mentions[index]:gsub(':$', '')):gsub('%.+$', '')
+    if path:match '[^/]+%.%a[%w]*$' and path:sub(1, 2) ~= '//' then
+      table.insert(paths, { path = path, line = tonumber(line) })
+    end
+  end
+  return paths
+end
+
+local function resolve(dir, path)
+  if path:sub(1, 2) == '~/' then
+    return home .. path:sub(2)
+  end
+  return path:sub(1, 1) == '/' and path or dir .. '/' .. path
+end
+
+-- The mentioned paths that are files on disk, each file once, however it was
+-- spelled.
+local function mentioned_files(ctx, dir)
+  local screen = run { rex_command, 'capture', '-s', ctx.session_id, '-b', ctx.block_id, '--unwrap' }
+  local candidates = {}
+  local lines = {}
+  local seen = {}
+  for _, candidate in ipairs(mentioned_paths(screen.stdout)) do
+    candidate.file = resolve(dir, candidate.path)
+    if not seen[candidate.file] then
+      seen[candidate.file] = true
+      table.insert(candidates, candidate)
+      table.insert(lines, candidate.file)
+    end
+  end
+  local existing = {}
+  local checked = run({ 'sh', '-c', 'while IFS= read -r f; do [ -f "$f" ] && printf "%s\\n" "$f"; done' }, { stdin = table.concat(lines, '\n') .. '\n' })
+  for file in checked.stdout:gmatch '[^\n]+' do
+    existing[file] = true
+  end
+  local files = {}
+  for _, candidate in ipairs(candidates) do
+    if existing[candidate.file] then
+      table.insert(files, candidate)
+    end
+  end
+  return files
+end
+
+local function fish_quote(text)
+  return "'" .. text:gsub("[\\']", '\\%0') .. "'"
+end
+
+-- Lists the files mentioned in the pane, newest first, and opens the picked
+-- one in Neovim in a new tab.
+rex.action {
+  name = 'open_mentioned_file',
+  title = 'Open File Mentioned in Pane…',
+  category = 'Tabs',
+  keywords = 'file open mentioned nvim',
+  run = function(ctx)
+    local dir = pane_dir(ctx)
+    local files = mentioned_files(ctx, dir)
+    if #files == 0 then
+      return
+    end
+    local items = {}
+    for index, file in ipairs(files) do
+      table.insert(items, {
+        id = tostring(index),
+        title = file.file:match '[^/]+$',
+        subtitle = tilde(file.file:match '^(.*)/[^/]+$'),
+        icon = 'document',
+      })
+    end
+    local picked, why = rex.ui.pick { title = 'Open file', placeholder = 'Filter files', items = items }
+    if picked == nil and why ~= 'cancelled' then
+      error("Can't ask for a file: " .. why, 0)
+    end
+    if not picked then
+      return
+    end
+    local file = files[tonumber(picked)]
+    local line = file.line and '+' .. file.line .. ' ' or ''
+    open_tab_running(ctx, dir, 'nvim ' .. line .. fish_quote(file.file))
+  end,
+}
+
 rex.action {
   name = 'update_tools',
   title = 'Run update-tools in New Tab',
@@ -815,6 +909,7 @@ bind('d', 'diff')
 bind('shift+d', 'pr_diff')
 bind('o', 'open_repo')
 bind('ctrl+f', 'reveal_in_finder')
+bind('shift+f', 'open_mentioned_file')
 
 -- Config
 bind('r', 'client.config.reload')
