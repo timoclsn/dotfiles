@@ -782,7 +782,6 @@ end
 -- Sessions
 bind('f', 'sessionizer')
 bind(',', 'sessionizer', { dir = '~/Developer/personal/dotfiles' })
-bind('shift+f', 'copy_project_path')
 bind('s', 'track_switch', { action = 'session.switch' })
 bind('shift+l', 'last_session') -- L
 bind('n', 'newest_session')
@@ -805,9 +804,10 @@ bind('shift+0', 'equalize') -- =
 bind('x', 'close_pane')
 
 -- Copy
-bind('y', 'pane.copy_id')
-bind('shift+y', 'copy_session_id')
-bind('ctrl+y', 'copy_path')
+bind('y', 'copy_path')
+bind('shift+y', 'copy_project_path')
+bind('ctrl+y', 'pane.copy_id')
+bind('alt+y', 'copy_session_id')
 
 -- Open
 bind('g', 'lazygit')
