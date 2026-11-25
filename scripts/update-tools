@@ -23,7 +23,7 @@ update_claude() {
   claude update
   echo "Updating Claude Code plugins…"
   claude plugin marketplace update
-  claude plugin list --json | jq -r '.[] | select(.id | endswith("@synced") | not) | .id' | xargs -n1 claude plugin update
+  claude plugin list --json | jq -r '.[] | select(.id | endswith("@synced") or endswith("@builtin") | not) | .id' | xargs -n1 claude plugin update
 }
 
 update_opencode() {
