@@ -58,7 +58,7 @@ fi
 # Fail when rex fails, not only when jq does, so callers notice.
 set -o pipefail
 if [[ -n $add ]]; then
-    rex do -s "$REX_SESSION" add_project_tab "${args[@]}" --json | jq -r .pane
+    rex do -s "$REX_BLOCK" add_project_tab "${args[@]}" --json | jq -r .pane
 elif [[ -n $detach ]]; then
     rex do sessionizer "${args[@]}" detach=true --json | jq -r .session
 else

@@ -1,6 +1,6 @@
 -- Counterpart to the ctrl+h/j/k/l binding in rex/init.lua: move between Neovim
 -- splits, and hand over to Rex when there is no split left in that direction.
-if not vim.env.REX_SESSION or vim.env.REX_SESSION == '' or vim.env.TMUX then
+if not vim.env.REX_BLOCK or vim.env.REX_BLOCK == '' or vim.env.TMUX then
   return
 end
 
@@ -17,7 +17,7 @@ local navigate = function(wincmd, direction)
   if vim.api.nvim_get_current_win() ~= window then
     return
   end
-  vim.system({ 'rex', 'focus', direction, '-s', vim.env.REX_SESSION })
+  vim.system({ 'rex', 'focus', direction, '-s', vim.env.REX_BLOCK })
 end
 
 -- Mapped on VimEnter so these win over vim-tmux-navigator's own mappings.

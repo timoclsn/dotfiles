@@ -227,5 +227,7 @@ const closeTmux = async () => hasTmuxSession && (await $`tmux kill-session -t=${
 const closeRex = async () => rexSession && (await $`rex kill ${rexSession.session_id}`.nothrow().quiet());
 
 // Close the session this script runs in last, since that ends the script.
-const runsInRexSession = rexSession !== undefined && process.env.REX_SESSION === rexSession.session_id;
+const whoami = process.env.REX_BLOCK ? await $`rex whoami --json`.nothrow().quiet() : undefined;
+const currentRexSessionId = whoami?.exitCode === 0 ? whoami.json().session_id : undefined;
+const runsInRexSession = rexSession !== undefined && currentRexSessionId === rexSession.session_id;
 for (const close of runsInRexSession ? [closeTmux, closeRex] : [closeRex, closeTmux]) await close();

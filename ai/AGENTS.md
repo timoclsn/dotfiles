@@ -72,13 +72,13 @@
 
 ## Rex
 
-- I mostly work in Rex now. If `$REX_SESSION` / `$REX_BLOCK` are set, you're in Rex; use the `rex` CLI (see the `rex` skill) instead of tmux.
+- I mostly work in Rex now. If `$REX_BLOCK` is set, you're in Rex; use the `rex` CLI (see the `rex` skill) instead of tmux.
 - A pane ID like `block:01a1881f-320f-7dcf-86ff-1c20c4cf470d` refers to a Rex pane (a "block"). Sessions are `session:<uuid>`. In Rex terms a tab is a window and a pane is a block.
-- Use `rex capture -s "$REX_SESSION" -b <block> --trim` to read a pane's content before sending input with `rex send` / `rex send-key`.
+- Use `rex capture -b <block> --trim` to read a pane's content before sending input with `rex send` / `rex send-key`.
 
 ## Tmux
 
-- Fallback for when `$REX_SESSION` is not set; otherwise use Rex (see above).
+- Fallback for when `$REX_BLOCK` is not set; otherwise use Rex (see above).
 - Use `tmux capture-pane -p` to capture current pane content before sending keys to preserve context.
 - A pattern like `dotfiles:4.4` refers to a tmux pane (format: `session:window.pane`).
 

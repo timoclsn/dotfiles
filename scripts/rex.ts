@@ -1,3 +1,3 @@
-// Rex sets REX_SESSION in its terminals and tmux sets TMUX in its panes. tmux
+// Rex sets REX_BLOCK in its terminals and tmux sets TMUX in its panes. tmux
 // running inside a Rex terminal has both, and counts as tmux.
-export const runsInRex = () => !process.env.TMUX && !!process.env.REX_SESSION;
+export const runsInRex = () => !process.env.TMUX && !!process.env.REX_BLOCK;
