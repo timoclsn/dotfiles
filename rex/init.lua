@@ -33,8 +33,7 @@ local function terminal(cwd, command)
   return rex.layout.block { flavor = shell, options = { cwd = cwd, command = command } }
 end
 
--- A floating layer running a command, closed when the command exits. Focus
--- goes back to the pane the key was pressed in, which Rex doesn't do itself.
+-- A floating layer running a command, closed when the command exits.
 -- Returns the id of the new layer.
 local function popup(options)
   local layer = in_session('new_layer', {
@@ -50,17 +49,6 @@ local function popup(options)
       },
     },
   })
-  if options.ctx.block_id then
-    unwrap(rex.exec.start({
-      rex_command,
-      'do',
-      '-s',
-      options.ctx.session_id,
-      home .. '/.config/rex/restore-focus.lua',
-      'popup=' .. layer.block_ids[1],
-      'origin=' .. options.ctx.block_id,
-    }, { detach = true }))
-  end
   return layer.layer_id
 end
 
@@ -99,66 +87,9 @@ local function shell_command(command)
   return { 'fish', '-ic', 'status job-control full; ' .. command .. '; exec fish' }
 end
 
--- Rex has no focus history, so remember what these actions switch between: the
--- sessions, and the tabs of each session. A switch made another way, like
--- clicking, is noticed the next time one of these actions runs.
-local history_file = home .. '/.local/state/rex-history'
-
--- Read from disk once and then kept in memory, since the config keeps running
--- between key presses. The file lets the history outlive a server restart.
-local history
-
-local function read_history()
-  local entries = {}
-  local file = io.open(history_file)
-  if not file then
-    return entries
-  end
-  for line in file:lines() do
-    local scope, current, previous = line:match '^(%S+) (%S+) ?(%S*)$'
-    if scope then
-      entries[scope] = { current = current, previous = previous ~= '' and previous or nil }
-    end
-  end
-  file:close()
-  return entries
-end
-
--- Keeping the history on disk is optional, so a failed write never stops a switch.
-local function write_history()
-  local file = io.open(history_file, 'w')
-  if not file then
-    return
-  end
-  for scope, entry in pairs(history) do
-    file:write(scope, ' ', entry.current, ' ', entry.previous or '', '\n')
-  end
-  file:close()
-end
-
--- Visits the items in order, each one becoming the scope's current item and the
--- one before it the previous. Returns the scope's current and previous item.
-local function remember(scope, ...)
-  history = history or read_history()
-  local entry = history[scope] or {}
-  local changed = false
-  for index = 1, select('#', ...) do
-    local item = select(index, ...)
-    if entry.current ~= item then
-      entry = { current = item, previous = entry.current }
-      changed = true
-    end
-  end
-  if changed then
-    history[scope] = entry
-    write_history()
-  end
-  return entry
-end
-
-local function select_session(ctx, session_id)
-  rex.client.queue('session.select', { session_id = session_id })
-  remember('sessions', ctx.session_id, session_id)
+-- The app tracks which session and tab it shows itself, so ask it to switch.
+local function select_session(session_id, window_id)
+  rex.client.queue('session.select', { session_id = session_id, window_id = window_id })
 end
 
 local function find_session(label)
@@ -259,7 +190,7 @@ local function open_project(ctx, args)
   if args.detach then
     return { session = label }
   end
-  select_session(ctx, session_id)
+  select_session(session_id)
 end
 
 -- The folders that hold projects, with the name and icon shown for each project.
@@ -373,24 +304,27 @@ local function session_windows(ctx)
   return windows, 1
 end
 
--- The app tracks which tab it shows itself, so ask it to switch.
-local function focus_window(ctx, current, window)
-  if window then
-    rex.client.queue('session.select', { session_id = ctx.session_id, window_id = window.window_id })
-    remember(ctx.session_id, current.window_id, window.window_id)
-  end
-end
-
 rex.action {
   name = 'tab_goto',
   title = 'Go to Tab in Session',
   category = 'Tabs',
   args = { index = 'integer' },
   run = function(ctx, args)
-    local windows, active = session_windows(ctx)
-    focus_window(ctx, windows[active], windows[args.index])
+    local window = session_windows(ctx)[args.index]
+    if window then
+      select_session(ctx.session_id, window.window_id)
+    end
   end,
 }
+
+-- The server keeps the focus history, including clicks and closed tabs. It moves
+-- focus itself, the app only has to show the place it went back to.
+local function go_back(filter)
+  local place = call('focus_history.reverse', filter)
+  if place.reversed then
+    select_session(place.session_id, place.window_id)
+  end
+end
 
 rex.action {
   name = 'last_tab',
@@ -398,13 +332,7 @@ rex.action {
   category = 'Tabs',
   run = function(ctx)
     local windows, active = session_windows(ctx)
-    local current = windows[active]
-    local previous = remember(ctx.session_id, current.window_id).previous
-    for _, window in ipairs(windows) do
-      if window.window_id == previous then
-        return focus_window(ctx, current, window)
-      end
-    end
+    go_back { session_id = ctx.session_id, not_window_id = windows[active].window_id }
   end,
 }
 
@@ -439,26 +367,8 @@ rex.action {
       end
     end
     if newest.session_id ~= ctx.session_id then
-      select_session(ctx, newest.session_id)
+      select_session(newest.session_id)
     end
-  end,
-}
-
--- For built-in actions that switch somewhere unknown: note where you are first.
--- Looking up the current tab costs a call to the server, so it is only done for
--- actions that change tabs.
-rex.action {
-  name = 'track_switch',
-  title = 'Run Action and Remember Where You Were',
-  category = 'Sessions',
-  args = { action = 'string', tabs = 'boolean?' },
-  run = function(ctx, args)
-    if args.tabs then
-      local windows, active = session_windows(ctx)
-      remember(ctx.session_id, windows[active].window_id)
-    end
-    rex.client.queue(args.action)
-    remember('sessions', ctx.session_id)
   end,
 }
 
@@ -467,10 +377,7 @@ rex.action {
   title = 'Go to Last Session',
   category = 'Sessions',
   run = function(ctx)
-    local previous = remember('sessions', ctx.session_id).previous
-    if previous then
-      select_session(ctx, previous)
-    end
+    go_back { not_session_id = ctx.session_id }
   end,
 }
 
@@ -655,7 +562,6 @@ rex.action {
         command = { '/opt/homebrew/bin/fish', '-c', 'status job-control full; lazygit' },
         bounds = { 0.05, 0.05, 0.9, 0.9 },
         cwd = pane_dir(ctx),
-        ctx = ctx,
       }
       lazygit_layers[layer_id] = true
       return
@@ -672,11 +578,10 @@ rex.action {
 -- Opens a tab running a fish command and keeps a fish shell open once it
 -- exits. Job control is on so Rex sees the command as the foreground program.
 local function open_tab_running(ctx, dir, fish_command)
-  local windows, active = session_windows(ctx)
   local window = in_session('new_window', {
     layout = terminal(dir, shell_command(fish_command)),
   })
-  focus_window(ctx, windows[active], window)
+  select_session(ctx.session_id, window.window_id)
 end
 
 rex.action {
@@ -866,7 +771,7 @@ local function bind(key, action, args)
 end
 
 -- Tabs (tmux windows)
-bind('c', 'track_switch', { action = 'client.tab.new', tabs = true })
+bind('c', 'client.tab.new')
 bind('l', 'last_tab')
 bind('v', 'neovim')
 for index = 1, 9 do
@@ -876,17 +781,12 @@ end
 -- Sessions
 bind('f', 'sessionizer')
 bind(',', 'sessionizer', { dir = '~/Developer/personal/dotfiles' })
-bind('s', 'track_switch', { action = 'session.switch' })
+bind('s', 'session.switch')
 bind('shift+l', 'last_session') -- L
 bind('n', 'newest_session')
 bind('shift+s', 'sort_sessions')
 bind('e', 'session.collapse_others')
 bind('shift+e', 'expand_sessions')
-
--- The app's own switcher shortcuts, wrapped so they note where you leave from.
-rex.bind('cmd+k', 'track_switch', { action = 'session.switch' })
-rex.bind('cmd+shift+k', 'track_switch', { action = 'pane.view_activity', tabs = true })
-rex.bind('cmd+p', 'track_switch', { action = 'pane.go_to', tabs = true })
 
 -- Panes
 bind('alt+7', 'pane.split.right') -- |
