@@ -17,3 +17,7 @@ ai/skills/pr-showcase/
 
 # fish writes its universal variables into its config dir, symlinked to fish/
 fish/fish_variables
+
+# Written by "rex terminfo setup" into ~/.config/rex, which links here
+rex/ssh_config
+rex/terminfo-hosts
