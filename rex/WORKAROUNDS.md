@@ -5,7 +5,9 @@ Rex release notes now and then (the `superlogical` MCP has `list_changelog` /
 `search_changelog`, and `search_feedback` shows what the team accepted). When a
 release covers one, delete the workaround and its note here.
 
-Last checked: 2026-11-26 against Mac preview.35 (embedded server preview.25) and Server & CLI preview.25. Nothing droppable. Earlier (2026-11-24, preview.34 and server preview.23) dropped: `last_tab`/`last_session` history and `track_switch` (now `focus_history.reverse`), and `restore-focus.lua` (tested, focus returns after a popup closes).
+Last checked: 2026-11-27 against Mac preview.37 (embedded server preview.25; no newer Server & CLI post than preview.25). Nothing droppable.
+Mac preview.36 and .37 (2026-11-27): nothing on our list. New: Move Tab to Session (drag, menu, palette; Previous/Next Session actions are bindable), `rex -C <mac> do client.url.open url=…` (set as `$BROWSER` on remote hosts, needs Remote Control), Quick Terminal experiment (a global-shortcut floating panel with one tab; not a tmux-style popup, so `popup()` stays), Scroll by Lines / Scroll by Pages actions (bindable), a setting to turn off Vim motions in list search fields (⌃K deletes to end of line again), closing a tab goes straight to the last-used tab, Move Tab Left/Right default to ⌃⇧↑/⌃⇧↓. Feedback statuses are unchanged from 2026-11-26. Per-session tab numbering ("Consistent tab numbering", "Tab navigation and numbers") is still **active**, so `tab_goto` stays.
+Earlier (2026-11-26, Mac preview.35 and Server & CLI preview.25): nothing droppable. Earlier (2026-11-24, preview.34 and server preview.23) dropped: `last_tab`/`last_session` history and `track_switch` (now `focus_history.reverse`), and `restore-focus.lua` (tested, focus returns after a popup closes).
 `REX_SESSION` is no longer set in new terminals (Server & CLI preview.23); use `REX_BLOCK`, which `-s` accepts as a block ID. Our scripts are switched.
 Server preview.22 adds a focus history (`focus_history.reverse`, filterable by session or window); `last_tab` and `last_session` use it, and the server also returns focus after closing a popup, tab or pane. Mac preview.34 builds Navigate Back / Forward on it (no default shortcut, replaces Go to Recent). Feedback "Focus last pane", "Equivalent of Tmux's last-pane/last-window/last-session", "Go to previously active tab" and "Focus moves to the wrong pane when a floating pane's program exits" are **completed**.
 Mac preview.35 and Server & CLI preview.24/25 (2026-11-25): nothing droppable. A zoomed pane now stays zoomed while a floating layer has focus and after it closes (needs a server restart); feedback "Keep zoom when a floating layer takes focus" is still listed as deferred but shipped, and we had no workaround for it. Navigate Back / Forward got default shortcuts (⌥⌘[ and ⌥⌘]). New: Claude Code resumes after a server restart (needs the hook from `rex skill setup`; `rex config check` lists the resume rules), `rex window move --to SESSION` / `session.transfer_window`, `client.undo_close` (no app uses it yet), `rex cp`, terminal folder saved within about a second, `require` in init.lua only looks next to the script.
@@ -55,7 +57,7 @@ The `superlogical` MCP's search only matches single keywords. `read_changelog` t
 version only when it is the full string (`0.1.0-preview.27-1853-379536d`); the short
 `0.1.0-preview.27` finds nothing. The message id from `list_changelog` also works.
 
-## Status of upstream requests (as of 2026-11-26, after preview.35)
+## Status of upstream requests (as of 2026-11-27, after preview.37)
 
 | Workaround | Feedback status |
 | --- | --- |
