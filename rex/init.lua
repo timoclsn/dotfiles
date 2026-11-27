@@ -76,10 +76,13 @@ end
 
 -- Runs cc and keeps a fish shell open once it exits. The prompt is passed as
 -- an argument, so quotes, newlines and '!' reach cc without any shell quoting.
+-- Without a prompt it continues the project's last conversation, or starts a
+-- new one when there is nothing to continue.
 -- fish -c has no job control, which would keep cc in fish's own process group.
 -- Rex would then see fish as the foreground program and not recognise the agent.
 local function agent_command(prompt)
-  return { 'fish', '-ic', 'status job-control full; cc $argv; exec fish', '--', prompt }
+  local cc = prompt and 'cc $argv' or 'cc --continue; or cc'
+  return { 'fish', '-ic', 'status job-control full; ' .. cc .. '; exec fish', '--', prompt }
 end
 
 -- Runs a shell command and keeps a fish shell open once it exits.
